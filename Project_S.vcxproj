@@ -10,6 +10,27 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\ImGUI\imgui.cpp" />
+    <ClCompile Include="Source\ImGUI\imgui_demo.cpp" />
+    <ClCompile Include="Source\ImGUI\imgui_draw.cpp" />
+    <ClCompile Include="Source\ImGUI\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Source\ImGUI\imgui_impl_win32.cpp" />
+    <ClCompile Include="Source\ImGUI\imgui_tables.cpp" />
+    <ClCompile Include="Source\ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\ImGUI\imconfig.h" />
+    <ClInclude Include="Source\ImGUI\imgui.h" />
+    <ClInclude Include="Source\ImGUI\imgui_impl_opengl3.h" />
+    <ClInclude Include="Source\ImGUI\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Source\ImGUI\imgui_impl_win32.h" />
+    <ClInclude Include="Source\ImGUI\imgui_internal.h" />
+    <ClInclude Include="Source\ImGUI\imstb_rectpack.h" />
+    <ClInclude Include="Source\ImGUI\imstb_textedit.h" />
+    <ClInclude Include="Source\ImGUI\imstb_truetype.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -95,9 +116,6 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\Alpha_Engine.dll" "$(OutDir)" /s /r 
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
