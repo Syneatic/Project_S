@@ -45,7 +45,7 @@
     <ClCompile Include="Source\ImGUI\imgui_impl_win32.cpp">
       <Filter>Source Files\imgui\backends</Filter>
     </ClCompile>
-    <ClCompile Include="level_editor.cpp">
+    <ClCompile Include="Source\level_editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,16 +77,16 @@
     <ClInclude Include="Source\ImGUI\imgui_impl_win32.h">
       <Filter>Source Files\imgui\backends</Filter>
     </ClInclude>
-    <ClInclude Include="gameobject.hpp">
+    <ClInclude Include="Source\component.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scene.hpp">
+    <ClInclude Include="Source\gameobject.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="component.hpp">
+    <ClInclude Include="Source\math.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="math.hpp">
+    <ClInclude Include="Source\scene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

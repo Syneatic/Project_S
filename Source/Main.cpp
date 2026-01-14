@@ -1,8 +1,14 @@
-#include <crtdbg.h> // To check for memory leaks
-#include "AEEngine.h"
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_opengl3.h"
 #include "ImGUI/imgui_impl_win32.h"
+
+#include <crtdbg.h> // To check for memory leaks
+#include <vector>
+#include <string>
+#include "AEEngine.h"
+
+#include "gameobject.hpp"
+#include "component.hpp"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -16,6 +22,8 @@ LRESULT ImGuiWNDCallBack(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 	return DefWindowProc(hWnd, msg, wp, lp);
 }
 
+//dummy gameobject list
+std::vector<GameObject> gameObjectList{};
 
 void InitializeImGUI(bool& initStatus)
 {
@@ -51,9 +59,50 @@ void ShutdownImGUI(bool& initStatus)
 
 void BuildImGUI()
 {
+	static int selected = -1;
+	//build scene window
 	ImGui::SetNextWindowSizeConstraints(ImVec2(320.f,100.f),ImVec2(FLT_MAX,FLT_MAX));
+	ImGui::Begin("Scene");
+	//iterate through scene objects and display them here
+	for (size_t i = 0; i < gameObjectList.size(); i++)
+	{
+		GameObject& gobj = gameObjectList[i];
+		bool isSelected = (selected == i);
+
+		if (ImGui::Selectable(gobj.GetName().c_str(),isSelected))
+		{
+			//set selected object index
+			selected = &gobj - &gameObjectList[0];
+		}
+	}
+
+	ImGui::End();
+
+	//build the inspector window
+	ImGui::SetNextWindowSizeConstraints(ImVec2(320.f, 100.f), ImVec2(FLT_MAX, FLT_MAX));
 	ImGui::Begin("Inspector");
-	ImGui::Text("Bang");
+
+	//check if an object is selected
+	if (selected < 0) { ImGui::End(); return; }
+	
+	//display selected object's properties
+	//iterate through each component and display its properties here
+	//name text box
+	GameObject& selectedObj = gameObjectList[selected];
+
+	//game object properties
+	char nameBuffer[256];
+	strcpy_s(nameBuffer, selectedObj.GetName().c_str());
+	if (ImGui::InputText(" ", nameBuffer, sizeof(nameBuffer)))
+	{
+		//update name if changed
+		selectedObj.SetName(std::string(nameBuffer));
+	}
+
+	//component properties
+	//std::vector<Component>& compList = selectedObj.GetComponentList();
+	ImGui::CollapsingHeader("Components");
+	
 
 	ImGui::End();
 }
@@ -83,6 +132,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
 	InitializeImGUI(m_ImGUIInitialized);
+
+	//testing
+	for (size_t i = 0; i < 10; i++)
+	{
+		std::string name = "GameObject_" + std::to_string(i);
+		GameObject gameObj(name);
+		gameObj.AddComponent(
+			Transform(float2((f32)i,(f32)i),
+				float2((f32)i, (f32)i),i)
+		);
+		gameObjectList.insert(gameObjectList.end(),gameObj);
+	}
 
 	// Game Loop
 	while (gGameRunning)
