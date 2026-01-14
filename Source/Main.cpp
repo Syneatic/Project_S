@@ -5,6 +5,8 @@
 #include <crtdbg.h> // To check for memory leaks
 #include <vector>
 #include <string>
+#include <iostream>
+#include <typeindex>
 #include "AEEngine.h"
 
 #include "gameobject.hpp"
@@ -23,7 +25,7 @@ LRESULT ImGuiWNDCallBack(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 }
 
 //dummy gameobject list
-std::vector<GameObject> gameObjectList{};
+std::vector<std::unique_ptr<GameObject>> gameObjectList{};
 
 void InitializeImGUI(bool& initStatus)
 {
@@ -66,13 +68,13 @@ void BuildImGUI()
 	//iterate through scene objects and display them here
 	for (size_t i = 0; i < gameObjectList.size(); i++)
 	{
-		GameObject& gobj = gameObjectList[i];
+		GameObject& gobj = *gameObjectList[i];
 		bool isSelected = (selected == i);
 
-		if (ImGui::Selectable(gobj.GetName().c_str(),isSelected))
+		if (ImGui::Selectable(gobj.name().c_str(),isSelected))
 		{
 			//set selected object index
-			selected = &gobj - &gameObjectList[0];
+			selected = (int)i;
 		}
 	}
 
@@ -88,25 +90,35 @@ void BuildImGUI()
 	//display selected object's properties
 	//iterate through each component and display its properties here
 	//name text box
-	GameObject& selectedObj = gameObjectList[selected];
+	GameObject& selectedObj = *gameObjectList[selected];
 
 	//game object properties
 	char nameBuffer[256];
-	strcpy_s(nameBuffer, selectedObj.GetName().c_str());
+	strcpy_s(nameBuffer, selectedObj.name().c_str());
 	if (ImGui::InputText(" ", nameBuffer, sizeof(nameBuffer)))
 	{
 		//update name if changed
-		selectedObj.SetName(std::string(nameBuffer));
+		selectedObj.name(std::string(nameBuffer));
 	}
 
-	//component properties
-	//std::vector<Component>& compList = selectedObj.GetComponentList();
-	ImGui::CollapsingHeader("Components");
-	
+	const auto& comps = selectedObj.componentMap();
+
+	for (auto it = comps.begin(); it != comps.end(); ++it)
+	{
+		const std::type_index& type = it->first;
+		const std::unique_ptr<Component>& compPtr = it->second;
+
+		if (!compPtr) continue;
+
+		if (ImGui::CollapsingHeader(compPtr.get()->name().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			compPtr.get()->DrawInInspector();
+			ImGui::Separator();
+		}
+	}
 
 	ImGui::End();
 }
-
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -137,12 +149,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	for (size_t i = 0; i < 10; i++)
 	{
 		std::string name = "GameObject_" + std::to_string(i);
-		GameObject gameObj(name);
-		gameObj.AddComponent(
-			Transform(float2((f32)i,(f32)i),
-				float2((f32)i, (f32)i),i)
+		gameObjectList.push_back(std::make_unique<GameObject>(name));
+		gameObjectList.back()->AddComponent(
+			Transform(float2((f32)i, (f32)i),
+				float2((f32)i, (f32)i), (f32)i)
 		);
-		gameObjectList.insert(gameObjectList.end(),gameObj);
 	}
 
 	// Game Loop
@@ -150,10 +161,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	{
 		// Informing the system about the loop's start
 		AESysFrameStart();
-
+		f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 		// Your own rendering logic goes here
 		// Set the background to black.
-		AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
+		AEGfxSetBackgroundColor(0.f, 0.f,0.f);
 	
 		// ===== IMGUI FRAME =====
 		if (m_ImGUIInitialized)
@@ -168,21 +179,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		}
-
-
-
-
-		
-		
-		
+	
 		// Informing the system about the loop's end
 		AESysFrameEnd();
-
 
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 			gGameRunning = 0;
-
 	}
 
 	ShutdownImGUI(m_ImGUIInitialized);
