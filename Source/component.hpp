@@ -29,7 +29,7 @@ struct Component
 struct Transform : Component
 {
 	float2 position{};
-	float2 scale{};
+	float2 scale{1.f,1.f};
 	f32 rotation{}; //stay as float?
 
     //should only be available in debug mode

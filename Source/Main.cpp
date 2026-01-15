@@ -81,10 +81,44 @@ void BuildImGUI()
 		if (ImGui::BeginPopupContextItem())
 		{
 			selected = (int)i;
-			if (ImGui::MenuItem("Add Component"))
+			if (ImGui::BeginMenu("Add Component"))
 			{
+				if (ImGui::MenuItem("Transform"))
+				{
+					std::cout << "Transform" << std::endl;
+					gobj.AddComponent(
+						Transform()
+					);
+				}
 
+				if (ImGui::MenuItem("Collider"))
+				{
+					std::cout << "Collider" << std::endl;
+				}
+
+				if (ImGui::MenuItem("Renderer"))
+				{
+					std::cout << "Renderer" << std::endl;
+				}
+
+				ImGui::EndMenu();
 			}
+
+			if (ImGui::MenuItem("Delete"))
+			{
+				gameObjectList.erase(gameObjectList.begin() + i);
+				selected = -1;
+			}
+
+			if (ImGui::MenuItem("Create GameObject"))
+			{
+				int index = (int)gameObjectList.size();
+				std::cout << "Create GameObject_" << index << std::endl;
+				std::string name = "GameObject_" + std::to_string(index);
+				gameObjectList.push_back(std::make_unique<GameObject>(name));
+				//selected = index;
+			}
+
 			ImGui::EndPopup();
 		}
 	}
