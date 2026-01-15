@@ -71,10 +71,21 @@ void BuildImGUI()
 		GameObject& gobj = *gameObjectList[i];
 		bool isSelected = (selected == i);
 
+
 		if (ImGui::Selectable(gobj.name().c_str(),isSelected))
 		{
 			//set selected object index
 			selected = (int)i;
+		}
+
+		if (ImGui::BeginPopupContextItem())
+		{
+			selected = (int)i;
+			if (ImGui::MenuItem("Add Component"))
+			{
+
+			}
+			ImGui::EndPopup();
 		}
 	}
 
@@ -112,6 +123,17 @@ void BuildImGUI()
 
 		if (ImGui::CollapsingHeader(compPtr.get()->name().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 		{
+			if (ImGui::BeginPopupContextItem())
+			{
+				if (ImGui::MenuItem("Remove Component"))
+				{
+					//remove component from game object
+					selectedObj.componentMap().erase(type);
+					ImGui::EndPopup();
+					break; //exit loop to avoid invalid iterator
+				}
+				ImGui::EndPopup();
+			}
 			compPtr.get()->DrawInInspector();
 			ImGui::Separator();
 		}

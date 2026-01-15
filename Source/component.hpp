@@ -32,7 +32,6 @@ struct Transform : Component
 	float2 scale{};
 	f32 rotation{}; //stay as float?
 
-
     //should only be available in debug mode
 	void DrawInInspector() override
 	{
