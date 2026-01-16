@@ -35,6 +35,7 @@
     <ClInclude Include="Source\ImGUI\imstb_truetype.h" />
     <ClInclude Include="Source\math.hpp" />
     <ClInclude Include="Source\scene.hpp" />
+    <ClInclude Include="Source\scene_parser.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

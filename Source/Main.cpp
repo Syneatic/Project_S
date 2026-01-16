@@ -59,6 +59,7 @@ void ShutdownImGUI(bool& initStatus)
 	initStatus = false;
 }
 
+//this function will be migrated to the editor scene
 void BuildImGUI()
 {
 	static int selected = -1;
@@ -77,50 +78,26 @@ void BuildImGUI()
 			//set selected object index
 			selected = (int)i;
 		}
+	}
 
-		if (ImGui::BeginPopupContextItem())
+	if (ImGui::BeginPopupContextWindow("SceneRightClickMenu"))
+	{
+		if (ImGui::MenuItem("Create GameObject"))
 		{
-			selected = (int)i;
-			if (ImGui::BeginMenu("Add Component"))
-			{
-				if (ImGui::MenuItem("Transform"))
-				{
-					std::cout << "Transform" << std::endl;
-					gobj.AddComponent(
-						Transform()
-					);
-				}
-
-				if (ImGui::MenuItem("Collider"))
-				{
-					std::cout << "Collider" << std::endl;
-				}
-
-				if (ImGui::MenuItem("Renderer"))
-				{
-					std::cout << "Renderer" << std::endl;
-				}
-
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::MenuItem("Delete"))
-			{
-				gameObjectList.erase(gameObjectList.begin() + i);
-				selected = -1;
-			}
-
-			if (ImGui::MenuItem("Create GameObject"))
-			{
-				int index = (int)gameObjectList.size();
-				std::cout << "Create GameObject_" << index << std::endl;
-				std::string name = "GameObject_" + std::to_string(index);
-				gameObjectList.push_back(std::make_unique<GameObject>(name));
-				//selected = index;
-			}
-
-			ImGui::EndPopup();
+			int index = (int)gameObjectList.size();
+			std::cout << "Create GameObject_" << index << std::endl;
+			std::string name = "GameObject_" + std::to_string(index);
+			gameObjectList.push_back(std::make_unique<GameObject>(name));
+			selected = index;
 		}
+
+		if (ImGui::MenuItem("Delete GameObject"))
+		{
+			gameObjectList.erase(gameObjectList.begin() + selected);
+			selected = -1;
+		}
+
+		ImGui::EndPopup();
 	}
 
 	ImGui::End();
@@ -171,6 +148,34 @@ void BuildImGUI()
 			compPtr.get()->DrawInInspector();
 			ImGui::Separator();
 		}
+	}
+
+	if (ImGui::Button("Add Component"))
+	{
+		ImGui::OpenPopup("bang");
+	}
+
+	if (ImGui::BeginPopup("bang"))
+	{
+		if (ImGui::MenuItem("Transform"))
+		{
+			std::cout << "Transform" << std::endl;
+			selectedObj.AddComponent(
+				Transform()
+			);
+		}
+
+		if (ImGui::MenuItem("Collider"))
+		{
+			std::cout << "Collider" << std::endl;
+		}
+
+		if (ImGui::MenuItem("Renderer"))
+		{
+			std::cout << "Renderer" << std::endl;
+		}
+
+		ImGui::EndPopup();
 	}
 
 	ImGui::End();

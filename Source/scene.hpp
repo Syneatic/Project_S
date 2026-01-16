@@ -1,18 +1,17 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "gameobject.hpp"
 
-
 //maybe not
-
 struct Scene
 {
 protected:
-	std::vector<GameObject> _gameObjects{};
-	char* sceneName{};
+	std::vector<std::unique_ptr<GameObject>> gameObjectList{};
+	std::string name{};
 
 public:
-	virtual void InitializeScene()
+	virtual void Initialize()
 	{
 		//read from file
 		//initialize all gameobjects
@@ -22,13 +21,18 @@ public:
 		*/
 	}
 
-	virtual void UpdateScene()
+	virtual void Update()
 	{
 
 	}
 
-	virtual void DestroyScene()
+	virtual void Destroy()
 	{
 		//delete
 	}
+
+	//===== SERIALIZATION =====
+	virtual std::string TypeId() const = 0;
+	virtual void Serialize() {}
+	virtual void Deserialize() {}
 };
