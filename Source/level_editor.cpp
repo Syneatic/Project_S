@@ -12,25 +12,4 @@ struct LevelEditorScene : Scene
 
 		ImGui::End();
 	}
-
-
-	void InitializeScene() override
-	{
-		//read from file
-		//initialize all gameobjects
-		/*
-		* for each game objects
-		*	=> gameobjects.Start()
-		*/
-	}
-
-	void UpdateScene() override
-	{
-
-	}
-
-	void DestroyScene() override
-	{
-		//delete
-	}
 };

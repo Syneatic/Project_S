@@ -36,3 +36,34 @@ public:
 	virtual void Serialize() {}
 	virtual void Deserialize() {}
 };
+
+//singleton
+//maybe just make functions in a file
+struct SceneManager
+{
+private:
+	static Scene* currentScene;
+public:
+	void SetCurrentScene(Scene* scene)
+	{
+		currentScene = scene;
+	}
+
+	void InitializeCurrentScene()
+	{
+		if (currentScene)
+			currentScene->Initialize();
+	}
+
+	void UpdateCurrentScene()
+	{
+		if (currentScene)
+			currentScene->Update();
+	}
+
+	void DestroyCurrentScene()
+	{
+		if (currentScene)
+			currentScene->Destroy();
+	}
+};

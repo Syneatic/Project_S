@@ -4,26 +4,30 @@
 
 struct Component
 {
-	virtual void OnStart()
-	{
-
-	}
-
-	virtual void OnUpdate()
-	{
-
-	}
-
-	virtual void OnDestroy()
-	{
-
-	}
-
 	virtual void DrawInInspector() {};
 
 	virtual const std::string name() const = 0;
 	virtual ~Component() = default;
+};
 
+struct Behaviour : Component
+{
+    virtual void OnStart()
+    {
+
+    }
+
+    virtual void OnUpdate()
+    {
+
+    }
+
+    virtual void OnDestroy()
+    {
+
+    }
+
+    virtual ~Behaviour() = default;
 };
 
 struct Transform : Component
@@ -78,7 +82,30 @@ struct Transform : Component
 	}
 };
 
+struct Renderer : Component
+{
+    //texture
+    //color multiply
+    //render method
+    //render layer
+};
+
 struct Collider : Component
 {
+    //tag
+    //isTrigger
+    //OnEnter
+    //OnStay
+    //OnExity
+};
 
+struct CircleCollider : Collider
+{
+    f32 radius{ 1.f };
+};
+
+struct BoxCollider : Collider
+{
+    f32 width{ 1.f };
+    f32 height{ 1.f };
 };
