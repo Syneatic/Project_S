@@ -12,20 +12,11 @@ struct Component
 
 struct Behaviour : Component
 {
-    virtual void OnStart()
-    {
-
-    }
-
-    virtual void OnUpdate()
-    {
-
-    }
-
-    virtual void OnDestroy()
-    {
-
-    }
+    //setting a virtual function to 0
+    //would represent the class as an abstract class
+    virtual void OnStart() = 0;
+    virtual void OnUpdate() = 0;
+    virtual void OnDestroy() = 0;
 
     virtual ~Behaviour() = default;
 };
@@ -40,7 +31,7 @@ struct Transform : Component
 	void DrawInInspector() override
 	{
         ImGui::TextUnformatted("Position");
-        ImGui::DragFloat2("##Position", &position.x, 0.05f);
+        ImGui::DragFloat2("##transform_position", &position.x, 0.05f);
         ImGui::SameLine();
         if (ImGui::Button("Reset##Pos"))
         {
@@ -49,7 +40,7 @@ struct Transform : Component
         }
 
         ImGui::TextUnformatted("Scale");
-        ImGui::DragFloat2("##Scale", &scale.x, 0.05f);
+        ImGui::DragFloat2("##transform_scale", &scale.x, 0.05f);
         ImGui::SameLine();
         if (ImGui::Button("Reset##Scale"))
         {
@@ -58,13 +49,14 @@ struct Transform : Component
         }
 
         ImGui::TextUnformatted("Rotation");
-        ImGui::DragFloat("##Rotation", &rotation, 0.1f);
+        ImGui::DragFloat("##transform_rotation", &rotation, 0.1f);
         ImGui::SameLine();
         if (ImGui::Button("Reset##Rot"))
         {
             rotation = 0.0f;
         }
 
+        //for debugging?
         //ImGui::Spacing();
         //ImGui::Separator();
         //ImGui::Text("Raw Values:");
@@ -82,6 +74,7 @@ struct Transform : Component
 	}
 };
 
+//abstract
 struct Renderer : Component
 {
     //texture
@@ -90,22 +83,38 @@ struct Renderer : Component
     //render layer
 };
 
+//abstract
 struct Collider : Component
 {
     //tag
     //isTrigger
-    //OnEnter
-    //OnStay
-    //OnExity
 };
 
 struct CircleCollider : Collider
 {
     f32 radius{ 1.f };
+
+    void DrawInInspector() override
+    {
+        ImGui::TextUnformatted("Size");
+        ImGui::DragFloat("##circlecollider_radius", &radius, 0.1f);
+
+    }
+
+    const std::string name() const override { return "CircleCollider"; }
+
+    CircleCollider() {};
 };
 
 struct BoxCollider : Collider
 {
-    f32 width{ 1.f };
-    f32 height{ 1.f };
+    float2 size{ 1.f,1.f };
+
+    void DrawInInspector() override
+    {
+        ImGui::TextUnformatted("Size");
+        ImGui::DragFloat2("##boxcollider_size", &size.x, 0.1f);
+    }
+
+    const std::string name() const override { return "BoxCollider"; }
 };

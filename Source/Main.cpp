@@ -9,6 +9,8 @@
 #include <typeindex>
 #include "AEEngine.h"
 
+#include "scene.hpp"
+#include "scene_parser.hpp"
 #include "gameobject.hpp"
 #include "component.hpp"
 
@@ -139,7 +141,7 @@ void BuildImGUI()
 				if (ImGui::MenuItem("Remove Component"))
 				{
 					//remove component from game object
-					selectedObj.componentMap().erase(type);
+					selectedObj.RemoveComponent(type);
 					ImGui::EndPopup();
 					break; //exit loop to avoid invalid iterator
 				}
@@ -149,6 +151,9 @@ void BuildImGUI()
 			ImGui::Separator();
 		}
 	}
+
+	//ImGui::Spacing();
+	ImGui::Separator();
 
 	if (ImGui::Button("Add Component"))
 	{
@@ -165,9 +170,20 @@ void BuildImGUI()
 			);
 		}
 
-		if (ImGui::MenuItem("Collider"))
+		if (ImGui::MenuItem("Circle Collider"))
 		{
-			std::cout << "Collider" << std::endl;
+			std::cout << "Circle Collider" << std::endl;
+			selectedObj.AddComponent(
+				CircleCollider()
+			);
+		}
+
+		if (ImGui::MenuItem("Box Collider"))
+		{
+			std::cout << "Circle Collider" << std::endl;
+			selectedObj.AddComponent(
+				BoxCollider()
+			);
 		}
 
 		if (ImGui::MenuItem("Renderer"))
@@ -216,6 +232,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				float2((f32)i, (f32)i), (f32)i)
 		);
 	}
+
+	Scene test_scn("TEST_SCENE");
+	//SceneIO::SerializeScene(test_scn,"TEST");
 
 	// Game Loop
 	while (gGameRunning)

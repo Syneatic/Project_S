@@ -7,8 +7,8 @@
 struct Scene
 {
 protected:
-	std::vector<std::unique_ptr<GameObject>> gameObjectList{};
-	std::string name{};
+	std::vector<std::unique_ptr<GameObject>> _gameObjectList{};
+	std::string _name{};
 
 public:
 	virtual void Initialize()
@@ -31,10 +31,12 @@ public:
 		//delete
 	}
 
-	//===== SERIALIZATION =====
-	virtual std::string TypeId() const = 0;
-	virtual void Serialize() {}
-	virtual void Deserialize() {}
+	const std::string& name() const { return _name; }
+	std::string& name(std::string name) { return _name = std::move(name); }
+	std::vector<std::unique_ptr<GameObject>>& gameObjectList() { return _gameObjectList; }
+
+	Scene() {}
+	Scene(std::string name) { _name = std::move(name); }
 };
 
 //singleton
