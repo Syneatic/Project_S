@@ -11,31 +11,48 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\ImGUI\imgui.cpp" />
-    <ClCompile Include="Source\ImGUI\imgui_demo.cpp" />
-    <ClCompile Include="Source\ImGUI\imgui_draw.cpp" />
-    <ClCompile Include="Source\ImGUI\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="Source\ImGUI\imgui_impl_win32.cpp" />
-    <ClCompile Include="Source\ImGUI\imgui_tables.cpp" />
-    <ClCompile Include="Source\ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="Extern\ImGUI\imgui.cpp" />
+    <ClCompile Include="Extern\ImGUI\imgui_demo.cpp" />
+    <ClCompile Include="Extern\ImGUI\imgui_draw.cpp" />
+    <ClCompile Include="Extern\ImGUI\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Extern\ImGUI\imgui_impl_win32.cpp" />
+    <ClCompile Include="Extern\ImGUI\imgui_tables.cpp" />
+    <ClCompile Include="Extern\ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="Extern\jsoncpp\src\json_reader.cpp" />
+    <ClCompile Include="Extern\jsoncpp\src\json_value.cpp" />
+    <ClCompile Include="Extern\jsoncpp\src\json_writer.cpp" />
     <ClCompile Include="Source\level_editor.cpp" />
     <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Extern\ImGUI\imconfig.h" />
+    <ClInclude Include="Extern\ImGUI\imgui.h" />
+    <ClInclude Include="Extern\ImGUI\imgui_impl_opengl3.h" />
+    <ClInclude Include="Extern\ImGUI\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Extern\ImGUI\imgui_impl_win32.h" />
+    <ClInclude Include="Extern\ImGUI\imgui_internal.h" />
+    <ClInclude Include="Extern\ImGUI\imstb_rectpack.h" />
+    <ClInclude Include="Extern\ImGUI\imstb_textedit.h" />
+    <ClInclude Include="Extern\ImGUI\imstb_truetype.h" />
+    <ClInclude Include="Extern\jsoncpp\include\allocator.h" />
+    <ClInclude Include="Extern\jsoncpp\include\assertions.h" />
+    <ClInclude Include="Extern\jsoncpp\include\config.h" />
+    <ClInclude Include="Extern\jsoncpp\include\forwards.h" />
+    <ClInclude Include="Extern\jsoncpp\include\json.h" />
+    <ClInclude Include="Extern\jsoncpp\include\json_features.h" />
+    <ClInclude Include="Extern\jsoncpp\include\reader.h" />
+    <ClInclude Include="Extern\jsoncpp\include\value.h" />
+    <ClInclude Include="Extern\jsoncpp\include\version.h" />
+    <ClInclude Include="Extern\jsoncpp\include\writer.h" />
+    <ClInclude Include="Extern\jsoncpp\src\json_tool.h" />
     <ClInclude Include="Source\component.hpp" />
     <ClInclude Include="Source\gameobject.hpp" />
-    <ClInclude Include="Source\ImGUI\imconfig.h" />
-    <ClInclude Include="Source\ImGUI\imgui.h" />
-    <ClInclude Include="Source\ImGUI\imgui_impl_opengl3.h" />
-    <ClInclude Include="Source\ImGUI\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="Source\ImGUI\imgui_impl_win32.h" />
-    <ClInclude Include="Source\ImGUI\imgui_internal.h" />
-    <ClInclude Include="Source\ImGUI\imstb_rectpack.h" />
-    <ClInclude Include="Source\ImGUI\imstb_textedit.h" />
-    <ClInclude Include="Source\ImGUI\imstb_truetype.h" />
     <ClInclude Include="Source\math.hpp" />
     <ClInclude Include="Source\scene.hpp" />
     <ClInclude Include="Source\scene_parser.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Extern\jsoncpp\src\json_valueiterator.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -88,7 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Source;%(AdditionalIncludeDirectories);$(SolutionDir)Extern;$(SolutionDir)Extern\jsoncpp\include;</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
