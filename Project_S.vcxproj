@@ -20,7 +20,6 @@
     <ClCompile Include="Source\ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="Source\level_editor.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\component.hpp" />
@@ -35,7 +34,6 @@
     <ClInclude Include="Source\ImGUI\imstb_textedit.h" />
     <ClInclude Include="Source\ImGUI\imstb_truetype.h" />
     <ClInclude Include="Source\math.hpp" />
-    <ClInclude Include="Source\pch.hpp" />
     <ClInclude Include="Source\scene.hpp" />
     <ClInclude Include="Source\scene_parser.hpp" />
   </ItemGroup>
