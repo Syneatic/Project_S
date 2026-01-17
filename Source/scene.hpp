@@ -35,6 +35,7 @@ public:
 	const std::string& name() const { return _name; }
 	std::string& name(std::string name) { return _name = std::move(name); }
 	std::vector<std::unique_ptr<GameObject>>& gameObjectList() { return _gameObjectList; }
+	const std::vector<std::unique_ptr<GameObject>>& gameObjectList() const { return _gameObjectList; }
 
 	Scene() {}
 	Scene(std::string name) { _name = std::move(name); }

@@ -229,7 +229,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	Scene test_scn("TEST_SCENE");
-
+	SceneIO::SerializeScene(test_scn);
 
 	// Game Loop
 	while (gGameRunning)
