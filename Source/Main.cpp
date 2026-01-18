@@ -11,11 +11,7 @@
 #include "AEEngine.h"
 
 #include "scene.hpp"
-#include "scene_parser.hpp"
 #include "scene_editor.hpp"
-
-#include "gameobject.hpp"
-#include "component.hpp"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 

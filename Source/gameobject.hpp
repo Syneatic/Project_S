@@ -3,8 +3,7 @@
 #include <unordered_map>
 #include <typeindex>
 #include <string>
-#include <memory>
-#include <iostream>
+
 #include "component.hpp"
 
 struct GameObject

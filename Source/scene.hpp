@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "AEEngine.h"
+
+#include "AEEngine.h" //temporary
 #include "gameobject.hpp"
 
 struct Scene
