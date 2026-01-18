@@ -19,6 +19,15 @@
     <Filter Include="Source Files\imgui\backends">
       <UniqueIdentifier>{e61fd7f3-9a17-4556-bd5d-383ff844c78a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\imgui">
+      <UniqueIdentifier>{0c61bca7-5c50-453f-9c7c-cfb170bea833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\jsoncpp">
+      <UniqueIdentifier>{d3882381-7afd-4389-b6a9-ac78d0defcf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\jsoncpp">
+      <UniqueIdentifier>{7e08bde9-cebe-45be-91b1-c6e6152ec8b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -28,34 +37,34 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_impl_win32.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\jsoncpp\src\json_reader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\jsoncpp</Filter>
     </ClCompile>
     <ClCompile Include="Extern\jsoncpp\src\json_value.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\jsoncpp</Filter>
     </ClCompile>
     <ClCompile Include="Extern\jsoncpp\src\json_writer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\jsoncpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,70 +83,73 @@
     <ClInclude Include="Source\scene_parser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Extern\ImGUI\imconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Extern\ImGUI\imgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Extern\ImGUI\imgui_impl_opengl3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Extern\ImGUI\imgui_impl_opengl3_loader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Extern\ImGUI\imgui_impl_win32.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Extern\ImGUI\imgui_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Extern\ImGUI\imstb_rectpack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Extern\ImGUI\imstb_textedit.h">
+    <ClInclude Include="Source\scene_editor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imstb_truetype.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Extern\jsoncpp\include\allocator.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Extern\ImGUI\imconfig.h">
+      <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Extern\jsoncpp\include\assertions.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Extern\ImGUI\imgui.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\ImGUI\imgui_impl_opengl3.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\ImGUI\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\ImGUI\imgui_impl_win32.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\ImGUI\imgui_internal.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\ImGUI\imstb_rectpack.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\ImGUI\imstb_textedit.h">
+      <Filter>Header Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\config.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\forwards.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jsoncpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\jsoncpp\include\allocator.h">
+      <Filter>Header Files\jsoncpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\jsoncpp\include\assertions.h">
+      <Filter>Header Files\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\json.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\json_features.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Extern\jsoncpp\include\reader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Extern\jsoncpp\include\value.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Extern\jsoncpp\include\version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Extern\jsoncpp\include\writer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\src\json_tool.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jsoncpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\jsoncpp\include\reader.h">
+      <Filter>Header Files\jsoncpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\jsoncpp\include\value.h">
+      <Filter>Header Files\jsoncpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\jsoncpp\include\version.h">
+      <Filter>Header Files\jsoncpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\jsoncpp\include\writer.h">
+      <Filter>Header Files\jsoncpp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Extern\jsoncpp\src\json_valueiterator.inl">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\jsoncpp</Filter>
     </None>
   </ItemGroup>
 </Project>

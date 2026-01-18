@@ -7,6 +7,11 @@
 #include <string>
 #include <iostream>
 #include <typeindex>
+
+#include <windows.h>
+#include <shobjidl.h> 
+//#include <shlobj_core.h> 
+
 #include "AEEngine.h"
 
 #include "scene.hpp"
@@ -26,8 +31,7 @@ LRESULT ImGuiWNDCallBack(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 	return DefWindowProc(hWnd, msg, wp, lp);
 }
 
-//dummy gameobject list
-std::vector<std::unique_ptr<GameObject>> gameObjectList{};
+static Scene scene("SCENE_TEST");
 
 void InitializeImGUI(bool& initStatus)
 {
@@ -61,13 +65,151 @@ void ShutdownImGUI(bool& initStatus)
 	initStatus = false;
 }
 
+std::wstring OpenFile()
+{
+	//get current directory
+	wchar_t cwd[MAX_PATH]{};
+	GetCurrentDirectoryW(MAX_PATH, cwd);
+
+	//create dialog
+	HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+	bool didCoInit = SUCCEEDED(hr) || hr == RPC_E_CHANGED_MODE;
+	
+	//check if successful
+	IFileOpenDialog* pfd = nullptr;
+	hr = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd));
+	if (FAILED(hr) || !pfd)
+	{
+		if (didCoInit && hr != RPC_E_CHANGED_MODE) CoUninitialize();
+		return L"";
+	}
+
+	//configure dialog
+	pfd->SetTitle(L"Open Scene");
+
+	// Optional: filter
+	COMDLG_FILTERSPEC filters[] =
+	{
+		{ L"Scene files (*.scene)", L"*.scene" },
+		{ L"All files (*.*)",       L"*.*"     }
+	};
+	pfd->SetFileTypes((UINT)std::size(filters), filters);
+	pfd->SetFileTypeIndex(1);
+
+	//starting folder
+	IShellItem* startFolder = nullptr;
+	if (SUCCEEDED(SHCreateItemFromParsingName(cwd, nullptr, IID_PPV_ARGS(&startFolder))))
+	{
+		pfd->SetDefaultFolder(startFolder);
+		pfd->SetFolder(startFolder);
+		startFolder->Release();
+	}
+
+	//display dialog
+	HWND owner = AESysGetWindowHandle();
+	hr = pfd->Show(owner);
+	if (FAILED(hr))
+	{
+		pfd->Release();
+		if (didCoInit && hr != RPC_E_CHANGED_MODE) CoUninitialize();
+		return L""; // cancelled or failed
+	}
+
+	IShellItem* result = nullptr;
+	hr = pfd->GetResult(&result);
+	if (FAILED(hr) || !result)
+	{
+		pfd->Release();
+		if (didCoInit && hr != RPC_E_CHANGED_MODE) CoUninitialize();
+		return L"";
+	}
+
+	PWSTR path = nullptr;
+	hr = result->GetDisplayName(SIGDN_FILESYSPATH, &path);
+
+	std::wstring out;
+	if (SUCCEEDED(hr) && path)
+	{
+		out = path;
+		CoTaskMemFree(path);
+	}
+
+	result->Release();
+	pfd->Release();
+
+	if (didCoInit && hr != RPC_E_CHANGED_MODE) CoUninitialize();
+	return out;
+}
+
 //this function will be migrated to the editor scene
 void BuildImGUI()
 {
 	static int selected = -1;
+	auto& gameObjectList = scene.gameObjectList();
 	//build scene window
 	ImGui::SetNextWindowSizeConstraints(ImVec2(320.f,100.f),ImVec2(FLT_MAX,FLT_MAX));
+
+	ImGuiWindowFlags host_flags =
+		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
+		ImGuiWindowFlags_NoDocking;
+
+	const ImGuiViewport* vp = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(vp->WorkPos);
+	ImGui::SetNextWindowSize(vp->WorkSize);
+	ImGui::SetNextWindowViewport(vp->ID);
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+	ImGui::Begin("DockHost", nullptr, host_flags);
+	ImGui::PopStyleVar(2);
+
+	ImGuiID dockspace_id = ImGui::GetID("MainDockSpace");
+	ImGui::DockSpace(dockspace_id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
+	ImGui::End();
+
+	//top menu bar
+	ImGui::BeginMainMenuBar();
+
+	if (ImGui::BeginMenu("File"))
+	{
+		if (ImGui::MenuItem("Save"))
+		{
+			SceneIO::SerializeScene(scene);
+		}
+
+		if (ImGui::MenuItem("Load")) 
+		{
+			std::wstring fileW = OpenFile();
+			if (!fileW.empty())
+			{
+				std::filesystem::path p(fileW);
+
+				std::string fileNameNoExt = p.stem().string();
+				SceneIO::DeserializeScene(scene, fileNameNoExt);
+			}
+		}
+
+		ImGui::Separator();
+		if (ImGui::MenuItem("Quit")) { /* ... */ }
+
+		ImGui::EndMenu();
+	}
+
+	ImGui::EndMainMenuBar();
+
 	ImGui::Begin("Scene");
+
+	char nameBuffer[256];
+	strcpy_s(nameBuffer, scene.name().c_str());
+	if (ImGui::InputText(" ", nameBuffer, sizeof(nameBuffer)))
+	{
+		//update name if changed
+		scene.name(std::string(nameBuffer));
+	}
+
 	//iterate through scene objects and display them here
 	for (size_t i = 0; i < gameObjectList.size(); i++)
 	{
@@ -116,13 +258,12 @@ void BuildImGUI()
 	//name text box
 	GameObject& selectedObj = *gameObjectList[selected];
 
-	//game object properties
-	char nameBuffer[256];
-	strcpy_s(nameBuffer, selectedObj.name().c_str());
-	if (ImGui::InputText(" ", nameBuffer, sizeof(nameBuffer)))
+	char scnNameBuffer[256];
+	strcpy_s(scnNameBuffer, selectedObj.name().c_str());
+	if (ImGui::InputText(" ", scnNameBuffer, sizeof(scnNameBuffer)))
 	{
 		//update name if changed
-		selectedObj.name(std::string(nameBuffer));
+		selectedObj.name(std::string(scnNameBuffer));
 	}
 
 	const auto& comps = selectedObj.componentMap();
@@ -156,10 +297,10 @@ void BuildImGUI()
 
 	if (ImGui::Button("Add Component"))
 	{
-		ImGui::OpenPopup("bang");
+		ImGui::OpenPopup("AddComponentMenu");
 	}
 
-	if (ImGui::BeginPopup("bang"))
+	if (ImGui::BeginPopup("AddComponentMenu"))
 	{
 		if (ImGui::MenuItem("Transform"))
 		{
@@ -216,20 +357,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
 	InitializeImGUI(m_ImGUIInitialized);
-
-	//testing
-	for (size_t i = 0; i < 10; i++)
-	{
-		std::string name = "GameObject_" + std::to_string(i);
-		gameObjectList.push_back(std::make_unique<GameObject>(name));
-		gameObjectList.back()->AddComponent(
-			Transform(float2((f32)i, (f32)i),
-				float2((f32)i, (f32)i), (f32)i)
-		);
-	}
-
-	Scene test_scn("TEST_SCENE");
-	SceneIO::SerializeScene(test_scn);
 
 	// Game Loop
 	while (gGameRunning)

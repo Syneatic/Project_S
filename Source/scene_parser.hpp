@@ -17,7 +17,7 @@
 namespace SceneIO
 {
 	using namespace Json;
-	static std::string defaultPath = "OUT/";
+	static std::string defaultPath = "Scene/";
 
 	// ===== Helper Functions =====
 	inline Value WriteFloat2(const float2& v)
@@ -69,6 +69,37 @@ namespace SceneIO
         return true;
     }
 
+    inline void DeserializeComponent(GameObject& go, const Value& compObj)
+    {
+        if (!compObj.isObject()) return;
+        if (!compObj.isMember("type") || !compObj["type"].isString()) return;
+
+        const std::string type = compObj["type"].asString();
+
+        if (type == "Transform")
+        {
+            Transform t;
+            if (compObj.isMember("position")) ReadFloat2(compObj["position"], t.position);
+            if (compObj.isMember("scale"))    ReadFloat2(compObj["scale"], t.scale);
+            if (compObj.isMember("rotation") && compObj["rotation"].isNumeric())
+                t.rotation = compObj["rotation"].asFloat();
+            go.AddComponent(t);
+        }
+        else if (type == "CircleCollider")
+        {
+            CircleCollider c;
+            if (compObj.isMember("radius") && compObj["radius"].isNumeric())
+                c.radius = compObj["radius"].asFloat();
+            go.AddComponent(c);
+        }
+        else if (type == "BoxCollider")
+        {
+            BoxCollider b;
+            if (compObj.isMember("size")) ReadFloat2(compObj["size"], b.size);
+            go.AddComponent(b);
+        }
+    }
+
     // ===== GameObject Serialization =====
     inline Value SerializeGameObject(const GameObject& go)
     {
@@ -102,6 +133,34 @@ namespace SceneIO
         return obj;
     }
     
+    inline std::unique_ptr<GameObject> DeserializeGameObject(const Value& obj)
+    {
+        if (!obj.isObject()) return nullptr;
+        if (!obj.isMember("name") || !obj["name"].isString()) return nullptr;
+
+        auto go = std::make_unique<GameObject>(obj["name"].asString());
+
+        if (obj.isMember("active") && obj["active"].isBool())
+            go->active(obj["active"].asBool());
+
+        if (obj.isMember("components") && obj["components"].isArray())
+        {
+            for (const auto& c : obj["components"])
+                DeserializeComponent(*go, c);
+        }
+
+        if (obj.isMember("children") && obj["children"].isArray())
+        {
+            for (const auto& ch : obj["children"])
+            {
+                auto child = DeserializeGameObject(ch);
+                if (child) go->AddChild(std::move(child));
+            }
+        }
+
+        return go;
+    }
+
     // ===== Scene Serialization =====
     inline bool SerializeScene(const Scene& scene)
     {
@@ -134,5 +193,36 @@ namespace SceneIO
         builder["indentation"] = "  ";
         std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
         return (writer->write(root, &out) == 0);
+    }
+
+    inline bool DeserializeScene(Scene& outScene, const std::string& fileNameNoExt)
+    {
+        const std::string path = defaultPath + fileNameNoExt + ".scene";
+        std::ifstream in(path, std::ios::binary);
+        if (!in) return false;
+
+        CharReaderBuilder rbuilder;
+        std::string errs;
+        Value root;
+
+        if (!parseFromStream(rbuilder, in, &root, &errs))
+            return false;
+
+        if (root.isMember("name") && root["name"].isString())
+            outScene.name(root["name"].asString());
+
+        auto& list = outScene.gameObjectList();
+        list.clear();
+
+        if (root.isMember("gameObjects") && root["gameObjects"].isArray())
+        {
+            for (const auto& g : root["gameObjects"])
+            {
+                auto go = DeserializeGameObject(g);
+                if (go) list.emplace_back(std::move(go));
+            }
+        }
+
+        return true;
     }
 }

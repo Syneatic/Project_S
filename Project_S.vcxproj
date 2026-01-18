@@ -49,6 +49,7 @@
     <ClInclude Include="Source\gameobject.hpp" />
     <ClInclude Include="Source\math.hpp" />
     <ClInclude Include="Source\scene.hpp" />
+    <ClInclude Include="Source\scene_editor.hpp" />
     <ClInclude Include="Source\scene_parser.hpp" />
   </ItemGroup>
   <ItemGroup>
