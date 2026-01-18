@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "AEEngine.h"
 #include "gameobject.hpp"
 
 struct Scene
@@ -22,7 +23,8 @@ public:
 
 	virtual void OnUpdate()
 	{
-
+		//test draw
+		AEGfxSetBackgroundColor(1.f,0.f,0.f);
 	}
 
 	virtual void OnExit()
@@ -39,6 +41,7 @@ public:
 
 	Scene() {}
 	Scene(std::string name) { _name = std::move(name); }
+	virtual ~Scene() = default;
 };
 
 //singleton
@@ -74,15 +77,10 @@ public:
 
 	void OnUpdate()
 	{
-		if (!currentScene) return;
+		if (requestSwitch) SwitchScene();
+		if (requestReload) ReloadScene();
 
-		if (requestSwitch)
-			SwitchScene();
-		
-		if (requestReload)
-			ReloadScene();
-
-		currentScene->OnUpdate();
+		if (currentScene) currentScene->OnUpdate();
 	}
 
 private:
