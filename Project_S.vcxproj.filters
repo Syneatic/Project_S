@@ -92,13 +92,13 @@
     <ClInclude Include="Source\scene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="renderer.hpp">
+    <ClInclude Include="Source\renderer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="definition.hpp">
+    <ClInclude Include="Source\definition.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="structs.hpp">
+    <ClInclude Include="Source\structs.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
