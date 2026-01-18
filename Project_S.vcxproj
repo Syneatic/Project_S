@@ -20,8 +20,11 @@
     <ClCompile Include="Source\ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="Source\level_editor.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="definition.hpp" />
+    <ClInclude Include="renderer.hpp" />
     <ClInclude Include="Source\component.hpp" />
     <ClInclude Include="Source\gameobject.hpp" />
     <ClInclude Include="Source\ImGUI\imconfig.h" />
@@ -35,6 +38,7 @@
     <ClInclude Include="Source\ImGUI\imstb_truetype.h" />
     <ClInclude Include="Source\math.hpp" />
     <ClInclude Include="Source\scene.hpp" />
+    <ClInclude Include="structs.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
