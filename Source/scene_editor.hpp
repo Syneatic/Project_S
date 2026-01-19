@@ -122,6 +122,13 @@ private:
 	// ===== GAMEOBJECT =====
 	int selectedGameObjectIndex = -1; // -1 for no selection
 
+	void RefreshRenderers()
+	{
+		auto& rs = RenderSystem::Instance();
+		rs.FlushRenderers();                 // clear list
+		RegisterSceneRenderers(loadedScene); // rebuild from scene data
+	}
+
 	void BuildDockSpace()
 	{
 		ImGuiWindowFlags host_flags =
@@ -167,7 +174,7 @@ private:
 					std::string fileNameNoExt = p.stem().string();
 					SceneIO::DeserializeScene(loadedScene, fileNameNoExt);
 					selectedGameObjectIndex = -1; //reset index selection
-					//LoadScene();
+					RefreshRenderers();
 				}
 			}
 
@@ -220,6 +227,7 @@ private:
 				std::string name = "GameObject_" + std::to_string(index);
 				loadedScene.gameObjectList().push_back(std::make_unique<GameObject>(name));
 				selectedGameObjectIndex = index;
+				RefreshRenderers();
 			}
 
 			if (selectedGameObjectIndex >= 0)
@@ -228,6 +236,7 @@ private:
 				{
 					loadedScene.gameObjectList().erase(loadedScene.gameObjectList().begin() + selectedGameObjectIndex);
 					selectedGameObjectIndex = -1;
+					RefreshRenderers();
 				}
 			}
 			ImGui::EndPopup();
@@ -298,15 +307,34 @@ private:
 				selectedObj.AddComponent<Transform>();
 			}
 
-			if (ImGui::MenuItem("Circle Collider"))
+			if (ImGui::BeginMenu("Collider"))
 			{
+				if (ImGui::MenuItem("Box Collider"))
+				{
+					selectedObj.AddComponent<BoxCollider>();
+				}
 
-				selectedObj.AddComponent<CircleCollider>();
+				if (ImGui::MenuItem("Circle Collider"))
+				{
+
+					selectedObj.AddComponent<CircleCollider>();
+				}
+				ImGui::EndMenu();
 			}
 
-			if (ImGui::MenuItem("Box Collider"))
+			if (ImGui::BeginMenu("Renderer"))
 			{
-				selectedObj.AddComponent<BoxCollider>();
+				if (ImGui::MenuItem("Sprite Renderer"))
+				{
+					selectedObj.AddComponent<SpriteRenderer>();
+				}
+
+				if (ImGui::MenuItem("Mesh Renderer"))
+				{
+					selectedObj.AddComponent<MeshRenderer>();
+				}
+
+				ImGui::EndMenu();
 			}
 
 			ImGui::EndPopup();

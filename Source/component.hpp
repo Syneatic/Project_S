@@ -101,6 +101,18 @@ struct Renderer : Component
     }
 };
 
+struct SpriteRenderer : Renderer
+{
+    const std::string name() const override { return "SpriteRenderer"; }
+
+};
+
+struct MeshRenderer : Renderer
+{
+    const std::string name() const override { return "MeshRenderer"; }
+
+};
+
 //abstract
 struct Collider : Component
 {
