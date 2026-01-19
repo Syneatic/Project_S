@@ -63,9 +63,6 @@
     <ClCompile Include="Extern\ImGUI\imgui_impl_win32.cpp">
       <Filter>Source Files\imgui\backends</Filter>
     </ClCompile>
-    <ClCompile Include="Source\level_editor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -84,12 +81,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\renderer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\definition.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\structs.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\scene_parser.hpp">

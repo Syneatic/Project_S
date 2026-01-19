@@ -1,7 +1,6 @@
 #include <crtdbg.h>
 #include "AEEngine.h"
 #include "math.hpp"
-#include "structs.hpp"
 #include "renderer.hpp"
 #include <iostream>
 

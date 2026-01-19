@@ -1,7 +1,11 @@
 #pragma once
 #include "AETypes.h"
 #include "math.hpp"
-#include "structs.hpp"
+
+typedef enum drawMode {
+	center,
+	lSide
+}drawMode;
 
 namespace renderSys {
 	void rendererInit();
