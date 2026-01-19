@@ -63,12 +63,11 @@ void renderSys::rendererInit() {
 	genSqrMesh();
 	genTriMesh();
 	genCircMesh();
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	std::cout << "\ninit success\n";
 }
 
 void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode alignment) {
-	std::cout << "Start draw" << "\n";
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
 	AEMtx33 scale;
@@ -92,10 +91,11 @@ void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode align
 }
 
 void renderSys::drawTri(float2 pos, float rotAngle, float size) {
-
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 }
 
 void renderSys::drawCirc(float2 pos, float rotAngle, float size) {
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
 	AEMtx33 scale;

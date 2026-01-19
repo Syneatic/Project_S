@@ -190,7 +190,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 		// Your own rendering logic goes here
 		// Set the background to black.
-		AEGfxSetBackgroundColor(1.f, 1.f, 1.f);
+		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 	
 		// ===== IMGUI FRAME =====
 		if (m_ImGUIInitialized)
@@ -206,8 +206,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		}
 	
-		renderSys::drawRect(float2((f32)0, (f32)0), 85, float2((f32)100, (f32)100), lSide);
-		//renderSys::drawRect(float2(0, 250), 85, float2(1000, 100), center);
+			renderSys::drawRect(float2((f32)0, (f32)0), 320, float2((f32)100, (f32)100), lSide);
+			renderSys::drawCirc(float2((f32)200, (f32)200), 0, 500);
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
