@@ -11,6 +11,7 @@
 
 #include "gameobject.hpp"
 #include "component.hpp"
+#include "renderer.hpp"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -164,6 +165,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AESysSetWindowTitle("Project S");
 	AEInputShowCursor(1);
 
+	// Initialize render system
+	renderSys::rendererInit();
+
 
 	InitializeImGUI(m_ImGUIInitialized);
 
@@ -186,7 +190,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 		// Your own rendering logic goes here
 		// Set the background to black.
-		AEGfxSetBackgroundColor(0.f, 0.f,0.f);
+		AEGfxSetBackgroundColor(1.f, 1.f, 1.f);
 	
 		// ===== IMGUI FRAME =====
 		if (m_ImGUIInitialized)
@@ -202,6 +206,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		}
 	
+		renderSys::drawRect(float2((f32)0, (f32)0), 85, float2((f32)100, (f32)100), lSide);
+		//renderSys::drawRect(float2(0, 250), 85, float2(1000, 100), center);
+
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 
@@ -211,6 +218,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	ShutdownImGUI(m_ImGUIInitialized);
+	renderSys::rendererExit();
 	// free the system
 	AESysExit();
 }

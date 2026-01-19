@@ -3,6 +3,7 @@
 #include "math.hpp"
 #include "structs.hpp"
 #include "renderer.hpp"
+#include <iostream>
 
 namespace {
 	AEGfxVertexList* lSideSqr = 0;
@@ -62,9 +63,12 @@ void renderSys::rendererInit() {
 	genSqrMesh();
 	genTriMesh();
 	genCircMesh();
+	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+	std::cout << "\ninit success\n";
 }
 
 void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode alignment) {
+	std::cout << "Start draw" << "\n";
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
 	AEMtx33 scale;
@@ -72,7 +76,7 @@ void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode align
 	AEMtx33 rotate;
 	AEMtx33RotDeg(&rotate, rotAngle);
 	AEMtx33 translate;
-	AEMtx33Trans(&translate, pos.x, pos.x);
+	AEMtx33Trans(&translate, pos.x, pos.y);
 
 	AEMtx33Concat(&transform, &rotate, &scale);
 	AEMtx33Concat(&transform, &translate, &transform);
@@ -84,6 +88,7 @@ void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode align
 	else {
 		AEGfxMeshDraw(centerSqr, AE_GFX_MDM_TRIANGLES);
 	}
+	std::cout << "Draw ok" << "\n";
 }
 
 void renderSys::drawTri(float2 pos, float rotAngle, float size) {
@@ -98,7 +103,7 @@ void renderSys::drawCirc(float2 pos, float rotAngle, float size) {
 	AEMtx33 rotate;
 	AEMtx33RotDeg(&rotate, rotAngle);
 	AEMtx33 translate;
-	AEMtx33Trans(&translate, pos.x, pos.x);
+	AEMtx33Trans(&translate, pos.x, pos.y);
 
 	AEMtx33Concat(&transform, &rotate, &scale);
 	AEMtx33Concat(&transform, &translate, &transform);
