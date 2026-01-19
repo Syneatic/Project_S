@@ -1,63 +1,61 @@
 #pragma once
 #include <string>
+
 #include "component.hpp"
 #include "math.hpp"
 #include "AEEngine.h"
 
 typedef void (*CallbackF)(void);
 
-struct UI : Behaviour
-{
-	void DrawInInspector() override
-	{
-
-	}
-};
-
-struct Display : UI
+// Display component to attach image or custom texture.
+struct Display : Behaviour
 {
 	AEGfxTexture* texture{ nullptr };
 
 	void DrawInInspector() override
 	{
-
+		ImGui::TextUnformatted("Texture");
 	}
+
+	void OnStart() override {}
+	void OnUpdate() override {}
+	void OnDestroy() override {}
+
+	const std::string name() const override { return "Display"; }
 };
 
-struct Text : UI
+// Text component to assign text on screen.
+struct Text : Behaviour
 {
-	std::string str{};
+	char textBuffer[128];
 
 	void DrawInInspector() override
 	{
-
+		ImGui::InputText("Text", textBuffer, IM_ARRAYSIZE(textBuffer));
 	}
+
+	void OnStart() override {}
+	void OnUpdate() override {}
+	void OnDestroy() override {}
+
+	const std::string name() const override { return "Text##Text"; }
 };
 
-struct Button : UI, Display
+// Button Component to assign function callback.
+struct Button : Behaviour
 {
 	CallbackF callFunc{ nullptr };
 
 	void DrawInInspector() override
 	{
-
+		ImGui::TextUnformatted("CallFunction");
 	}
-};
 
-struct DisplayText : Display, Text
-{
-	void DrawInInspector() override
-	{
+	void OnStart() override {}
+	void OnUpdate() override {}
+	void OnDestroy() override {}
 
-	}
-};
-
-struct ButtonText : Button, Text
-{
-	void DrawInInspector() override
-	{
-
-	}
+	const std::string name() const override { return "Button"; }
 };
 
 constexpr f32 defaultButtonHeight{ 100.f }, defaultButtonWidth{ 400.f }, defaultTextSize{ 40.f }, defaultStrokeWeight{ 2.f }, zeroVal{};
