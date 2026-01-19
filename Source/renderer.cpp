@@ -24,18 +24,28 @@ namespace {
 
 		AEGfxMeshStart();
 		AEGfxTriAdd(
-			-1.f, -1.f, 0xFFFFFFFF, 0.0f, 1.0f,
-			1.f, 0.f, 0xFFFFFFFF, 1.0f, 1.0f,
-			0.f, 1.f, 0xFFFFFFFF, 0.0f, 0.0f);
+			-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,
+			0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
 		AEGfxTriAdd(
-			1.f, 1.f, 0xFFFFFFFF, 1.0f, 1.0f,
-			0.f, 1.f, 0xFFFFFFFF, 1.0f, 0.0f,
-			1.f, 0.f, 0xFFFFFFFF, 0.0f, 0.0f);
+			0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
+			0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
 		centerSqr = AEGfxMeshEnd();
 	}
-	void genTriMesh() {
 
+	void genTriMesh() {
+		AEGfxMeshStart();
+
+
+		AEGfxTriAdd(
+			 0.f  , 0.86603f, 0xFFFFFFFF, 1.0f, 1.0f,
+			-0.5f , 0		, 0xFFFFFFFF, 1.0f, 1.0f,
+			 0.5f ,	0		, 0xFFFFFFFF, 1.0f, 1.0f);
+
+		triangle = AEGfxMeshEnd();
 	}
+
 	void genCircMesh() {
 		AEGfxMeshStart();
 
@@ -86,11 +96,24 @@ void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode align
 	else {
 		AEGfxMeshDraw(centerSqr, AE_GFX_MDM_TRIANGLES);
 	}
-	std::cout << "Draw ok" << "\n";
 }
 
 void renderSys::drawTri(float2 pos, float rotAngle, float size) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+	AEMtx33 transform;
+	AEMtx33Identity(&transform);
+	AEMtx33 scale;
+	AEMtx33Scale(&scale, size, size);
+	AEMtx33 rotate;
+	AEMtx33RotDeg(&rotate, rotAngle);
+	AEMtx33 translate;
+	AEMtx33Trans(&translate, pos.x, pos.y);
+
+	AEMtx33Concat(&transform, &rotate, &scale);
+	AEMtx33Concat(&transform, &translate, &transform);
+	AEGfxSetTransform(transform.m);
+
+	AEGfxMeshDraw(triangle, AE_GFX_MDM_TRIANGLES);
 }
 
 void renderSys::drawCirc(float2 pos, float rotAngle, float size) {
@@ -111,9 +134,23 @@ void renderSys::drawCirc(float2 pos, float rotAngle, float size) {
 	AEGfxMeshDraw(circle, AE_GFX_MDM_TRIANGLES);
 }
 
+
+
 void renderSys::rendererExit() {
 	AEGfxMeshFree(lSideSqr);
 	AEGfxMeshFree(centerSqr);
 	AEGfxMeshFree(triangle);
 	AEGfxMeshFree(circle);
+}
+
+namespace renderSys
+{
+	void DrawArrow(float2 pos)
+	{
+		//draw rect
+		drawRect(pos - float2(1,1),0,float2(50,100),center);
+		//draw arrow
+		//drawTri()
+
+	}
 }

@@ -107,9 +107,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		if (AEInputCheckTriggered(AEVK_1)) sceneManager.RequestSceneSwitch(&editorScene);
 		if (AEInputCheckTriggered(AEVK_2)) sceneManager.RequestSceneSwitch(&blankScene);
 
-		renderSys::drawRect(float2((f32)0, (f32)0), 320, float2((f32)100, (f32)100), lSide);
-		renderSys::drawCirc(float2((f32)200, (f32)200), 0, 500);
-
+		//renderSys::drawRect(float2((f32)0, (f32)0), 320, float2((f32)100, (f32)100), lSide);
+		//renderSys::drawCirc(float2((f32)200, (f32)200), 0, 500);
+		//renderSys::drawTri(float2(-200.f,200.f),0,100.f);
+		renderSys::DrawArrow(float2(0,0));
 		sceneManager.OnUpdate();
 
 		// Informing the system about the loop's end

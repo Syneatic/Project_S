@@ -1,9 +1,26 @@
 #pragma once
+#include <string>
+
 #include "math.hpp"
 #include "ImGUI/imgui.h"
 
+struct GameObject;
+
 struct Component
 {
+private:
+    GameObject* _owner = nullptr;
+
+protected:
+    Component() = default;
+    explicit Component(GameObject* owner) : _owner(owner) {};
+
+public:
+    void SetOwner(GameObject* owner) { _owner = owner; }
+    GameObject& gameObject() { return *_owner; }
+    const GameObject& gameObject() const { return *_owner; }
+    friend class GameObject; //allow GameObject class to access private and protected
+
 	virtual void DrawInInspector() {};
 
 	virtual const std::string name() const = 0;
@@ -78,6 +95,10 @@ struct Renderer : Component
     //color multiply
     //render method
     //render layer
+    void Draw()
+    {
+
+    }
 };
 
 //abstract

@@ -88,6 +88,32 @@ static std::wstring OpenFile()
 	return out;
 }
 
+static void RegisterSceneRenderers(const Scene& scene)
+{
+	auto& rs = RenderSystem::Instance();
+
+	for (auto& pgo : scene.gameObjectList())
+	{
+		auto* go = pgo.get();
+		for (auto& [type, comp] : go->componentMap())
+			if (auto* r = dynamic_cast<Renderer*>(comp.get()))
+				rs.RegisterRenderer(r);
+	}
+}
+
+static void UnregisterSceneRenderers(const Scene& scene)
+{
+	auto& rs = RenderSystem::Instance();
+
+	for (auto& pgo : scene.gameObjectList())
+	{
+		auto* go = pgo.get();
+		for (auto& [type, comp] : go->componentMap())
+			if (auto* r = dynamic_cast<Renderer*>(comp.get()))
+				rs.UnregisterRenderer(r);
+	}
+}
+
 struct EditorScene : Scene
 {
 private:
@@ -141,6 +167,7 @@ private:
 					std::string fileNameNoExt = p.stem().string();
 					SceneIO::DeserializeScene(loadedScene, fileNameNoExt);
 					selectedGameObjectIndex = -1; //reset index selection
+					//LoadScene();
 				}
 			}
 
@@ -268,27 +295,18 @@ private:
 		{
 			if (ImGui::MenuItem("Transform"))
 			{
-				std::cout << "Transform" << std::endl;
-				selectedObj.AddComponent(
-					Transform()
-				);
+				selectedObj.AddComponent<Transform>();
 			}
 
 			if (ImGui::MenuItem("Circle Collider"))
 			{
-				std::cout << "Collider" << std::endl;
-				std::cout << "Circle Collider" << std::endl;
-				selectedObj.AddComponent(
-					CircleCollider()
-				);
+
+				selectedObj.AddComponent<CircleCollider>();
 			}
 
 			if (ImGui::MenuItem("Box Collider"))
 			{
-				std::cout << "Circle Collider" << std::endl;
-				selectedObj.AddComponent(
-					BoxCollider()
-				);
+				selectedObj.AddComponent<BoxCollider>();
 			}
 
 			ImGui::EndPopup();
@@ -311,15 +329,19 @@ public:
 
 	void OnEnter() override
 	{
-		//load the scene
-		auto& gameObjectList = loadedScene.gameObjectList();
+
 	}
 
 	void OnUpdate() override
 	{
 		//check input here?
 
-		//draw
+
+		//draw world
+		
+		//draw gizmos
+
+		//draw imgui after game render
 		if (imguiInitialized)
 		{
 			ImGui_ImplOpenGL3_NewFrame();
