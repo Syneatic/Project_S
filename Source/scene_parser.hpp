@@ -65,6 +65,15 @@ namespace SceneIO
             auto const& bc = static_cast<BoxCollider const&>(c);
             outComp["size"] = WriteFloat2(bc.size);
         }
+        else if (type == "PlayerController")
+        {
+            auto const& pc = static_cast<PlayerController const&>(c);
+            outComp["maxSpeed"] = pc.maxspeed;
+            outComp["velocity"] = WriteFloat2(pc.velocity);
+            outComp["gravity"] = pc.gravity;
+            outComp["jumpHeight"] = pc.jumpHeight;
+            outComp["drag"] = pc.drag;
+        }
 
         return true;
     }
@@ -97,6 +106,26 @@ namespace SceneIO
             BoxCollider b;
             if (compObj.isMember("size")) ReadFloat2(compObj["size"], b.size);
             go.AddComponent(b);
+        }
+        else if (type == "PlayerController")
+        {
+            PlayerController pc;
+            if (compObj.isMember("maxSpeed") && compObj["maxSpeed"].isNumeric())
+                pc.maxspeed = compObj["maxSpeed"].asFloat();
+
+            if (compObj.isMember("velocity"))  
+                ReadFloat2(compObj["velocity"], pc.velocity);
+
+            if (compObj.isMember("gravity") && compObj["gravity"].isNumeric())
+                pc.gravity = compObj["gravity"].asFloat();
+
+            if (compObj.isMember("jumpHeight") && compObj["jumpHeight"].isNumeric())
+                pc.jumpHeight = compObj["jumpHeight"].asFloat();
+
+            if (compObj.isMember("drag") && compObj["drag"].isNumeric())
+                pc.drag = compObj["drag"].asFloat();
+
+            go.AddComponent(pc);
         }
     }
 
