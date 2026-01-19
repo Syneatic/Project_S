@@ -7,11 +7,14 @@
 #include <string>
 #include <iostream>
 #include <typeindex>
+
 #include "AEEngine.h"
 
 #include "gameobject.hpp"
 #include "component.hpp"
 #include "renderer.hpp"
+#include "scene.hpp"
+#include "scene_editor.hpp"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -24,9 +27,6 @@ LRESULT ImGuiWNDCallBack(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 	return DefWindowProc(hWnd, msg, wp, lp);
 }
-
-//dummy gameobject list
-std::vector<std::unique_ptr<GameObject>> gameObjectList{};
 
 void InitializeImGUI(bool& initStatus)
 {
@@ -60,89 +60,6 @@ void ShutdownImGUI(bool& initStatus)
 	initStatus = false;
 }
 
-void BuildImGUI()
-{
-	static int selected = -1;
-	//build scene window
-	ImGui::SetNextWindowSizeConstraints(ImVec2(320.f,100.f),ImVec2(FLT_MAX,FLT_MAX));
-	ImGui::Begin("Scene");
-	//iterate through scene objects and display them here
-	for (size_t i = 0; i < gameObjectList.size(); i++)
-	{
-		GameObject& gobj = *gameObjectList[i];
-		bool isSelected = (selected == i);
-
-
-		if (ImGui::Selectable(gobj.name().c_str(),isSelected))
-		{
-			//set selected object index
-			selected = (int)i;
-		}
-
-		if (ImGui::BeginPopupContextItem())
-		{
-			selected = (int)i;
-			if (ImGui::MenuItem("Add Component"))
-			{
-
-			}
-			ImGui::EndPopup();
-		}
-	}
-
-	ImGui::End();
-
-	//build the inspector window
-	ImGui::SetNextWindowSizeConstraints(ImVec2(320.f, 100.f), ImVec2(FLT_MAX, FLT_MAX));
-	ImGui::Begin("Inspector");
-
-	//check if an object is selected
-	if (selected < 0) { ImGui::End(); return; }
-	
-	//display selected object's properties
-	//iterate through each component and display its properties here
-	//name text box
-	GameObject& selectedObj = *gameObjectList[selected];
-
-	//game object properties
-	char nameBuffer[256];
-	strcpy_s(nameBuffer, selectedObj.name().c_str());
-	if (ImGui::InputText(" ", nameBuffer, sizeof(nameBuffer)))
-	{
-		//update name if changed
-		selectedObj.name(std::string(nameBuffer));
-	}
-
-	const auto& comps = selectedObj.componentMap();
-
-	for (auto it = comps.begin(); it != comps.end(); ++it)
-	{
-		const std::type_index& type = it->first;
-		const std::unique_ptr<Component>& compPtr = it->second;
-
-		if (!compPtr) continue;
-
-		if (ImGui::CollapsingHeader(compPtr.get()->name().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			if (ImGui::BeginPopupContextItem())
-			{
-				if (ImGui::MenuItem("Remove Component"))
-				{
-					//remove component from game object
-					selectedObj.componentMap().erase(type);
-					ImGui::EndPopup();
-					break; //exit loop to avoid invalid iterator
-				}
-				ImGui::EndPopup();
-			}
-			compPtr.get()->DrawInInspector();
-			ImGui::Separator();
-		}
-	}
-
-	ImGui::End();
-}
-
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -157,6 +74,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// Initialization of your own variables go here
 	bool m_ImGUIInitialized = false;
+	SceneManager& sceneManager = SceneManager::Instance();
+	EditorScene editorScene{};
+	Scene blankScene{};
+	sceneManager.RequestSceneSwitch(&editorScene);
 
 	// Using custom window procedure
 	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, true, ImGuiWNDCallBack);
@@ -170,17 +91,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
 	InitializeImGUI(m_ImGUIInitialized);
-
-	//testing
-	for (size_t i = 0; i < 10; i++)
-	{
-		std::string name = "GameObject_" + std::to_string(i);
-		gameObjectList.push_back(std::make_unique<GameObject>(name));
-		gameObjectList.back()->AddComponent(
-			Transform(float2((f32)i, (f32)i),
-				float2((f32)i, (f32)i), (f32)i)
-		);
-	}
+	editorScene.imguiInitialized = true;
 
 	// Game Loop
 	while (gGameRunning)
@@ -198,13 +109,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
+		AEGfxSetBackgroundColor(0.f, 0.f,0.f);
+		
+		if (AEInputCheckTriggered(AEVK_1)) sceneManager.RequestSceneSwitch(&editorScene);
+		if (AEInputCheckTriggered(AEVK_2)) sceneManager.RequestSceneSwitch(&blankScene);
 
-			BuildImGUI();
-			//ImGui::ShowDemoWindow();
-
-			ImGui::Render();
-			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		}
+		sceneManager.OnUpdate();
 	
 			renderSys::drawRect(float2((f32)0, (f32)0), 320, float2((f32)100, (f32)100), lSide);
 			renderSys::drawCirc(float2((f32)200, (f32)200), 0, 500);

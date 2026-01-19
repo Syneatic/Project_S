@@ -3,15 +3,17 @@
 #include <unordered_map>
 #include <typeindex>
 #include <string>
-#include <memory>
-#include <iostream>
+
 #include "component.hpp"
 
 struct GameObject
 {
+	using ComponentMap = std::unordered_map<std::type_index, std::unique_ptr<Component>>;
+
 private:
+	bool _active{ true };
 	std::string _name{};
-	std::unordered_map<std::type_index, std::unique_ptr<Component>> _componentMap{}; //only 1 of each type of component can be attached
+	ComponentMap _componentMap{}; //only 1 of each type of component can be attached
 	std::vector<std::unique_ptr<GameObject>> _children{};
 
 public:
@@ -40,15 +42,33 @@ public:
 		_componentMap.emplace(type,std::move(ptr));
 	}
 
+	void RemoveComponent(std::type_index type)
+	{
+		_componentMap.erase(type);
+	}
+
+	void AddChild(std::unique_ptr<GameObject> child)
+	{
+		_children.emplace_back(std::move(child));
+	}
+
 	//getters / setters
-	std::unordered_map<std::type_index, std::unique_ptr<Component>>& componentMap() { return _componentMap; }
-	std::string name() { return _name.empty() ? " " : _name; }
-	std::string name(std::string name) { return _name = name; }
+	ComponentMap& componentMap() { return _componentMap; }
+	const ComponentMap& componentMap() const { return _componentMap; }
+
+	std::vector<std::unique_ptr<GameObject>>& children() { return _children; }
+	const std::vector<std::unique_ptr<GameObject>>& children() const { return _children; }
+
+	const std::string name() const { return _name.empty() ? " " : _name; }
+	std::string name(std::string name) { return _name = std::move(name); }
+
+	const bool active() const { return _active; }
+	bool active(bool state) { return _active = state; }
 
 	//constructor
-	GameObject(char* name)
+	GameObject(const char* name)
 	{
-		_name = name;
+		_name = name ? name : "";
 	}
 
 	GameObject(std::string name)
