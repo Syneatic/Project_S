@@ -52,6 +52,7 @@
     <ClInclude Include="Source\scene.hpp" />
     <ClInclude Include="Source\scene_editor.hpp" />
     <ClInclude Include="Source\scene_parser.hpp" />
+    <ClInclude Include="Source\ui_types.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Extern\jsoncpp\src\json_valueiterator.inl" />
