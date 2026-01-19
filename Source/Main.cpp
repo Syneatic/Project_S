@@ -102,29 +102,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// Your own rendering logic goes here
 		// Set the background to black.
 		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
-	
-		// ===== IMGUI FRAME =====
-		if (m_ImGUIInitialized)
-		{
-			ImGui_ImplOpenGL3_NewFrame();
-			ImGui_ImplWin32_NewFrame();
-			ImGui::NewFrame();
-		AEGfxSetBackgroundColor(0.f, 0.f,0.f);
-		
+
+
 		if (AEInputCheckTriggered(AEVK_1)) sceneManager.RequestSceneSwitch(&editorScene);
 		if (AEInputCheckTriggered(AEVK_2)) sceneManager.RequestSceneSwitch(&blankScene);
 
+		renderSys::drawRect(float2((f32)0, (f32)0), 320, float2((f32)100, (f32)100), lSide);
+		renderSys::drawCirc(float2((f32)200, (f32)200), 0, 500);
+
 		sceneManager.OnUpdate();
-	
-			renderSys::drawRect(float2((f32)0, (f32)0), 320, float2((f32)100, (f32)100), lSide);
-			renderSys::drawCirc(float2((f32)200, (f32)200), 0, 500);
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-			gGameRunning = 0;
+		gGameRunning = 0;
 	}
 
 	ShutdownImGUI(m_ImGUIInitialized);
@@ -132,5 +125,3 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// free the system
 	AESysExit();
 }
-
-
