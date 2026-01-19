@@ -33,9 +33,6 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\level_editor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
