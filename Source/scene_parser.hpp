@@ -9,6 +9,8 @@
 #include "scene.hpp"
 #include "gameobject.hpp"
 #include "component.hpp"
+#include "render_components.hpp"
+#include "collider_components.hpp"
 #include "math.hpp"
 
 // parse a scene object into a scene file

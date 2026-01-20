@@ -5,6 +5,8 @@
 #include "math.hpp"
 
 struct GameObject;
+struct Collider;
+struct Renderer;
 
 struct Component
 {
@@ -86,69 +88,4 @@ struct Transform : Component
 	Transform(float2 pos,float2 scl,f32 rot) : position(pos), scale(scl), rotation(rot)
 	{
 	}
-};
-
-//abstract
-struct Renderer : Component
-{
-    //texture
-    //color multiply
-    //render method
-    //render layer
-    virtual void Draw()
-    {
-
-    }
-};
-
-struct SpriteRenderer : Renderer
-{
-    void Draw() override
-    {
-        //draw quad
-        //renderSys::drawRect(float2);
-        //put texture on
-    }
-    const std::string name() const override { return "SpriteRenderer"; }
-};
-
-struct MeshRenderer : Renderer
-{
-    const std::string name() const override { return "MeshRenderer"; }
-};
-
-//abstract
-struct Collider : Component
-{
-    //tag
-    //isTrigger
-};
-
-struct CircleCollider : Collider
-{
-    f32 radius{ 1.f };
-
-    void DrawInInspector() override
-    {
-        ImGui::TextUnformatted("Size");
-        ImGui::DragFloat("##circlecollider_radius", &radius, 0.1f);
-
-    }
-
-    const std::string name() const override { return "CircleCollider"; }
-
-    CircleCollider() {};
-};
-
-struct BoxCollider : Collider
-{
-    float2 size{ 1.f,1.f };
-
-    void DrawInInspector() override
-    {
-        ImGui::TextUnformatted("Size");
-        ImGui::DragFloat2("##boxcollider_size", &size.x, 0.1f);
-    }
-
-    const std::string name() const override { return "BoxCollider"; }
 };

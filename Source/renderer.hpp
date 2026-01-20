@@ -2,7 +2,7 @@
 #include <vector>
 #include <unordered_set>
 
-#include "component.hpp"
+#include "render_components.hpp"
 
 typedef enum drawMode {
 	center,
