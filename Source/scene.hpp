@@ -19,11 +19,11 @@ protected:
 			auto go = pgo.get();
 			for (auto& [type, comp] : go->componentMap())
 			{
-				/*if (auto* r = dynamic_cast<Renderer*>(comp.get()))
+				if (auto* r = dynamic_cast<Renderer*>(comp.get()))
 					RenderSystem::Instance().RegisterRenderer(r);
 
 				if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
-					b->OnStart();*/
+					b->OnStart();
 			}
 		}
 	}
@@ -35,6 +35,7 @@ public:
 
 		//initialize all gameobjects
 		if (_gameObjectList.empty()) return;
+
 		InitializeGameObjects();
 	}
 
@@ -42,11 +43,22 @@ public:
 	{
 		//test draw
 		AEGfxSetBackgroundColor(1.f,0.f,0.f);
+
+		for (auto& pgo : _gameObjectList)
+		{
+			auto go = pgo.get();
+			for (auto& [type, comp] : go->componentMap())
+			{
+				if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
+					b->OnUpdate();
+			}
+		}
 	}
 
 	virtual void OnExit()
 	{
 		//delete
+		RenderSystem::Instance().FlushRenderers();
 	}
 
 	//===== SERIALIZATION =====
