@@ -42,7 +42,7 @@ namespace SceneIO
         const std::string type = c.name();
 
         //skip unknown components
-        if (type != "Transform" && type != "CircleCollider" && type != "BoxCollider")
+        if (type != "Transform" && type != "CircleCollider" && type != "BoxCollider" && type != "PlayerController")
             return false;
 
         outComp = Value(objectValue);
