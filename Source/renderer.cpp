@@ -2,6 +2,7 @@
 #include "AEEngine.h"
 #include "math.hpp"
 #include "renderer.hpp"
+#include "component.hpp"
 #include <iostream>
 
 namespace {
@@ -65,16 +66,16 @@ void renderSys::rendererInit() {
 	std::cout << "\ninit success\n";
 }
 
-void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode alignment) {
+void renderSys::drawRect(Transform objInfo, MeshRenderer renderInfo, drawMode alignment) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
 	AEMtx33 scale;
-	AEMtx33Scale(&scale, size.x, size.y);
+	AEMtx33Scale(&scale, objInfo.scale.x, objInfo.scale.y);
 	AEMtx33 rotate;
-	AEMtx33RotDeg(&rotate, rotAngle);
+	AEMtx33RotDeg(&rotate, objInfo.rotation);
 	AEMtx33 translate;
-	AEMtx33Trans(&translate, pos.x, pos.y);
+	AEMtx33Trans(&translate, objInfo.position.x, objInfo.position.y);
 
 	AEMtx33Concat(&transform, &rotate, &scale);
 	AEMtx33Concat(&transform, &translate, &transform);
@@ -89,20 +90,20 @@ void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode align
 	std::cout << "Draw ok" << "\n";
 }
 
-void renderSys::drawTri(float2 pos, float rotAngle, float size) {
+void renderSys::drawTri(Transform objInfo, MeshRenderer renderInfo) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 }
 
-void renderSys::drawCirc(float2 pos, float rotAngle, float size) {
+void renderSys::drawCirc(Transform objInfo, MeshRenderer renderInfo) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
 	AEMtx33 scale;
-	AEMtx33Scale(&scale, size, size);
+	AEMtx33Scale(&scale, objInfo.scale.x, objInfo.scale.y);
 	AEMtx33 rotate;
-	AEMtx33RotDeg(&rotate, rotAngle);
+	AEMtx33RotDeg(&rotate, objInfo.rotation);
 	AEMtx33 translate;
-	AEMtx33Trans(&translate, pos.x, pos.y);
+	AEMtx33Trans(&translate, objInfo.position.x, objInfo.position.y);
 
 	AEMtx33Concat(&transform, &rotate, &scale);
 	AEMtx33Concat(&transform, &translate, &transform);
