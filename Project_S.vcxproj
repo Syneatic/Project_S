@@ -22,6 +22,7 @@
     <ClCompile Include="Extern\jsoncpp\src\json_value.cpp" />
     <ClCompile Include="Extern\jsoncpp\src\json_writer.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\playercontroller.cpp" />
     <ClCompile Include="Source\renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +49,7 @@
     <ClInclude Include="Source\component.hpp" />
     <ClInclude Include="Source\gameobject.hpp" />
     <ClInclude Include="Source\math.hpp" />
+    <ClInclude Include="Source\playercontroller.hpp" />
     <ClInclude Include="Source\renderer.hpp" />
     <ClInclude Include="Source\scene.hpp" />
     <ClInclude Include="Source\scene_editor.hpp" />
