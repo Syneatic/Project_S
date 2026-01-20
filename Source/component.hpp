@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
+#include "ImGUI/imgui.h"
 
 #include "math.hpp"
-#include "ImGUI/imgui.h"
 
 struct GameObject;
 
@@ -95,7 +95,7 @@ struct Renderer : Component
     //color multiply
     //render method
     //render layer
-    void Draw()
+    virtual void Draw()
     {
 
     }
@@ -103,14 +103,18 @@ struct Renderer : Component
 
 struct SpriteRenderer : Renderer
 {
+    void Draw() override
+    {
+        //draw quad
+        //renderSys::drawRect(float2);
+        //put texture on
+    }
     const std::string name() const override { return "SpriteRenderer"; }
-
 };
 
 struct MeshRenderer : Renderer
 {
     const std::string name() const override { return "MeshRenderer"; }
-
 };
 
 //abstract

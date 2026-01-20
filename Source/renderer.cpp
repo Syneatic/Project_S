@@ -148,9 +148,8 @@ namespace renderSys
 	void DrawArrow(float2 pos)
 	{
 		//draw rect
-		drawRect(pos - float2(1,1),0,float2(50,100),center);
+		drawRect(pos - float2(0,0),0,float2(5,50),center);
 		//draw arrow
-		//drawTri()
-
+		drawTri(pos + float2(0,25), 0, 25);
 	}
 }

@@ -15,6 +15,8 @@ struct float2
 	{
 	}
 
+	static float2 zero() { return float2{ 0.f,0.f }; }
+
 
 	//operator overload
 	float2 operator+ (const float2 rhs) const

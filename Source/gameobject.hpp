@@ -3,6 +3,9 @@
 #include <unordered_map>
 #include <typeindex>
 #include <string>
+#include <memory>
+#include <type_traits>
+#include <stdexcept>
 
 #include "component.hpp"
 
@@ -25,35 +28,6 @@ public:
 	void Start()
 	{
 		
-	}
-
-	template<class T, class... Args>
-	T& AddComponent(Args&&... args)
-	{
-		//tells the compiler to check if T derives from Component
-		static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
-
-		std::type_index type{ typeid(T) };
-		//check if alrdy exists
-		if (_componentMap.find(type) != _componentMap.end())
-			throw std::runtime_error("Component already exists");
-
-		auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
-		ptr->SetOwner(this);
-
-		T& ref = *ptr;
-		_componentMap.emplace(type, std::move(ptr));
-		return ref;
-	}
-
-	void RemoveComponent(std::type_index type)
-	{
-		_componentMap.erase(type);
-	}
-
-	void AddChild(std::unique_ptr<GameObject> child)
-	{
-		_children.emplace_back(std::move(child));
 	}
 
 	template<typename T>
@@ -79,6 +53,58 @@ public:
 
 		return static_cast<const T*>(it->second.get());
 	}
+
+	template<class T, class... Args>
+	T& AddComponent(Args&&... args)
+	{
+		//tells the compiler to check if T derives from Component
+		static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
+
+		//certain components require dependencies
+		if constexpr (std::is_base_of<Renderer, T>::value)
+		{
+			GetOrAddComponent<Transform>();
+		}
+
+		if (std::is_base_of<Collider, T>::value) 
+		{ 
+			GetOrAddComponent<Transform>(); 
+		}
+
+		std::type_index type{ typeid(T) };
+		//check if alrdy exists
+		if (_componentMap.find(type) != _componentMap.end())
+			throw std::runtime_error("Component already exists");
+
+		auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
+		ptr->SetOwner(this);
+
+		T& ref = *ptr;
+		_componentMap.emplace(type, std::move(ptr));
+		return ref;
+	}
+
+	template<class T, class... Args>
+	T& GetOrAddComponent(Args&&... args)
+	{
+		static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
+
+		if (auto* existing = GetComponent<T>())
+			return *existing;
+
+		return AddComponent<T>(std::forward<Args>(args)...);
+	}
+
+	void RemoveComponent(std::type_index type)
+	{
+		_componentMap.erase(type);
+	}
+
+	void AddChild(std::unique_ptr<GameObject> child)
+	{
+		_children.emplace_back(std::move(child));
+	}
+
 
 	template <typename T>
 	bool HasComponent() const

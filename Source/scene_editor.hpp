@@ -366,7 +366,7 @@ public:
 
 
 		//draw world
-		
+		RenderSystem::Instance().Draw();
 		//draw gizmos
 
 		//draw imgui after game render
@@ -387,6 +387,7 @@ public:
 	void OnExit() override
 	{
 		//unload everything
+		RenderSystem::Instance().FlushRenderers();
 	}
 
 	EditorScene() { _name = "Editor"; }
