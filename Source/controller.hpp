@@ -4,10 +4,11 @@
 #include <string>
 
 #include "component.hpp"
+#include "gameobject.hpp"
 #include "math.hpp"
 
 //abstract
-struct Controller : Component
+struct Controller : Behaviour
 {
     //max speed
     //velocity
@@ -54,6 +55,25 @@ struct PlayerController : Controller
 
         ImGui::TextUnformatted("Drag");
         ImGui::DragFloat("##drag", &drag, 0.1f, 0.f);
+    }
+    void OnStart() override
+    {
+    } 
+
+    void OnUpdate() override
+    {
+        GameObject& owner = *_owner;
+        Transform& trans = *owner.GetComponent<Transform>();
+
+        if (AEInputCheckTriggered(AEVK_A))
+        {
+            trans.position.x -= 2.0f;
+        }
+    }
+
+    void OnDestroy() override
+    {
+
     }
 
     const std::string name() const override { return "PlayerController"; }

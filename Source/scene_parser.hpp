@@ -11,6 +11,7 @@
 #include "component.hpp"
 #include "render_components.hpp"
 #include "collider_components.hpp"
+#include "controller.hpp"
 #include "math.hpp"
 
 // parse a scene object into a scene file
@@ -67,6 +68,15 @@ namespace SceneIO
             auto const& bc = static_cast<BoxCollider const&>(c);
             outComp["size"] = WriteFloat2(bc.size);
         }
+        else if (type == "PlayerController")
+        {
+            auto const& pc = static_cast<PlayerController const&>(c);
+            outComp["maxSpeed"] = pc.maxspeed;
+            outComp["velocty"] = WriteFloat2(pc.velocity);
+            outComp["gravity"] = pc.gravity;
+            outComp["jumpHeight"] = pc.jumpHeight;
+            outComp["drag"] = pc.drag;
+        }
 
         return true;
     }
@@ -104,6 +114,21 @@ namespace SceneIO
         {
             SpriteRenderer r{};
             go.AddComponent<SpriteRenderer>(r);
+        }
+        else if (type == "PlayerController")
+        {
+            PlayerController pc{};
+            if (compObj.isMember("maxSpeed") && compObj["maxSpeed"].isNumeric())
+                pc.maxspeed = compObj["maxSpeed"].asFloat();
+            if (compObj.isMember("velocity"))
+                ReadFloat2(compObj["velocity"], pc.velocity);
+            if (compObj.isMember("gravity") && compObj["gravity"].isNumeric())
+                pc.gravity = compObj["gravity"].asFloat();
+            if (compObj.isMember("jumpHeight") && compObj["jumpheight"].isNumeric())
+                pc.jumpHeight = compObj["jumpHeight"].asFloat();
+            if (compObj.isMember("drag") && compObj["drag"].isNumeric())
+                pc.drag = compObj["drag"].asFloat();
+            go.AddComponent<PlayerController>(pc);
         }
     }
 

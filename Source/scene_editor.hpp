@@ -339,12 +339,14 @@ private:
 				ImGui::EndMenu();
 			}
 
-			if (ImGui::MenuItem("Player Controller"))
+			if (ImGui::BeginMenu("Controller"))
 			{
-				std::cout << "Player Controller" << std::endl;
-				selectedObj.AddComponent(
-					PlayerController()
-				);
+				if (ImGui::MenuItem("PlayerController"))
+				{
+					selectedObj.AddComponent<PlayerController>();
+				}
+
+				ImGui::EndMenu();
 			}
 
 			ImGui::EndPopup();
