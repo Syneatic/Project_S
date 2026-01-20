@@ -1,9 +1,26 @@
 #pragma once
-#include "math.hpp"
+#include <string>
 #include "ImGUI/imgui.h"
+
+#include "math.hpp"
+
+struct GameObject;
+struct Collider;
+struct Renderer;
 
 struct Component
 {
+protected:
+    GameObject* _owner = nullptr;
+    Component() = default;
+    explicit Component(GameObject* owner) : _owner(owner) {};
+
+public:
+    void SetOwner(GameObject* owner) { _owner = owner; }
+    GameObject& gameObject() { return *_owner; }
+    const GameObject& gameObject() const { return *_owner; }
+    friend class GameObject; //allow GameObject class to access private and protected
+
 	virtual void DrawInInspector() {};
 
 	virtual const std::string name() const = 0;
@@ -69,59 +86,4 @@ struct Transform : Component
 	Transform(float2 pos,float2 scl,f32 rot) : position(pos), scale(scl), rotation(rot)
 	{
 	}
-};
-
-//abstract
-struct Renderer : Component
-{
-    //texture
-    //color multiply
-    //render method
-    //render layer
-};
-
-struct MeshRenderer : Renderer 
-{
-
-};
-
-struct SpriteRenderer : Renderer 
-{
-
-};
-
-//abstract
-struct Collider : Component
-{
-    //tag
-    //isTrigger
-};
-
-struct CircleCollider : Collider
-{
-    f32 radius{ 1.f };
-
-    void DrawInInspector() override
-    {
-        ImGui::TextUnformatted("Size");
-        ImGui::DragFloat("##circlecollider_radius", &radius, 0.1f);
-
-    }
-
-    const std::string name() const override { return "CircleCollider"; }
-
-    CircleCollider() {};
-};
-
-struct BoxCollider : Collider
-{
-    float2 size{ 1.f,1.f };
-
-    void DrawInInspector() override
-    {
-        ImGui::TextUnformatted("Size");
-        ImGui::DragFloat2("##boxcollider_size", &size.x, 0.1f);
-    }
-
-    const std::string name() const override { return "BoxCollider"; }
 };

@@ -4,6 +4,7 @@
 
 #include "AEEngine.h" //temporary
 #include "gameobject.hpp"
+#include "renderer.hpp"
 
 struct Scene
 {
@@ -11,15 +12,30 @@ protected:
 	std::vector<std::unique_ptr<GameObject>> _gameObjectList{};
 	std::string _name{};
 
+	void InitializeGameObjects()
+	{
+		for (auto& pgo : _gameObjectList)
+		{
+			auto go = pgo.get();
+			for (auto& [type, comp] : go->componentMap())
+			{
+				/*if (auto* r = dynamic_cast<Renderer*>(comp.get()))
+					RenderSystem::Instance().RegisterRenderer(r);
+
+				if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
+					b->OnStart();*/
+			}
+		}
+	}
+
 public:
 	virtual void OnEnter()
 	{
-		//read from file
+		//load data from file
+
 		//initialize all gameobjects
-		/*
-		* for each game objects
-		*	=> gameobjects.Start()
-		*/
+		if (_gameObjectList.empty()) return;
+		InitializeGameObjects();
 	}
 
 	virtual void OnUpdate()
