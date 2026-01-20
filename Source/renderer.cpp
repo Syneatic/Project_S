@@ -79,7 +79,7 @@ void renderSys::rendererInit() {
 	std::cout << "\ninit success\n";
 }
 
-void renderSys::drawRect(Transform objInfo, MeshRenderer renderInfo, drawMode alignment) {
+void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode alignment) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 	AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
@@ -89,11 +89,11 @@ void renderSys::drawRect(Transform objInfo, MeshRenderer renderInfo, drawMode al
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
 	AEMtx33 scale;
-	AEMtx33Scale(&scale, objInfo.scale.x, objInfo.scale.y);
+	AEMtx33Scale(&scale, size.x, size.y);
 	AEMtx33 rotate;
-	AEMtx33RotDeg(&rotate, objInfo.rotation);
+	AEMtx33RotDeg(&rotate, rotAngle);
 	AEMtx33 translate;
-	AEMtx33Trans(&translate, objInfo.position.x, objInfo.position.y);
+	AEMtx33Trans(&translate, pos.x, pos.y);
 
 	AEMtx33Concat(&transform, &rotate, &scale);
 	AEMtx33Concat(&transform, &translate, &transform);
@@ -107,14 +107,14 @@ void renderSys::drawRect(Transform objInfo, MeshRenderer renderInfo, drawMode al
 	}
 }
 
-void renderSys::drawTri(Transform objInfo, MeshRenderer renderInfo) {
+void renderSys::drawTri(float2 pos, float angle, float size) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
 	AEMtx33 scale;
 	AEMtx33Scale(&scale, size, size);
 	AEMtx33 rotate;
-	AEMtx33RotDeg(&rotate, rotAngle);
+	AEMtx33RotDeg(&rotate, angle);
 	AEMtx33 translate;
 	AEMtx33Trans(&translate, pos.x, pos.y);
 
@@ -125,16 +125,16 @@ void renderSys::drawTri(Transform objInfo, MeshRenderer renderInfo) {
 	AEGfxMeshDraw(triangle, AE_GFX_MDM_TRIANGLES);
 }
 
-void renderSys::drawCirc(Transform objInfo, MeshRenderer renderInfo) {
+void renderSys::drawCirc(float2 pos, float angle, float size) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
 	AEMtx33 scale;
-	AEMtx33Scale(&scale, objInfo.scale.x, objInfo.scale.y);
+	AEMtx33Scale(&scale, size, size);
 	AEMtx33 rotate;
-	AEMtx33RotDeg(&rotate, objInfo.rotation);
+	AEMtx33RotDeg(&rotate, angle);
 	AEMtx33 translate;
-	AEMtx33Trans(&translate, objInfo.position.x, objInfo.position.y);
+	AEMtx33Trans(&translate, pos.x, pos.y);
 
 	AEMtx33Concat(&transform, &rotate, &scale);
 	AEMtx33Concat(&transform, &translate, &transform);
