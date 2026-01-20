@@ -328,6 +328,7 @@ private:
 							default:
 								break;
 						}
+
 						_uiIndex = i;
 					}
 				}

@@ -1,9 +1,7 @@
 #pragma once
 #include <string>
-
 #include "component.hpp"
 #include "math.hpp"
-#include "AEEngine.h"
 
 typedef void (*CallbackF)(void);
 
@@ -58,4 +56,5 @@ struct Button : Behaviour
 	const std::string name() const override { return "Button"; }
 };
 
+// Preset value.
 constexpr f32 defaultButtonHeight{ 100.f }, defaultButtonWidth{ 400.f }, defaultTextSize{ 40.f }, defaultStrokeWeight{ 2.f }, zeroVal{};
