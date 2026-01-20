@@ -283,6 +283,7 @@ private:
 					{
 						//remove component from game object
 						selectedObj.RemoveComponent(type);
+						RefreshRenderers();
 						ImGui::EndPopup();
 						break; //exit loop to avoid invalid iterator
 					}
@@ -369,12 +370,13 @@ public:
 
 	void OnEnter() override
 	{
-
+		RefreshRenderers();
 	}
 
 	void OnUpdate() override
 	{
 		//check input here?
+		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 
 
 		//draw world

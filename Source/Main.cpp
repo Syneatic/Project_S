@@ -15,6 +15,7 @@
 #include "renderer.hpp"
 #include "scene.hpp"
 #include "scene_editor.hpp"
+#include "scene_parser.hpp"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -101,12 +102,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 		// Your own rendering logic goes here
 		// Set the background to black.
-		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
-
+		
 
 		if (AEInputCheckTriggered(AEVK_1)) sceneManager.RequestSceneSwitch(&editorScene);
-		if (AEInputCheckTriggered(AEVK_2)) sceneManager.RequestSceneSwitch(&blankScene);
-
+		if (AEInputCheckTriggered(AEVK_2))
+		{
+			SceneIO::DeserializeScene(blankScene, "Test");
+			sceneManager.RequestSceneSwitch(&blankScene);
+		}
 		//renderSys::DrawArrow(float2::zero());
 		sceneManager.OnUpdate();
 
@@ -115,6 +118,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 
+		std::cout << AEFrameRateControllerGetFrameRate() << std::endl;
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 		gGameRunning = 0;

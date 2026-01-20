@@ -5,6 +5,7 @@
 #include "AEEngine.h" //temporary
 #include "gameobject.hpp"
 #include "renderer.hpp"
+#include "render_components.hpp"
 
 struct Scene
 {
@@ -42,7 +43,7 @@ public:
 	virtual void OnUpdate()
 	{
 		//test draw
-		AEGfxSetBackgroundColor(1.f,0.f,0.f);
+		AEGfxSetBackgroundColor(0.f,0.f,0.f);
 
 		for (auto& pgo : _gameObjectList)
 		{
@@ -53,6 +54,7 @@ public:
 					b->OnUpdate();
 			}
 		}
+		RenderSystem::Instance().Draw();
 	}
 
 	virtual void OnExit()
