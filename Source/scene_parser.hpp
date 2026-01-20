@@ -9,6 +9,8 @@
 #include "scene.hpp"
 #include "gameobject.hpp"
 #include "component.hpp"
+#include "render_components.hpp"
+#include "collider_components.hpp"
 #include "math.hpp"
 
 // parse a scene object into a scene file
@@ -42,8 +44,8 @@ namespace SceneIO
         const std::string type = c.name();
 
         //skip unknown components
-        if (type != "Transform" && type != "CircleCollider" && type != "BoxCollider")
-            return false;
+        //if (type != "Transform" && type != "CircleCollider" && type != "BoxCollider")
+        //    return false;
 
         outComp = Value(objectValue);
         outComp["type"] = type;
@@ -78,25 +80,30 @@ namespace SceneIO
 
         if (type == "Transform")
         {
-            Transform t;
+            Transform t{};
             if (compObj.isMember("position")) ReadFloat2(compObj["position"], t.position);
             if (compObj.isMember("scale"))    ReadFloat2(compObj["scale"], t.scale);
             if (compObj.isMember("rotation") && compObj["rotation"].isNumeric())
                 t.rotation = compObj["rotation"].asFloat();
-            go.AddComponent(t);
+            go.AddComponent<Transform>(t);
         }
         else if (type == "CircleCollider")
         {
-            CircleCollider c;
+            CircleCollider c{};
             if (compObj.isMember("radius") && compObj["radius"].isNumeric())
                 c.radius = compObj["radius"].asFloat();
-            go.AddComponent(c);
+            go.AddComponent<CircleCollider>(c);
         }
         else if (type == "BoxCollider")
         {
-            BoxCollider b;
+            BoxCollider b{};
             if (compObj.isMember("size")) ReadFloat2(compObj["size"], b.size);
-            go.AddComponent(b);
+            go.AddComponent<BoxCollider>(b);
+        }
+        else if (type == "SpriteRenderer")
+        {
+            SpriteRenderer r{};
+            go.AddComponent<SpriteRenderer>(r);
         }
     }
 

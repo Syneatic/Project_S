@@ -46,10 +46,13 @@
     <ClInclude Include="Extern\jsoncpp\include\version.h" />
     <ClInclude Include="Extern\jsoncpp\include\writer.h" />
     <ClInclude Include="Extern\jsoncpp\src\json_tool.h" />
+    <ClInclude Include="Source\collider_components.hpp" />
+    <ClInclude Include="Source\color.hpp" />
     <ClInclude Include="Source\component.hpp" />
     <ClInclude Include="Source\gameobject.hpp" />
     <ClInclude Include="Source\math.hpp" />
     <ClInclude Include="Source\renderer.hpp" />
+    <ClInclude Include="Source\render_components.hpp" />
     <ClInclude Include="Source\scene.hpp" />
     <ClInclude Include="Source\scene_editor.hpp" />
     <ClInclude Include="Source\scene_parser.hpp" />

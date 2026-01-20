@@ -90,6 +90,32 @@ static std::wstring OpenFile()
 	return out;
 }
 
+static void RegisterSceneRenderers(const Scene& scene)
+{
+	auto& rs = RenderSystem::Instance();
+
+	for (auto& pgo : scene.gameObjectList())
+	{
+		auto* go = pgo.get();
+		for (auto& [type, comp] : go->componentMap())
+			if (auto* r = dynamic_cast<Renderer*>(comp.get()))
+				rs.RegisterRenderer(r);
+	}
+}
+
+static void UnregisterSceneRenderers(const Scene& scene)
+{
+	auto& rs = RenderSystem::Instance();
+
+	for (auto& pgo : scene.gameObjectList())
+	{
+		auto* go = pgo.get();
+		for (auto& [type, comp] : go->componentMap())
+			if (auto* r = dynamic_cast<Renderer*>(comp.get()))
+				rs.UnregisterRenderer(r);
+	}
+}
+
 struct EditorScene : Scene
 {
 private:
@@ -97,6 +123,13 @@ private:
 
 	// ===== GAMEOBJECT =====
 	int selectedGameObjectIndex = -1; // -1 for no selection
+
+	void RefreshRenderers()
+	{
+		auto& rs = RenderSystem::Instance();
+		rs.FlushRenderers();                 // clear list
+		RegisterSceneRenderers(loadedScene); // rebuild from scene data
+	}
 
 	void BuildDockSpace()
 	{
@@ -143,6 +176,7 @@ private:
 					std::string fileNameNoExt = p.stem().string();
 					SceneIO::DeserializeScene(loadedScene, fileNameNoExt);
 					selectedGameObjectIndex = -1; //reset index selection
+					RefreshRenderers();
 				}
 			}
 
@@ -195,6 +229,7 @@ private:
 				std::string name = "GameObject_" + std::to_string(index);
 				loadedScene.gameObjectList().push_back(std::make_unique<GameObject>(name));
 				selectedGameObjectIndex = index;
+				RefreshRenderers();
 			}
 
 			if (selectedGameObjectIndex >= 0)
@@ -203,6 +238,7 @@ private:
 				{
 					loadedScene.gameObjectList().erase(loadedScene.gameObjectList().begin() + selectedGameObjectIndex);
 					selectedGameObjectIndex = -1;
+					RefreshRenderers();
 				}
 			}
 			ImGui::EndPopup();
@@ -275,27 +311,39 @@ private:
 		{
 			if (ImGui::MenuItem("Transform"))
 			{
-				std::cout << "Transform" << std::endl;
-				selectedObj.AddComponent(
-					Transform()
-				);
+				selectedObj.AddComponent<Transform>();
 			}
 
-			if (ImGui::MenuItem("Circle Collider"))
+			if (ImGui::BeginMenu("Collider"))
 			{
-				std::cout << "Collider" << std::endl;
-				std::cout << "Circle Collider" << std::endl;
-				selectedObj.AddComponent(
-					CircleCollider()
-				);
+				if (ImGui::MenuItem("Box Collider"))
+				{
+					selectedObj.AddComponent<BoxCollider>();
+				}
+
+				if (ImGui::MenuItem("Circle Collider"))
+				{
+
+					selectedObj.AddComponent<CircleCollider>();
+				}
+				ImGui::EndMenu();
 			}
 
-			if (ImGui::MenuItem("Box Collider"))
+			if (ImGui::BeginMenu("Renderer"))
 			{
-				std::cout << "Circle Collider" << std::endl;
-				selectedObj.AddComponent(
-					BoxCollider()
-				);
+				if (ImGui::MenuItem("Sprite Renderer"))
+				{
+					selectedObj.AddComponent<SpriteRenderer>();
+					RefreshRenderers();
+				}
+
+				if (ImGui::MenuItem("Mesh Renderer"))
+				{
+					selectedObj.AddComponent<MeshRenderer>();
+					RefreshRenderers();
+				}
+
+				ImGui::EndMenu();
 			}
 
 			if (ImGui::BeginCombo("UI TYPE", _previewType))
@@ -356,15 +404,19 @@ public:
 
 	void OnEnter() override
 	{
-		//load the scene
-		auto& gameObjectList = loadedScene.gameObjectList();
+
 	}
 
 	void OnUpdate() override
 	{
 		//check input here?
 
-		//draw
+
+		//draw world
+		RenderSystem::Instance().Draw();
+		//draw gizmos
+
+		//draw imgui after game render
 		if (imguiInitialized)
 		{
 			ImGui_ImplOpenGL3_NewFrame();
@@ -372,6 +424,7 @@ public:
 			ImGui::NewFrame();
 
 			DrawUI();
+			ImGui::ShowDemoWindow();
 
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -382,6 +435,7 @@ public:
 	void OnExit() override
 	{
 		//unload everything
+		RenderSystem::Instance().FlushRenderers();
 	}
 
 	EditorScene() { _name = "Editor"; }
