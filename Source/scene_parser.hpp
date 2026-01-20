@@ -9,7 +9,8 @@
 #include "scene.hpp"
 #include "gameobject.hpp"
 #include "component.hpp"
-#include "controller.hpp"
+#include "render_components.hpp"
+#include "collider_components.hpp"
 #include "math.hpp"
 
 // parse a scene object into a scene file
@@ -43,8 +44,8 @@ namespace SceneIO
         const std::string type = c.name();
 
         //skip unknown components
-        if (type != "Transform" && type != "CircleCollider" && type != "BoxCollider" && type != "PlayerController")
-            return false;
+        //if (type != "Transform" && type != "CircleCollider" && type != "BoxCollider")
+        //    return false;
 
         outComp = Value(objectValue);
         outComp["type"] = type;
@@ -66,15 +67,6 @@ namespace SceneIO
             auto const& bc = static_cast<BoxCollider const&>(c);
             outComp["size"] = WriteFloat2(bc.size);
         }
-        else if (type == "PlayerController")
-        {
-            auto const& pc = static_cast<PlayerController const&>(c);
-            outComp["maxSpeed"] = pc.maxspeed;
-            outComp["velocity"] = WriteFloat2(pc.velocity);
-            outComp["gravity"] = pc.gravity;
-            outComp["jumpHeight"] = pc.jumpHeight;
-            outComp["drag"] = pc.drag;
-        }
 
         return true;
     }
@@ -88,45 +80,30 @@ namespace SceneIO
 
         if (type == "Transform")
         {
-            Transform t;
+            Transform t{};
             if (compObj.isMember("position")) ReadFloat2(compObj["position"], t.position);
             if (compObj.isMember("scale"))    ReadFloat2(compObj["scale"], t.scale);
             if (compObj.isMember("rotation") && compObj["rotation"].isNumeric())
                 t.rotation = compObj["rotation"].asFloat();
-            go.AddComponent(t);
+            go.AddComponent<Transform>(t);
         }
         else if (type == "CircleCollider")
         {
-            CircleCollider c;
+            CircleCollider c{};
             if (compObj.isMember("radius") && compObj["radius"].isNumeric())
                 c.radius = compObj["radius"].asFloat();
-            go.AddComponent(c);
+            go.AddComponent<CircleCollider>(c);
         }
         else if (type == "BoxCollider")
         {
-            BoxCollider b;
+            BoxCollider b{};
             if (compObj.isMember("size")) ReadFloat2(compObj["size"], b.size);
-            go.AddComponent(b);
+            go.AddComponent<BoxCollider>(b);
         }
-        else if (type == "PlayerController")
+        else if (type == "SpriteRenderer")
         {
-            PlayerController pc;
-            if (compObj.isMember("maxSpeed") && compObj["maxSpeed"].isNumeric())
-                pc.maxspeed = compObj["maxSpeed"].asFloat();
-
-            if (compObj.isMember("velocity"))  
-                ReadFloat2(compObj["velocity"], pc.velocity);
-
-            if (compObj.isMember("gravity") && compObj["gravity"].isNumeric())
-                pc.gravity = compObj["gravity"].asFloat();
-
-            if (compObj.isMember("jumpHeight") && compObj["jumpHeight"].isNumeric())
-                pc.jumpHeight = compObj["jumpHeight"].asFloat();
-
-            if (compObj.isMember("drag") && compObj["drag"].isNumeric())
-                pc.drag = compObj["drag"].asFloat();
-
-            go.AddComponent(pc);
+            SpriteRenderer r{};
+            go.AddComponent<SpriteRenderer>(r);
         }
     }
 

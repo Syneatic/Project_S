@@ -152,9 +152,6 @@
     <ClInclude Include="Source\ui_types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\controller.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Extern\jsoncpp\src\json_valueiterator.inl">
