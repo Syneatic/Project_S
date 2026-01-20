@@ -327,11 +327,13 @@ private:
 				if (ImGui::MenuItem("Sprite Renderer"))
 				{
 					selectedObj.AddComponent<SpriteRenderer>();
+					RefreshRenderers();
 				}
 
 				if (ImGui::MenuItem("Mesh Renderer"))
 				{
 					selectedObj.AddComponent<MeshRenderer>();
+					RefreshRenderers();
 				}
 
 				ImGui::EndMenu();
@@ -377,6 +379,7 @@ public:
 			ImGui::NewFrame();
 
 			DrawUI();
+			ImGui::ShowDemoWindow();
 
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

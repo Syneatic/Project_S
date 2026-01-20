@@ -10,10 +10,8 @@ struct Renderer;
 
 struct Component
 {
-private:
-    GameObject* _owner = nullptr;
-
 protected:
+    GameObject* _owner = nullptr;
     Component() = default;
     explicit Component(GameObject* owner) : _owner(owner) {};
 

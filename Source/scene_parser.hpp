@@ -44,8 +44,8 @@ namespace SceneIO
         const std::string type = c.name();
 
         //skip unknown components
-        if (type != "Transform" && type != "CircleCollider" && type != "BoxCollider")
-            return false;
+        //if (type != "Transform" && type != "CircleCollider" && type != "BoxCollider")
+        //    return false;
 
         outComp = Value(objectValue);
         outComp["type"] = type;
@@ -99,6 +99,11 @@ namespace SceneIO
             BoxCollider b{};
             if (compObj.isMember("size")) ReadFloat2(compObj["size"], b.size);
             go.AddComponent<BoxCollider>(b);
+        }
+        else if (type == "SpriteRenderer")
+        {
+            SpriteRenderer r{};
+            go.AddComponent<SpriteRenderer>(r);
         }
     }
 

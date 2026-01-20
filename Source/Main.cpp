@@ -107,10 +107,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		if (AEInputCheckTriggered(AEVK_1)) sceneManager.RequestSceneSwitch(&editorScene);
 		if (AEInputCheckTriggered(AEVK_2)) sceneManager.RequestSceneSwitch(&blankScene);
 
-		renderSys::DrawArrow(float2::zero());
+		//renderSys::DrawArrow(float2::zero());
 		sceneManager.OnUpdate();
 
-		renderSys::drawRect(float2::zero(), 0, float2{ 10,10 }, center);
+		//renderSys::drawRect(float2::zero(), 0, float2{ 10,10 }, center);
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
