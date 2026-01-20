@@ -357,21 +357,15 @@ private:
 						{
 							case 0:
 								std::cout << "Display" << std::endl;
-								selectedObj.AddComponent(
-									Display()
-								);
+								selectedObj.AddComponent<Display>();
 								break;
 							case 1:
 								std::cout << "Text" << std::endl;
-								selectedObj.AddComponent(
-									Text()
-								);
+								selectedObj.AddComponent<Text>();
 								break;
 							case 2:
 								std::cout << "Button" << std::endl;
-								selectedObj.AddComponent(
-									Button()
-								);
+								selectedObj.AddComponent<Button>();
 								break;
 							default:
 								break;

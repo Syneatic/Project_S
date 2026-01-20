@@ -12,6 +12,7 @@
 #include "render_components.hpp"
 #include "collider_components.hpp"
 #include "math.hpp"
+#include "ui_types.hpp"
 
 // parse a scene object into a scene file
 // read it back from the scene file into object on load
@@ -67,6 +68,11 @@ namespace SceneIO
             auto const& bc = static_cast<BoxCollider const&>(c);
             outComp["size"] = WriteFloat2(bc.size);
         }
+        else if (type == "Text")
+        {
+            auto const& str = static_cast<Text const&>(c);
+            outComp["string"] = str.str;
+        }
 
         return true;
     }
@@ -104,6 +110,13 @@ namespace SceneIO
         {
             SpriteRenderer r{};
             go.AddComponent<SpriteRenderer>(r);
+        }
+        else if (type == "Text")
+        {
+            Text str{};
+            if (compObj.isMember("string"))
+                str.str = compObj["string"].asString();
+            go.AddComponent<Text>(str);
         }
     }
 

@@ -2,6 +2,7 @@
 #include <string>
 #include "component.hpp"
 #include "math.hpp"
+#include "AEEngine.h"
 
 typedef void (*CallbackF)(void);
 
@@ -25,18 +26,20 @@ struct Display : Behaviour
 // Text component to assign text on screen.
 struct Text : Behaviour
 {
-	char textBuffer[128];
+	std::string str;
 
 	void DrawInInspector() override
 	{
-		ImGui::InputText("Text", textBuffer, IM_ARRAYSIZE(textBuffer));
+		char cStr[128]; strcpy_s(cStr, str.c_str());
+		ImGui::InputText("Text##Text", cStr, IM_ARRAYSIZE(cStr));
+		str = cStr;
 	}
 
 	void OnStart() override {}
 	void OnUpdate() override {}
 	void OnDestroy() override {}
 
-	const std::string name() const override { return "Text##Text"; }
+	const std::string name() const override { return "Text"; }
 };
 
 // Button Component to assign function callback.
