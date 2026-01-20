@@ -30,7 +30,7 @@ namespace renderSys {
 	void DrawRect(float2 pos, float rotAngle, float2 size, DrawMode alignment);
 	void DrawTri(float2 pos, float angle, float size);
 	void DrawCirc(float2 pos, float angle, float size);
-	void DrawMyText(float2 pos, float angle, float size);
+	void DrawMyText(char* text, float2 pos, float size);
 	void DrawArrow(float2 pos);
 	void rendererExit();
 }

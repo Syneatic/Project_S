@@ -5,8 +5,10 @@
 #include "AEEngine.h"
 #include "math.hpp"
 #include "renderer.hpp"
+#include <string>
 #include <iostream>
 #include "render_components.hpp"
+#include "component.hpp"
 
 namespace {
 	AEGfxVertexList* square = 0;
@@ -136,8 +138,8 @@ void renderSys::DrawCirc(float2 pos, float angle, float size) {
 	AEGfxMeshDraw(circle, AE_GFX_MDM_TRIANGLES);
 }
 
-void renderSys::DrawMyText(float2 pos, float angle, float size) {
-
+void renderSys::DrawMyText(char* text, float2 pos, float size) {
+	AEGfxPrint(pFont, text, pos.x, pos.y, size, 1.f, 1.f, 1.f, 1.f);
 }
 
 void renderSys::rendererExit() {
