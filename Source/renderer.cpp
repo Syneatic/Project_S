@@ -9,44 +9,30 @@
 #include "render_components.hpp"
 
 namespace {
-	AEGfxVertexList* lSideSqr = 0;
-	AEGfxVertexList* centerSqr = 0;
+	AEGfxVertexList* square = 0;
 	AEGfxVertexList* triangle = 0;
 	AEGfxVertexList* circle = 0;
+	s8 pFont{};
 
 	void genSqrMesh() {
 		AEGfxMeshStart();
 		AEGfxTriAdd(
-			0.f, 0.f, 0xFFFFFFFF, 1.0f, 1.0f,
-			1.f, 0.f, 0xFFFFFFFF, 1.0f, 1.0f,
-			1.f, 1.f, 0xFFFFFFFF, 1.0f, 1.0f);
+			-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
+			0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 1.0f);
 		AEGfxTriAdd(
-			1.f, 1.f, 0xFFFFFFFF, 1.0f, 1.0f,
-			0.f, 1.f, 0xFFFFFFFF, 1.0f, 1.0f,
-			0.f, 0.f, 0xFFFFFFFF, 1.0f, 1.0f);
-		lSideSqr = AEGfxMeshEnd();
-
-		AEGfxMeshStart();
-		AEGfxTriAdd(
-			-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,
-			0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
-			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-		AEGfxTriAdd(
-			0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
-			0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
-			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-		centerSqr = AEGfxMeshEnd();
+			0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
+			0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 1.0f);
+		square = AEGfxMeshEnd();
 	}
 
 	void genTriMesh() {
 		AEGfxMeshStart();
-
-
 		AEGfxTriAdd(
 			 0.f  , 0.86603f, 0xFFFFFFFF, 1.0f, 1.0f,
 			-0.5f , 0		, 0xFFFFFFFF, 1.0f, 1.0f,
 			 0.5f ,	0		, 0xFFFFFFFF, 1.0f, 1.0f);
-
 		triangle = AEGfxMeshEnd();
 	}
 
@@ -76,10 +62,11 @@ void renderSys::rendererInit() {
 	genSqrMesh();
 	genTriMesh();
 	genCircMesh();
+	pFont = AEGfxCreateFont("Assets/liberation-mono.ttf", 72);
 	std::cout << "\ninit success\n";
 }
 
-void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode alignment) {
+void renderSys::DrawRect(float2 pos, float rotAngle, float2 size, DrawMode alignment) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 	AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
@@ -88,6 +75,16 @@ void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode align
 
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
+
+	// shifts square mesh based on alignment
+	if (alignment == lSide) {
+		AEMtx33 translate;
+		AEMtx33Trans(&translate, 0.5f, 0.f);
+		AEMtx33Concat(&transform, &translate, &transform);
+	}
+	else {
+	}
+
 	AEMtx33 scale;
 	AEMtx33Scale(&scale, size.x, size.y);
 	AEMtx33 rotate;
@@ -95,19 +92,15 @@ void renderSys::drawRect(float2 pos, float rotAngle, float2 size, drawMode align
 	AEMtx33 translate;
 	AEMtx33Trans(&translate, pos.x, pos.y);
 
-	AEMtx33Concat(&transform, &rotate, &scale);
+	AEMtx33Concat(&transform, &scale, &transform);
+	AEMtx33Concat(&transform, &rotate, &transform);
 	AEMtx33Concat(&transform, &translate, &transform);
 	AEGfxSetTransform(transform.m);
 
-	if (alignment == lSide) {
-		AEGfxMeshDraw(lSideSqr, AE_GFX_MDM_TRIANGLES);
-	}
-	else {
-		AEGfxMeshDraw(centerSqr, AE_GFX_MDM_TRIANGLES);
-	}
+	AEGfxMeshDraw(square, AE_GFX_MDM_TRIANGLES);
 }
 
-void renderSys::drawTri(float2 pos, float angle, float size) {
+void renderSys::DrawTri(float2 pos, float angle, float size) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
@@ -125,7 +118,7 @@ void renderSys::drawTri(float2 pos, float angle, float size) {
 	AEGfxMeshDraw(triangle, AE_GFX_MDM_TRIANGLES);
 }
 
-void renderSys::drawCirc(float2 pos, float angle, float size) {
+void renderSys::DrawCirc(float2 pos, float angle, float size) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
@@ -143,13 +136,15 @@ void renderSys::drawCirc(float2 pos, float angle, float size) {
 	AEGfxMeshDraw(circle, AE_GFX_MDM_TRIANGLES);
 }
 
+void renderSys::DrawMyText(float2 pos, float angle, float size) {
 
+}
 
 void renderSys::rendererExit() {
-	AEGfxMeshFree(lSideSqr);
-	AEGfxMeshFree(centerSqr);
+	AEGfxMeshFree(square);
 	AEGfxMeshFree(triangle);
 	AEGfxMeshFree(circle);
+	AEGfxDestroyFont(pFont);
 }
 
 namespace renderSys
@@ -157,9 +152,9 @@ namespace renderSys
 	void DrawArrow(float2 pos)
 	{
 		//draw rect
-		drawRect(pos - float2(0,0),0,float2(5,50),center);
+		DrawRect(pos - float2(0,0),0,float2(5,50),center);
 		//draw arrow
-		drawTri(pos + float2(0,25), 0, 25);
+		DrawTri(pos + float2(0,25), 0, 25);
 	}
 }
 

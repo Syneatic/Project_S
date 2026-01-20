@@ -8,6 +8,11 @@
 
 struct Renderer;
 
+typedef enum DrawMode {
+	center,
+	lSide
+}DrawMode;
+
 struct RenderData //pass in this data to Draw functions
 {
 	Transform transform{};
@@ -16,21 +21,16 @@ struct RenderData //pass in this data to Draw functions
 	AEGfxRenderMode renderMode{};
 	Color color{};
 	AEGfxTexture* texture = nullptr;
-	//draw mode maybe
+	DrawMode drawmode{};
 };
-
-
-typedef enum drawMode {
-	center,
-	lSide
-}drawMode;
 
 namespace renderSys {
 	void rendererInit();
 
-	void drawRect(float2 pos, float rotAngle, float2 size, drawMode alignment);
-	void drawTri(float2 pos, float angle, float size);
-	void drawCirc(float2 pos, float angle, float size);
+	void DrawRect(float2 pos, float rotAngle, float2 size, DrawMode alignment);
+	void DrawTri(float2 pos, float angle, float size);
+	void DrawCirc(float2 pos, float angle, float size);
+	void DrawMyText(float2 pos, float angle, float size);
 	void DrawArrow(float2 pos);
 	void rendererExit();
 }
