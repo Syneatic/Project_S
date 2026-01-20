@@ -9,6 +9,7 @@
 #include "scene.hpp"
 #include "gameobject.hpp"
 #include "component.hpp"
+#include "controller.hpp"
 #include "math.hpp"
 
 // parse a scene object into a scene file
@@ -42,7 +43,6 @@ namespace SceneIO
         const std::string type = c.name();
 
         //skip unknown components
-        if (type != "Transform" && type != "CircleCollider" && type != "BoxCollider")
         if (type != "Transform" && type != "CircleCollider" && type != "BoxCollider" && type != "PlayerController")
             return false;
 
