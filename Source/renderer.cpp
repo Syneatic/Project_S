@@ -68,7 +68,7 @@ void renderSys::rendererInit() {
 	std::cout << "\ninit success\n";
 }
 
-void renderSys::DrawRect(float2 pos, float rotAngle, float2 size, DrawMode alignment) {
+void renderSys::DrawRect(Transform trans, DrawMode alignment) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 	AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
@@ -88,11 +88,11 @@ void renderSys::DrawRect(float2 pos, float rotAngle, float2 size, DrawMode align
 	}
 
 	AEMtx33 scale;
-	AEMtx33Scale(&scale, size.x, size.y);
+	AEMtx33Scale(&scale, trans.scale.x, trans.scale.y);
 	AEMtx33 rotate;
-	AEMtx33RotDeg(&rotate, rotAngle);
+	AEMtx33RotDeg(&rotate, trans.rotation);
 	AEMtx33 translate;
-	AEMtx33Trans(&translate, pos.x, pos.y);
+	AEMtx33Trans(&translate, trans.position.x, trans.position.y);
 
 	AEMtx33Concat(&transform, &scale, &transform);
 	AEMtx33Concat(&transform, &rotate, &transform);
@@ -102,16 +102,16 @@ void renderSys::DrawRect(float2 pos, float rotAngle, float2 size, DrawMode align
 	AEGfxMeshDraw(square, AE_GFX_MDM_TRIANGLES);
 }
 
-void renderSys::DrawTri(float2 pos, float angle, float size) {
+void renderSys::DrawTri(Transform trans) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
 	AEMtx33 scale;
-	AEMtx33Scale(&scale, size, size);
+	AEMtx33Scale(&scale, trans.scale.x, trans.scale.y);
 	AEMtx33 rotate;
-	AEMtx33RotDeg(&rotate, angle);
+	AEMtx33RotDeg(&rotate, trans.rotation);
 	AEMtx33 translate;
-	AEMtx33Trans(&translate, pos.x, pos.y);
+	AEMtx33Trans(&translate, trans.position.x, trans.position.y);
 
 	AEMtx33Concat(&transform, &rotate, &scale);
 	AEMtx33Concat(&transform, &translate, &transform);
@@ -120,16 +120,16 @@ void renderSys::DrawTri(float2 pos, float angle, float size) {
 	AEGfxMeshDraw(triangle, AE_GFX_MDM_TRIANGLES);
 }
 
-void renderSys::DrawCirc(float2 pos, float angle, float size) {
+void renderSys::DrawCirc(Transform trans) {
 	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEMtx33 transform;
 	AEMtx33Identity(&transform);
 	AEMtx33 scale;
-	AEMtx33Scale(&scale, size, size);
+	AEMtx33Scale(&scale, trans.scale.x, trans.scale.y);
 	AEMtx33 rotate;
-	AEMtx33RotDeg(&rotate, angle);
+	AEMtx33RotDeg(&rotate, trans.rotation);
 	AEMtx33 translate;
-	AEMtx33Trans(&translate, pos.x, pos.y);
+	AEMtx33Trans(&translate, trans.position.x, trans.position.y);
 
 	AEMtx33Concat(&transform, &rotate, &scale);
 	AEMtx33Concat(&transform, &translate, &transform);
@@ -154,9 +154,9 @@ namespace renderSys
 	void DrawArrow(float2 pos)
 	{
 		//draw rect
-		DrawRect(pos - float2(0,0),0,float2(5,50),center);
+		//DrawRect(pos - float2(0,0),0,float2(5,50),center);
 		//draw arrow
-		DrawTri(pos + float2(0,25), 0, 25);
+		//DrawTri(pos + float2(0,25), 0, 25);
 	}
 }
 

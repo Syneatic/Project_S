@@ -27,9 +27,9 @@ struct RenderData //pass in this data to Draw functions
 namespace renderSys {
 	void rendererInit();
 
-	void DrawRect(float2 pos, float rotAngle, float2 size, DrawMode alignment);
-	void DrawTri(float2 pos, float angle, float size);
-	void DrawCirc(float2 pos, float angle, float size);
+	void DrawRect(Transform transform, DrawMode alignment);
+	void DrawTri(Transform transform);
+	void DrawCirc(Transform transform);
 	void DrawMyText(char* text, float2 pos, float size);
 	void DrawArrow(float2 pos);
 	void rendererExit();
