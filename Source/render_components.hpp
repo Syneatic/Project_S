@@ -7,13 +7,6 @@
 #include "gameobject.hpp"
 #include "color.hpp"
 
-enum RenderLayer
-{
-    BACKGROUND = 0,
-    DEFAULT = 500,
-    UI = 999
-};
-
 //abstract
 struct Renderer : Component
 {
@@ -23,12 +16,14 @@ struct Renderer : Component
     RenderLayer renderLayer{};
     Color color{};
     AEGfxTexture* texture = nullptr;
+    DrawMode drawmode{};
 
     void DrawInInspector() override
     {
         static const char* _blendNames[] = { "NONE", "BLEND", "ADD", "MULTIPLY", "NUM"};
         static const char* _renderNames[] = { "NONE", "COLOR", "TEXTURE", "NUM"};
         static const char* _meshDrawNames[] = { "POINTS", "LINES", "LINES_STRIP", "TRIS","NUM"};
+        static const char* _alignmentNames[] = { "Top left", "Top", "Top right", "Left", "Center", "Right", "Bottom Left", "Bottom", "Bottom right"};
 
 
         if (ImGui::BeginCombo("Blend Mode", _blendNames[(int)blendMode]))
@@ -79,14 +74,14 @@ struct Renderer : Component
 
         ImGui::Separator();
 
-        if (ImGui::BeginCombo("Mesh Draw Mode", _meshDrawNames[(int)meshDrawMode]))
+        if (ImGui::BeginCombo("Alignment", _alignmentNames[(int)drawmode]))
         {
-            for (int i = 0; i < 5; ++i)
+            for (int i = 0; i < 9; ++i)
             {
-                bool selected = (i == meshDrawMode);
-                if (ImGui::Selectable(_meshDrawNames[i], selected))
+                bool selected = (i == drawmode);
+                if (ImGui::Selectable(_alignmentNames[i], selected))
                 {
-                    meshDrawMode = (AEGfxMeshDrawMode)i;
+                    drawmode = (DrawMode)i;
                 }
                 if (selected) ImGui::SetItemDefaultFocus();
             }
@@ -115,10 +110,16 @@ struct SpriteRenderer : Renderer
     void Draw() override
     {
         GameObject& owner = *_owner;
-        Transform& trans = *owner.GetComponent<Transform>();
-        //put texture on
-        //draw quad
-        renderSys::DrawRect(trans, center);
+        RenderData data{};
+        data.transform = *owner.GetComponent<Transform>();
+        data.blendMode = blendMode;
+        data.renderMode = renderMode;
+        data.meshMode = meshDrawMode;
+        data.renderLayer = renderLayer;
+        data.color = color;
+        data.texture = texture;
+        data.drawmode = drawmode;
+        renderSys::DrawRect(data);
     }
     const std::string name() const override { return "SpriteRenderer"; }
 };

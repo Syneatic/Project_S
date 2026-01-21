@@ -60,103 +60,131 @@ namespace {
 	}
 }
 
-void renderSys::rendererInit() {
-	genSqrMesh();
-	genTriMesh();
-	genCircMesh();
-	pFont = AEGfxCreateFont("Assets/liberation-mono.ttf", 72);
-	std::cout << "\ninit success\n";
-}
 
-void renderSys::DrawRect(Transform trans, DrawMode alignment) {
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
-	AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxSetTransparency(1.0f);
-
-	AEMtx33 transform;
-	AEMtx33Identity(&transform);
-
-	// shifts square mesh based on alignment
-	if (alignment == lSide) {
-		AEMtx33 translate;
-		AEMtx33Trans(&translate, 0.5f, 0.f);
-		AEMtx33Concat(&transform, &translate, &transform);
-	}
-	else {
-	}
-
-	AEMtx33 scale;
-	AEMtx33Scale(&scale, trans.scale.x, trans.scale.y);
-	AEMtx33 rotate;
-	AEMtx33RotDeg(&rotate, trans.rotation);
-	AEMtx33 translate;
-	AEMtx33Trans(&translate, trans.position.x, trans.position.y);
-
-	AEMtx33Concat(&transform, &scale, &transform);
-	AEMtx33Concat(&transform, &rotate, &transform);
-	AEMtx33Concat(&transform, &translate, &transform);
-	AEGfxSetTransform(transform.m);
-
-	AEGfxMeshDraw(square, AE_GFX_MDM_TRIANGLES);
-}
-
-void renderSys::DrawTri(Transform trans) {
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	AEMtx33 transform;
-	AEMtx33Identity(&transform);
-	AEMtx33 scale;
-	AEMtx33Scale(&scale, trans.scale.x, trans.scale.y);
-	AEMtx33 rotate;
-	AEMtx33RotDeg(&rotate, trans.rotation);
-	AEMtx33 translate;
-	AEMtx33Trans(&translate, trans.position.x, trans.position.y);
-
-	AEMtx33Concat(&transform, &rotate, &scale);
-	AEMtx33Concat(&transform, &translate, &transform);
-	AEGfxSetTransform(transform.m);
-
-	AEGfxMeshDraw(triangle, AE_GFX_MDM_TRIANGLES);
-}
-
-void renderSys::DrawCirc(Transform trans) {
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	AEMtx33 transform;
-	AEMtx33Identity(&transform);
-	AEMtx33 scale;
-	AEMtx33Scale(&scale, trans.scale.x, trans.scale.y);
-	AEMtx33 rotate;
-	AEMtx33RotDeg(&rotate, trans.rotation);
-	AEMtx33 translate;
-	AEMtx33Trans(&translate, trans.position.x, trans.position.y);
-
-	AEMtx33Concat(&transform, &rotate, &scale);
-	AEMtx33Concat(&transform, &translate, &transform);
-	AEGfxSetTransform(transform.m);
-
-	AEGfxMeshDraw(circle, AE_GFX_MDM_TRIANGLES);
-}
-
-void renderSys::DrawMyText(char* text, float2 pos, float size) {
-	AEGfxPrint(pFont, text, pos.x, pos.y, size, 1.f, 1.f, 1.f, 1.f);
-}
-
-void renderSys::rendererExit() {
-	AEGfxMeshFree(square);
-	AEGfxMeshFree(triangle);
-	AEGfxMeshFree(circle);
-	AEGfxDestroyFont(pFont);
-}
 
 namespace renderSys
 {
+
+	void rendererInit() {
+		genSqrMesh();
+		genTriMesh();
+		genCircMesh();
+		pFont = AEGfxCreateFont("Assets/liberation-mono.ttf", 72);
+		std::cout << "\ninit success\n";
+	}
+
+	void DrawRect(RenderData data) {
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
+		AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
+		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+		AEGfxSetTransparency(1.0f);
+
+		AEMtx33 transform;
+		AEMtx33Identity(&transform);
+
+		// shifts square mesh based on alignment
+		if (data.drawmode != MC) {
+			AEMtx33 translate;
+			switch (data.drawmode) {
+				case TL:
+					AEMtx33Trans(&translate, 0.5f, -0.5f);
+					break;
+				case TC:
+					AEMtx33Trans(&translate, 0.f, -0.5f);
+					break;
+				case TR:
+					AEMtx33Trans(&translate, -0.5f, -0.5f);
+					break;
+				case ML:
+					AEMtx33Trans(&translate, 0.5f, 0.f);
+					break;
+				case MC:
+					AEMtx33Trans(&translate, 0.f, 0.f);
+					break;
+				case MR:
+					AEMtx33Trans(&translate, -0.5f, 0.f);
+					break;
+				case BL:
+					AEMtx33Trans(&translate, 0.5f, 0.5f);
+					break;
+				case BC:
+					AEMtx33Trans(&translate, 0.f, 0.5f);
+					break;
+				case BR:
+					AEMtx33Trans(&translate, -0.5f, 0.5f);
+					break;
+			}
+			AEMtx33Concat(&transform, &translate, &transform);
+		}
+
+		AEMtx33 scale;
+		AEMtx33Scale(&scale, data.transform.scale.x, data.transform.scale.y);
+		AEMtx33 rotate;
+		AEMtx33RotDeg(&rotate, data.transform.rotation);
+		AEMtx33 translate;
+		AEMtx33Trans(&translate, data.transform.position.x, data.transform.position.y);
+
+		AEMtx33Concat(&transform, &scale, &transform);
+		AEMtx33Concat(&transform, &rotate, &transform);
+		AEMtx33Concat(&transform, &translate, &transform);
+		AEGfxSetTransform(transform.m);
+
+		AEGfxMeshDraw(square, AE_GFX_MDM_TRIANGLES);
+	}
+
+	void DrawTri(RenderData data) {
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		AEMtx33 transform;
+		AEMtx33Identity(&transform);
+		AEMtx33 scale;
+		AEMtx33Scale(&scale, data.transform.scale.x, data.transform.scale.y);
+		AEMtx33 rotate;
+		AEMtx33RotDeg(&rotate, data.transform.rotation);
+		AEMtx33 translate;
+		AEMtx33Trans(&translate, data.transform.position.x, data.transform.position.y);
+
+		AEMtx33Concat(&transform, &rotate, &scale);
+		AEMtx33Concat(&transform, &translate, &transform);
+		AEGfxSetTransform(transform.m);
+
+		AEGfxMeshDraw(triangle, AE_GFX_MDM_TRIANGLES);
+	}
+
+	void DrawCirc(RenderData data) {
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		AEMtx33 transform;
+		AEMtx33Identity(&transform);
+		AEMtx33 scale;
+		AEMtx33Scale(&scale, data.transform.scale.x, data.transform.scale.y);
+		AEMtx33 rotate;
+		AEMtx33RotDeg(&rotate, data.transform.rotation);
+		AEMtx33 translate;
+		AEMtx33Trans(&translate, data.transform.position.x, data.transform.position.y);
+
+		AEMtx33Concat(&transform, &rotate, &scale);
+		AEMtx33Concat(&transform, &translate, &transform);
+		AEGfxSetTransform(transform.m);
+
+		AEGfxMeshDraw(circle, AE_GFX_MDM_TRIANGLES);
+	}
+
+	void DrawMyText(char* text, float2 pos, float size) {
+		AEGfxPrint(pFont, text, pos.x, pos.y, size, 1.f, 1.f, 1.f, 1.f);
+	}
 	void DrawArrow(float2 pos)
 	{
 		//draw rect
 		//DrawRect(pos - float2(0,0),0,float2(5,50),center);
 		//draw arrow
 		//DrawTri(pos + float2(0,25), 0, 25);
+	}
+
+	void rendererExit() {
+		AEGfxMeshFree(square);
+		AEGfxMeshFree(triangle);
+		AEGfxMeshFree(circle);
+		AEGfxDestroyFont(pFont);
 	}
 }
 
