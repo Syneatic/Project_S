@@ -356,36 +356,31 @@ private:
 
 				ImGui::EndMenu();
 			}
-			if (ImGui::BeginCombo("UI TYPE", _previewType))
+
+			if (ImGui::BeginMenu("UI Type"))
 			{
 				for (int i = 0; i < IM_ARRAYSIZE(_uiTypes); i++)
 				{
-					const bool selected = (_uiIndex == i);
-					if (ImGui::Selectable(_uiTypes[i], selected))
+					if (ImGui::MenuItem(_uiTypes[i]))
 					{
 						switch (i)
 						{
 							case 0:
-								std::cout << "Display" << std::endl;
 								selectedObj.AddComponent<Display>();
 								break;
 							case 1:
-								std::cout << "Text" << std::endl;
 								selectedObj.AddComponent<Text>();
 								break;
 							case 2:
-								std::cout << "Button" << std::endl;
 								selectedObj.AddComponent<Button>();
 								break;
 							default:
 								break;
 						}
-
-						_uiIndex = i;
-					}
+					}									
 				}
 
-				ImGui::EndCombo();
+				ImGui::EndMenu();
 			}
 
 			ImGui::EndPopup();
