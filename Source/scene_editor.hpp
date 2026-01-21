@@ -61,7 +61,7 @@ static std::wstring OpenFile()
 	{
 		pfd->Release();
 		if (didCoInit && hr != RPC_E_CHANGED_MODE) CoUninitialize();
-		return L""; // cancelled or failed
+		return L""; // cancelled or failed	
 	}
 
 	IShellItem* result = nullptr;
@@ -181,8 +181,8 @@ private:
 			}
 
 			ImGui::Separator();
-			if (ImGui::MenuItem("Quit"))
-			{
+			if (ImGui::MenuItem("Quit")) 
+			{ 
 				//quit the application?
 				//or return
 			}
@@ -356,7 +356,6 @@ private:
 
 				ImGui::EndMenu();
 			}
-
 			if (ImGui::BeginCombo("UI TYPE", _previewType))
 			{
 				for (int i = 0; i < IM_ARRAYSIZE(_uiTypes); i++)
@@ -366,30 +365,32 @@ private:
 					{
 						switch (i)
 						{
-						case 0:
-							std::cout << "Display" << std::endl;
-							selectedObj.AddComponent<Display>();
-							break;
-						case 1:
-							std::cout << "Text" << std::endl;
-							selectedObj.AddComponent<Text>();
-							break;
-						case 2:
-							std::cout << "Button" << std::endl;
-							selectedObj.AddComponent<Button>();
-							break;
-						default:
-							break;
+							case 0:
+								std::cout << "Display" << std::endl;
+								selectedObj.AddComponent<Display>();
+								break;
+							case 1:
+								std::cout << "Text" << std::endl;
+								selectedObj.AddComponent<Text>();
+								break;
+							case 2:
+								std::cout << "Button" << std::endl;
+								selectedObj.AddComponent<Button>();
+								break;
+							default:
+								break;
 						}
 
 						_uiIndex = i;
 					}
 				}
+
 				ImGui::EndCombo();
 			}
 
 			ImGui::EndPopup();
 		}
+
 		ImGui::End();
 	}
 
@@ -406,42 +407,40 @@ public:
 	bool imguiInitialized = false;
 
 	void OnEnter() override
-		{
-			RefreshRenderers();
-		}
+	{
+		RefreshRenderers();
+	}
 
 	void OnUpdate() override
+	{
+		
+		//draw gizmos
+		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
+		bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
+
+		RenderSystem::Instance().Draw();
+
+		//draw imgui after game render
+		if (imguiInitialized)
 		{
-			//check input here?
-			AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplWin32_NewFrame();
+			ImGui::NewFrame();
 
+			DrawUI();
+			//ImGui::ShowDemoWindow();
 
-			//draw world
-			RenderSystem::Instance().Draw();
-			//draw gizmos
-
-			//draw imgui after game render
-			if (imguiInitialized)
-			{
-				ImGui_ImplOpenGL3_NewFrame();
-				ImGui_ImplWin32_NewFrame();
-				ImGui::NewFrame();
-
-				DrawUI();
-				//ImGui::ShowDemoWindow();
-
-				ImGui::Render();
-				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-				ImGui::EndFrame();
-			}
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+			ImGui::EndFrame();
 		}
+	}
 
 	void OnExit() override
-		{
-			//unload everything
-			RenderSystem::Instance().FlushRenderers();
-		}
+	{
+		//unload everything
+		RenderSystem::Instance().FlushRenderers();
+	}
 
 	EditorScene() { _name = "Editor"; }
-	
 };

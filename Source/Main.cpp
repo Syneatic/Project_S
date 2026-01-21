@@ -103,12 +103,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// Your own rendering logic goes here
 		// Set the background to black.
 		
-
-		if (AEInputCheckTriggered(AEVK_1)) sceneManager.RequestSceneSwitch(&editorScene);
-		if (AEInputCheckTriggered(AEVK_2))
+		if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
-			SceneIO::DeserializeScene(blankScene, "Test");
-			sceneManager.RequestSceneSwitch(&blankScene);
+			if (AEInputCheckTriggered(AEVK_1)) sceneManager.RequestSceneSwitch(&editorScene);
+			if (AEInputCheckTriggered(AEVK_2))
+			{
+				SceneIO::DeserializeScene(blankScene, "Test");
+				sceneManager.RequestSceneSwitch(&blankScene);
+			}
 		}
 		//renderSys::DrawArrow(float2::zero());
 		sceneManager.OnUpdate();

@@ -118,7 +118,7 @@ struct SpriteRenderer : Renderer
         Transform& trans = *owner.GetComponent<Transform>();
         //put texture on
         //draw quad
-        renderSys::drawRect(trans.position, trans.rotation, trans.scale, center);
+        renderSys::DrawRect(trans, center);
     }
     const std::string name() const override { return "SpriteRenderer"; }
 };
