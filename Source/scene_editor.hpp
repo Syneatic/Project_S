@@ -355,43 +355,42 @@ private:
 				}
 
 				ImGui::EndMenu();
-				if (ImGui::BeginCombo("UI TYPE", _previewType))
-				{
-					for (int i = 0; i < IM_ARRAYSIZE(_uiTypes); i++)
-					{
-						const bool selected = (_uiIndex == i);
-						if (ImGui::Selectable(_uiTypes[i], selected))
-						{
-							switch (i)
-							{
-							case 0:
-								std::cout << "Display" << std::endl;
-								selectedObj.AddComponent<Display>();
-								break;
-							case 1:
-								std::cout << "Text" << std::endl;
-								selectedObj.AddComponent<Text>();
-								break;
-							case 2:
-								std::cout << "Button" << std::endl;
-								selectedObj.AddComponent<Button>();
-								break;
-							default:
-								break;
-							}
-
-							_uiIndex = i;
-						}
-					}
-
-					ImGui::EndCombo();
-				}
-
-				ImGui::EndPopup();
 			}
 
-			ImGui::End();
+			if (ImGui::BeginCombo("UI TYPE", _previewType))
+			{
+				for (int i = 0; i < IM_ARRAYSIZE(_uiTypes); i++)
+				{
+					const bool selected = (_uiIndex == i);
+					if (ImGui::Selectable(_uiTypes[i], selected))
+					{
+						switch (i)
+						{
+						case 0:
+							std::cout << "Display" << std::endl;
+							selectedObj.AddComponent<Display>();
+							break;
+						case 1:
+							std::cout << "Text" << std::endl;
+							selectedObj.AddComponent<Text>();
+							break;
+						case 2:
+							std::cout << "Button" << std::endl;
+							selectedObj.AddComponent<Button>();
+							break;
+						default:
+							break;
+						}
+
+						_uiIndex = i;
+					}
+				}
+				ImGui::EndCombo();
+			}
+
+			ImGui::EndPopup();
 		}
+		ImGui::End();
 	}
 
 	void DrawUI()
