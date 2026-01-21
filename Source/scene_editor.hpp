@@ -392,25 +392,26 @@ private:
 
 			ImGui::End();
 		}
+	}
 
-		void DrawUI()
-		{
-			BuildDockSpace();
-			BuildMenuBar();
-			BuildSceneHierarchyWindow();
-			BuildInspectorWindow();
-		}
+	void DrawUI()
+	{
+		BuildDockSpace();
+		BuildMenuBar();
+		BuildSceneHierarchyWindow();
+		BuildInspectorWindow();
+	}
 
-	public:
-		//temporary boolean here...
-		bool imguiInitialized = false;
+public:
+	//temporary boolean here...
+	bool imguiInitialized = false;
 
-		void OnEnter() override
+	void OnEnter() override
 		{
 			RefreshRenderers();
 		}
 
-		void OnUpdate() override
+	void OnUpdate() override
 		{
 			//check input here?
 			AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
@@ -436,12 +437,12 @@ private:
 			}
 		}
 
-		void OnExit() override
+	void OnExit() override
 		{
 			//unload everything
 			RenderSystem::Instance().FlushRenderers();
 		}
 
-		EditorScene() { _name = "Editor"; }
-	}
+	EditorScene() { _name = "Editor"; }
+	
 };
