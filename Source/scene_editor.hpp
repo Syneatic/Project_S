@@ -11,8 +11,9 @@
 #include "gameobject.hpp"
 #include "scene.hpp"
 #include "scene_parser.hpp"
-
 #include "ui_types.hpp"
+
+#include "physics-collision.hpp"
 
 static std::wstring OpenFile()
 {
@@ -417,6 +418,8 @@ public:
 		//draw gizmos
 		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 		bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
+
+		Physics::CheckAllTypeCollisions(loadedScene);
 
 		RenderSystem::Instance().Draw();
 

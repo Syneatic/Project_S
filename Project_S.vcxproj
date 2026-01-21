@@ -52,6 +52,7 @@
     <ClInclude Include="Source\gameobject.hpp" />
     <ClInclude Include="Source\math.hpp" />
     <ClInclude Include="Source\controller.hpp" />
+    <ClInclude Include="Source\physics-collision.hpp" />
     <ClInclude Include="Source\renderer.hpp" />
     <ClInclude Include="Source\render_components.hpp" />
     <ClInclude Include="Source\scene.hpp" />
