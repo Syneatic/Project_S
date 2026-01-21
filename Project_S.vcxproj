@@ -23,6 +23,7 @@
     <ClCompile Include="Extern\jsoncpp\src\json_writer.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\renderer.cpp" />
+    <ClCompile Include="Source\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Extern\ImGUI\imconfig.h" />

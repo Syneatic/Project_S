@@ -12,6 +12,8 @@
 #include "scene.hpp"
 #include "scene_parser.hpp"
 
+#include "ui_types.hpp"
+
 static std::wstring OpenFile()
 {
 	//get current directory
@@ -245,6 +247,11 @@ private:
 		ImGui::End();
 	}
 
+	// For UI selection
+	int _uiIndex{};
+	const char* _uiTypes[3] = { "Display", "Text", "Button" };
+	const char* _previewType = _uiTypes[_uiIndex];
+
 	void BuildInspectorWindow()
 	{
 		ImGui::SetNextWindowSizeConstraints(ImVec2(320.f, 100.f), ImVec2(FLT_MAX, FLT_MAX));
@@ -348,6 +355,36 @@ private:
 				}
 
 				ImGui::EndMenu();
+			if (ImGui::BeginCombo("UI TYPE", _previewType))
+			{
+				for (int i = 0; i < IM_ARRAYSIZE(_uiTypes); i++)
+				{
+					const bool selected = (_uiIndex == i);
+					if (ImGui::Selectable(_uiTypes[i], selected))
+					{
+						switch (i)
+						{
+							case 0:
+								std::cout << "Display" << std::endl;
+								selectedObj.AddComponent<Display>();
+								break;
+							case 1:
+								std::cout << "Text" << std::endl;
+								selectedObj.AddComponent<Text>();
+								break;
+							case 2:
+								std::cout << "Button" << std::endl;
+								selectedObj.AddComponent<Button>();
+								break;
+							default:
+								break;
+						}
+
+						_uiIndex = i;
+					}
+				}
+
+				ImGui::EndCombo();
 			}
 
 			ImGui::EndPopup();

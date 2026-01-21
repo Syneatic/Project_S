@@ -13,6 +13,7 @@
 #include "collider_components.hpp"
 #include "controller.hpp"
 #include "math.hpp"
+#include "ui_types.hpp"
 
 // parse a scene object into a scene file
 // read it back from the scene file into object on load
@@ -76,6 +77,10 @@ namespace SceneIO
             outComp["gravity"] = pc.gravity;
             outComp["jumpHeight"] = pc.jumpHeight;
             outComp["drag"] = pc.drag;
+        else if (type == "Text")
+        {
+            auto const& str = static_cast<Text const&>(c);
+            outComp["string"] = str.str;
         }
 
         return true;
@@ -129,6 +134,12 @@ namespace SceneIO
             if (compObj.isMember("drag") && compObj["drag"].isNumeric())
                 pc.drag = compObj["drag"].asFloat();
             go.AddComponent<PlayerController>(pc);
+        else if (type == "Text")
+        {
+            Text str{};
+            if (compObj.isMember("string"))
+                str.str = compObj["string"].asString();
+            go.AddComponent<Text>(str);
         }
     }
 
