@@ -359,7 +359,7 @@ public:
 
 	void OnEnter() override
 	{
-
+		RefreshRenderers();
 	}
 
 	void OnUpdate() override
