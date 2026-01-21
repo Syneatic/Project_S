@@ -77,6 +77,7 @@ namespace SceneIO
             outComp["gravity"] = pc.gravity;
             outComp["jumpHeight"] = pc.jumpHeight;
             outComp["drag"] = pc.drag;
+        }
         else if (type == "Text")
         {
             auto const& str = static_cast<Text const&>(c);
@@ -134,6 +135,7 @@ namespace SceneIO
             if (compObj.isMember("drag") && compObj["drag"].isNumeric())
                 pc.drag = compObj["drag"].asFloat();
             go.AddComponent<PlayerController>(pc);
+        }
         else if (type == "Text")
         {
             Text str{};

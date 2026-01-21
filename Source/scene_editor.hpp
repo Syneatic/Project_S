@@ -181,8 +181,8 @@ private:
 			}
 
 			ImGui::Separator();
-			if (ImGui::MenuItem("Quit")) 
-			{ 
+			if (ImGui::MenuItem("Quit"))
+			{
 				//quit the application?
 				//or return
 			}
@@ -355,15 +355,15 @@ private:
 				}
 
 				ImGui::EndMenu();
-			if (ImGui::BeginCombo("UI TYPE", _previewType))
-			{
-				for (int i = 0; i < IM_ARRAYSIZE(_uiTypes); i++)
+				if (ImGui::BeginCombo("UI TYPE", _previewType))
 				{
-					const bool selected = (_uiIndex == i);
-					if (ImGui::Selectable(_uiTypes[i], selected))
+					for (int i = 0; i < IM_ARRAYSIZE(_uiTypes); i++)
 					{
-						switch (i)
+						const bool selected = (_uiIndex == i);
+						if (ImGui::Selectable(_uiTypes[i], selected))
 						{
+							switch (i)
+							{
 							case 0:
 								std::cout << "Display" << std::endl;
 								selectedObj.AddComponent<Display>();
@@ -378,69 +378,70 @@ private:
 								break;
 							default:
 								break;
-						}
+							}
 
-						_uiIndex = i;
+							_uiIndex = i;
+						}
 					}
+
+					ImGui::EndCombo();
 				}
 
-				ImGui::EndCombo();
+				ImGui::EndPopup();
 			}
 
-			ImGui::EndPopup();
+			ImGui::End();
 		}
 
-		ImGui::End();
-	}
-
-	void DrawUI()
-	{
-		BuildDockSpace();
-		BuildMenuBar();
-		BuildSceneHierarchyWindow();
-		BuildInspectorWindow();
-	}
-
-public:
-	//temporary boolean here...
-	bool imguiInitialized = false;
-
-	void OnEnter() override
-	{
-		RefreshRenderers();
-	}
-
-	void OnUpdate() override
-	{
-		//check input here?
-		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
-
-
-		//draw world
-		RenderSystem::Instance().Draw();
-		//draw gizmos
-
-		//draw imgui after game render
-		if (imguiInitialized)
+		void DrawUI()
 		{
-			ImGui_ImplOpenGL3_NewFrame();
-			ImGui_ImplWin32_NewFrame();
-			ImGui::NewFrame();
-
-			DrawUI();
-			//ImGui::ShowDemoWindow();
-
-			ImGui::Render();
-			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-			ImGui::EndFrame();
+			BuildDockSpace();
+			BuildMenuBar();
+			BuildSceneHierarchyWindow();
+			BuildInspectorWindow();
 		}
-	}
 
-	void OnExit() override
-	{
-		//unload everything
-		RenderSystem::Instance().FlushRenderers();
-	}
+	public:
+		//temporary boolean here...
+		bool imguiInitialized = false;
 
-	EditorScene() { _name = "Editor"; }
+		void OnEnter() override
+		{
+			RefreshRenderers();
+		}
+
+		void OnUpdate() override
+		{
+			//check input here?
+			AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
+
+
+			//draw world
+			RenderSystem::Instance().Draw();
+			//draw gizmos
+
+			//draw imgui after game render
+			if (imguiInitialized)
+			{
+				ImGui_ImplOpenGL3_NewFrame();
+				ImGui_ImplWin32_NewFrame();
+				ImGui::NewFrame();
+
+				DrawUI();
+				//ImGui::ShowDemoWindow();
+
+				ImGui::Render();
+				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+				ImGui::EndFrame();
+			}
+		}
+
+		void OnExit() override
+		{
+			//unload everything
+			RenderSystem::Instance().FlushRenderers();
+		}
+
+		EditorScene() { _name = "Editor"; }
+	}
 };
