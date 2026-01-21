@@ -34,7 +34,6 @@ static std::wstring OpenFile()
 	//configure dialog
 	pfd->SetTitle(L"Open Scene");
 
-	// Optional: filter
 	COMDLG_FILTERSPEC filters[] =
 	{
 		{ L"Scene files (*.scene)", L"*.scene" },
@@ -377,10 +376,12 @@ public:
 	{
 		//check input here?
 		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
+		bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
 
 
 		//draw world
 		RenderSystem::Instance().Draw();
+
 		//draw gizmos
 
 		//draw imgui after game render
