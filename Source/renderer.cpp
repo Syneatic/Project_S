@@ -74,11 +74,11 @@ namespace renderSys
 	}
 
 	void DrawRect(RenderData data) {
-		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-		AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
-		AEGfxSetColorToAdd(0.0f, 0.0f, 0.0f, 0.0f);
-		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-		AEGfxSetTransparency(1.0f);
+		AEGfxSetRenderMode(data.renderMode);
+		AEGfxSetBlendMode(data.blendMode);
+		AEGfxSetTransparency(1.f);
+		AEGfxSetColorToMultiply(data.color.r, data.color.g, data.color.b, data.color.a);
+		std::cout << data.color.a;
 
 		AEMtx33 transform;
 		AEMtx33Identity(&transform);

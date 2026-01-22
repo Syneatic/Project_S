@@ -10,13 +10,13 @@
 //abstract
 struct Renderer : Component
 {
-    AEGfxBlendMode blendMode{};
-    AEGfxRenderMode renderMode{};
+    AEGfxBlendMode blendMode{ AE_GFX_BM_BLEND };
+    AEGfxRenderMode renderMode{ AE_GFX_RM_COLOR};
     AEGfxMeshDrawMode meshDrawMode{};
     RenderLayer renderLayer{};
     Color color{};
     AEGfxTexture* texture = nullptr;
-    DrawMode drawmode{};
+    DrawMode drawmode{MC};
 
     void DrawInInspector() override
     {
