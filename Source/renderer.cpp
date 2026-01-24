@@ -10,11 +10,15 @@
 #include "render_components.hpp"
 #include "component.hpp"
 
+#include <filesystem>
+
 namespace {
 	AEGfxVertexList* square = 0;
 	AEGfxVertexList* triangle = 0;
 	AEGfxVertexList* circle = 0;
 	s8 pFont{};
+	AEGfxTexture* pTex{};
+	
 
 	void genSqrMesh() {
 		AEGfxMeshStart();
@@ -70,6 +74,7 @@ namespace renderSys
 		genTriMesh();
 		genCircMesh();
 		pFont = AEGfxCreateFont("Assets/liberation-mono.ttf", 72);
+		pTex = AEGfxTextureLoad("./Assets/PlanetTexture.png");
 		std::cout << "\ninit success\n";
 	}
 
@@ -78,7 +83,7 @@ namespace renderSys
 		AEGfxSetBlendMode(data.blendMode);
 		AEGfxSetTransparency(1.f);
 		AEGfxSetColorToMultiply(data.color.r, data.color.g, data.color.b, data.color.a);
-		std::cout << data.color.a;
+		AEGfxTextureSet(pTex, 0, 0);
 
 		AEMtx33 transform;
 		AEMtx33Identity(&transform);
@@ -185,6 +190,7 @@ namespace renderSys
 		AEGfxMeshFree(triangle);
 		AEGfxMeshFree(circle);
 		AEGfxDestroyFont(pFont);
+		AEGfxTextureUnload(pTex);
 	}
 }
 
