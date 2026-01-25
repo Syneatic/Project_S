@@ -119,7 +119,7 @@ namespace RenderSystem
 		for (auto r : _renderers) r->Draw();
 	}
 
-	void SetTransform(Transform t, DrawMode mode, AEMtx33& mtx)
+	void SetTransform(Transform t, Alignment mode, AEMtx33& mtx)
 	{
 		AEMtx33Identity(&mtx);
 
@@ -213,7 +213,7 @@ namespace RenderSystem
 			AEGfxTextureSet(nullptr, 0.f, 0.f);
 
 		AEMtx33 transform;
-		SetTransform(data.transform,data.drawmode,transform);
+		SetTransform(data.transform,data.alignment,transform);
 		AEGfxSetTransform(transform.m);
 
 		AEGfxMeshDraw(square, data.meshMode);

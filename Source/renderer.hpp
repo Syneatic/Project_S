@@ -15,7 +15,7 @@ enum RenderLayer
 	UI = 999
 };
 
-typedef enum DrawMode {
+typedef enum Alignment {
 	TL, TC, TR,
 	ML, MC, MR,
 	BL, BC, BR
@@ -30,7 +30,7 @@ struct RenderData //pass in this data to Draw functions
 	AEGfxBlendMode blendMode{};
 	AEGfxRenderMode renderMode{};
 	AEGfxMeshDrawMode meshMode{};
-	DrawMode drawmode{};
+	Alignment alignment{};
 
 	Color color{};
 	AEGfxTexture* texture = nullptr;

@@ -6,17 +6,18 @@
 #include "AEEngine.h"
 #include "gameobject.hpp"
 #include "color.hpp"
+//#include "json_parser_helper.hpp"
 
 //abstract
 struct Renderer : Component
 {
     AEGfxBlendMode blendMode{ AE_GFX_BM_BLEND };
     AEGfxRenderMode renderMode{ AE_GFX_RM_COLOR};
-    AEGfxMeshDrawMode meshDrawMode{};
-    RenderLayer renderLayer{};
-    Color color{};
+    AEGfxMeshDrawMode meshDrawMode{ AE_GFX_MDM_TRIANGLES};
+    RenderLayer renderLayer{ DEFAULT };
+    Alignment alignment{MC};
+    Color color{1.f,1.f,1.f,1.f};
     AEGfxTexture* texture = nullptr;
-    DrawMode drawmode{MC};
 
     void DrawInInspector() override
     {
@@ -74,14 +75,14 @@ struct Renderer : Component
 
         ImGui::Separator();
 
-        if (ImGui::BeginCombo("Alignment", _alignmentNames[(int)drawmode]))
+        if (ImGui::BeginCombo("Alignment", _alignmentNames[(int)alignment]))
         {
             for (int i = 0; i < 9; ++i)
             {
-                bool selected = (i == drawmode);
+                bool selected = (i == alignment);
                 if (ImGui::Selectable(_alignmentNames[i], selected))
                 {
-                    drawmode = (DrawMode)i;
+                    alignment = (Alignment)i;
                 }
                 if (selected) ImGui::SetItemDefaultFocus();
             }
@@ -97,6 +98,42 @@ struct Renderer : Component
             color.b = col[2];
             color.a = col[3];
         }
+    }
+
+    void Serialize(Json::Value& outComp) const override
+    {
+        outComp["blendmode"] = blendMode;
+        outComp["rendermode"] = renderMode;
+        outComp["meshdrawmode"] = meshDrawMode;
+        outComp["renderlayer"] = renderLayer;
+        outComp["alignment"] = alignment;
+        outComp["color"] = WriteColor(color);
+
+        //texture is abit tricky for now
+        //i think save it as a filename for now
+    }
+
+    void Deserialize(const Json::Value& compObj) override
+    {
+        if (compObj.isMember("blendmode") && compObj["blendmode"].isInt())
+            blendMode = static_cast<AEGfxBlendMode>(compObj["blendmode"].asInt());
+
+        if (compObj.isMember("rendermode") && compObj["rendermode"].isInt())
+            renderMode = static_cast<AEGfxRenderMode>(compObj["rendermode"].asInt());
+
+        if (compObj.isMember("meshdrawmode") && compObj["meshdrawmode"].isInt())
+            meshDrawMode = static_cast<AEGfxMeshDrawMode>(compObj["meshdrawmode"].asInt());
+
+        if (compObj.isMember("renderlayer") && compObj["renderlayer"].isInt())
+            renderLayer = static_cast<RenderLayer>(compObj["renderlayer"].asInt());
+
+        if (compObj.isMember("alignment") && compObj["alignment"].isInt())
+            alignment = static_cast<Alignment>(compObj["alignment"].asInt());
+
+        if (compObj.isMember("color") && compObj["color"].isObject())
+            color = ReadColor(compObj["color"]);
+
+        //read texture from file here
     }
 
     virtual void Draw()
@@ -118,14 +155,30 @@ struct SpriteRenderer : Renderer
         data.renderLayer = renderLayer;
         data.color = color;
         data.texture = texture;
-        data.drawmode = drawmode;
+        data.alignment = alignment;
         RenderSystem::DrawRect(data);
     }
+
+    //no override since sprite is quite normal
+
     const std::string name() const override { return "SpriteRenderer"; }
 };
 
 struct MeshRenderer : Renderer
 {
     AEGfxVertexBuffer* mesh = nullptr;
+
+    void Serialize(Json::Value& outComp) const override
+    {
+        Renderer::Serialize(outComp);
+        //save mesh here somehow
+    }
+
+    void Deserialize(const Json::Value& compObj) override
+    {
+        Renderer::Deserialize(compObj);
+        //load mesh here
+    }
+
     const std::string name() const override { return "MeshRenderer"; }
 };
