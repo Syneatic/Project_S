@@ -66,7 +66,7 @@ public:
 			GetOrAddComponent<Transform>();
 		}
 
-		if (std::is_base_of<Collider, T>::value) 
+		if constexpr (std::is_base_of<Collider, T>::value) 
 		{ 
 			GetOrAddComponent<Transform>(); 
 		}

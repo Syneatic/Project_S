@@ -119,7 +119,7 @@ struct SpriteRenderer : Renderer
         data.color = color;
         data.texture = texture;
         data.drawmode = drawmode;
-        renderSys::DrawRect(data);
+        RenderSystem::DrawRect(data);
     }
     const std::string name() const override { return "SpriteRenderer"; }
 };

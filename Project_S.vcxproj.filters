@@ -28,6 +28,9 @@
     <Filter Include="Header Files\jsoncpp">
       <UniqueIdentifier>{7e08bde9-cebe-45be-91b1-c6e6152ec8b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\components">
+      <UniqueIdentifier>{d7ed3a53-7e68-45e8-8fe6-d1cd242ebbe0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -66,11 +69,11 @@
     <ClCompile Include="Source\renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\component.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\gameobject.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -149,8 +152,26 @@
     <ClInclude Include="Extern\jsoncpp\include\writer.h">
       <Filter>Header Files\jsoncpp</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ui_types.hpp">
+    <ClInclude Include="Source\color.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\json_parser_helper.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\controller.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\collider_components.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\render_components.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ui_types.hpp">
+      <Filter>Header Files\components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

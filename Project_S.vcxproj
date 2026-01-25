@@ -50,6 +50,7 @@
     <ClInclude Include="Source\color.hpp" />
     <ClInclude Include="Source\component.hpp" />
     <ClInclude Include="Source\gameobject.hpp" />
+    <ClInclude Include="Source\json_parser_helper.hpp" />
     <ClInclude Include="Source\math.hpp" />
     <ClInclude Include="Source\controller.hpp" />
     <ClInclude Include="Source\renderer.hpp" />

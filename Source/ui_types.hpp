@@ -35,6 +35,17 @@ struct Text : Behaviour
 		str = cStr;
 	}
 
+	void Serialize(Json::Value& outComp) const override
+	{
+		outComp["string"] = str;
+	}
+
+	void Deserialize(const Json::Value& compObj) override
+	{
+		if (compObj.isMember("string"))
+			str = compObj["string"].asString();
+	}
+
 	void OnStart() override {}
 	void OnUpdate() override {}
 	void OnDestroy() override {}

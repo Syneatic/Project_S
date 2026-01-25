@@ -21,7 +21,7 @@ protected:
 			for (auto& [type, comp] : go->componentMap())
 			{
 				if (auto* r = dynamic_cast<Renderer*>(comp.get()))
-					RenderSystem::Instance().RegisterRenderer(r);
+					RenderSystem::RegisterRenderer(r);
 
 				if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
 					b->OnStart();
@@ -54,13 +54,13 @@ public:
 					b->OnUpdate();
 			}
 		}
-		RenderSystem::Instance().Draw();
+		RenderSystem::Draw();
 	}
 
 	virtual void OnExit()
 	{
 		//delete
-		RenderSystem::Instance().FlushRenderers();
+		RenderSystem::FlushRenderers();
 	}
 
 	//===== SERIALIZATION =====

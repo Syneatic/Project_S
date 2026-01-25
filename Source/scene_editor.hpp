@@ -13,6 +13,7 @@
 #include "scene_parser.hpp"
 
 #include "ui_types.hpp"
+#include "renderer.hpp"
 
 static std::wstring OpenFile()
 {
@@ -92,27 +93,23 @@ static std::wstring OpenFile()
 
 static void RegisterSceneRenderers(const Scene& scene)
 {
-	auto& rs = RenderSystem::Instance();
-
 	for (auto& pgo : scene.gameObjectList())
 	{
 		auto* go = pgo.get();
 		for (auto& [type, comp] : go->componentMap())
 			if (auto* r = dynamic_cast<Renderer*>(comp.get()))
-				rs.RegisterRenderer(r);
+				RenderSystem::RegisterRenderer(r);
 	}
 }
 
 static void UnregisterSceneRenderers(const Scene& scene)
 {
-	auto& rs = RenderSystem::Instance();
-
 	for (auto& pgo : scene.gameObjectList())
 	{
 		auto* go = pgo.get();
 		for (auto& [type, comp] : go->componentMap())
 			if (auto* r = dynamic_cast<Renderer*>(comp.get()))
-				rs.UnregisterRenderer(r);
+				RenderSystem::UnregisterRenderer(r);
 	}
 }
 
@@ -126,8 +123,7 @@ private:
 
 	void RefreshRenderers()
 	{
-		auto& rs = RenderSystem::Instance();
-		rs.FlushRenderers();                 // clear list
+		RenderSystem::FlushRenderers();                 // clear list
 		RegisterSceneRenderers(loadedScene); // rebuild from scene data
 	}
 
@@ -418,7 +414,7 @@ public:
 		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 		bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
 
-		RenderSystem::Instance().Draw();
+		RenderSystem::Draw();
 
 		//draw imgui after game render
 		if (imguiInitialized)
@@ -439,7 +435,7 @@ public:
 	void OnExit() override
 	{
 		//unload everything
-		RenderSystem::Instance().FlushRenderers();
+		RenderSystem::FlushRenderers();
 	}
 
 	EditorScene() { _name = "Editor"; }

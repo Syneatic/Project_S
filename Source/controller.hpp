@@ -56,6 +56,30 @@ struct PlayerController : Controller
         ImGui::TextUnformatted("Drag");
         ImGui::DragFloat("##drag", &drag, 0.1f, 0.f);
     }
+
+    void Serialize(Json::Value& outComp) const override
+    {
+        outComp["maxSpeed"] = maxspeed;
+        outComp["velocty"] = WriteFloat2(velocity);
+        outComp["gravity"] = gravity;
+        outComp["jumpHeight"] = jumpHeight;
+        outComp["drag"] = drag;
+    }
+
+    void Deserialize(const Json::Value& compObj) override
+    {
+        if (compObj.isMember("maxSpeed") && compObj["maxSpeed"].isNumeric())
+            maxspeed = compObj["maxSpeed"].asFloat();
+        if (compObj.isMember("velocity"))
+            ReadFloat2(compObj["velocity"], velocity);
+        if (compObj.isMember("gravity") && compObj["gravity"].isNumeric())
+            gravity = compObj["gravity"].asFloat();
+        if (compObj.isMember("jumpHeight") && compObj["jumpheight"].isNumeric())
+            jumpHeight = compObj["jumpHeight"].asFloat();
+        if (compObj.isMember("drag") && compObj["drag"].isNumeric())
+            drag = compObj["drag"].asFloat();
+    }
+
     void OnStart() override
     {
     } 

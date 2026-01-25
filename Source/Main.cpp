@@ -17,6 +17,7 @@
 #include "scene_editor.hpp"
 #include "scene_parser.hpp"
 
+
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 LRESULT ImGuiWNDCallBack(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
@@ -88,8 +89,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AEInputShowCursor(1);
 
 	// Initialize render system
-	renderSys::rendererInit();
-
+	RenderSystem::RendererInitialize();
 
 	InitializeImGUI(m_ImGUIInitialized);
 	editorScene.imguiInitialized = true;
@@ -127,7 +127,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	ShutdownImGUI(m_ImGUIInitialized);
-	renderSys::rendererExit();
+	RenderSystem::RendererExit();
 	// free the system
 	AESysExit();
 }

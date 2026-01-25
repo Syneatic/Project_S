@@ -24,45 +24,33 @@ typedef enum DrawMode {
 struct RenderData //pass in this data to Draw functions
 {
 	Transform transform{};
+	RenderLayer renderLayer{};
 
+	//modes
 	AEGfxBlendMode blendMode{};
 	AEGfxRenderMode renderMode{};
 	AEGfxMeshDrawMode meshMode{};
-	RenderLayer renderLayer{};
+	DrawMode drawmode{};
+
 	Color color{};
 	AEGfxTexture* texture = nullptr;
-	DrawMode drawmode{};
 };
 
-namespace renderSys {
-	void rendererInit();
+namespace RenderSystem {
+	void RendererInitialize();
 
-	void DrawRect(RenderData data);
-	void DrawTri(RenderData data);
-	void DrawCirc(RenderData data);
-	void DrawMyText(char* text, float2 pos, float size);
-	void DrawArrow(float2 pos);
-	void rendererExit();
-}
-
-struct RenderSystem
-{
+	//exposed api for registering renderer when loading levels
 	void RegisterRenderer(Renderer* r);
 	void UnregisterRenderer(Renderer* r);
 	void FlushRenderers();
 	void Draw();
 
-	static RenderSystem& Instance();
+	//exposed api for drawing primitives
+	void DrawRect(RenderData data);
+	void DrawTri(RenderData data);
+	void DrawCirc(RenderData data);
+	void DrawMyText(char* text, float2 pos, float size);
+	void DrawArrow(float2 pos);
 
-	RenderSystem(const RenderSystem&) = delete;
-	RenderSystem& operator=(const RenderSystem&) = delete;
-	RenderSystem(RenderSystem&&) = delete;
-	RenderSystem& operator=(RenderSystem&&) = delete;
-
-private:
-	std::vector<Renderer*> _renderers;
-	std::unordered_set<Renderer*> _rendererSet;
-
-	RenderSystem() = default;
-	~RenderSystem() = default;
-};
+	void RendererExit();
+}

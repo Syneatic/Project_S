@@ -2,7 +2,8 @@
 #include <string>
 #include "ImGUI/imgui.h"
 
-#include "math.hpp"
+#include "json.h"
+#include "json_parser_helper.hpp"
 
 struct GameObject;
 struct Collider;
@@ -22,6 +23,8 @@ public:
     friend class GameObject; //allow GameObject class to access private and protected
 
 	virtual void DrawInInspector() {};
+    virtual void Serialize(Json::Value& outComp) const{};
+    virtual void Deserialize(const Json::Value& compObj) {};
 
 	virtual const std::string name() const = 0;
 	virtual ~Component() = default;
@@ -70,14 +73,22 @@ struct Transform : Component
         {
             rotation = 0.0f;
         }
-
-        //ImGui::Spacing();
-        //ImGui::Separator();
-        //ImGui::Text("Raw Values:");
-        //ImGui::BulletText("Position: (%.3f, %.3f)", position.x, position.y);
-        //ImGui::BulletText("Scale:    (%.3f, %.3f)", scale.x, scale.y);
-        //ImGui::BulletText("Rotation: %.3f", rotation);
 	}
+
+    void Serialize(Json::Value& outComp) const override
+    {
+        outComp["position"] = WriteFloat2(position);
+        outComp["scale"] = WriteFloat2(scale);
+        outComp["rotation"] = rotation;
+    }
+
+    void Deserialize(const Json::Value& compObj) override
+    {
+        if (compObj.isMember("position")) ReadFloat2(compObj["position"], position);
+        if (compObj.isMember("scale"))    ReadFloat2(compObj["scale"], scale);
+        if (compObj.isMember("rotation") && compObj["rotation"].isNumeric())
+            rotation = compObj["rotation"].asFloat();
+    }
 
 	const std::string name() const override { return "Transform"; }
 
