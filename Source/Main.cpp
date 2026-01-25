@@ -75,8 +75,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	int gGameRunning = 1;
 
 	// Initialization of your own variables go here
+
+	// Create a global buttonRegister,
+	// bind all functions & assign as
+	// pointer to all buttons with static
+	// struct function.
 	UIButtonRegister buttonRegister;
 	BindButtonFunctions(buttonRegister);
+	Button::SetRegister(&buttonRegister);
 
 	bool m_ImGUIInitialized = false;
 	SceneManager& sceneManager = SceneManager::Instance();
