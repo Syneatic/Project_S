@@ -29,13 +29,13 @@ namespace {
 	void genSqrMesh() {
 		AEGfxMeshStart();
 		AEGfxTriAdd(
-			-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 0.0f,
-			0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
-			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 1.0f);
+			 0.5f, -0.5f, 0xFF'FF'00'00, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0xFF'00'FF'00, 0.0f, 0.0f,
+			-0.5f, -0.5f, 0xFF'00'00'FF, 0.0f, 1.0f);
 		AEGfxTriAdd(
-			0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
-			0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
-			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 1.0f);
+			 0.5f, -0.5f, 0xFF'FF'00'00, 1.0f, 1.0f,
+			 0.5f,  0.5f, 0xFF'FF'FF'00, 1.0f, 0.0f,
+			-0.5f,  0.5f, 0xFF'00'FF'00, 0.0f, 0.0f);
 		square = AEGfxMeshEnd();
 	}
 
@@ -167,31 +167,6 @@ namespace RenderSystem
 		AEMtx33Concat(&mtx, &translate, &mtx);
 	}
 
-	void SetColor(AEGfxBlendMode mode, Color c)
-	{
-		switch (mode)
-		{
-		case AE_GFX_BM_BLEND:
-			AEGfxSetColorToMultiply(c.r, c.g, c.b, 1.f);
-			break;
-
-		case AE_GFX_BM_ADD:
-
-			AEGfxSetColorToAdd(c.r, c.g, c.b, 1.f);
-			break;
-
-		case AE_GFX_BM_MULTIPLY:
-			AEGfxSetColorToMultiply(c.r, c.g, c.b, 1.f);
-			break;
-
-		case AE_GFX_BM_NONE:
-		default:
-			AEGfxSetColorToMultiply(c.r, c.g, c.b, 1.f);
-			AEGfxSetTransparency(1.f); // usually for opaque
-			break;
-		}
-	}
-
 	//draw primitives/text
 	void DrawRect(RenderData data) 
 	{
@@ -199,12 +174,11 @@ namespace RenderSystem
 		AEGfxSetRenderMode(data.renderMode);
 		AEGfxSetBlendMode(data.blendMode);
 	
-		AEGfxSetColorToMultiply(1.f, 1.f, 1.f, 1.f); //reset
-		AEGfxSetColorToAdd(0.f, 0.f, 0.f, 0.f);
-
-		AEGfxSetTransparency(data.color.a); //use this as transparency?
-	
-		SetColor(data.blendMode,data.color);
+		//set colors
+		AEGfxSetColorToAdd(0, 0, 0, 0);
+		AEGfxSetBlendColor(0, 0, 0, 0);
+		AEGfxSetColorToMultiply(data.color.r, data.color.g, data.color.b, 1);
+		AEGfxSetTransparency(data.color.a);
 
 		//set texture only if using texture mode
 		if (data.renderMode == AE_GFX_RM_TEXTURE)
@@ -212,7 +186,7 @@ namespace RenderSystem
 		else
 			AEGfxTextureSet(nullptr, 0.f, 0.f);
 
-		AEMtx33 transform;
+		AEMtx33 transform{};
 		SetTransform(data.transform,data.alignment,transform);
 		AEGfxSetTransform(transform.m);
 

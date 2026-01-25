@@ -120,7 +120,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 
-		std::cout << AEFrameRateControllerGetFrameRate() << std::endl;
+		//std::cout << AEFrameRateControllerGetFrameRate() << std::endl;
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 		gGameRunning = 0;

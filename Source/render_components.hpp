@@ -117,7 +117,7 @@ struct Renderer : Component
     {
         if (compObj.isMember("blendmode") && compObj["blendmode"].isInt())
             blendMode = static_cast<AEGfxBlendMode>(compObj["blendmode"].asInt());
-
+        
         if (compObj.isMember("rendermode") && compObj["rendermode"].isInt())
             renderMode = static_cast<AEGfxRenderMode>(compObj["rendermode"].asInt());
 
@@ -131,7 +131,7 @@ struct Renderer : Component
             alignment = static_cast<Alignment>(compObj["alignment"].asInt());
 
         if (compObj.isMember("color") && compObj["color"].isObject())
-            color = ReadColor(compObj["color"]);
+            ReadColor(compObj["color"],color);
 
         //read texture from file here
     }
