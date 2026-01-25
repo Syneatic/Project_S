@@ -16,9 +16,9 @@
 
 namespace {
 	//NOT EXPOSED!!
-	AEGfxVertexList* square = 0;
-	AEGfxVertexList* triangle = 0;
-	AEGfxVertexList* circle = 0;
+	AEGfxVertexList* _squareMesh = 0;
+	AEGfxVertexList* _triangleMesh = 0;
+	AEGfxVertexList* _circleMesh = 0;
 	s8 pFont{};
 	AEGfxTexture* pTex{};
 	
@@ -26,7 +26,7 @@ namespace {
 	std::vector<Renderer*> _renderers;
 	std::unordered_set<Renderer*> _rendererSet;
 
-	void genSqrMesh() {
+	void GenerateSquareMesh() {
 		AEGfxMeshStart();
 		AEGfxTriAdd(
 			 0.5f, -0.5f, 0xFF'FF'00'00, 1.0f, 1.0f,
@@ -36,21 +36,22 @@ namespace {
 			 0.5f, -0.5f, 0xFF'FF'00'00, 1.0f, 1.0f,
 			 0.5f,  0.5f, 0xFF'FF'FF'00, 1.0f, 0.0f,
 			-0.5f,  0.5f, 0xFF'00'FF'00, 0.0f, 0.0f);
-		square = AEGfxMeshEnd();
+		_squareMesh = AEGfxMeshEnd();
 	}
 
-	void genTriMesh() {
+	void GenerateTriMesh() {
 		AEGfxMeshStart();
 		AEGfxTriAdd(
 			 0.f  , 0.86603f, 0xFFFFFFFF, 1.0f, 1.0f,
 			-0.5f , 0		, 0xFFFFFFFF, 1.0f, 1.0f,
 			 0.5f ,	0		, 0xFFFFFFFF, 1.0f, 1.0f);
-		triangle = AEGfxMeshEnd();
+		_triangleMesh = AEGfxMeshEnd();
 	}
 
-	void genCircMesh() {
+	void GenerateCircleMesh() {
 		AEGfxMeshStart();
 
+		//definitely needs to be change to f32 for no conversion
 		double baseX = 0.5f;
 		double baseY = 0.f;
 		for (int i = 0; i < 16; i++) {
@@ -66,7 +67,7 @@ namespace {
 		}
 
 		// Saving the mesh (list of triangles) in pMesh
-		circle = AEGfxMeshEnd();
+		_circleMesh = AEGfxMeshEnd();
 	}
 }
 
@@ -76,9 +77,9 @@ namespace RenderSystem
 {
 	//call before entering game loop
 	void RendererInitialize() {
-		genSqrMesh();
-		genTriMesh();
-		genCircMesh();
+		GenerateSquareMesh();
+		GenerateTriMesh();
+		GenerateCircleMesh();
 		pFont = AEGfxCreateFont("Assets/liberation-mono.ttf", 72);
 		pTex = AEGfxTextureLoad("./Assets/PlanetTexture.png");
 		std::cout << "\ninit success\n";
@@ -190,7 +191,7 @@ namespace RenderSystem
 		SetTransform(data.transform,data.alignment,transform);
 		AEGfxSetTransform(transform.m);
 
-		AEGfxMeshDraw(square, data.meshMode);
+		AEGfxMeshDraw(_squareMesh, data.meshMode);
 	}
 
 	void DrawTri(RenderData data) {
@@ -208,7 +209,7 @@ namespace RenderSystem
 		AEMtx33Concat(&transform, &translate, &transform);
 		AEGfxSetTransform(transform.m);
 
-		AEGfxMeshDraw(triangle, AE_GFX_MDM_TRIANGLES);
+		AEGfxMeshDraw(_triangleMesh, AE_GFX_MDM_TRIANGLES);
 	}
 
 	void DrawCirc(RenderData data) {
@@ -226,7 +227,7 @@ namespace RenderSystem
 		AEMtx33Concat(&transform, &translate, &transform);
 		AEGfxSetTransform(transform.m);
 
-		AEGfxMeshDraw(circle, AE_GFX_MDM_TRIANGLES);
+		AEGfxMeshDraw(_circleMesh, AE_GFX_MDM_TRIANGLES);
 	}
 
 	void DrawMyText(char* text, float2 pos, float size) {
@@ -243,9 +244,9 @@ namespace RenderSystem
 
 	//call after game loop
 	void RendererExit() {
-		AEGfxMeshFree(square);
-		AEGfxMeshFree(triangle);
-		AEGfxMeshFree(circle);
+		AEGfxMeshFree(_squareMesh);
+		AEGfxMeshFree(_triangleMesh);
+		AEGfxMeshFree(_circleMesh);
 		AEGfxDestroyFont(pFont);
 		AEGfxTextureUnload(pTex);
 	}
