@@ -15,6 +15,7 @@
 #include "controller.hpp"
 #include "math.hpp"
 #include "ui_types.hpp"
+#include "test_component.hpp"
 
 // parse a scene object into a scene file
 // read it back from the scene file into object on load
@@ -84,6 +85,12 @@ namespace SceneIO
             Text str{};
             str.Deserialize(compObj);
             go.AddComponent<Text>(str);
+        }
+        else if (type == "EchoPingTest")
+        {
+            EchoPingTest ept{};
+            ept.Deserialize(compObj);
+            go.AddComponent<EchoPingTest>(ept);
         }
     }
 

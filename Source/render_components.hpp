@@ -130,7 +130,7 @@ struct Renderer : Component
         if (compObj.isMember("alignment") && compObj["alignment"].isInt())
             alignment = static_cast<Alignment>(compObj["alignment"].asInt());
 
-        if (compObj.isMember("color") && compObj["color"].isObject())
+        if (compObj.isMember("color"))
             ReadColor(compObj["color"],color);
 
         //read texture from file here

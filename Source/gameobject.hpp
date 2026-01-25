@@ -76,6 +76,7 @@ public:
 		if (_componentMap.find(type) != _componentMap.end())
 			throw std::runtime_error("Component already exists");
 
+
 		auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
 		ptr->SetOwner(this);
 

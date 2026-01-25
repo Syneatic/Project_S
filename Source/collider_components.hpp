@@ -7,6 +7,7 @@
 //abstract
 struct Collider : Component
 {
+protected:
     //tag
     //isTrigger
 };

@@ -14,7 +14,7 @@
 #include "ui_types.hpp"
 #include "renderer.hpp"
 
-#include "physics-collision.hpp"
+#include "physics.hpp"
 
 static std::wstring OpenFile()
 {
@@ -114,6 +114,29 @@ static void UnregisterSceneRenderers(const Scene& scene)
 	}
 }
 
+static void RegisterSceneColliders(const Scene& scene)
+{
+	for (auto& pgo : scene.gameObjectList())
+	{
+		auto* go = pgo.get();
+		for (auto& [type, comp] : go->componentMap())
+			if (auto* c = dynamic_cast<Collider*>(comp.get()))
+				Physics::RegisterCollider(c);
+	}
+}
+
+static void UnregisterSceneColliders(const Scene& scene)
+{
+	for (auto& pgo : scene.gameObjectList())
+	{
+		auto* go = pgo.get();
+		for (auto& [type, comp] : go->componentMap())
+			if (auto* c = dynamic_cast<Collider*>(comp.get()))
+				Physics::UnregisterCollider(c);
+	}
+}
+
+
 struct EditorScene : Scene
 {
 private:
@@ -126,6 +149,12 @@ private:
 	{
 		RenderSystem::FlushRenderers();                 // clear list
 		RegisterSceneRenderers(loadedScene); // rebuild from scene data
+	}
+
+	void RefreshColliders()
+	{
+		Physics::FlushColliders();
+		RegisterSceneColliders(loadedScene);
 	}
 
 	void BuildDockSpace()
@@ -353,6 +382,18 @@ private:
 
 				ImGui::EndMenu();
 			}
+
+			if (ImGui::BeginMenu("TESTING"))
+			{
+				if (ImGui::MenuItem("EchoPingTest"))
+				{
+					selectedObj.AddComponent<EchoPingTest>();
+				}
+
+				ImGui::EndMenu();
+			}
+
+
 			if (ImGui::BeginCombo("UI TYPE", _previewType))
 			{
 				for (int i = 0; i < IM_ARRAYSIZE(_uiTypes); i++)
@@ -406,15 +447,18 @@ public:
 	void OnEnter() override
 	{
 		RefreshRenderers();
+		RefreshColliders();
 	}
 
 	void OnUpdate() override
 	{
-		
+		//laze so im refreshing every frame
+		RefreshColliders();
+
 		//draw gizmos
 		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 		bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
-		Physics::CheckAllTypeCollisions(loadedScene);
+		Physics::CheckAllTypeCollisions();
 
 		RenderSystem::Draw();
 

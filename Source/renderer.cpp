@@ -19,6 +19,7 @@ namespace {
 	AEGfxVertexList* _squareMesh = 0;
 	AEGfxVertexList* _triangleMesh = 0;
 	AEGfxVertexList* _circleMesh = 0;
+	AEGfxVertexList* _pointMesh = 0;
 	s8 pFont{};
 	AEGfxTexture* pTex{};
 	
@@ -29,13 +30,13 @@ namespace {
 	void GenerateSquareMesh() {
 		AEGfxMeshStart();
 		AEGfxTriAdd(
-			 0.5f, -0.5f, 0xFF'FF'00'00, 1.0f, 1.0f,
-			-0.5f,  0.5f, 0xFF'00'FF'00, 0.0f, 0.0f,
-			-0.5f, -0.5f, 0xFF'00'00'FF, 0.0f, 1.0f);
+			 0.5f, -0.5f, 0xFF'FF'FF'FF, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0xFF'FF'FF'FF, 0.0f, 0.0f,
+			-0.5f, -0.5f, 0xFF'FF'FF'FF, 0.0f, 1.0f);
 		AEGfxTriAdd(
-			 0.5f, -0.5f, 0xFF'FF'00'00, 1.0f, 1.0f,
-			 0.5f,  0.5f, 0xFF'FF'FF'00, 1.0f, 0.0f,
-			-0.5f,  0.5f, 0xFF'00'FF'00, 0.0f, 0.0f);
+			 0.5f, -0.5f, 0xFF'FF'FF'FF, 1.0f, 1.0f,
+			 0.5f,  0.5f, 0xFF'FF'FF'FF, 1.0f, 0.0f,
+			-0.5f,  0.5f, 0xFF'FF'FF'FF, 0.0f, 0.0f);
 		_squareMesh = AEGfxMeshEnd();
 	}
 
@@ -68,6 +69,13 @@ namespace {
 
 		// Saving the mesh (list of triangles) in pMesh
 		_circleMesh = AEGfxMeshEnd();
+	}
+
+	void GeneratePointMesh()
+	{
+		AEGfxMeshStart();
+		AEGfxVertexAdd(0.f,0.f,0xFFFFFFFF,0.f,0.f);
+		_pointMesh = AEGfxMeshEnd();
 	}
 }
 
@@ -169,6 +177,31 @@ namespace RenderSystem
 	}
 
 	//draw primitives/text
+	void DrawPoint(float2 pos)
+	{
+		//set modes
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+
+		//set colors
+		AEGfxSetColorToAdd(0, 0, 0, 0);
+		AEGfxSetBlendColor(0, 0, 0, 0);
+		AEGfxSetColorToMultiply(1.f, 0, 0, 1.f);
+		AEGfxSetTransparency(1.f);
+
+		AEMtx33 transform;
+		AEMtx33Identity(&transform);
+		AEMtx33 scale;
+		AEMtx33Scale(&scale, 5.f, 5.f);
+		AEMtx33 translate;
+		AEMtx33Trans(&translate, pos.x, pos.y);
+		AEMtx33Concat(&transform, &transform, &scale);
+		AEMtx33Concat(&transform, &translate, &transform);
+		AEGfxSetTransform(transform.m);
+
+		AEGfxMeshDraw(_squareMesh, AE_GFX_MDM_TRIANGLES);
+	}
+
 	void DrawRect(RenderData data) 
 	{
 		//set modes
@@ -247,6 +280,8 @@ namespace RenderSystem
 		AEGfxMeshFree(_squareMesh);
 		AEGfxMeshFree(_triangleMesh);
 		AEGfxMeshFree(_circleMesh);
+		AEGfxMeshFree(_pointMesh);
+
 		AEGfxDestroyFont(pFont);
 		AEGfxTextureUnload(pTex);
 	}

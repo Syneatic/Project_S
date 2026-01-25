@@ -4,6 +4,7 @@
 
 #include "AEEngine.h" //temporary
 #include "gameobject.hpp"
+#include "physics.hpp"
 #include "renderer.hpp"
 #include "render_components.hpp"
 
@@ -20,9 +21,15 @@ protected:
 			auto go = pgo.get();
 			for (auto& [type, comp] : go->componentMap())
 			{
+				//register renderer
 				if (auto* r = dynamic_cast<Renderer*>(comp.get()))
 					RenderSystem::RegisterRenderer(r);
 
+				//register collider
+				if (auto* c = dynamic_cast<Collider*>(comp.get()))
+					Physics::RegisterCollider(c);
+
+				//OnStart behaviours
 				if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
 					b->OnStart();
 			}
@@ -42,6 +49,8 @@ public:
 
 	virtual void OnUpdate()
 	{
+		Physics::CheckAllTypeCollisions();
+
 		//test draw
 		AEGfxSetBackgroundColor(0.f,0.f,0.f);
 
@@ -61,6 +70,7 @@ public:
 	{
 		//delete
 		RenderSystem::FlushRenderers();
+		Physics::FlushColliders();
 	}
 
 	//===== SERIALIZATION =====

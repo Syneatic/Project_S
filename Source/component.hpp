@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <typeindex>
 #include "ImGUI/imgui.h"
 
 #include "json.h"
@@ -17,6 +18,7 @@ protected:
     explicit Component(GameObject* owner) : _owner(owner) {};
 
 public:
+
     void SetOwner(GameObject* owner) { _owner = owner; }
     GameObject& gameObject() { return *_owner; }
     const GameObject& gameObject() const { return *_owner; }

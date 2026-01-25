@@ -53,12 +53,13 @@
     <ClInclude Include="Source\json_parser_helper.hpp" />
     <ClInclude Include="Source\math.hpp" />
     <ClInclude Include="Source\controller.hpp" />
-    <ClInclude Include="Source\physics-collision.hpp" />
+    <ClInclude Include="Source\physics.hpp" />
     <ClInclude Include="Source\renderer.hpp" />
     <ClInclude Include="Source\render_components.hpp" />
     <ClInclude Include="Source\scene.hpp" />
     <ClInclude Include="Source\scene_editor.hpp" />
     <ClInclude Include="Source\scene_parser.hpp" />
+    <ClInclude Include="Source\test_component.hpp" />
     <ClInclude Include="Source\ui_types.hpp" />
   </ItemGroup>
   <ItemGroup>
