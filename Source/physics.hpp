@@ -15,8 +15,8 @@
 namespace {
 	std::vector<Collider*> _colliders;
 	std::unordered_set<Collider*> _colliderSet;
-	//helper
 
+	//helper
 	float2 rotatePoint(const float2& point, float angle)
 	{
 		float rad = angle * (3.14159265359f / 180.0f);

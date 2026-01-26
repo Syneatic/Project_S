@@ -46,7 +46,7 @@ namespace RenderSystem {
 	void Draw();
 
 	//exposed api for drawing primitives
-	void DrawRect(RenderData data);
+	void DrawQuad(RenderData data);
 	void DrawTri(RenderData data);
 	void DrawCirc(RenderData data);
 	void DrawPoint(float2 pos);

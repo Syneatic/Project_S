@@ -16,7 +16,7 @@
 
 namespace {
 	//NOT EXPOSED!!
-	AEGfxVertexList* _squareMesh = 0;
+	AEGfxVertexList* _quadMesh = 0;
 	AEGfxVertexList* _triangleMesh = 0;
 	AEGfxVertexList* _circleMesh = 0;
 	AEGfxVertexList* _pointMesh = 0;
@@ -27,7 +27,7 @@ namespace {
 	std::vector<Renderer*> _renderers;
 	std::unordered_set<Renderer*> _rendererSet;
 
-	void GenerateSquareMesh() {
+	void GenerateQuadMesh() {
 		AEGfxMeshStart();
 		AEGfxTriAdd(
 			 0.5f, -0.5f, 0xFF'FF'FF'FF, 1.0f, 1.0f,
@@ -37,7 +37,7 @@ namespace {
 			 0.5f, -0.5f, 0xFF'FF'FF'FF, 1.0f, 1.0f,
 			 0.5f,  0.5f, 0xFF'FF'FF'FF, 1.0f, 0.0f,
 			-0.5f,  0.5f, 0xFF'FF'FF'FF, 0.0f, 0.0f);
-		_squareMesh = AEGfxMeshEnd();
+		_quadMesh = AEGfxMeshEnd();
 	}
 
 	void GenerateTriMesh() {
@@ -85,7 +85,7 @@ namespace RenderSystem
 {
 	//call before entering game loop
 	void RendererInitialize() {
-		GenerateSquareMesh();
+		GenerateQuadMesh();
 		GenerateTriMesh();
 		GenerateCircleMesh();
 		pFont = AEGfxCreateFont("Assets/liberation-mono.ttf", 72);
@@ -199,10 +199,10 @@ namespace RenderSystem
 		AEMtx33Concat(&transform, &translate, &transform);
 		AEGfxSetTransform(transform.m);
 
-		AEGfxMeshDraw(_squareMesh, AE_GFX_MDM_TRIANGLES);
+		AEGfxMeshDraw(_quadMesh, AE_GFX_MDM_TRIANGLES);
 	}
 
-	void DrawRect(RenderData data) 
+	void DrawQuad(RenderData data) 
 	{
 		//set modes
 		AEGfxSetRenderMode(data.renderMode);
@@ -224,7 +224,7 @@ namespace RenderSystem
 		SetTransform(data.transform,data.alignment,transform);
 		AEGfxSetTransform(transform.m);
 
-		AEGfxMeshDraw(_squareMesh, data.meshMode);
+		AEGfxMeshDraw(_quadMesh, data.meshMode);
 	}
 
 	void DrawTri(RenderData data) {
@@ -277,7 +277,7 @@ namespace RenderSystem
 
 	//call after game loop
 	void RendererExit() {
-		AEGfxMeshFree(_squareMesh);
+		AEGfxMeshFree(_quadMesh);
 		AEGfxMeshFree(_triangleMesh);
 		AEGfxMeshFree(_circleMesh);
 		AEGfxMeshFree(_pointMesh);
