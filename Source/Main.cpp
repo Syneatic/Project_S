@@ -83,7 +83,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// struct function.
 	UIButtonRegister buttonRegister;
 	BindButtonFunctions(buttonRegister);
-	Button::SetRegister(&buttonRegister);
+	//Button::SetRegister(&buttonRegister);
 
 	bool m_ImGUIInitialized = false;
 	SceneManager& sceneManager = SceneManager::Instance();

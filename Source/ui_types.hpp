@@ -135,8 +135,8 @@ void Hover_Logic(GameObject& button, UIButtonRegister& bReg);
 struct Button : Behaviour
 {
 	FunctionKey fKey;
-	static UIButtonRegister* reg;
-	static void SetRegister(UIButtonRegister* br) { reg = br; }
+	//static UIButtonRegister* reg;
+	//static void SetRegister(UIButtonRegister* br) { reg = br; }
 
 	void DrawInInspector() override
 	{
@@ -172,7 +172,7 @@ struct Button : Behaviour
 	void OnUpdate() override
 	{
 		GameObject& owner = *_owner;
-		Hover_Logic(owner, *reg);
+		//Hover_Logic(owner, *reg);
 	}
 	void OnDestroy() override {}
 
