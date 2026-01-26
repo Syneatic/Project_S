@@ -27,9 +27,9 @@ struct RenderData //pass in this data to Draw functions
 	RenderLayer renderLayer{};
 
 	//modes
-	AEGfxBlendMode blendMode{};
-	AEGfxRenderMode renderMode{};
-	AEGfxMeshDrawMode meshMode{};
+	AEGfxBlendMode blendMode{AE_GFX_BM_ADD};
+	AEGfxRenderMode renderMode{AE_GFX_RM_COLOR};
+	AEGfxMeshDrawMode meshMode{AE_GFX_MDM_TRIANGLES};
 	Alignment alignment{};
 
 	Color color{};

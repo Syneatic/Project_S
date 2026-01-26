@@ -21,9 +21,9 @@ struct EchoPingTest : Behaviour
 	};
 
 	// Tweakables
-	int   rayCount = 256;
+	int   rayCount = 128;
 	float maxRadius = 1000.0f;   // world units
-	float speed = 100.0f;   // world units per second
+	float speed = 300.0f;   // world units per second
 	u8    pingKey = 'E';      // change if you use different keycodes
 	u32   pointColor = 0xFFFFFFFF;
 
@@ -89,7 +89,6 @@ private:
 
 	void Ping()
 	{
-		hits.clear();
 		auto* tr = gameObject().GetComponent<Transform>();
 		if (!tr) return;
 

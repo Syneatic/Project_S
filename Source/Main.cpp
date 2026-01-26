@@ -108,7 +108,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			if (AEInputCheckTriggered(AEVK_1)) sceneManager.RequestSceneSwitch(&editorScene);
 			if (AEInputCheckTriggered(AEVK_2))
 			{
-				SceneIO::DeserializeScene(blankScene, "PingTest");
+				SceneIO::DeserializeScene(blankScene, "PHYSICS_SCENE");
 				sceneManager.RequestSceneSwitch(&blankScene);
 			}
 		}

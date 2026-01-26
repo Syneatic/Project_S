@@ -457,6 +457,9 @@ public:
 
 		//draw gizmos
 		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
+
+
+
 		bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
 		Physics::CheckAllTypeCollisions();
 
@@ -482,6 +485,7 @@ public:
 	{
 		//unload everything
 		RenderSystem::FlushRenderers();
+		Physics::FlushColliders();
 	}
 
 	EditorScene() { _name = "Editor"; }
