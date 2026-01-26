@@ -40,17 +40,6 @@ namespace SceneIO
         
         c.Serialize(outComp);
 
-        if (type == "Text")
-        {
-            auto const& str = static_cast<Text const&>(c);
-            outComp["string"] = str.str;
-        }
-        else if (type == "Button")
-        {
-            auto const& button = static_cast<Button const&>(c);
-            outComp["functionListId"] = static_cast<int>(button.fKey);
-        }
-
         return true;
     }
 
@@ -106,8 +95,7 @@ namespace SceneIO
         else if (type == "Button")
         {
             Button b{};
-            if (compObj.isMember("functionListId"))
-                b.fKey = functionList[compObj["functionListId"].asInt()];
+			b.Deserialize(compObj);
             go.AddComponent<Button>(b);
         }
     }

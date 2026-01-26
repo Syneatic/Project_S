@@ -157,6 +157,17 @@ struct Button : Behaviour
 		}
 	}
 
+	void Serialize(Json::Value& outComp) const override
+	{
+		outComp["functionListId"] = static_cast<int>(fKey);
+	}
+
+	void Deserialize(const Json::Value& compObj) override
+	{
+		if (compObj.isMember("functionListId"))
+			fKey = functionList[compObj["functionListId"].asInt()];
+	}
+
 	void OnStart() override {}
 	void OnUpdate() override
 	{
