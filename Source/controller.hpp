@@ -6,6 +6,7 @@
 #include "component.hpp"
 #include "gameobject.hpp"
 #include "math.hpp"
+#include <iostream>
 
 //abstract
 struct Controller : Behaviour
@@ -25,6 +26,9 @@ struct PlayerController : Controller
     float2 velocity{ 1.f, 1.f };
     f32 gravity{ 12.f };
     f32 drag{ 10.f };
+    f32 mass{ 50.f };
+
+    f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 
     void DrawInInspector() override
     {
@@ -84,14 +88,61 @@ struct PlayerController : Controller
     {
     } 
 
+    bool isGravityOn = true;
+    bool OnGround = false;
+    f32 currJumpHeight{};
+    f32 ground{};
+
     void OnUpdate() override
     {
         GameObject& owner = *_owner;
         Transform& trans = *owner.GetComponent<Transform>();
 
-        if (AEInputCheckTriggered(AEVK_A))
+        if (AEInputCheckCurr(AEVK_A))
         {
-            trans.position.x -= 2.0f;
+            trans.position.x -= 200.f * dt;
+        }
+        if (AEInputCheckCurr(AEVK_D))
+        {
+            trans.position.x += 200.f * dt;
+        }
+
+        //Once if space is pressed once
+        if (AEInputCheckCurr(AEVK_SPACE) && OnGround)
+        {
+            //Set the space bar velocity to true
+            //Check if the player reach the height (dt)
+            isGravityOn = false;
+            OnGround = false;
+        }
+
+        //Make the player able to jump
+        if (!OnGround && !isGravityOn)
+        {
+            //Check the total number it travels up
+
+
+            //Constantly making th eplayer go up
+            trans.position.y = currJumpHeight += 100.f * dt;
+
+            if (currJumpHeight >= 300.f)
+            {
+                isGravityOn = true;
+            }
+        }
+
+        //Make the player go down (til it reaches the ideal location)
+        if (isGravityOn && trans.position.y >= ground)
+        {
+            trans.position.y -= gravity * mass* dt;
+        }
+        
+        if (!OnGround && trans.position.y <= ground)
+        {
+            std::cout << "Touched the ground" << std::endl;
+            isGravityOn = false;
+            OnGround = true;
+            currJumpHeight = 0.f;
         }
     }
 
