@@ -6,6 +6,9 @@
 #include "AEInput.h"
 #include "AETypes.h"
 
+// Preset value.
+constexpr f32 defaultButtonHeight{ 100.f }, defaultButtonWidth{ 400.f }, defaultTextSize{ 40.f }, defaultStrokeWeight{ 2.f }, zeroVal{};
+
 // Functions for UI buttons.
 static void Play() {}
 static void Pause() {}

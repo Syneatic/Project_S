@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include "component.hpp"
@@ -21,20 +22,6 @@ enum class FunctionKey
 	COUNT
 };
 
-const FunctionKey functionList[static_cast<size_t>(FunctionKey::COUNT)]
-{
-	FunctionKey::PLAY_GAME,
-	FunctionKey::PAUSE_GAME,
-	FunctionKey::RESTART_GAME,
-	FunctionKey::SETTINGS_TOGGLE,
-	FunctionKey::MUSIC_INC, FunctionKey::MUSIC_DEC,
-	FunctionKey::SFX_INC, FunctionKey::SFX_DEC,
-	FunctionKey::SAVE_GAME, FunctionKey::LOAD_GAME,
-	FunctionKey::CREDITS_TOGGLE,
-	FunctionKey::QUIT_GAME,
-	FunctionKey::EXIT_APP
-};
-
 using CallbackF = void(*)(); // Identifier for void pointer function with void param.
 using ButtonRegister = std::unordered_map<FunctionKey, CallbackF>; // Identifier for unordered_map with FunctionKey & CallbackF.
 
@@ -42,6 +29,18 @@ using ButtonRegister = std::unordered_map<FunctionKey, CallbackF>; // Identifier
 class UIButtonRegister
 {
 public:
+	// Singleton.
+	static UIButtonRegister& Instance()
+	{
+		static UIButtonRegister instance;
+		return instance;
+	}
+
+	UIButtonRegister(const UIButtonRegister&) = delete;
+	UIButtonRegister& operator=(const UIButtonRegister&) = delete;
+	UIButtonRegister(UIButtonRegister&&) = delete;
+	UIButtonRegister& operator=(UIButtonRegister&&) = delete;
+
 	void bindFunction(FunctionKey key, CallbackF callF)
 	{
 		buttonReg[key] = callF;
@@ -56,6 +55,7 @@ public:
 
 private:
 	ButtonRegister buttonReg;
+	UIButtonRegister() {}
 };
 
 void BindButtonFunctions(UIButtonRegister& bReg);
@@ -80,6 +80,7 @@ struct Display : Behaviour
 // Text component to assign text on screen.
 struct Text : Behaviour
 {
+	int fontSize;
 	std::string str;
 
 	void DrawInInspector() override
@@ -107,27 +108,11 @@ struct Text : Behaviour
 	const std::string name() const override { return "Text"; }
 };
 
-static char const* ReturnButtonName(FunctionKey k)
+static char const* _buttonNames[]
 {
-	switch (k)
-	{
-	case FunctionKey::PLAY_GAME:	return "GamePlay";
-	case FunctionKey::PAUSE_GAME:	return "GamePause";
-	case FunctionKey::RESTART_GAME:	return "GameRestart";
-	case FunctionKey::SETTINGS_TOGGLE:	return "ToggleSettings";
-	case FunctionKey::MUSIC_INC:	return "MusicUp";
-	case FunctionKey::MUSIC_DEC:	return "MusicDown";
-	case FunctionKey::SFX_INC:		return "SfxUp";
-	case FunctionKey::SFX_DEC:		return "SfxDown";
-	case FunctionKey::SAVE_GAME:	return "GameSave";
-	case FunctionKey::LOAD_GAME:	return "GameLoad";
-	case FunctionKey::CREDITS_TOGGLE:	return "ToggleCredits";
-	case FunctionKey::QUIT_GAME:	return "GameQuit";
-	case FunctionKey::EXIT_APP:		return "AppExit";
-	default:						return "SelectButton";
-	}
-	return "Invalid";
-}
+	"GamePlay", "GamePause", "GameRestart", "ToggleSettings", "MusicUp", "MusicDown",
+	"SfxUp", "SfxDown", "GameSave", "GameLoad", "ToggleCredits", "GameQuit", "AppExit"
+};
 
 void Hover_Logic(GameObject& button, UIButtonRegister& bReg);
 
@@ -135,19 +120,17 @@ void Hover_Logic(GameObject& button, UIButtonRegister& bReg);
 struct Button : Behaviour
 {
 	FunctionKey fKey;
-	//static UIButtonRegister* reg;
-	//static void SetRegister(UIButtonRegister* br) { reg = br; }
 
 	void DrawInInspector() override
 	{
-		if (ImGui::BeginCombo("ButtonMode", ReturnButtonName(fKey)))
+		if (ImGui::BeginCombo("ButtonMode", "SelectButton"))
 		{
 			for (int i = 0; i < static_cast<int>(FunctionKey::COUNT); i++)
 			{
-				bool is_selected = (fKey == functionList[i]);
+				bool is_selected = (i == static_cast<int>(fKey));
 
-				if (ImGui::Selectable(ReturnButtonName(functionList[i]), is_selected))
-					fKey = functionList[i];
+				if (ImGui::Selectable(_buttonNames[i], is_selected))
+					fKey = static_cast<FunctionKey>(i);
 
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -159,25 +142,22 @@ struct Button : Behaviour
 
 	void Serialize(Json::Value& outComp) const override
 	{
-		outComp["functionListId"] = static_cast<int>(fKey);
+		outComp["buttonFunctionId"] = static_cast<int>(fKey);
 	}
 
 	void Deserialize(const Json::Value& compObj) override
 	{
-		if (compObj.isMember("functionListId"))
-			fKey = functionList[compObj["functionListId"].asInt()];
+		if (compObj.isMember("buttonFunctionId"))
+			fKey = static_cast<FunctionKey>(compObj["buttonFunctionId"].asInt());
 	}
 
 	void OnStart() override {}
 	void OnUpdate() override
 	{
 		GameObject& owner = *_owner;
-		//Hover_Logic(owner, *reg);
+		Hover_Logic(owner, UIButtonRegister::Instance());
 	}
 	void OnDestroy() override {}
 
 	const std::string name() const override { return "Button"; }
 };
-
-// Preset value.
-constexpr f32 defaultButtonHeight{ 100.f }, defaultButtonWidth{ 400.f }, defaultTextSize{ 40.f }, defaultStrokeWeight{ 2.f }, zeroVal{};
