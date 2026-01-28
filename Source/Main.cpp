@@ -82,9 +82,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// bind all functions & assign as
 	// pointer to all buttons with static
 	// struct function.
-	UIButtonRegister buttonRegister;
-	BindButtonFunctions(buttonRegister);
-	//Button::SetRegister(&buttonRegister);
+	BindButtonFunctions(UIButtonRegister::Instance());
 
 	bool m_ImGUIInitialized = false;
 	SceneManager& sceneManager = SceneManager::Instance();
