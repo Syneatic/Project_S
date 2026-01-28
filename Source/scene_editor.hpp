@@ -396,6 +396,12 @@ private:
 					RefreshRenderers();
 				}
 
+				if (ImGui::MenuItem("Text Renderer"))
+				{
+					selectedObj.AddComponent<TextRenderer>();
+					RefreshRenderers();
+				}
+
 				ImGui::EndMenu();
 			}
 

@@ -88,7 +88,7 @@ namespace RenderSystem
 		GenerateQuadMesh();
 		GenerateTriMesh();
 		GenerateCircleMesh();
-		pFont = AEGfxCreateFont("Assets/liberation-mono.ttf", 72);
+		pFont = AEGfxCreateFont("./Assets/liberation-mono.ttf", 72);
 		pTex = AEGfxTextureLoad("./Assets/PlanetTexture.png");
 		std::cout << "\ninit success\n";
 	}
@@ -263,8 +263,8 @@ namespace RenderSystem
 		AEGfxMeshDraw(_circleMesh, AE_GFX_MDM_TRIANGLES);
 	}
 
-	void DrawMyText(char* text, float2 pos, float size) {
-		AEGfxPrint(pFont, text, pos.x, pos.y, size, 1.f, 1.f, 1.f, 1.f);
+	void DrawMyText(char* text, RenderData data) {
+		AEGfxPrint(pFont, text, data.transform.position.x/ AEGfxGetWindowWidth(), data.transform.position.y/ AEGfxGetWindowHeight(), data.transform.scale.x, data.color.r, data.color.g, data.color.b, data.color.a);
 	}
 
 	void DrawArrow(float2 pos)
