@@ -104,7 +104,7 @@ private:
 		{
 			float a = (static_cast<float>(i) / static_cast<float>(rayCount)) * twoPi;
 			float2 dir{ std::cos(a), std::sin(a) }; // already normalized
-			particles[i].pos = float2{ 0.f, 0.f };
+			particles[i].pos = origin;
 			particles[i].vel = dir * spd;
 			particles[i].time = 0.f;
 			particles[i].lifetime = maxRadius / (speed);
