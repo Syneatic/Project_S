@@ -6,6 +6,7 @@
 #include "AEEngine.h"
 #include "gameobject.hpp"
 #include "color.hpp"
+#include "renderer.hpp"
 //#include "json_parser_helper.hpp"
 
 //abstract

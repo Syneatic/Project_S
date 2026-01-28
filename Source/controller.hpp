@@ -13,8 +13,6 @@ struct Controller : Behaviour
 {
     //max speed
     //velocity
-    //drag
-    //gravity
     //jump height
     //collidertype
 };
@@ -23,9 +21,7 @@ struct PlayerController : Controller
 {
     f32 maxspeed{ 200.f };
     f32 jumpHeight{ 20.f };
-    float2 velocity{ 1.f, 1.f };
-    f32 gravity{ 12.f };
-    f32 drag{ 10.f };
+    float2 velocity{ 0.f, 0.f };
     f32 mass{ 50.f };
 
     f32 dt = (f32)AEFrameRateControllerGetFrameTime();
@@ -53,21 +49,13 @@ struct PlayerController : Controller
             velocity.y = 0.0f;
         }
         ImGui::PopItemWidth();
-
-        ImGui::TextUnformatted("Gravity");
-        ImGui::DragFloat("##gravity", &gravity, 0.1f, 0.f);
-
-        ImGui::TextUnformatted("Drag");
-        ImGui::DragFloat("##drag", &drag, 0.1f, 0.f);
     }
 
     void Serialize(Json::Value& outComp) const override
     {
         outComp["maxSpeed"] = maxspeed;
         outComp["velocty"] = WriteFloat2(velocity);
-        outComp["gravity"] = gravity;
         outComp["jumpHeight"] = jumpHeight;
-        outComp["drag"] = drag;
     }
 
     void Deserialize(const Json::Value& compObj) override
@@ -76,12 +64,8 @@ struct PlayerController : Controller
             maxspeed = compObj["maxSpeed"].asFloat();
         if (compObj.isMember("velocity"))
             ReadFloat2(compObj["velocity"], velocity);
-        if (compObj.isMember("gravity") && compObj["gravity"].isNumeric())
-            gravity = compObj["gravity"].asFloat();
         if (compObj.isMember("jumpHeight") && compObj["jumpheight"].isNumeric())
             jumpHeight = compObj["jumpHeight"].asFloat();
-        if (compObj.isMember("drag") && compObj["drag"].isNumeric())
-            drag = compObj["drag"].asFloat();
     }
 
     void OnStart() override
@@ -90,8 +74,10 @@ struct PlayerController : Controller
 
     bool isGravityOn = true;
     bool OnGround = false;
-    f32 currJumpHeight{};
+    f32 start = 200.f;
+    f32 end = 0.f;
     f32 ground{};
+    f32 t = 0.f;
 
     void OnUpdate() override
     {
@@ -108,41 +94,53 @@ struct PlayerController : Controller
         }
 
         //Once if space is pressed once
-        if (AEInputCheckCurr(AEVK_SPACE) && OnGround)
+        if (AEInputCheckTriggered(AEVK_SPACE) && OnGround)
         {
             //Set the space bar velocity to true
             //Check if the player reach the height (dt)
             isGravityOn = false;
             OnGround = false;
+            t = 0.f;
         }
 
         //Make the player able to jump
         if (!OnGround && !isGravityOn)
         {
+            const float jumpDuration = 1.f;
             //Check the total number it travels up
-
-
-            //Constantly making th eplayer go up
-            trans.position.y = currJumpHeight += 100.f * dt;
-
-            if (currJumpHeight >= 300.f)
+            //Constantly making the player go up
+            /*trans.position.y = (currJumpHeight += 100.f * dt);*/
+            if (t <= jumpDuration)
+            {
+                t += dt;
+                float alpha = t / jumpDuration;
+                velocity.y = start + alpha * (end - start);
+                std::cout << velocity.y << std::endl;
+            }
+            else
             {
                 isGravityOn = true;
+                std::cout << "Gravity back on" << std::endl;
             }
         }
 
         //Make the player go down (til it reaches the ideal location)
-        if (isGravityOn && trans.position.y >= ground)
+        if (!OnGround && isGravityOn)
         {
-            trans.position.y -= gravity * mass* dt;
+            const float gravity = 450.F;
+            velocity.y -= gravity * dt;
         }
-        
-        if (!OnGround && trans.position.y <= ground)
+
+        trans.position.y += velocity.y * dt;
+
+        if (trans.position.y <= ground)
         {
-            std::cout << "Touched the ground" << std::endl;
+            //std::cout << "Touched the ground" << std::endl;
+            velocity.y = 0;
             isGravityOn = false;
             OnGround = true;
-            currJumpHeight = 0.f;
+            trans.position.y = ground;
+            //t = 0.f;
         }
     }
 
