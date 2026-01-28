@@ -127,16 +127,18 @@ private:
 
 	void DrawHits()
 	{
-		for (size_t i = 0; i < RAY_COUNT; i++)
+		// only draw if alive or hit wall
+		for (size_t j = 0; j < hits.size(); j++)
 		{
-			//draw particles
-			auto& par = particles[i];
-			par.pos += par.vel;
-			par.lifetime -= static_cast<float>(AEFrameRateControllerGetFrameTime());
-			// only draw if alive or hit wall
-			for (size_t j = 0; j < hits.size(); j++)
+			auto& hit = hits[j];
+
+			for (size_t i = 0; i < RAY_COUNT; i++)
 			{
-				auto& hit = hits[j];
+				auto& par = particles[i];
+				if (par.stay)
+				{
+					continue;
+				}
 				//if particle reached hit point, we draw
 				if (length(hit.p - par.pos) <= length(par.vel * 1.5f))
 				{
@@ -144,7 +146,19 @@ private:
 					par.stay = true;
 					break;
 				}
+			}			
+		}
+
+		for (size_t i = 0; i < RAY_COUNT; i++)
+		{
+			//draw particles
+			auto& par = particles[i];
+			if (!par.stay)
+			{
+				par.pos += par.vel;
 			}
+			
+			par.lifetime -= static_cast<float>(AEFrameRateControllerGetFrameTime());
 
 			if (par.lifetime <= 0.0f && !par.stay)
 				continue;

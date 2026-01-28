@@ -280,7 +280,7 @@ namespace RenderSystem
 		AEGfxMeshFree(_quadMesh);
 		AEGfxMeshFree(_triangleMesh);
 		AEGfxMeshFree(_circleMesh);
-		AEGfxMeshFree(_pointMesh);
+		//AEGfxMeshFree(_pointMesh);
 
 		AEGfxDestroyFont(pFont);
 		AEGfxTextureUnload(pTex);
