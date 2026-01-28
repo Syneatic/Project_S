@@ -264,7 +264,11 @@ namespace RenderSystem
 	}
 
 	void DrawMyText(char* text, RenderData data) {
-		AEGfxPrint(pFont, text, data.transform.position.x/ AEGfxGetWindowWidth(), data.transform.position.y/ AEGfxGetWindowHeight(), data.transform.scale.x, data.color.r, data.color.g, data.color.b, data.color.a);
+		f32 screenPosX = data.transform.position.x / AEGfxGetWindowWidth();
+		f32 screenPosY = data.transform.position.y / AEGfxGetWindowHeight();
+		f32 textWidth, textHeight;
+		AEGfxGetPrintSize(pFont, text, data.transform.scale.x, &textWidth, &textHeight);
+		AEGfxPrint(pFont, text, screenPosX -textWidth/2, screenPosY-textHeight/2, data.transform.scale.x, data.color.r, data.color.g, data.color.b, data.color.a);
 	}
 
 	void DrawArrow(float2 pos)
