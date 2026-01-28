@@ -119,7 +119,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			{
 
 				// Load new scene
-				SceneIO::DeserializeScene(playScene, "Falling Object");
+				SceneIO::DeserializeScene(playScene, "PHYSICS_SCENE");
 
 				// Switch
 				sceneManager.RequestSceneSwitch(&playScene);
