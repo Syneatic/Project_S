@@ -173,6 +173,18 @@
     <ClInclude Include="Source\ui_types.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
+    <ClInclude Include="Source\physics.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\test_component.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\scene_play.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\physics_component.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Extern\jsoncpp\src\json_valueiterator.inl">

@@ -17,6 +17,7 @@
 #include "scene_editor.hpp"
 #include "scene_parser.hpp"
 #include "ui_types.hpp"
+#include "scene_play.hpp" 
 
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -88,7 +89,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	bool m_ImGUIInitialized = false;
 	SceneManager& sceneManager = SceneManager::Instance();
 	EditorScene editorScene{};
-	Scene blankScene{};
+	PlayScene playScene{};
 	sceneManager.RequestSceneSwitch(&editorScene);
 
 	// Using custom window procedure
@@ -118,8 +119,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			if (AEInputCheckTriggered(AEVK_1)) sceneManager.RequestSceneSwitch(&editorScene);
 			if (AEInputCheckTriggered(AEVK_2))
 			{
-				SceneIO::DeserializeScene(blankScene, "PHYSICS_SCENE");
-				sceneManager.RequestSceneSwitch(&blankScene);
+
+				// Load new scene
+				SceneIO::DeserializeScene(playScene, "Falling Object");
+
+				// Switch
+				sceneManager.RequestSceneSwitch(&playScene);
 			}
 		}
 		//renderSys::DrawArrow(float2::zero());

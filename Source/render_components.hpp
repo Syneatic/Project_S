@@ -157,7 +157,7 @@ struct SpriteRenderer : Renderer
         data.color = color;
         data.texture = texture;
         data.alignment = alignment;
-        RenderSystem::DrawRect(data);
+        RenderSystem::DrawQuad(data);
     }
 
     //no override since sprite is quite normal

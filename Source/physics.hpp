@@ -10,11 +10,23 @@
 #include "component.hpp"
 #include "math.hpp"
 #include "scene.hpp"           
-#include "gameobject.hpp"      
+#include "gameobject.hpp"
+#include "physics_component.hpp"
+
+struct RigidBody;
 
 namespace {
 	std::vector<Collider*> _colliders;
 	std::unordered_set<Collider*> _colliderSet;
+	std::vector<RigidBody*> _rigidbodies;
+	std::unordered_set<RigidBody*> _rigidbodySet;
+
+	struct CollisionInfo
+	{
+		bool collided{ false };
+		float2 normal{ 0,0 };
+		float penetration{ 0 };
+	};
 
 	//helper
 	float2 rotatePoint(const float2& point, float angle)
@@ -55,7 +67,20 @@ namespace {
 
 		return normal;
 	}
-	
+	inline void GetAABB(
+		const Transform& t,
+		const BoxCollider& b,
+		float& left, float& right,
+		float& bottom, float& top)
+	{
+		float hx = (b.size.x * t.scale.x) * 0.5f;
+		float hy = (b.size.y * t.scale.y) * 0.5f;
+
+		left = t.position.x - hx;
+		right = t.position.x + hx;
+		bottom = t.position.y - hy;
+		top = t.position.y + hy;
+	}
 	inline bool RayToCircle(
 		const float2& origin, const float2& dirN, float maxDist,
 		const Transform& t, const CircleCollider& c,
@@ -90,6 +115,54 @@ namespace {
 		outNormal = normalize(p - center);
 		outT = tHit;
 		return true;
+	}
+	inline void ResolveBoxVsBox(
+		RigidBody& rb,
+		Transform& t,
+		const BoxCollider& a,
+		const Transform& ot,
+		const BoxCollider& b)
+	{
+		float lA, rA, bA, tA;
+		float lB, rB, bB, tB;
+
+		GetAABB(t, a, lA, rA, bA, tA);
+		GetAABB(ot, b, lB, rB, bB, tB);
+
+		float overlapX = (std::min)(rA, rB) - (std::max)(lA, lB);
+		float overlapY = (std::min)(tA, tB) - (std::max)(bA, bB);
+
+		if (overlapX <= 0 || overlapY <= 0)
+			return;
+
+		// Resolve on smaller axis
+		if (overlapY < overlapX)
+		{
+			// Vertical collision
+			if (t.position.y > ot.position.y)
+			{
+				// Landing
+				t.position.y += overlapY;
+				rb.velocity.y = 0;
+				rb.Is_Grounded = true;
+			}
+			else
+			{
+				// Hit from below
+				t.position.y -= overlapY;
+				rb.velocity.y = 0;
+			}
+		}
+		else
+		{
+			// Horizontal collision
+			if (t.position.x > ot.position.x)
+				t.position.x += overlapX;
+			else
+				t.position.x -= overlapX;
+
+			rb.velocity.x = 0;
+		}
 	}
 
 	inline bool RayToOBB(
@@ -166,7 +239,7 @@ namespace {
 		outT = tHit;
 		return true;
 	}
-
+	
 
 }
 
@@ -213,6 +286,7 @@ namespace Physics
 
 	bool CircleVSCircle(const CircleCollider& a, const CircleCollider& b, const Transform& ta, const Transform& tb)
 	{
+		CollisionInfo info;
 		float dx = tb.position.x - ta.position.x;
 		float dy = tb.position.y - ta.position.y;
 
@@ -223,8 +297,9 @@ namespace Physics
 		return distance_sq < (rad_sum * rad_sum);
 	}
 
-	bool BoxVSBox(const BoxCollider& a, const BoxCollider& b, const Transform& ta, const Transform& tb)
+	CollisionInfo BoxVSBox(const BoxCollider& a, const BoxCollider& b, const Transform& ta, const Transform& tb)
 	{
+		CollisionInfo info;
 		/*float left_b1 = ta.position.x - (a.size.x * ta.scale.x) / 2.0f;
 		float right_b1 = ta.position.x + (a.size.x * ta.scale.x) / 2.0f;
 		float top_b1 = ta.position.y + (a.size.y * ta.scale.y) / 2.0f;
@@ -246,7 +321,8 @@ namespace Physics
 			edgeNormal(bCorners[0], bCorners[1]),
 			edgeNormal(bCorners[1], bCorners[2])
 		};
-
+		float minPenetration = FLT_MAX;
+		float2 collisionNormal = float2::zero();
 		for (int i = 0; i < 4; i++)
 		{
 			float minA = FLT_MAX, maxA = -FLT_MAX;
@@ -266,11 +342,30 @@ namespace Physics
 
 			if (maxA < minB || maxB < minA)
 			{
-				return false;
+				return info;
+			}
+
+			float penetration = (std::min)(maxA - minB, maxB - minA);
+
+			if (penetration < minPenetration)
+			{
+				minPenetration = penetration;
+				collisionNormal = axes[i];
+
+				float2 centerA = ta.position;
+				float2 centerB = tb.position;
+				float2 dir = centerB - centerA;
+				if (dot(dir, collisionNormal) < 0)
+				{
+					collisionNormal.x = -collisionNormal.x;
+					collisionNormal.y = -collisionNormal.y;
+				}
 			}
 		}
-
-		return true;
+		info.collided = true;
+		info.normal = collisionNormal;
+		info.penetration = minPenetration;
+		return info;
 	}
 
 	bool Raycast(const float2& origin, const float2& dir, float maxDist, RaycastHit& out)
@@ -321,6 +416,37 @@ namespace Physics
 		return hitAny;
 	}
 
+	void RegisterRigidBody(RigidBody* rb)
+	{
+		if (!rb) return;
+		if (_rigidbodySet.insert(rb).second)
+			_rigidbodies.push_back(rb);
+	}
+
+	void UnregisterRigidBody(RigidBody* rb)
+	{
+		if (!rb) return;
+		if (_rigidbodySet.erase(rb) == 0) return;
+
+		auto it = std::find(_rigidbodies.begin(), _rigidbodies.end(), rb);
+		if (it != _rigidbodies.end())
+		{
+			//push to back and pop
+			*it = _rigidbodies.back();
+			_rigidbodies.pop_back();
+		}
+
+	}
+	
+	void FlushRigidBody()
+	{
+		_rigidbodies.clear();
+		_rigidbodySet.clear();
+	}
+
+
+
+
 	void CheckAllTypeCollisions()
 	{
 		//only iterate through colliders
@@ -337,16 +463,72 @@ namespace Physics
 
 				if (!t1 || !t2) continue;
 
-				if (c1->name() == "BoxCollider")
+				RigidBody* rb1 = c1->gameObject().GetComponent<RigidBody>();
+				RigidBody* rb2 = c2->gameObject().GetComponent<RigidBody>();
+
+				if (c1->name() == "BoxCollider" && c2->name() == "BoxCollider")
 				{
 					auto* b1 = dynamic_cast<BoxCollider*>(c1);
-					
-					if (c2->name() == "BoxCollider")
+					auto* b2 = dynamic_cast<BoxCollider*>(c2);
+
+					CollisionInfo info = BoxVSBox(*b1, *b2, *t1, *t2);
+
+					if (info.collided)
 					{
-						auto* b2 = dynamic_cast<BoxCollider*>(c2);
-						if (BoxVSBox(*b1, *b2, *t1, *t2))
+						std::cout << c1->gameObject().name() << " and " << c2->gameObject().name() << " are colliding! (Box Vs Box)\n";
+
+						bool rb1Static = (!rb1 || rb1->Is_Static);
+						bool rb2Static = (!rb2 || rb2->Is_Static);
+
+						if (rb1Static && rb2Static) continue;
+
+						float2 seperation = info.normal * info.penetration;
+
+						if (!rb1Static && !rb2Static)
 						{
-							std::cout << c1->gameObject().name() << " and " << c2->gameObject().name() << " are colliding! (Box Vs Box)\n";
+							t1->position.x -= seperation.x * 0.5f;
+							t1->position.y -= seperation.y * 0.5f;
+							t2->position.x += seperation.x * 0.5f;
+							t2->position.y += seperation.y * 0.5f;
+
+							// Stop velocity in collision direction
+							float vel1 = dot(rb1->velocity, info.normal);
+							float vel2 = dot(rb2->velocity, info.normal);
+							if (vel1 < 0) rb1->velocity = rb1->velocity - (info.normal * vel1);
+							if (vel2 > 0) rb2->velocity = rb2->velocity - (info.normal * vel2);
+						}
+
+						else if (!rb1Static)
+						{
+							// Only obj1 is dynamic (obj2 is static)
+							t1->position.x -= seperation.x;
+							t1->position.y -= seperation.y;
+
+							// Stop velocity in collision direction
+							float vel = dot(rb1->velocity, info.normal);
+							if (vel < 0) rb1->velocity = rb1->velocity - (info.normal * vel);
+
+							// Check if grounded (collision normal pointing up from obj1's perspective)
+							if (info.normal.y < -0.7f)
+							{
+								rb1->Is_Grounded = true;
+							}
+						}
+
+						else // Only obj2 is dynamic (obj1 is static)
+						{
+							t2->position.x += seperation.x;
+							t2->position.y += seperation.y;
+
+							// Stop velocity in collision direction
+							float vel = dot(rb2->velocity, info.normal);
+							if (vel > 0) rb2->velocity = rb2->velocity - (info.normal * vel);
+
+							// Check if grounded (collision normal pointing up from obj2's perspective)
+							if (info.normal.y > 0.7f)
+							{
+								rb2->Is_Grounded = true;
+							}
 						}
 					}
 				}
@@ -366,6 +548,45 @@ namespace Physics
 					}
 				}
 			}
-		}	
+		}
+	}
+
+	void Step(float dt)
+	{
+		std::cout << "=== PHYSICS STEP ===" << std::endl;
+		std::cout << "dt: " << dt << std::endl;
+		std::cout << "Total rigidbodies: " << _rigidbodies.size() << std::endl;
+
+		// Reset grounded
+		for (auto* rb : _rigidbodies)
+			if (rb) rb->Is_Grounded = false;
+
+		// Integrate motion
+		for (auto* rb : _rigidbodies)
+		{
+			if (!rb || rb->Is_Static) continue;
+			std::cout << rb->name()
+				<< " vel=" << rb->velocity.y
+				<< " grounded=" << rb->Is_Grounded
+				<< " static=" << rb->Is_Static << std::endl;
+
+			Transform* t = rb->gameObject().GetComponent<Transform>();
+			if (!t) continue;
+
+			if (rb->Affected_By_Gravity && !rb->Is_Grounded)
+				rb->velocity.y -= rb->gravity * dt;
+
+			t->position += rb->velocity * dt;
+		}
+
+		// Resolve ALL collisions
+		CheckAllTypeCollisions();
+	}
+
+	inline RigidBody* CreateRigidBody()
+	{
+		RigidBody* rb = new RigidBody();
+		RegisterRigidBody(rb);
+		return rb;
 	}
 }

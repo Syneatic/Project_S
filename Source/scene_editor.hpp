@@ -13,7 +13,7 @@
 #include "scene_parser.hpp"
 #include "ui_types.hpp"
 #include "renderer.hpp"
-
+#include "physics_component.hpp"
 #include "physics.hpp"
 
 static std::wstring OpenFile()
@@ -136,6 +136,27 @@ static void UnregisterSceneColliders(const Scene& scene)
 	}
 }
 
+static void RegisterSceneRigidBodies(const Scene& scene)
+{
+	for (auto& pgo : scene.gameObjectList())
+	{
+		auto* go = pgo.get();
+		for (auto& [type, comp] : go->componentMap())
+			if (auto* rb = dynamic_cast<RigidBody*>(comp.get()))
+				Physics::RegisterRigidBody(rb);
+	}
+}
+
+static void UnregisterSceneRigidBodeies(const Scene& scene)
+{
+	for (auto& pgo : scene.gameObjectList())
+	{
+		auto* go = pgo.get();
+		for (auto& [type, comp] : go->componentMap())
+			if (auto* rb = dynamic_cast<RigidBody*>(comp.get()))
+				Physics::UnregisterRigidBody(rb);
+	}
+}
 
 struct EditorScene : Scene
 {
@@ -144,7 +165,7 @@ private:
 
 	// ===== GAMEOBJECT =====
 	int selectedGameObjectIndex = -1; // -1 for no selection
-
+	
 	void RefreshRenderers()
 	{
 		RenderSystem::FlushRenderers();                 // clear list
@@ -156,7 +177,11 @@ private:
 		Physics::FlushColliders();
 		RegisterSceneColliders(loadedScene);
 	}
-
+	void RefreshRigidBodies()
+	{
+		Physics::FlushRigidBody();
+		RegisterSceneRigidBodies(loadedScene);
+	}
 	void BuildDockSpace()
 	{
 		ImGuiWindowFlags host_flags =
@@ -203,6 +228,7 @@ private:
 					SceneIO::DeserializeScene(loadedScene, fileNameNoExt);
 					selectedGameObjectIndex = -1; //reset index selection
 					RefreshRenderers();
+					RefreshRigidBodies();
 				}
 			}
 
@@ -383,6 +409,15 @@ private:
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::BeginMenu("Physics"))
+			{
+				if (ImGui::MenuItem("Rigid Body"))
+				{
+					selectedObj.AddComponent<RigidBody>();
+				}
+				ImGui::EndMenu();
+			}
+
 			if (ImGui::BeginMenu("TESTING"))
 			{
 				if (ImGui::MenuItem("EchoPingTest"))
@@ -442,21 +477,24 @@ public:
 	{
 		RefreshRenderers();
 		RefreshColliders();
+		RefreshRigidBodies();
 	}
 
 	void OnUpdate() override
 	{
 		//laze so im refreshing every frame
 		RefreshColliders();
+		RefreshRigidBodies();
 
 		//draw gizmos
 		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
-
+		f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 
 
 		bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
 		Physics::CheckAllTypeCollisions();
 
+		Physics::Step(dt);
 		RenderSystem::Draw();
 
 		//draw imgui after game render
@@ -480,6 +518,7 @@ public:
 		//unload everything
 		RenderSystem::FlushRenderers();
 		Physics::FlushColliders();
+		Physics::FlushRigidBody();
 	}
 
 	EditorScene() { _name = "Editor"; }
