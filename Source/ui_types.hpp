@@ -3,8 +3,15 @@
 #include <string>
 #include <unordered_map>
 #include "component.hpp"
+#include "renderer.hpp"
 #include "math.hpp"
 #include "AEEngine.h"
+
+namespace UISystem
+{
+	// Preset value.
+	constexpr f32 defaultButtonHeight{ 100.f }, defaultButtonWidth{ 400.f }, defaultTextSize{ 40.f }, defaultStrokeWeight{ 2.f }, zeroVal{};
+}
 
 // Enum class ID for all possible button functions.
 enum class FunctionKey
@@ -35,7 +42,6 @@ public:
 		static UIButtonRegister instance;
 		return instance;
 	}
-
 	UIButtonRegister(const UIButtonRegister&) = delete;
 	UIButtonRegister& operator=(const UIButtonRegister&) = delete;
 	UIButtonRegister(UIButtonRegister&&) = delete;
@@ -43,22 +49,20 @@ public:
 
 	void bindFunction(FunctionKey key, CallbackF callF)
 	{
-		buttonReg[key] = callF;
+		_buttonReg[key] = callF;
 	}
 
 	void handleMouseClick(FunctionKey key)
 	{
-		auto iterator = buttonReg.find(key);
-		if (iterator != buttonReg.end() && iterator->second)
+		auto iterator = _buttonReg.find(key);
+		if (iterator != _buttonReg.end() && iterator->second)
 			iterator->second();
 	}
 
 private:
-	ButtonRegister buttonReg;
+	ButtonRegister _buttonReg;
 	UIButtonRegister() {}
 };
-
-void BindButtonFunctions(UIButtonRegister& bReg);
 
 // Display component to attach image or custom texture.
 struct Display : Behaviour
@@ -80,8 +84,9 @@ struct Display : Behaviour
 // Text component to assign text on screen.
 struct Text : Behaviour
 {
-	int fontSize;
+	f32 fontSize{UISystem::defaultTextSize};
 	std::string str;
+	//static char cStr[128];
 
 	void DrawInInspector() override
 	{
@@ -102,7 +107,11 @@ struct Text : Behaviour
 	}
 
 	void OnStart() override {}
-	void OnUpdate() override {}
+	void OnUpdate() override 
+	{
+		//char cStr[128]; strcpy_s(cStr, str.c_str());
+		//RenderSystem::DrawMyText(cStr, gameObject().GetComponent<Transform>()->position, fontSize);
+	}
 	void OnDestroy() override {}
 
 	const std::string name() const override { return "Text"; }
@@ -114,7 +123,11 @@ static char const* _buttonNames[]
 	"SfxUp", "SfxDown", "GameSave", "GameLoad", "ToggleCredits", "GameQuit", "AppExit"
 };
 
-void Hover_Logic(GameObject& button, UIButtonRegister& bReg);
+namespace UISystem
+{
+	void BindButtonFunctions(UIButtonRegister& bReg);
+	void Hover_Logic(GameObject& button, UIButtonRegister& bReg);
+}
 
 // Button Component to assign function callback.
 struct Button : Behaviour
@@ -154,8 +167,8 @@ struct Button : Behaviour
 	void OnStart() override {}
 	void OnUpdate() override
 	{
-		GameObject& owner = *_owner;
-		Hover_Logic(owner, UIButtonRegister::Instance());
+		//GameObject& owner = *_owner;
+		UISystem::Hover_Logic(gameObject(), UIButtonRegister::Instance());
 	}
 	void OnDestroy() override {}
 
