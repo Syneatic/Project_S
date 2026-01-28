@@ -88,7 +88,7 @@ namespace RenderSystem
 		GenerateQuadMesh();
 		GenerateTriMesh();
 		GenerateCircleMesh();
-		pFont = AEGfxCreateFont("Assets/liberation-mono.ttf", 72);
+		pFont = AEGfxCreateFont("./Assets/liberation-mono.ttf", 72);
 		pTex = AEGfxTextureLoad("./Assets/PlanetTexture.png");
 		std::cout << "\ninit success\n";
 	}
@@ -263,8 +263,41 @@ namespace RenderSystem
 		AEGfxMeshDraw(_circleMesh, AE_GFX_MDM_TRIANGLES);
 	}
 
-	void DrawMyText(char* text, float2 pos, float size) {
-		AEGfxPrint(pFont, text, pos.x, pos.y, size, 1.f, 1.f, 1.f, 1.f);
+	void DrawMyText(char* text, RenderData data) {
+		f32 screenPosX = data.transform.position.x / AEGfxGetWindowWidth();
+		f32 screenPosY = data.transform.position.y / AEGfxGetWindowHeight();
+		f32 textWidth{}, textHeight{}, offX{}, offY{};
+		AEGfxGetPrintSize(pFont, text, data.transform.scale.x, &textWidth, &textHeight);
+		switch (data.alignment) {
+		case TL:
+			offX = 0; offY = textHeight;
+			break;
+		case TC:
+			offX = textWidth / 2; offY = textHeight;
+			break;
+		case TR:
+			offX = textWidth; offY = textHeight;
+			break;
+		case ML:
+			offX = 0; offY = textHeight / 2;
+			break;
+		case MC:
+			offX = textWidth / 2; offY = textHeight / 2;
+			break;
+		case MR:
+			offX = textWidth; offY = textHeight / 2;
+			break;
+		case BL:
+			offX = 0; offY = 0;
+			break;
+		case BC:
+			offX = textWidth / 2; offY = 0;
+			break;
+		case BR:
+			offX = textWidth; offY = 0;
+			break;
+		}
+		AEGfxPrint(pFont, text, screenPosX -offX, screenPosY-offY, data.transform.scale.x, data.color.r, data.color.g, data.color.b, data.color.a);
 	}
 
 	void DrawArrow(float2 pos)
@@ -280,7 +313,7 @@ namespace RenderSystem
 		AEGfxMeshFree(_quadMesh);
 		AEGfxMeshFree(_triangleMesh);
 		AEGfxMeshFree(_circleMesh);
-		AEGfxMeshFree(_pointMesh);
+		//AEGfxMeshFree(_pointMesh);
 
 		AEGfxDestroyFont(pFont);
 		AEGfxTextureUnload(pTex);
