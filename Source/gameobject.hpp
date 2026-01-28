@@ -140,3 +140,8 @@ public:
 
 };
 
+//for now dont use
+static GameObject* CreateGameObject(const char* name)
+{
+	return new GameObject(name);
+}

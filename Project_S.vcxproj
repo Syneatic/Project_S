@@ -53,6 +53,7 @@
     <ClInclude Include="Source\json_parser_helper.hpp" />
     <ClInclude Include="Source\math.hpp" />
     <ClInclude Include="Source\controller.hpp" />
+    <ClInclude Include="Source\particle.hpp" />
     <ClInclude Include="Source\physics.hpp" />
     <ClInclude Include="Source\physics_component.hpp" />
     <ClInclude Include="Source\renderer.hpp" />
