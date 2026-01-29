@@ -19,70 +19,48 @@ struct Controller : Behaviour
 
 struct PlayerController : Controller
 {
-    f32 maxspeed{ 200.f };
-    f32 jumpHeight{ 20.f };
-    float2 velocity{ 0.f, 0.f };
-    f32 mass{ 50.f };
+    f32 maxSpeed = 200.f;
+    f32 jumpHeight = 100.f;
 
     f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 
     void DrawInInspector() override
     {
-        f32 total_width = ImGui::GetContentRegionAvail().x;
-        f32 spacing = ImGui::GetStyle().ItemSpacing.x;
 
         ImGui::TextUnformatted("Max Speed");
-        ImGui::DragFloat("##max_speed", &maxspeed, 0.1f, 0.f);
+        ImGui::DragFloat("##max_speed", &maxSpeed, 0.1f);
 
         ImGui::TextUnformatted("Jump Height");
-        ImGui::DragFloat("##jumpHeight", &jumpHeight, 0.1f, 0.f);
-
-        ImGui::TextUnformatted("Velocity");
-        ImGui::PushItemWidth(((total_width - spacing) / 2) - 100.f);
-        ImGui::DragFloat("##velocityX", &velocity.x, 0.f, -maxspeed, maxspeed);
-        ImGui::SameLine();
-        ImGui::DragFloat("##velocityY", &velocity.y, 0.f, -100.f, jumpHeight);
-        ImGui::SameLine();
-        if (ImGui::Button("Reset##Velocity"))
-        {
-            velocity.x = 0.0f;
-            velocity.y = 0.0f;
-        }
-        ImGui::PopItemWidth();
+        ImGui::DragFloat("##jumpHeight", &jumpHeight, 0.1f);
     }
 
     void Serialize(Json::Value& outComp) const override
     {
-        outComp["maxSpeed"] = maxspeed;
-        outComp["velocty"] = WriteFloat2(velocity);
+        outComp["max_speed"] = maxSpeed;
         outComp["jumpHeight"] = jumpHeight;
     }
 
     void Deserialize(const Json::Value& compObj) override
     {
-        if (compObj.isMember("maxSpeed") && compObj["maxSpeed"].isNumeric())
-            maxspeed = compObj["maxSpeed"].asFloat();
-        if (compObj.isMember("velocity"))
-            ReadFloat2(compObj["velocity"], velocity);
-        if (compObj.isMember("jumpHeight") && compObj["jumpheight"].isNumeric())
+        if (compObj.isMember("max_speed") && compObj["max_speed"].isNumeric())
+            maxSpeed = compObj["max_speed"].asFloat();
+        if (compObj.isMember("jumpHeight") && compObj["jumpHeight"].isNumeric())
             jumpHeight = compObj["jumpHeight"].asFloat();
     }
 
     void OnStart() override
     {
+
     } 
 
-    bool isGravityOn = true;
-    bool OnGround = false;
-    f32 start = 200.f;
     f32 end = 0.f;
-    f32 ground{};
     f32 t = 0.f;
 
     void OnUpdate() override
     {
         GameObject& owner = *_owner;
         Transform& trans = *owner.GetComponent<Transform>();
+        RigidBody& rb = *owner.GetComponent<RigidBody>();
 
         if (AEInputCheckCurr(AEVK_A))
         {
@@ -94,17 +72,17 @@ struct PlayerController : Controller
         }
 
         //Once if space is pressed once
-        if (AEInputCheckTriggered(AEVK_SPACE) && OnGround)
+        if (AEInputCheckTriggered(AEVK_SPACE) && rb.Is_Grounded)
         {
             //Set the space bar velocity to true
             //Check if the player reach the height (dt)
-            isGravityOn = false;
-            OnGround = false;
+            rb.Affected_By_Gravity = false;
+            rb.Is_Grounded = false;
             t = 0.f;
         }
 
         //Make the player able to jump
-        if (!OnGround && !isGravityOn)
+        if (!rb.Is_Grounded && !rb.Affected_By_Gravity)
         {
             const float jumpDuration = 1.f;
             //Check the total number it travels up
@@ -114,34 +92,24 @@ struct PlayerController : Controller
             {
                 t += dt;
                 float alpha = t / jumpDuration;
-                velocity.y = start + alpha * (end - start);
-                std::cout << velocity.y << std::endl;
+                rb.velocity.y = jumpHeight + alpha * (end - jumpHeight);
+                std::cout << rb.velocity.y << std::endl;
             }
             else
             {
-                isGravityOn = true;
+                rb.Affected_By_Gravity = true;
                 std::cout << "Gravity back on" << std::endl;
             }
         }
 
-        //Make the player go down (til it reaches the ideal location)
-        if (!OnGround && isGravityOn)
-        {
-            const float gravity = 450.F;
-            velocity.y -= gravity * dt;
-        }
-
-        trans.position.y += velocity.y * dt;
-
-        if (trans.position.y <= ground)
-        {
-            //std::cout << "Touched the ground" << std::endl;
-            velocity.y = 0;
-            isGravityOn = false;
-            OnGround = true;
-            trans.position.y = ground;
-            //t = 0.f;
-        }
+        //if (trans.position.y <= rb.Is_Grounded)
+        //{
+        //    //std::cout << "Touched the ground" << std::endl;
+        //    rb.velocity.y = 0;
+        //    rb.Affected_By_Gravity = false;
+        //    rb.Is_Grounded = true;
+        //    //t = 0.f;
+        //}
     }
 
     void OnDestroy() override

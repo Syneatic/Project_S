@@ -475,7 +475,7 @@ namespace Physics
 
 					if (info.collided)
 					{
-						std::cout << c1->gameObject().name() << " and " << c2->gameObject().name() << " are colliding! (Box Vs Box)\n";
+						/*std::cout << c1->gameObject().name() << " and " << c2->gameObject().name() << " are colliding! (Box Vs Box)\n";*/
 
 						bool rb1Static = (!rb1 || rb1->Is_Static);
 						bool rb2Static = (!rb2 || rb2->Is_Static);
@@ -504,14 +504,21 @@ namespace Physics
 							t1->position.x -= seperation.x;
 							t1->position.y -= seperation.y;
 
-							// Stop velocity in collision direction
-							float vel = dot(rb1->velocity, info.normal);
-							if (vel < 0) rb1->velocity = rb1->velocity - (info.normal * vel);
+
+
 
 							// Check if grounded (collision normal pointing up from obj1's perspective)
 							if (info.normal.y < -0.7f)
 							{
 								rb1->Is_Grounded = true;
+								rb1->velocity.y = 0.f;
+								rb1->Affected_By_Gravity = false;
+							}
+							else
+							{
+								// Stop velocity in collision direction
+								float vel = dot(rb1->velocity, info.normal);
+								if (vel < 0) rb1->velocity = rb1->velocity - (info.normal * vel);
 							}
 						}
 
@@ -520,9 +527,7 @@ namespace Physics
 							t2->position.x += seperation.x;
 							t2->position.y += seperation.y;
 
-							// Stop velocity in collision direction
-							float vel = dot(rb2->velocity, info.normal);
-							if (vel > 0) rb2->velocity = rb2->velocity - (info.normal * vel);
+
 
 							// Check if grounded (collision normal pointing up from obj2's perspective)
 							if (info.normal.y > 0.7f)
@@ -535,9 +540,14 @@ namespace Physics
 							if (info.normal.y > 0.7f)
 							{
 								rb2->Is_Grounded = true;
-
-								if (rb2->velocity.y < 0)
-									rb2->velocity.y = 0;
+								rb2->velocity.y = 0.f;
+								rb2->Affected_By_Gravity = false;
+							}
+							else
+							{
+								// Stop velocity in collision direction
+								float vel = dot(rb2->velocity, info.normal);
+								if (vel > 0) rb2->velocity = rb2->velocity - (info.normal * vel);
 							}
 							else
 							{
@@ -563,7 +573,7 @@ namespace Physics
 
 						if (CircleVSCircle(*b1, *b2, *t1, *t2))
 						{
-							std::cout << c1->gameObject().name() << " and " << c2->gameObject().name() << " are colliding! (Circle Vs Circle)\n";
+							/*std::cout << c1->gameObject().name() << " and " << c2->gameObject().name() << " are colliding! (Circle Vs Circle)\n";*/
 						}
 					}
 				}
@@ -573,9 +583,9 @@ namespace Physics
 
 	void Step(float dt)
 	{
-		std::cout << "=== PHYSICS STEP ===" << std::endl;
-		std::cout << "dt: " << dt << std::endl;
-		std::cout << "Total rigidbodies: " << _rigidbodies.size() << std::endl;
+		//std::cout << "=== PHYSICS STEP ===" << std::endl;
+		//std::cout << "dt: " << dt << std::endl;
+		//std::cout << "Total rigidbodies: " << _rigidbodies.size() << std::endl;
 
 		// Reset grounded
 		for (auto* rb : _rigidbodies)
@@ -585,10 +595,10 @@ namespace Physics
 		for (auto* rb : _rigidbodies)
 		{
 			if (!rb || rb->Is_Static) continue;
-			std::cout << rb->name()
-				<< " vel=" << rb->velocity.y
-				<< " grounded=" << rb->Is_Grounded
-				<< " static=" << rb->Is_Static << std::endl;
+			//std::cout << rb->name()
+			//	<< " vel=" << rb->velocity.y
+			//	<< " grounded=" << rb->Is_Grounded
+			//	<< " static=" << rb->Is_Static << std::endl;
 
 			Transform* t = rb->gameObject().GetComponent<Transform>();
 			if (!t) continue;
