@@ -12,7 +12,10 @@ struct RigidBody :Component
 	bool Is_Static{ false };
 	bool Is_Grounded{ false };
 	float gravity{ 9.8f };
+	float terminalVelocity{ 12.0f };
 	float2 velocity{ 0.0f,0.0f };
+
+
 	void DrawInInspector()override 
 	{ 
 		ImGui::Checkbox("Is Static", &Is_Static);

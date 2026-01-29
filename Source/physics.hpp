@@ -527,10 +527,30 @@ namespace Physics
 							// Check if grounded (collision normal pointing up from obj2's perspective)
 							if (info.normal.y > 0.7f)
 							{
+								rb1->Is_Grounded = true;
+
+								if (rb1->velocity.y < 0)
+									rb1->velocity.y = 0;
+							}	
+							if (info.normal.y > 0.7f)
+							{
 								rb2->Is_Grounded = true;
+
+								if (rb2->velocity.y < 0)
+									rb2->velocity.y = 0;
 							}
+							else
+							{
+								float vel = dot(rb2->velocity, info.normal);
+								if (vel > 0)
+										rb2->velocity -= info.normal * vel;
+							}
+
+								if( vel < 0)	
+								rb1->velocity -= info.normal * vel;
+							}
+
 						}
-					}
 				}
 
 				if (c1->name() == "CircleCollider")
@@ -574,7 +594,11 @@ namespace Physics
 			if (!t) continue;
 
 			if (rb->Affected_By_Gravity && !rb->Is_Grounded)
+			{
 				rb->velocity.y -= rb->gravity * dt;
+
+			}
+
 
 			t->position += rb->velocity * dt;
 		}
