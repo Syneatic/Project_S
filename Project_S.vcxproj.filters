@@ -31,6 +31,9 @@
     <Filter Include="Header Files\components">
       <UniqueIdentifier>{d7ed3a53-7e68-45e8-8fe6-d1cd242ebbe0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\scene">
+      <UniqueIdentifier>{19c7117f-e8f7-4897-af77-95fde955df69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -72,6 +75,9 @@
     <ClCompile Include="Source\ui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\scene_parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -80,16 +86,7 @@
     <ClInclude Include="Source\math.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\scene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\renderer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\scene_parser.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\scene_editor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imstb_truetype.h">
@@ -179,11 +176,26 @@
     <ClInclude Include="Source\test_component.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\scene_play.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\physics_component.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\particle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\scene.hpp">
+      <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\scene_editor.hpp">
+      <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\scene_manager.hpp">
+      <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\scene_parser.hpp">
+      <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\scene_play.hpp">
+      <Filter>Header Files\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

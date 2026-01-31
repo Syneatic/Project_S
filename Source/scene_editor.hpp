@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <shobjidl.h> 
 #include <string>
+#include <filesystem>
 
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_opengl3.h"
@@ -15,6 +16,8 @@
 #include "renderer.hpp"
 #include "physics_component.hpp"
 #include "physics.hpp"
+#include "test_component.hpp"
+#include "controller.hpp"
 
 static std::wstring OpenFile()
 {

@@ -23,6 +23,7 @@
     <ClCompile Include="Extern\jsoncpp\src\json_writer.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\renderer.cpp" />
+    <ClCompile Include="Source\scene_parser.cpp" />
     <ClCompile Include="Source\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +61,7 @@
     <ClInclude Include="Source\render_components.hpp" />
     <ClInclude Include="Source\scene.hpp" />
     <ClInclude Include="Source\scene_editor.hpp" />
+    <ClInclude Include="Source\scene_manager.hpp" />
     <ClInclude Include="Source\scene_parser.hpp" />
     <ClInclude Include="Source\scene_play.hpp" />
     <ClInclude Include="Source\test_component.hpp" />

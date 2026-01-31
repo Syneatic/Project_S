@@ -2,11 +2,12 @@
 #include <vector>
 #include <string>
 
-#include "AEEngine.h" //temporary
 #include "gameobject.hpp"
 #include "physics.hpp"
 #include "renderer.hpp"
 #include "render_components.hpp"
+
+struct EditorScene;
 
 struct Scene
 {
@@ -96,77 +97,4 @@ public:
 	Scene() {}
 	Scene(std::string name) { _name = std::move(name); }
 	virtual ~Scene() = default;
-};
-
-//singleton
-//maybe just make functions in a file
-struct SceneManager
-{
-public:
-	//singleton access
-	static SceneManager& Instance()
-	{
-		static SceneManager instance;
-		return instance;
-	}
-
-	SceneManager(const SceneManager&) = delete;
-	SceneManager& operator=(const SceneManager&) = delete;
-	SceneManager(SceneManager&&) = delete;
-	SceneManager& operator=(SceneManager&&) = delete;
-
-	
-	void RequestSceneSwitch(Scene* scene)
-	{
-		if (!scene) return; //invalid scene
-
-		nextScene = scene;
-		requestSwitch = true;
-	}
-
-	void RequestSceneReload()
-	{
-		requestReload = true;
-	}
-
-	void OnUpdate()
-	{
-		if (requestSwitch) SwitchScene();
-		if (requestReload) ReloadScene();
-
-		if (currentScene) currentScene->OnUpdate();
-	}
-
-private:
-	SceneManager() = default;
-	~SceneManager() = default;
-
-	Scene* currentScene = nullptr;
-	Scene* nextScene = nullptr;
-	bool requestSwitch = false;
-	bool requestReload = false;
-
-	void SwitchScene()
-	{
-		requestSwitch = false;
-		if (!nextScene || nextScene == currentScene)
-			return;
-
-		if (currentScene) currentScene->OnExit(); //check null then exit
-		currentScene = nextScene; //switch scene
-		currentScene->OnEnter();
-
-		requestReload = false; //prevent reload if switch
-	}
-
-	void ReloadScene()
-	{
-		requestReload = false;
-
-		if (!currentScene)
-			return;
-
-		currentScene->OnExit();
-		currentScene->OnEnter();
-	}
 };

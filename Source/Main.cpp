@@ -16,8 +16,9 @@
 #include "scene.hpp"
 #include "scene_editor.hpp"
 #include "scene_parser.hpp"
+#include "scene_manager.hpp"
 #include "ui_types.hpp"
-#include "scene_play.hpp" 
+//#include "scene_play.hpp" 
 
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -76,7 +77,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	int gGameRunning = 1;
 
-	// Initialization of your own variables go here
+	//initialize the engine
+	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, true, ImGuiWNDCallBack);
+	AESysSetWindowTitle("Project S");
+	AEInputShowCursor(1);
+
+	// ===== INITIALIZE SYSTEMS =====
+
+	bool m_ImGUIInitialized = false;
+	InitializeImGUI(m_ImGUIInitialized);
 
 	// Create a global buttonRegister,
 	// bind all functions & assign as
@@ -84,25 +93,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// struct function.
 	UISystem::BindButtonFunctions(UIButtonRegister::Instance());
 
-	bool m_ImGUIInitialized = false;
-	SceneManager& sceneManager = SceneManager::Instance();
-	EditorScene editorScene{};
-	PlayScene playScene{};
-	sceneManager.RequestSceneSwitch(&editorScene);
+	//grab all scene
+	SceneManager::Initialize();
 
-	// Using custom window procedure
-	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, true, ImGuiWNDCallBack);
-
-	// Changing the window title
-	AESysSetWindowTitle("Project S");
-	AEInputShowCursor(1);
-
+	SceneManager::SwitchToEditor();
+	//SceneManager::RequestSceneSwitch("MainMenu");
+	
 	// Initialize render system
 	RenderSystem::RendererInitialize();
 
-	InitializeImGUI(m_ImGUIInitialized);
-	editorScene.imguiInitialized = true;
-
+	//editorScene.imguiInitialized = true;
+	// ===== END INITIALIZE SYSTEMS =====
+	
 	// Game Loop
 	while (gGameRunning)
 	{
@@ -114,26 +116,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		
 		if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
-			if (AEInputCheckTriggered(AEVK_1)) sceneManager.RequestSceneSwitch(&editorScene);
+			if (AEInputCheckTriggered(AEVK_1)) SceneManager::SwitchToEditor();
 			if (AEInputCheckTriggered(AEVK_2))
 			{
 
 				// Load new scene
-				SceneIO::DeserializeScene(playScene, "PrototypeLvl");
-
-				// Switch
-				sceneManager.RequestSceneSwitch(&playScene);
+				SceneManager::RequestSceneSwitch("PrototypeLvl");
 			}
 		}
 		//renderSys::DrawArrow(float2::zero());
-		sceneManager.OnUpdate();
+		SceneManager::OnUpdate();
 
 		//renderSys::drawRect(float2::zero(), 0, float2{ 10,10 }, center);
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 
-		std::cout << AEFrameRateControllerGetFrameRate() << std::endl;
+		//std::cout << AEFrameRateControllerGetFrameRate() << std::endl;
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 		gGameRunning = 0;

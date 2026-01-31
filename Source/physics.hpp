@@ -9,7 +9,6 @@
 #include "collider_components.hpp"
 #include "component.hpp"
 #include "math.hpp"
-#include "scene.hpp"           
 #include "gameobject.hpp"
 #include "physics_component.hpp"
 
@@ -67,6 +66,7 @@ namespace {
 
 		return normal;
 	}
+
 	inline void GetAABB(
 		const Transform& t,
 		const BoxCollider& b,
@@ -81,6 +81,7 @@ namespace {
 		bottom = t.position.y - hy;
 		top = t.position.y + hy;
 	}
+
 	inline bool RayToCircle(
 		const float2& origin, const float2& dirN, float maxDist,
 		const Transform& t, const CircleCollider& c,
@@ -116,6 +117,7 @@ namespace {
 		outT = tHit;
 		return true;
 	}
+
 	inline void ResolveBoxVsBox(
 		RigidBody& rb,
 		Transform& t,
@@ -254,7 +256,7 @@ namespace Physics
 	};
 
 	//needs to be registered at start of scene
-	void RegisterCollider(Collider* c)
+	inline void RegisterCollider(Collider* c)
 	{
 		if (!c) return;
 
@@ -262,7 +264,7 @@ namespace Physics
 			_colliders.push_back(c);
 	}
 
-	void UnregisterCollider(Collider* c)
+	inline void UnregisterCollider(Collider* c)
 	{
 		if (!c) return;
 		if (_colliderSet.erase(c) == 0) return;
@@ -277,14 +279,14 @@ namespace Physics
 		}
 	}
 
-	void FlushColliders()
+	inline void FlushColliders()
 	{
 		_colliders.clear();
 		_colliderSet.clear();
 	}
 
 
-	bool CircleVSCircle(const CircleCollider& a, const CircleCollider& b, const Transform& ta, const Transform& tb)
+	inline bool CircleVSCircle(const CircleCollider& a, const CircleCollider& b, const Transform& ta, const Transform& tb)
 	{
 		CollisionInfo info;
 		float dx = tb.position.x - ta.position.x;
@@ -297,7 +299,7 @@ namespace Physics
 		return distance_sq < (rad_sum * rad_sum);
 	}
 
-	CollisionInfo BoxVSBox(const BoxCollider& a, const BoxCollider& b, const Transform& ta, const Transform& tb)
+	inline CollisionInfo BoxVSBox(const BoxCollider& a, const BoxCollider& b, const Transform& ta, const Transform& tb)
 	{
 		CollisionInfo info;
 		/*float left_b1 = ta.position.x - (a.size.x * ta.scale.x) / 2.0f;
@@ -367,8 +369,8 @@ namespace Physics
 		info.penetration = minPenetration;
 		return info;
 	}
-
-	bool Raycast(const float2& origin, const float2& dir, float maxDist, RaycastHit& out)
+	
+	inline bool Raycast(const float2& origin, const float2& dir, float maxDist, RaycastHit& out)
 	{
 		float2 dirN = normalize(dir);
 		if (lengthsq(dirN) < kEps) return false;
@@ -415,15 +417,15 @@ namespace Physics
 
 		return hitAny;
 	}
-
-	void RegisterRigidBody(RigidBody* rb)
+	
+	inline void RegisterRigidBody(RigidBody* rb)
 	{
 		if (!rb) return;
 		if (_rigidbodySet.insert(rb).second)
 			_rigidbodies.push_back(rb);
 	}
-
-	void UnregisterRigidBody(RigidBody* rb)
+	
+	inline void UnregisterRigidBody(RigidBody* rb)
 	{
 		if (!rb) return;
 		if (_rigidbodySet.erase(rb) == 0) return;
@@ -438,7 +440,7 @@ namespace Physics
 
 	}
 	
-	void FlushRigidBody()
+	inline void FlushRigidBody()
 	{
 		_rigidbodies.clear();
 		_rigidbodySet.clear();
@@ -447,7 +449,7 @@ namespace Physics
 
 
 
-	void CheckAllTypeCollisions()
+	inline void CheckAllTypeCollisions()
 	{
 		//only iterate through colliders
 		for (size_t i = 0; i < _colliders.size(); i++)
@@ -551,11 +553,11 @@ namespace Physics
 		}
 	}
 
-	void Step(float dt)
+	inline void Step(float dt)
 	{
-		std::cout << "=== PHYSICS STEP ===" << std::endl;
-		std::cout << "dt: " << dt << std::endl;
-		std::cout << "Total rigidbodies: " << _rigidbodies.size() << std::endl;
+		//std::cout << "=== PHYSICS STEP ===" << std::endl;
+		//std::cout << "dt: " << dt << std::endl;
+		//std::cout << "Total rigidbodies: " << _rigidbodies.size() << std::endl;
 
 		// Reset grounded
 		for (auto* rb : _rigidbodies)
