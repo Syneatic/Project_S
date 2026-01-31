@@ -368,7 +368,7 @@ namespace Physics
 		return info;
 	}
 
-	bool Raycast(const float2& origin, const float2& dir, float maxDist, RaycastHit& out)
+	bool Raycast(const float2& origin, const float2& dir, float maxDist, RaycastHit& out, uint32_t layerMask = 0xFFFFFFFF)
 	{
 		float2 dirN = normalize(dir);
 		if (lengthsq(dirN) < kEps) return false;
@@ -380,6 +380,9 @@ namespace Physics
 		for (Collider* c : _colliders)
 		{
 			if (!c) continue;
+
+			if ((c->layerMask & layerMask) == 0)
+				continue;
 
 			auto* tr = c->gameObject().GetComponent<Transform>();
 			if (!tr) continue;

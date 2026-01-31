@@ -95,6 +95,8 @@ private:
 		hits.clear();
 
 		Physics::RaycastHit rh{};
+
+		uint32_t raycastMask = 0xFFFFFFFF & ~static_cast<uint32_t>(Layer::Player);
 		Collider* ignore = GetSelfCollider();
 
 		const float twoPi = 6.28318530718f;
@@ -112,7 +114,7 @@ private:
 			particles[i].stay = false;
 
 			//cast ray
-			if (Physics::Raycast(origin, dir, maxRadius, rh))
+			if (Physics::Raycast(origin, dir, maxRadius, rh, raycastMask))
 			{
 				Hit h{};
 				h.p = rh.point;
