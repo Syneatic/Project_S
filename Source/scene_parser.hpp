@@ -80,12 +80,12 @@ namespace SceneIO
             pc.Deserialize(compObj);
             go.AddComponent<PlayerController>(pc);
         }
-        else if (type == "Text")
+        /*else if (type == "Text")
         {
             Text str{};
             str.Deserialize(compObj);
             go.AddComponent<Text>(str);
-        }
+        }*/
         else if (type == "EchoPingTest")
         {
             EchoPingTest ept{};

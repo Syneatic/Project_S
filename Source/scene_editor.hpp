@@ -301,7 +301,7 @@ private:
 
 	// For UI selection
 	int _uiIndex{};
-	const char* _uiTypes[3] = { "Display", "Text", "Button" };
+	const char* _uiTypes[2] = { "Display", "Button" };
 	const char* _previewType = _uiTypes[_uiIndex];
 
 	void BuildInspectorWindow()
@@ -446,10 +446,10 @@ private:
 							case 0:
 								selectedObj.AddComponent<Display>();
 								break;
-							case 1:
+							/*case 1:
 								selectedObj.AddComponent<Text>();
-								break;
-							case 2:
+								break;*/
+							case 1:
 								selectedObj.AddComponent<Button>();
 								break;
 							default:
