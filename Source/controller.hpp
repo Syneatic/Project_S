@@ -19,8 +19,8 @@ struct Controller : Behaviour
 
 struct PlayerController : Controller
 {
-    f32 maxSpeed = 200.f;
-    f32 jumpHeight = 100.f;
+    f32 maxSpeed = 10.f;
+    f32 jumpHeight = 500.f;
 
     f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 
@@ -59,35 +59,40 @@ struct PlayerController : Controller
     void OnUpdate() override
     {
         GameObject& owner = *_owner;
-        Transform& trans = *owner.GetComponent<Transform>();
-        RigidBody& rb = *owner.GetComponent<RigidBody>();
+        Transform* trans = owner.GetComponent<Transform>();
+        RigidBody* rb = owner.GetComponent<RigidBody>();
+        
+        if (!trans || !rb) return;
+
+        rb->velocity.x = 0.f;
 
         if (AEInputCheckCurr(AEVK_A))
         {
-            trans.position.x -= 200.f * dt;
+            rb->velocity.x = -maxSpeed;
         }
         if (AEInputCheckCurr(AEVK_D))
         {
-            trans.position.x += 200.f * dt;
+            rb->velocity.x = maxSpeed;
         }
 
         //Once if space is pressed once
-        if (AEInputCheckTriggered(AEVK_SPACE) && rb.Is_Grounded)
+        if (AEInputCheckTriggered(AEVK_SPACE) && rb->Is_Grounded)
         {
             //Set the space bar velocity to true
             //Check if the player reach the height (dt)
-            rb.Affected_By_Gravity = false;
-            rb.Is_Grounded = false;
+            //rb.Affected_By_Gravity = false;
+            rb->velocity.y = jumpHeight;
+            rb->Is_Grounded = false;
             t = 0.f;
         }
 
-        //Make the player able to jump
+        /*Make the player able to jump
         if (!rb.Is_Grounded && !rb.Affected_By_Gravity)
         {
             const float jumpDuration = 1.f;
             //Check the total number it travels up
             //Constantly making the player go up
-            /*trans.position.y = (currJumpHeight += 100.f * dt);*/
+            /*trans.position.y = (currJumpHeight += 100.f * dt);
             if (t <= jumpDuration)
             {
                 t += dt;
@@ -97,10 +102,11 @@ struct PlayerController : Controller
             }
             else
             {
-                rb.Affected_By_Gravity = true;
+                //rb.Affected_By_Gravity = true;
                 std::cout << "Gravity back on" << std::endl;
             }
-        }
+        }*/
+    
 
         //if (trans.position.y <= rb.Is_Grounded)
         //{
