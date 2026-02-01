@@ -1,19 +1,16 @@
-#include "ui_types.hpp"
-#include "render_components.hpp"
-#include "color.hpp"
-#include "gameobject.hpp"
-#include "scene_manager.hpp"
+#include <iostream>
 
+#include "ui_types.hpp"
 #include "AEEngine.h"
-#include "AEInput.h"
-#include "AETypes.h"
+#include "render_components.hpp"
+#include "scene_manager.hpp"
 
 namespace UISystem
 {
     // Functions for UI buttons.
     static void Play() 
     {
-        //SceneManager::RequestSceneSwitch("PrototypeLvl");
+        SceneManager::RequestSceneSwitch("PrototypeLvl");
         std::cout << "Play Game\n";
     }
     static void Pause() {}

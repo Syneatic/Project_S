@@ -22,7 +22,7 @@ namespace SceneIO
     static std::string defaultPath = "Scene/";
 
     // ===== Component Serialization =====
-    inline bool SerializeComponent(const Component& c, Json::Value& outComp)
+    bool SerializeComponent(const Component& c, Json::Value& outComp)
     {
         const std::string type = c.name();
 
@@ -38,7 +38,7 @@ namespace SceneIO
         return true;
     }
 
-    inline void DeserializeComponent(GameObject& go, const Json::Value& compObj)
+    void DeserializeComponent(GameObject& go, const Json::Value& compObj)
     {
         if (!compObj.isObject()) return;
         if (!compObj.isMember("type") || !compObj["type"].isString()) return;
@@ -96,7 +96,7 @@ namespace SceneIO
     }
 
     // ===== GameObject Serialization =====
-    inline Json::Value SerializeGameObject(const GameObject& go)
+    Json::Value SerializeGameObject(const GameObject& go)
     {
         Json::Value obj(Json::objectValue);
         obj["name"] = go.name();
@@ -128,7 +128,7 @@ namespace SceneIO
         return obj;
     }
 
-    inline std::unique_ptr<GameObject> DeserializeGameObject(const Json::Value& obj)
+    std::unique_ptr<GameObject> DeserializeGameObject(const Json::Value& obj)
     {
         if (!obj.isObject()) return nullptr;
         if (!obj.isMember("name") || !obj["name"].isString()) return nullptr;

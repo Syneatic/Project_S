@@ -1,20 +1,23 @@
 #pragma once
 // parse a scene object into a scene file
 // read it back from the scene file into object on load
+#include "json.h"
 
 struct Scene;
+struct GameObject;
+struct Component;
 
 namespace SceneIO
 {
 	// ===== Component Serialization =====
-    inline bool SerializeComponent(const Component& c, Json::Value& outComp);
+    bool SerializeComponent(const Component& c, Json::Value& outComp);
 
-    inline void DeserializeComponent(GameObject& go, const Json::Value& compObj);
+    void DeserializeComponent(GameObject& go, const Json::Value& compObj);
 
     // ===== GameObject Serialization =====
-    inline Json::Value SerializeGameObject(const GameObject& go);
+    Json::Value SerializeGameObject(const GameObject& go);
     
-    inline std::unique_ptr<GameObject> DeserializeGameObject(const Json::Value& obj);
+    std::unique_ptr<GameObject> DeserializeGameObject(const Json::Value& obj);
 
     // ===== Scene Serialization =====
     bool SerializeScene(const Scene& scene);
