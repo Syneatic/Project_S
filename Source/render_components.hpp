@@ -183,3 +183,56 @@ struct MeshRenderer : Renderer
 
     const std::string name() const override { return "MeshRenderer"; }
 };
+
+struct TextRenderer : Renderer
+{
+    char textBuffer[256];
+
+    void DrawInInspector() override
+    {
+        static const char* _alignmentNames[] = { "Top left", "Top", "Top right", "Left", "Center", "Right", "Bottom Left", "Bottom", "Bottom right" };
+
+        if (ImGui::InputText("  ", textBuffer, sizeof(textBuffer)))
+        {
+        }
+
+        ImGui::Separator();
+
+        if (ImGui::BeginCombo("Alignment", _alignmentNames[(int)alignment]))
+        {
+            for (int i = 0; i < 9; ++i)
+            {
+                bool selected = (i == alignment);
+                if (ImGui::Selectable(_alignmentNames[i], selected))
+                {
+                    alignment = (Alignment)i;
+                }
+                if (selected) ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndCombo();
+        }
+
+        ImGui::TextUnformatted("Color");
+        float col[4] = { color.r, color.g, color.b, color.a };
+        if (ImGui::ColorEdit4("##renderer_color", col))
+        {
+            color.r = col[0];
+            color.g = col[1];
+            color.b = col[2];
+            color.a = col[3];
+        }
+    }
+
+    void Draw() override
+    {
+        GameObject& owner = *_owner;
+        RenderData data{};
+        data.transform = *owner.GetComponent<Transform>();
+        data.renderLayer = renderLayer;
+        data.color = color;
+        data.alignment = alignment;
+        RenderSystem::DrawMyText(textBuffer, data);
+    }
+
+    const std::string name() const override { return "TextRenderer"; }
+};

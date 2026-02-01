@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <shobjidl.h> 
 #include <string>
+#include <filesystem>
 
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_opengl3.h"
@@ -16,6 +17,7 @@
 #include "physics_component.hpp"
 #include "physics.hpp"
 #include "emitter_component.hpp"
+#include "controller.hpp"
 
 static std::wstring OpenFile()
 {
@@ -302,7 +304,7 @@ private:
 
 	// For UI selection
 	int _uiIndex{};
-	const char* _uiTypes[3] = { "Display", "Text", "Button" };
+	const char* _uiTypes[2] = { "Display", "Button" };
 	const char* _previewType = _uiTypes[_uiIndex];
 
 	void BuildInspectorWindow()
@@ -397,6 +399,12 @@ private:
 					RefreshRenderers();
 				}
 
+				if (ImGui::MenuItem("Text Renderer"))
+				{
+					selectedObj.AddComponent<TextRenderer>();
+					RefreshRenderers();
+				}
+
 				ImGui::EndMenu();
 			}
 
@@ -445,10 +453,10 @@ private:
 							case 0:
 								selectedObj.AddComponent<Display>();
 								break;
-							case 1:
+							/*case 1:
 								selectedObj.AddComponent<Text>();
-								break;
-							case 2:
+								break;*/
+							case 1:
 								selectedObj.AddComponent<Button>();
 								break;
 							default:

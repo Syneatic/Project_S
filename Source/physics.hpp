@@ -9,7 +9,6 @@
 #include "collider_components.hpp"
 #include "component.hpp"
 #include "math.hpp"
-#include "scene.hpp"           
 #include "gameobject.hpp"
 #include "physics_component.hpp"
 
@@ -67,6 +66,7 @@ namespace {
 
 		return normal;
 	}
+
 	inline void GetAABB(
 		const Transform& t,
 		const BoxCollider& b,
@@ -81,6 +81,7 @@ namespace {
 		bottom = t.position.y - hy;
 		top = t.position.y + hy;
 	}
+
 	inline bool RayToCircle(
 		const float2& origin, const float2& dirN, float maxDist,
 		const Transform& t, const CircleCollider& c,
@@ -116,6 +117,7 @@ namespace {
 		outT = tHit;
 		return true;
 	}
+
 	inline void ResolveBoxVsBox(
 		RigidBody& rb,
 		Transform& t,
@@ -254,7 +256,7 @@ namespace Physics
 	};
 
 	//needs to be registered at start of scene
-	void RegisterCollider(Collider* c)
+	inline void RegisterCollider(Collider* c)
 	{
 		if (!c) return;
 
@@ -262,7 +264,7 @@ namespace Physics
 			_colliders.push_back(c);
 	}
 
-	void UnregisterCollider(Collider* c)
+	inline void UnregisterCollider(Collider* c)
 	{
 		if (!c) return;
 		if (_colliderSet.erase(c) == 0) return;
@@ -277,14 +279,14 @@ namespace Physics
 		}
 	}
 
-	void FlushColliders()
+	inline void FlushColliders()
 	{
 		_colliders.clear();
 		_colliderSet.clear();
 	}
 
 
-	bool CircleVSCircle(const CircleCollider& a, const CircleCollider& b, const Transform& ta, const Transform& tb)
+	inline bool CircleVSCircle(const CircleCollider& a, const CircleCollider& b, const Transform& ta, const Transform& tb)
 	{
 		CollisionInfo info;
 		float dx = tb.position.x - ta.position.x;
@@ -297,7 +299,7 @@ namespace Physics
 		return distance_sq < (rad_sum * rad_sum);
 	}
 
-	CollisionInfo BoxVSBox(const BoxCollider& a, const BoxCollider& b, const Transform& ta, const Transform& tb)
+	inline CollisionInfo BoxVSBox(const BoxCollider& a, const BoxCollider& b, const Transform& ta, const Transform& tb)
 	{
 		CollisionInfo info;
 		/*float left_b1 = ta.position.x - (a.size.x * ta.scale.x) / 2.0f;
@@ -368,7 +370,7 @@ namespace Physics
 		return info;
 	}
 
-	bool Raycast(const float2& origin, const float2& dir, float maxDist, RaycastHit& out)
+	inline bool Raycast(const float2& origin, const float2& dir, float maxDist, RaycastHit& out, uint32_t layerMask = 0xFFFFFFFF)
 	{
 		float2 dirN = normalize(dir);
 		if (lengthsq(dirN) < kEps) return false;
@@ -380,6 +382,9 @@ namespace Physics
 		for (Collider* c : _colliders)
 		{
 			if (!c) continue;
+
+			if ((c->layerMask & layerMask) == 0)
+				continue;
 
 			auto* tr = c->gameObject().GetComponent<Transform>();
 			if (!tr) continue;
@@ -415,15 +420,15 @@ namespace Physics
 
 		return hitAny;
 	}
-
-	void RegisterRigidBody(RigidBody* rb)
+	
+	inline void RegisterRigidBody(RigidBody* rb)
 	{
 		if (!rb) return;
 		if (_rigidbodySet.insert(rb).second)
 			_rigidbodies.push_back(rb);
 	}
-
-	void UnregisterRigidBody(RigidBody* rb)
+	
+	inline void UnregisterRigidBody(RigidBody* rb)
 	{
 		if (!rb) return;
 		if (_rigidbodySet.erase(rb) == 0) return;
@@ -438,16 +443,115 @@ namespace Physics
 
 	}
 	
-	void FlushRigidBody()
+	inline void FlushRigidBody()
 	{
 		_rigidbodies.clear();
 		_rigidbodySet.clear();
 	}
 
 
+	inline void CheckAllTypeCollisions()
+	{
+		for (size_t i = 0; i < _colliders.size(); i++)
+		{
+			for (size_t j = i + 1; j < _colliders.size(); j++)
+			{
+				Collider* c1 = _colliders[i];
+				Collider* c2 = _colliders[j];
+				if (!c1 || !c2 || c1 == c2) continue;
 
+				// STEP 1: Layer/Mask filtering
+				if (!c1->ShouldCollide(*c2) && !c2->ShouldCollide(*c1))
+					continue;
 
-	void CheckAllTypeCollisions()
+				auto* t1 = c1->gameObject().GetComponent<Transform>();
+				auto* t2 = c2->gameObject().GetComponent<Transform>();
+				if (!t1 || !t2) continue;
+
+				RigidBody* rb1 = c1->gameObject().GetComponent<RigidBody>();
+				RigidBody* rb2 = c2->gameObject().GetComponent<RigidBody>();
+
+				// BOX VS BOX
+				if (c1->name() == "BoxCollider" && c2->name() == "BoxCollider")
+				{
+					auto* b1 = dynamic_cast<BoxCollider*>(c1);
+					auto* b2 = dynamic_cast<BoxCollider*>(c2);
+
+					CollisionInfo info = BoxVSBox(*b1, *b2, *t1, *t2);
+
+					if (info.collided)
+					{
+						bool rb1Static = (!rb1 || rb1->Is_Static);
+						bool rb2Static = (!rb2 || rb2->Is_Static);
+
+						if (rb1Static && rb2Static) continue;
+
+						float2 separation = info.normal * info.penetration;
+
+						if (!rb1Static && !rb2Static)
+						{
+							// Both dynamic
+							t1->position.x -= separation.x * 0.5f;
+							t1->position.y -= separation.y * 0.5f;
+							t2->position.x += separation.x * 0.5f;
+							t2->position.y += separation.y * 0.5f;
+
+							float vel1 = dot(rb1->velocity, info.normal);
+							float vel2 = dot(rb2->velocity, info.normal);
+							if (vel1 < 0) rb1->velocity = rb1->velocity - (info.normal * vel1);
+							if (vel2 > 0) rb2->velocity = rb2->velocity - (info.normal * vel2);
+						}
+						else if (!rb1Static)
+						{
+							// Only obj1 is dynamic (obj2 is static)
+							t1->position.x -= separation.x;
+							t1->position.y -= separation.y;
+
+							float vel = dot(rb1->velocity, info.normal);
+							if (vel < 0) rb1->velocity = rb1->velocity - (info.normal * vel);
+
+							// Check if grounded
+							if (info.normal.y < -0.7f)
+							{
+								rb1->Is_Grounded = true;
+								rb1->velocity.y = 0.f;
+							}
+						}
+						else
+						{
+							// Only obj2 is dynamic (obj1 is static)
+							t2->position.x += separation.x;
+							t2->position.y += separation.y;
+
+							float vel = dot(rb2->velocity, info.normal);
+							if (vel > 0) rb2->velocity = rb2->velocity - (info.normal * vel);
+
+							// Check if grounded
+							if (info.normal.y > 0.7f)
+							{
+								rb2->Is_Grounded = true;
+								rb2->velocity.y = 0.f;
+							}
+						}
+					}
+				}
+
+				// CIRCLE VS CIRCLE
+				if (c1->name() == "CircleCollider" && c2->name() == "CircleCollider")
+				{
+					auto* cc1 = dynamic_cast<CircleCollider*>(c1);
+					auto* cc2 = dynamic_cast<CircleCollider*>(c2);
+
+					if (CircleVSCircle(*cc1, *cc2, *t1, *t2))
+					{
+						// Add circle collision resolution if needed
+					}
+				}
+			}
+		}
+	}
+
+	/*void CheckAllTypeCollisions()
 	{
 		//only iterate through colliders
 		for (size_t i = 0; i < _colliders.size(); i++)
@@ -458,10 +562,13 @@ namespace Physics
 				Collider* c2 = _colliders[j];
 				if (!c1 || !c2 || c1 == c2) continue;
 
+				if (!c1->ShouldCollide(*c2))continue;
+
 				auto* t1 = c1->gameObject().GetComponent<Transform>();
 				auto* t2 = c2->gameObject().GetComponent<Transform>();
 
 				if (!t1 || !t2) continue;
+
 
 				RigidBody* rb1 = c1->gameObject().GetComponent<RigidBody>();
 				RigidBody* rb2 = c2->gameObject().GetComponent<RigidBody>();
@@ -475,7 +582,7 @@ namespace Physics
 
 					if (info.collided)
 					{
-						std::cout << c1->gameObject().name() << " and " << c2->gameObject().name() << " are colliding! (Box Vs Box)\n";
+						/*std::cout << c1->gameObject().name() << " and " << c2->gameObject().name() << " are colliding! (Box Vs Box)\n";
 
 						bool rb1Static = (!rb1 || rb1->Is_Static);
 						bool rb2Static = (!rb2 || rb2->Is_Static);
@@ -498,38 +605,113 @@ namespace Physics
 							if (vel2 > 0) rb2->velocity = rb2->velocity - (info.normal * vel2);
 						}
 
-						else if (!rb1Static)
+						/*else if (!rb1Static)
 						{
 							// Only obj1 is dynamic (obj2 is static)
 							t1->position.x -= seperation.x;
 							t1->position.y -= seperation.y;
-
-							// Stop velocity in collision direction
 							float vel = dot(rb1->velocity, info.normal);
-							if (vel < 0) rb1->velocity = rb1->velocity - (info.normal * vel);
+							if (vel < 0) rb1->velocity - (info.normal * vel);
+
 
 							// Check if grounded (collision normal pointing up from obj1's perspective)
 							if (info.normal.y < -0.7f)
 							{
 								rb1->Is_Grounded = true;
+								rb1->velocity.y = 0.f;
+								rb1->Affected_By_Gravity = false;
+							}
+
+							else
+							{
+								// Stop velocity in collision direction
+								float vel = dot(rb1->velocity, info.normal);
+								if (vel < 0) rb1->velocity = rb1->velocity - (info.normal * vel);
+							}
+						}
+						
+
+						else if (!rb1Static) // rb1 dynamic, rb2 static
+						{
+							// Push rb1 out
+							t1->position -= info.normal * info.penetration;
+
+							// Cancel velocity along normal
+							float vn = dot(rb1->velocity, info.normal);
+							if (vn < 0.0f)
+								rb1->velocity -= info.normal * vn;
+
+							// Ground check (normal pointing UP)
+							if (info.normal.y > 0.7f)
+							{
+								rb1->Is_Grounded = true;
+
+								// Clamp tiny downward drift
+								if (rb1->velocity.y < 0.0f)
+									rb1->velocity.y = 0.0f;
+							}
+						}
+						else // obj1 static, obj2 dynamic
+						{
+							// Push obj2 out of obj1
+							t2->position += info.normal * info.penetration;
+
+							// Remove velocity along collision normal
+							float vn = dot(rb2->velocity, info.normal);
+							if (vn > 0.0f)
+								rb2->velocity -= info.normal * vn;
+
+							// Ground check (normal points up from obj2's POV)
+							if (info.normal.y > 0.7f)
+							{
+								rb2->Is_Grounded = true;
+
+								// Prevent tiny downward accumulation
+								if (rb2->velocity.y < 0.0f)
+									rb2->velocity.y = 0.0f;
 							}
 						}
 
-						else // Only obj2 is dynamic (obj1 is static)
+						/*else // Only obj2 is dynamic (obj1 is static)
 						{
 							t2->position.x += seperation.x;
 							t2->position.y += seperation.y;
 
-							// Stop velocity in collision direction
 							float vel = dot(rb2->velocity, info.normal);
 							if (vel > 0) rb2->velocity = rb2->velocity - (info.normal * vel);
+
 
 							// Check if grounded (collision normal pointing up from obj2's perspective)
 							if (info.normal.y > 0.7f)
 							{
+								rb1->Is_Grounded = true;
+
+								if (rb1->velocity.y < 0)
+									rb1->velocity.y = 0;
+							}	
+							if (info.normal.y > 0.7f)
+							{
 								rb2->Is_Grounded = true;
+								rb2->velocity.y = 0.f;
+								rb2->Affected_By_Gravity = false;
 							}
+							else
+							{
+								// Stop velocity in collision direction
+								float vel = dot(rb2->velocity, info.normal);
+								if (vel > 0) rb2->velocity = rb2->velocity - (info.normal * vel);
+							}
+							//else
+							{
+								float vel = dot(rb2->velocity, info.normal);
+								if (vel > 0)
+										rb2->velocity -= info.normal * vel;
+							}
+
+								if( vel < 0)	
+								rb1->velocity -= info.normal * vel;
 						}
+
 					}
 				}
 
@@ -543,19 +725,20 @@ namespace Physics
 
 						if (CircleVSCircle(*b1, *b2, *t1, *t2))
 						{
-							std::cout << c1->gameObject().name() << " and " << c2->gameObject().name() << " are colliding! (Circle Vs Circle)\n";
+							/*std::cout << c1->gameObject().name() << " and " << c2->gameObject().name() << " are colliding! (Circle Vs Circle)\n";
 						}
 					}
 				}
 			}
 		}
 	}
+	*/
 
-	void Step(float dt)
+	inline void Step(float dt)
 	{
-		std::cout << "=== PHYSICS STEP ===" << std::endl;
-		std::cout << "dt: " << dt << std::endl;
-		std::cout << "Total rigidbodies: " << _rigidbodies.size() << std::endl;
+		//std::cout << "=== PHYSICS STEP ===" << std::endl;
+		//std::cout << "dt: " << dt << std::endl;
+		//std::cout << "Total rigidbodies: " << _rigidbodies.size() << std::endl;
 
 		// Reset grounded
 		for (auto* rb : _rigidbodies)
@@ -565,18 +748,23 @@ namespace Physics
 		for (auto* rb : _rigidbodies)
 		{
 			if (!rb || rb->Is_Static) continue;
-			std::cout << rb->name()
-				<< " vel=" << rb->velocity.y
-				<< " grounded=" << rb->Is_Grounded
-				<< " static=" << rb->Is_Static << std::endl;
+
+			//std::cout << rb->name()
+			//	<< " vel=" << rb->velocity.y
+			//	<< " grounded=" << rb->Is_Grounded
+			//	<< " static=" << rb->Is_Static << std::endl;
 
 			Transform* t = rb->gameObject().GetComponent<Transform>();
 			if (!t) continue;
 
 			if (rb->Affected_By_Gravity && !rb->Is_Grounded)
+			{
 				rb->velocity.y -= rb->gravity * dt;
 
-			t->position += rb->velocity * dt;
+			}
+
+
+			t->position += rb->velocity;
 		}
 
 		// Resolve ALL collisions
