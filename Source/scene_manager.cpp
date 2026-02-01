@@ -19,6 +19,7 @@ namespace
 	bool _requestSwitch = false;
 	bool _requestReload = false;
 	EditorScene _editor{};
+	int* originLoop{};
 
 	bool InSceneRegistry(std::string name)
 	{
@@ -72,7 +73,7 @@ namespace
 
 namespace SceneManager
 {
-	void Initialize()
+	void Initialize(int* gameLoop)
 	{
 		//read all scene files in a folder
 		_sceneRegistry.clear();
@@ -110,6 +111,8 @@ namespace SceneManager
 		{
 			std::cout << s << std::endl;
 		}
+
+		originLoop = gameLoop;
 	}
 
 	void SwitchToEditor()
@@ -143,5 +146,10 @@ namespace SceneManager
 		if (_requestSwitch) SwitchScene();
 		if (_requestReload) ReloadScene();
 		if (_current) _current->OnUpdate();
+	}
+
+	void QuitApplication()
+	{
+		*originLoop = 0;
 	}
 }

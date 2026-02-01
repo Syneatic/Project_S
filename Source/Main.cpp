@@ -94,7 +94,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UISystem::BindButtonFunctions(UIButtonRegister::Instance());
 
 	//grab all scene
-	SceneManager::Initialize();
+	SceneManager::Initialize(&gGameRunning);
 
 	SceneManager::SwitchToEditor();
 	//SceneManager::RequestSceneSwitch("MainMenu");

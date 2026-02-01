@@ -10,19 +10,31 @@ namespace UISystem
     // Functions for UI buttons.
     static void Play() 
     {
-        SceneManager::RequestSceneSwitch("PrototypeLvl");
-        std::cout << "Play Game\n";
+        SceneManager::RequestSceneSwitch("PrototypeLvlOld");
     }
+
     static void Pause() {}
-    static void Restart() {}
-    static void Exit() {}
+    static void Restart() 
+    {
+        SceneManager::RequestSceneReload();
+    }
+
+    static void Quit()
+    {
+        SceneManager::RequestSceneSwitch("MainMenu");
+    }
+
+    static void Exit() 
+    {
+        SceneManager::QuitApplication();
+    }
 
     void BindButtonFunctions(UIButtonRegister& bReg)
     {
-        std::cout << "Try Bind\n";
         bReg.bindFunction(FunctionKey::PLAY_GAME, Play);
         bReg.bindFunction(FunctionKey::PAUSE_GAME, Pause);
         bReg.bindFunction(FunctionKey::RESTART_GAME, Restart);
+        bReg.bindFunction(FunctionKey::QUIT_GAME, Quit);
         bReg.bindFunction(FunctionKey::EXIT_APP, Exit);
     }
 
@@ -54,7 +66,7 @@ namespace UISystem
         Transform* t = button.GetComponent<Transform>();
         SpriteRenderer* r = button.GetComponent<SpriteRenderer>();
         Color base{ r->color };
-        if (checkBounds(*t/*, r->alignment*/))
+        if (checkBounds(*t))
         {
             r->color.r = r->color.g = r->color.b = base.a * .75f;
             

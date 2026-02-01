@@ -124,7 +124,7 @@ namespace UISystem
 // Button Component to assign function callback.
 struct Button : Behaviour
 {
-	FunctionKey fKey;
+	FunctionKey fKey{};
 
 	void DrawInInspector() override
 	{
