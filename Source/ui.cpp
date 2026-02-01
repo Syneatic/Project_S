@@ -2,6 +2,7 @@
 #include "render_components.hpp"
 #include "color.hpp"
 #include "gameobject.hpp"
+#include "scene_manager.hpp"
 
 #include "AEEngine.h"
 #include "AEInput.h"
@@ -12,7 +13,7 @@ namespace UISystem
     // Functions for UI buttons.
     static void Play() 
     {
-        //SceneManager& instance{ SceneManager::Instance() };
+        //SceneManager::RequestSceneSwitch("PrototypeLvl");
         std::cout << "Play Game\n";
     }
     static void Pause() {}
@@ -41,7 +42,7 @@ namespace UISystem
         return screenToWorld;
     }
 
-    static bool checkBounds(Transform const& t/*, Alignment const& aignment*/)
+    static bool checkBounds(Transform const& t)
     {
         s32 mX{}, mY{}; AEInputGetCursorPosition(&mX, &mY);
         float2 mouseWorld{ScreenToWorld(mX, mY)};
