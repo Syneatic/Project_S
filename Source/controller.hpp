@@ -53,8 +53,8 @@ struct PlayerController : Controller
 
     } 
 
-    f32 end = 0.f;
-    f32 t = 0.f;
+    //f32 end = 0.f;
+    //f32 t = 0.f;
 
     void OnUpdate() override
     {
@@ -77,45 +77,14 @@ struct PlayerController : Controller
 
         //Once if space is pressed once
         if (AEInputCheckTriggered(AEVK_SPACE) && rb->Is_Grounded)
-        {
+        {           
             //Set the space bar velocity to true
             //Check if the player reach the height (dt)
             //rb.Affected_By_Gravity = false;
             rb->velocity.y = jumpHeight;
             rb->Is_Grounded = false;
-            t = 0.f;
+            //t = 0.f;
         }
-
-        /*Make the player able to jump
-        if (!rb.Is_Grounded && !rb.Affected_By_Gravity)
-        {
-            const float jumpDuration = 1.f;
-            //Check the total number it travels up
-            //Constantly making the player go up
-            /*trans.position.y = (currJumpHeight += 100.f * dt);
-            if (t <= jumpDuration)
-            {
-                t += dt;
-                float alpha = t / jumpDuration;
-                rb.velocity.y = jumpHeight + alpha * (end - jumpHeight);
-                std::cout << rb.velocity.y << std::endl;
-            }
-            else
-            {
-                //rb.Affected_By_Gravity = true;
-                std::cout << "Gravity back on" << std::endl;
-            }
-        }*/
-    
-
-        //if (trans.position.y <= rb.Is_Grounded)
-        //{
-        //    //std::cout << "Touched the ground" << std::endl;
-        //    rb.velocity.y = 0;
-        //    rb.Affected_By_Gravity = false;
-        //    rb.Is_Grounded = true;
-        //    //t = 0.f;
-        //}
     }
 
     void OnDestroy() override

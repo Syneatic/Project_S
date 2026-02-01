@@ -370,7 +370,7 @@ namespace Physics
 		return info;
 	}
 
-	bool Raycast(const float2& origin, const float2& dir, float maxDist, RaycastHit& out, uint32_t layerMask = 0xFFFFFFFF)
+	inline bool Raycast(const float2& origin, const float2& dir, float maxDist, RaycastHit& out, uint32_t layerMask = 0xFFFFFFFF)
 	{
 		float2 dirN = normalize(dir);
 		if (lengthsq(dirN) < kEps) return false;
@@ -450,7 +450,7 @@ namespace Physics
 	}
 
 
-	void CheckAllTypeCollisions()
+	inline void CheckAllTypeCollisions()
 	{
 		for (size_t i = 0; i < _colliders.size(); i++)
 		{

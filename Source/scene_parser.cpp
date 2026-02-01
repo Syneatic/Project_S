@@ -93,6 +93,12 @@ namespace SceneIO
             b.Deserialize(compObj);
             go.AddComponent<Button>(b);
         }
+        else if (type == "RigidBody")
+        {
+            RigidBody rb{};
+            rb.Deserialize(compObj);
+            go.AddComponent<RigidBody>(rb);
+        }
     }
 
     // ===== GameObject Serialization =====

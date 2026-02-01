@@ -63,7 +63,6 @@ public:
 
 	virtual void OnUpdate()
 	{
-		//Physics::CheckAllTypeCollisions();
 		//test draw
 		AEGfxSetBackgroundColor(0.f,0.f,0.f);
 
@@ -76,6 +75,8 @@ public:
 					b->OnUpdate();
 			}
 		}
+
+		Physics::Step((f32)AEFrameRateControllerGetFrameTime());
 		RenderSystem::Draw();
 	}
 
