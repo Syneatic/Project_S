@@ -78,6 +78,9 @@
     <ClCompile Include="Source\scene_parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\scene_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -173,9 +176,6 @@
     <ClInclude Include="Source\physics.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\test_component.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\physics_component.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -196,6 +196,12 @@
     </ClInclude>
     <ClInclude Include="Source\scene_play.hpp">
       <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\emitter_component.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\emitter.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

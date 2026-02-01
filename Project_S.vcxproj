@@ -51,6 +51,7 @@
     <ClInclude Include="Source\collider_components.hpp" />
     <ClInclude Include="Source\color.hpp" />
     <ClInclude Include="Source\component.hpp" />
+    <ClInclude Include="Source\emitter.hpp" />
     <ClInclude Include="Source\emitter_component.hpp" />
     <ClInclude Include="Source\gameobject.hpp" />
     <ClInclude Include="Source\json_parser_helper.hpp" />

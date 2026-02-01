@@ -15,7 +15,7 @@
 #include "collider_components.hpp"
 #include "controller.hpp"
 #include "ui_types.hpp"
-#include "test_component.hpp"
+#include "emitter_component.hpp"
 
 namespace SceneIO
 {
@@ -81,11 +81,17 @@ namespace SceneIO
             str.Deserialize(compObj);
             go.AddComponent<Text>(str);
         }*/
-        else if (type == "EchoPingTest")
+        else if (type == "WaterEmitter")
         {
-            EchoPingTest ept{};
+            WaterEmitter ept{};
             ept.Deserialize(compObj);
-            go.AddComponent<EchoPingTest>(ept);
+            go.AddComponent<WaterEmitter>(ept);
+        }
+        else if (type == "EditableEmitter")
+        {
+            EditableEmitter ept{};
+            ept.Deserialize(compObj);
+            go.AddComponent<EditableEmitter>(ept);
         }
         else if (type == "Button")
         {
