@@ -95,6 +95,8 @@ private:
 		hits.clear();
 
 		Physics::RaycastHit rh{};
+
+		uint32_t raycastMask = 0xFFFFFFFF & ~static_cast<uint32_t>(Layer::Player);
 		Collider* ignore = GetSelfCollider();
 
 		const float twoPi = 6.28318530718f;
@@ -104,7 +106,7 @@ private:
 		{
 			float a = (static_cast<float>(i) / static_cast<float>(rayCount)) * twoPi;
 			float2 dir{ std::cos(a), std::sin(a) }; // already normalized
-			particles[i].pos = float2{ 0.f, 0.f };
+			particles[i].pos = origin;
 			particles[i].vel = dir * spd;
 			particles[i].time = 0.f;
 			particles[i].lifetime = maxRadius / (speed);
@@ -112,7 +114,7 @@ private:
 			particles[i].stay = false;
 
 			//cast ray
-			if (Physics::Raycast(origin, dir, maxRadius, rh))
+			if (Physics::Raycast(origin, dir, maxRadius, rh, raycastMask))
 			{
 				Hit h{};
 				h.p = rh.point;
