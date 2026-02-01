@@ -433,10 +433,10 @@ private:
 				{
 					selectedObj.AddComponent<WaterEmitter>();
 				}
-				if (ImGui::MenuItem("Editable"))
+				/*if (ImGui::MenuItem("Editable"))
 				{
-					selectedObj.AddComponent<EditableEmitter>();
-				}
+					selectedObj.AddComponent<EditableEmitter>(); //bugged
+				}*/
 
 				ImGui::EndMenu();
 			}
