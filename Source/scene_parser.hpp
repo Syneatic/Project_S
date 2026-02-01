@@ -86,12 +86,6 @@ namespace SceneIO
             str.Deserialize(compObj);
             go.AddComponent<Text>(str);
         }
-        else if (type == "EchoPingTest")
-        {
-            ParticleEmitter ept{};
-            ept.Deserialize(compObj);
-            go.AddComponent<ParticleEmitter>(ept);
-        }
         else if (type == "Button")
         {
             Button b{};
@@ -103,6 +97,12 @@ namespace SceneIO
             WaterEmitter b{};
             b.Deserialize(compObj);
             go.AddComponent<WaterEmitter>(b);
+        }
+        else if (type == "EditableEmitter")
+        {
+            EditableEmitter b{};
+            b.Deserialize(compObj);
+            go.AddComponent<EditableEmitter>(b);
         }
     }
 

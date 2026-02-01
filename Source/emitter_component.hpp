@@ -2,6 +2,8 @@
 #include <vector>
 #include <cmath>
 #include <cstdint>
+#include <string>
+#include "ImGUI/imgui.h"
 
 #include "component.hpp"
 #include "collider_components.hpp"
@@ -74,12 +76,13 @@ struct ParticleEmitter : Behaviour
 
 	void Serialize(Json::Value& outComp) const override
 	{
-
+		outComp["color"] = WriteColor(color);
 	}
 
 	void Deserialize(const Json::Value& compObj) override
 	{
-
+		if (compObj.isMember("color"))
+			ReadColor(compObj["color"], color);
 	}
 
 private:
@@ -187,5 +190,23 @@ struct WaterEmitter : ParticleEmitter {
 };
 
 struct EditableEmitter : ParticleEmitter {
+	void DrawInInspector() override{
+		ImGui::TextUnformatted("Color");
+		float col[4] = { color.r, color.g, color.b, color.a };
+		if (ImGui::ColorEdit4("###renderer_color", col))
+		{
+			color.r = col[0];
+			color.g = col[1];
+			color.b = col[2];
+			color.a = col[3];
+		}
+	}
+
+	EditableEmitter() {
+		rayCount = 20;
+		maxRadius = 50.f;
+		speed = 100.f;
+		timeLimit = 3.0f;
+	}
     const std::string name() const override { return "EditableEmitter"; }
 };
