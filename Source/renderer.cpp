@@ -177,7 +177,7 @@ namespace RenderSystem
 	}
 
 	//draw primitives/text
-	void DrawPoint(float2 pos)
+	void DrawPoint(float2 pos, Color objColor)
 	{
 		//set modes
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
@@ -186,7 +186,7 @@ namespace RenderSystem
 		//set colors
 		AEGfxSetColorToAdd(0, 0, 0, 0);
 		AEGfxSetBlendColor(0, 0, 0, 0);
-		AEGfxSetColorToMultiply(1.f, 0, 0, 1.f);
+		AEGfxSetColorToMultiply(objColor.r, objColor.g, objColor.b, 1);
 		AEGfxSetTransparency(1.f);
 
 		AEMtx33 transform;

@@ -15,6 +15,7 @@
 #include "renderer.hpp"
 #include "physics_component.hpp"
 #include "physics.hpp"
+#include "emitter_component.hpp"
 
 static std::wstring OpenFile()
 {
@@ -418,11 +419,15 @@ private:
 				ImGui::EndMenu();
 			}
 
-			if (ImGui::BeginMenu("TESTING"))
+			if (ImGui::BeginMenu("Audio Emitters"))
 			{
-				if (ImGui::MenuItem("EchoPingTest"))
+				if (ImGui::MenuItem("Water"))
 				{
-					selectedObj.AddComponent<EchoPingTest>();
+					selectedObj.AddComponent<WaterEmitter>();
+				}
+				if (ImGui::MenuItem("Editable"))
+				{
+					selectedObj.AddComponent<EditableEmitter>();
 				}
 
 				ImGui::EndMenu();

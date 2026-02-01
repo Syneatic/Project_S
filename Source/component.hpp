@@ -9,6 +9,7 @@
 struct GameObject;
 struct Collider;
 struct Renderer;
+struct ParticleEmitter;
 
 struct Component
 {

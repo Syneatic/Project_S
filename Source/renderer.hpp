@@ -49,7 +49,7 @@ namespace RenderSystem {
 	void DrawQuad(RenderData data);
 	void DrawTri(RenderData data);
 	void DrawCirc(RenderData data);
-	void DrawPoint(float2 pos);
+	void DrawPoint(float2 pos, Color objColor);
 	void DrawMyText(char* text, float2 pos, float size);
 	void DrawArrow(float2 pos);
 

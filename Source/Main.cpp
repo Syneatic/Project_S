@@ -119,7 +119,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			{
 
 				// Load new scene
-				SceneIO::DeserializeScene(playScene, "PrototypeLvl");
+				SceneIO::DeserializeScene(playScene, "2");
 
 				// Switch
 				sceneManager.RequestSceneSwitch(&playScene);

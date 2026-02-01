@@ -71,6 +71,11 @@ public:
 			GetOrAddComponent<Transform>(); 
 		}
 
+		if constexpr (std::is_base_of<ParticleEmitter, T>::value)
+		{
+			GetOrAddComponent<Transform>();
+		}
+
 		std::type_index type{ typeid(T) };
 		//check if alrdy exists
 		if (_componentMap.find(type) != _componentMap.end())

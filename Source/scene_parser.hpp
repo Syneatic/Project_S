@@ -15,7 +15,7 @@
 #include "controller.hpp"
 #include "math.hpp"
 #include "ui_types.hpp"
-#include "test_component.hpp"
+#include "emitter_component.hpp"
 
 // parse a scene object into a scene file
 // read it back from the scene file into object on load
@@ -88,15 +88,21 @@ namespace SceneIO
         }
         else if (type == "EchoPingTest")
         {
-            EchoPingTest ept{};
+            ParticleEmitter ept{};
             ept.Deserialize(compObj);
-            go.AddComponent<EchoPingTest>(ept);
+            go.AddComponent<ParticleEmitter>(ept);
         }
         else if (type == "Button")
         {
             Button b{};
 			b.Deserialize(compObj);
             go.AddComponent<Button>(b);
+        }
+        else if (type == "WaterEmitter")
+        {
+            WaterEmitter b{};
+            b.Deserialize(compObj);
+            go.AddComponent<WaterEmitter>(b);
         }
     }
 

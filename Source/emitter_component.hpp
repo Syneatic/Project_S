@@ -7,6 +7,7 @@
 #include "collider_components.hpp"
 #include "physics.hpp"
 #include "particle.hpp"
+#include "color.hpp"
 
 #include "AEGraphics.h"
 #include "AEInput.h"
@@ -14,7 +15,7 @@
 
 static const int RAY_COUNT = 256;
 
-struct EchoPingTest : Behaviour
+struct ParticleEmitter : Behaviour
 {
 	struct Hit
 	{
@@ -28,7 +29,7 @@ struct EchoPingTest : Behaviour
 	float maxRadius = 500.0f;   // world units
 	float speed = 300.0f;   // world units per second
 	u8    pingKey = 'E';      // change if you use different keycodes
-	u32   pointColor = 0xFFFFFFFF;
+	Color color{1.f,1.f,1.f,1.f};
 
 	// State
 	std::vector<Hit> hits{};
@@ -36,8 +37,9 @@ struct EchoPingTest : Behaviour
 	bool   active = false;
 	float  t0 = 0.0f;
 	float  time = 0.0f;
+	float timeLimit = 10.0f;
 
-	const std::string name() const override { return "EchoPingTest"; }
+	const std::string name() const override { return "ParticleEmitter"; }
 
 	Particle particles[RAY_COUNT]{};
 	bool complete = false;
@@ -53,8 +55,13 @@ struct EchoPingTest : Behaviour
 		time += static_cast<float>(AEFrameRateControllerGetFrameTime());
 
 		// trigger ping
-		if (AEInputCheckTriggered(pingKey))
+		if (AEInputCheckTriggered(pingKey)) {
 			Ping();
+		}
+		if (time >= timeLimit) {
+			Ping();
+			time = 0.0f;
+		}
 
 		// draw revealed points
 		DrawHits();
@@ -104,7 +111,7 @@ private:
 		{
 			float a = (static_cast<float>(i) / static_cast<float>(rayCount)) * twoPi;
 			float2 dir{ std::cos(a), std::sin(a) }; // already normalized
-			particles[i].pos = float2{ 0.f, 0.f };
+			particles[i].pos = origin;
 			particles[i].vel = dir * spd;
 			particles[i].time = 0.f;
 			particles[i].lifetime = maxRadius / (speed);
@@ -163,7 +170,22 @@ private:
 			if (par.lifetime <= 0.0f && !par.stay)
 				continue;
 
-			RenderSystem::DrawPoint(par.pos);
+			RenderSystem::DrawPoint(par.pos, color);
 		}
 	}
+};
+
+struct WaterEmitter : ParticleEmitter {
+	WaterEmitter() {
+		rayCount = 20;
+		maxRadius = 50.f;
+		speed = 100.f;
+		color = {0,0,1.f,1.f};
+		timeLimit = 3.0f;
+    }
+    const std::string name() const override { return "WaterEmitter"; }
+};
+
+struct EditableEmitter : ParticleEmitter {
+    const std::string name() const override { return "EditableEmitter"; }
 };
