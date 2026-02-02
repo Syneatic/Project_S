@@ -263,7 +263,7 @@ namespace RenderSystem
 		AEGfxMeshDraw(_circleMesh, AE_GFX_MDM_TRIANGLES);
 	}
 
-	void DrawMyText(char* text, RenderData data) {
+	void DrawMyText(const char* text, RenderData data) {
 		f32 screenPosX = data.transform.position.x / AEGfxGetWindowWidth();
 		f32 screenPosY = data.transform.position.y / AEGfxGetWindowHeight();
 		f32 textWidth{}, textHeight{}, offX{}, offY{};

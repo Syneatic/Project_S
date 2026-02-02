@@ -50,7 +50,7 @@ namespace RenderSystem {
 	void DrawTri(RenderData data);
 	void DrawCirc(RenderData data);
 	void DrawPoint(float2 pos, Color objColor);
-	void DrawMyText(char* text, RenderData data);
+	void DrawMyText(const char* text, RenderData data);
 	void DrawArrow(float2 pos);
 
 	void RendererExit();

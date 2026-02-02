@@ -7,14 +7,6 @@
       "components" : 
       [
         {
-          "Affected By Gravity" : false,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
-          "Is Static" : true,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
-        },
-        {
           "position" : 
           [
             237.55000305175781,
@@ -27,6 +19,14 @@
             300.0
           ],
           "type" : "Transform"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Gravity" : 9.8000001907348633,
+          "Grounded" : false,
+          "Is Static" : true,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -536,6 +536,14 @@
       "components" : 
       [
         {
+          "Affected By Gravity" : true,
+          "Gravity" : 20.0,
+          "Grounded" : true,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
           "position" : 
           [
             100.0,
@@ -548,14 +556,6 @@
             50.0
           ],
           "type" : "Transform"
-        },
-        {
-          "Affected By Gravity" : true,
-          "Gravity" : 20.0,
-          "Grounded" : true,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -573,11 +573,6 @@
           "type" : "SpriteRenderer"
         },
         {
-          "jumpHeight" : 10.0,
-          "max_speed" : 10.0,
-          "type" : "PlayerController"
-        },
-        {
           "collisionMask" : 4294967282,
           "layerMask" : 1,
           "size" : 
@@ -586,6 +581,11 @@
             1.0
           ],
           "type" : "BoxCollider"
+        },
+        {
+          "jumpHeight" : 10.0,
+          "max_speed" : 10.0,
+          "type" : "PlayerController"
         },
         {
           "color" : 
@@ -725,7 +725,7 @@
             1.0
           ],
           "renderlayer" : 500,
-          "text" : "Test",
+          "text" : "bing bang",
           "type" : "TextRenderer"
         }
       ],

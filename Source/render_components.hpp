@@ -188,13 +188,14 @@ struct MeshRenderer : Renderer
 struct TextRenderer : Renderer
 {
     std::string myText{};
-    char textBuffer[256]{};
 
     void DrawInInspector() override
     {
         static const char* _alignmentNames[] = { "Top left", "Top", "Top right", "Left", "Center", "Right", "Bottom Left", "Bottom", "Bottom right" };
 
-        if (ImGui::InputText("  ", textBuffer, sizeof(textBuffer)))
+		char textBuffer[256];
+        strcpy_s(textBuffer, myText.c_str());
+        if (ImGui::InputText("##textrenderer", textBuffer, sizeof(textBuffer)))
         {
             myText = textBuffer;
         }
@@ -234,7 +235,7 @@ struct TextRenderer : Renderer
         data.renderLayer = renderLayer;
         data.color = color;
         data.alignment = alignment;
-        RenderSystem::DrawMyText(textBuffer, data);
+        RenderSystem::DrawMyText(myText.c_str(), data);
     }
 
     void Serialize(Json::Value& outComp) const override
@@ -242,8 +243,7 @@ struct TextRenderer : Renderer
         outComp["renderlayer"] = renderLayer;
         outComp["alignment"] = alignment;
         outComp["color"] = WriteColor(color);
-        outComp["text"] = WriteText(myText);
-
+        outComp["text"] = myText;
 
         //texture is abit tricky for now
         //i think save it as a filename for now
@@ -260,9 +260,8 @@ struct TextRenderer : Renderer
         if (compObj.isMember("color"))
             ReadColor(compObj["color"], color);
 
-        if (compObj.isMember("text")) {
-            ReadText(compObj["text"], myText);
-            myText.copy(textBuffer, 256);
+        if (compObj.isMember("text") || !compObj["text"].isString()) {
+            myText = compObj["text"].asString();
         }
 
         //read texture from file here
