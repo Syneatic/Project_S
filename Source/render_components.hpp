@@ -110,6 +110,7 @@ struct Renderer : Component
         outComp["alignment"] = alignment;
         outComp["color"] = WriteColor(color);
 
+
         //texture is abit tricky for now
         //i think save it as a filename for now
     }
@@ -186,7 +187,8 @@ struct MeshRenderer : Renderer
 
 struct TextRenderer : Renderer
 {
-    char textBuffer[256];
+    std::string myText{};
+    char textBuffer[256]{};
 
     void DrawInInspector() override
     {
@@ -194,6 +196,7 @@ struct TextRenderer : Renderer
 
         if (ImGui::InputText("  ", textBuffer, sizeof(textBuffer)))
         {
+            myText = textBuffer;
         }
 
         ImGui::Separator();
@@ -232,6 +235,37 @@ struct TextRenderer : Renderer
         data.color = color;
         data.alignment = alignment;
         RenderSystem::DrawMyText(textBuffer, data);
+    }
+
+    void Serialize(Json::Value& outComp) const override
+    {
+        outComp["renderlayer"] = renderLayer;
+        outComp["alignment"] = alignment;
+        outComp["color"] = WriteColor(color);
+        outComp["text"] = WriteText(myText);
+
+
+        //texture is abit tricky for now
+        //i think save it as a filename for now
+    }
+
+    void Deserialize(const Json::Value& compObj) override
+    {
+        if (compObj.isMember("renderlayer") && compObj["renderlayer"].isInt())
+            renderLayer = static_cast<RenderLayer>(compObj["renderlayer"].asInt());
+
+        if (compObj.isMember("alignment") && compObj["alignment"].isInt())
+            alignment = static_cast<Alignment>(compObj["alignment"].asInt());
+
+        if (compObj.isMember("color"))
+            ReadColor(compObj["color"], color);
+
+        if (compObj.isMember("text")) {
+            ReadText(compObj["text"], myText);
+            myText.copy(textBuffer, 256);
+        }
+
+        //read texture from file here
     }
 
     const std::string name() const override { return "TextRenderer"; }

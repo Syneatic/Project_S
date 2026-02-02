@@ -3,6 +3,7 @@
 #include "json.h"
 #include "math.hpp"
 #include "color.hpp"
+#include <string>
 
 inline Json::Value WriteFloat2(const float2& v)
 {
@@ -40,3 +41,14 @@ inline void ReadColor(const Json::Value& arr, Color& out)
     out.a = arr[3].asFloat();
 }
 
+inline Json::Value WriteText(const std::string& inString)
+{
+    Json::Value string(Json::stringValue);
+    string = inString;
+    return string;
+}
+
+inline void ReadText(const Json::Value& string, std::string& out)
+{
+    out = string.asString();
+}

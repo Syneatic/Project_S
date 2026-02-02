@@ -695,6 +695,41 @@
         }
       ],
       "name" : "QuitButton"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            0.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "renderlayer" : 500,
+          "text" : "Test",
+          "type" : "TextRenderer"
+        }
+      ],
+      "name" : "GameObject_14"
     }
   ],
   "name" : "PrototypeLvl"

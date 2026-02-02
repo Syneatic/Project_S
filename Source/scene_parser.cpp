@@ -69,6 +69,12 @@ namespace SceneIO
             r.Deserialize(compObj);
             go.AddComponent<SpriteRenderer>(r);
         }
+        else if (type == "TextRenderer")
+        {
+            TextRenderer r{};
+            r.Deserialize(compObj);
+            go.AddComponent<TextRenderer>(r);
+        }
         else if (type == "PlayerController")
         {
             PlayerController pc{};
