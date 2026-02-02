@@ -120,7 +120,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			if (AEInputCheckTriggered(AEVK_2))
 			{
 				// Load new scene
-				SceneManager::RequestSceneSwitch("PrototypeLvl");
+				SceneManager::RequestSceneSwitch("MainMenu");
 			}
 		}
 		//renderSys::DrawArrow(float2::zero());

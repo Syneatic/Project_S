@@ -1,0 +1,280 @@
+{
+  "gameObjects" : 
+  [
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            676.0999755859375
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "Transform"
+        }
+      ],
+      "name" : "Title"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            160.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            250.0,
+            80.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "buttonFunctionId" : 0,
+          "type" : "Button"
+        }
+      ],
+      "name" : "PlayButton"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            325.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "Transform"
+        }
+      ],
+      "name" : "PlayText"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            20.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            250.0,
+            80.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "buttonFunctionId" : 3,
+          "type" : "Button"
+        }
+      ],
+      "name" : "SettingsButton"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            50.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            0.69999998807907104,
+            1.0
+          ],
+          "type" : "Transform"
+        }
+      ],
+      "name" : "SettingsText"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            -120.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            250.0,
+            80.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "buttonFunctionId" : 10,
+          "type" : "Button"
+        }
+      ],
+      "name" : "CreditsButton"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            -225.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            0.80000001192092896,
+            1.0
+          ],
+          "type" : "Transform"
+        }
+      ],
+      "name" : "CreditsText"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            -260.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            250.0,
+            80.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "buttonFunctionId" : 12,
+          "type" : "Button"
+        }
+      ],
+      "name" : "QuitButton"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            -500.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "Transform"
+        }
+      ],
+      "name" : "QuitText"
+    }
+  ],
+  "name" : "MainMenu"
+}

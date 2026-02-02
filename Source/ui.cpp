@@ -10,7 +10,7 @@ namespace UISystem
     // Functions for UI buttons.
     static void Play() 
     {
-        SceneManager::RequestSceneSwitch("PrototypeLvlOld");
+        SceneManager::RequestSceneSwitch("PrototypeLvl");
     }
 
     static void Pause() {}
