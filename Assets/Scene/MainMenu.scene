@@ -19,6 +19,19 @@
             1.0
           ],
           "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "renderlayer" : 500,
+          "text" : "Project_S",
+          "type" : "TextRenderer"
         }
       ],
       "name" : "Title"
@@ -82,6 +95,19 @@
             1.0
           ],
           "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "renderlayer" : 500,
+          "text" : "Play",
+          "type" : "TextRenderer"
         }
       ],
       "name" : "PlayText"
@@ -145,6 +171,19 @@
             1.0
           ],
           "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "renderlayer" : 500,
+          "text" : "Settings",
+          "type" : "TextRenderer"
         }
       ],
       "name" : "SettingsText"
@@ -208,6 +247,19 @@
             1.0
           ],
           "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "renderlayer" : 500,
+          "text" : "Credits",
+          "type" : "TextRenderer"
         }
       ],
       "name" : "CreditsText"
@@ -271,6 +323,19 @@
             1.0
           ],
           "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "renderlayer" : 500,
+          "text" : "Quit",
+          "type" : "TextRenderer"
         }
       ],
       "name" : "QuitText"

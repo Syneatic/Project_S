@@ -65,11 +65,10 @@ namespace UISystem
     {
         Transform* t = button.GetComponent<Transform>();
         SpriteRenderer* r = button.GetComponent<SpriteRenderer>();
-        Color base{ r->color };
         if (checkBounds(*t))
         {
-            r->color.r = r->color.g = r->color.b = base.a * .75f;
-            
+            r->color.r = r->color.g = r->color.b = r->color.a * .75f;
+
             if (AEInputCheckTriggered(AEVK_LBUTTON))
             {
                 // play button press sfx
@@ -78,7 +77,7 @@ namespace UISystem
             // set button hover rgba.
             if (AEInputCheckCurr(AEVK_LBUTTON))
             {
-                r->color.r = r->color.g = r->color.b = base.a * .5f;
+                r->color.r = r->color.g = r->color.b = r->color.a * .5f;
             }
 
             if (AEInputCheckReleased(AEVK_LBUTTON))
@@ -86,9 +85,9 @@ namespace UISystem
                 // Get Button component & use enum key to call function pointer from button key registry.
                 Button* b = button.GetComponent<Button>();
                 bReg.handleMouseClick(b->fKey);
-            }                       
-        }      
+            }
+        }
         else
-            r->color = base;
+            r->color.r = r->color.g = r->color.b = r->color.a;
     }
 }
