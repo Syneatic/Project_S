@@ -81,17 +81,11 @@ namespace SceneIO
             str.Deserialize(compObj);
             go.AddComponent<Text>(str);
         }*/
-        else if (type == "WaterEmitter")
+        else if (type == "ParticleEmitter")
         {
-            WaterEmitter ept{};
+            ParticleEmitter ept{};
             ept.Deserialize(compObj);
-            go.AddComponent<WaterEmitter>(ept);
-        }
-        else if (type == "EditableEmitter")
-        {
-            EditableEmitter ept{};
-            ept.Deserialize(compObj);
-            go.AddComponent<EditableEmitter>(ept);
+            go.AddComponent<ParticleEmitter>(ept);
         }
         else if (type == "Button")
         {

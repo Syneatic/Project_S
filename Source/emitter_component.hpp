@@ -17,6 +17,8 @@
 
 static const int RAY_COUNT = 256;
 
+struct PlayerController;
+
 struct ParticleEmitter : Behaviour
 {
 	struct Hit
@@ -55,12 +57,12 @@ struct ParticleEmitter : Behaviour
 	{
 		// advance local time
 		time += static_cast<float>(AEFrameRateControllerGetFrameTime());
-
+		
 		// trigger ping
-		if (AEInputCheckTriggered(pingKey)) {
+		if (AEInputCheckTriggered(pingKey) && _owner->GetComponent<PlayerController>()) {
 			Ping();
 		}
-		if (time >= timeLimit) {
+		if (time >= timeLimit && !_owner->GetComponent<PlayerController>()) {
 			Ping();
 			time = 0.0f;
 		}
@@ -76,15 +78,55 @@ struct ParticleEmitter : Behaviour
 
 	void Serialize(Json::Value& outComp) const override
 	{
+		outComp["raycount"] = rayCount;
+		outComp["maxradius"] = maxRadius;
+		outComp["speed"] = speed;
 		outComp["color"] = WriteColor(color);
+		outComp["timelimit"] = timeLimit;
 	}
 
 	void Deserialize(const Json::Value& compObj) override
 	{
 		if (compObj.isMember("color"))
 			ReadColor(compObj["color"], color);
+
+		if (compObj.isMember("raycount") && compObj["raycount"].isInt())
+			rayCount = compObj["raycount"].asInt();
+
+		if (compObj.isMember("maxradius") && compObj["maxradius"].isNumeric())
+			maxRadius = compObj["maxradius"].asFloat();
+
+		if (compObj.isMember("speed") && compObj["speed"].isNumeric())
+			speed = compObj["speed"].asFloat();
+
+		if (compObj.isMember("timelimit") && compObj["timelimit"].isNumeric())
+			timeLimit = compObj["timelimit"].asFloat();
 	}
 
+	void DrawInInspector() override 
+	{
+		ImGui::TextUnformatted("Ray Count");
+		ImGui::DragInt("##emitter_raycount", &rayCount, 1, 64, RAY_COUNT);
+
+		ImGui::TextUnformatted("Max Radius");
+		ImGui::DragFloat("##emitter_maxradius", &maxRadius, 10.f, 10.f, 2000.f);
+
+		ImGui::TextUnformatted("Speed");
+		ImGui::DragFloat("##emitter_speed", &speed, 10.f, 10.f, 1000.f);
+
+		ImGui::TextUnformatted("Color");
+		float col[4] = { color.r, color.g, color.b, color.a };
+		if (ImGui::ColorEdit4("###renderer_color", col))
+		{
+			color.r = col[0];
+			color.g = col[1];
+			color.b = col[2];
+			color.a = col[3];
+		}
+
+		ImGui::TextUnformatted("Time Limit (for auto ping)");
+		ImGui::DragFloat("##emitter_timelimit", &timeLimit, 1.f, 1.f, 60.f);
+	}
 private:
 	Collider* GetSelfCollider()
 	{
@@ -178,37 +220,4 @@ private:
 			RenderSystem::DrawPoint(par.pos, color);
 		}
 	}
-};
-
-struct WaterEmitter : ParticleEmitter {
-	WaterEmitter() {
-		rayCount = 20;
-		maxRadius = 50.f;
-		speed = 100.f;
-		color = {0,0,1.f,1.f};
-		timeLimit = 3.0f;
-    }
-    const std::string name() const override { return "WaterEmitter"; }
-};
-
-struct EditableEmitter : ParticleEmitter {
-	void DrawInInspector() override{
-		ImGui::TextUnformatted("Color");
-		float col[4] = { color.r, color.g, color.b, color.a };
-		if (ImGui::ColorEdit4("###renderer_color", col))
-		{
-			color.r = col[0];
-			color.g = col[1];
-			color.b = col[2];
-			color.a = col[3];
-		}
-	}
-
-	EditableEmitter() {
-		rayCount = 20;
-		maxRadius = 50.f;
-		speed = 100.f;
-		timeLimit = 3.0f;
-	}
-    const std::string name() const override { return "EditableEmitter"; }
 };

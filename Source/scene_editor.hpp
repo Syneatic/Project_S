@@ -429,14 +429,10 @@ private:
 
 			if (ImGui::BeginMenu("Audio Emitters"))
 			{
-				if (ImGui::MenuItem("Water"))
+				if (ImGui::MenuItem("Particle Emitter"))
 				{
-					selectedObj.AddComponent<WaterEmitter>();
+					selectedObj.AddComponent<ParticleEmitter>();
 				}
-				/*if (ImGui::MenuItem("Editable"))
-				{
-					selectedObj.AddComponent<EditableEmitter>(); //bugged
-				}*/
 
 				ImGui::EndMenu();
 			}
@@ -505,9 +501,7 @@ public:
 
 
 		bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
-		Physics::CheckAllTypeCollisions();
 
-		Physics::Step(dt);
 		RenderSystem::Draw();
 
 		//draw imgui after game render
