@@ -77,7 +77,7 @@ namespace SceneManager
 	{
 		//read all scene files in a folder
 		_sceneRegistry.clear();
-		const fs::path sceneFolder = "Scene";
+		const fs::path sceneFolder = "Assets/Scene/";
 
 		std::error_code ec;
 

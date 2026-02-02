@@ -119,7 +119,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			if (AEInputCheckTriggered(AEVK_1)) SceneManager::SwitchToEditor();
 			if (AEInputCheckTriggered(AEVK_2))
 			{
-
 				// Load new scene
 				SceneManager::RequestSceneSwitch("PrototypeLvl");
 			}
