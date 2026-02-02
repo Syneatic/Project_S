@@ -1,0 +1,660 @@
+{
+  "gameObjects" : 
+  [
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            237.55000305175781,
+            -268.35000610351562
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            400.0,
+            300.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Gravity" : 9.8000001907348633,
+          "Grounded" : false,
+          "Is Static" : true,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967281,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "WallBig"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            -496.14999389648438,
+            -431.25
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            600.0,
+            25.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "FloorLeft"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            503.0,
+            -430.85000610351562
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            600.0,
+            25.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "FloorRight"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            -480.44000244140625,
+            -27.899999618530273
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            200.0,
+            200.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Wall1"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            604.1500244140625,
+            -150.75
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            200.0,
+            200.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "Wall2"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            -197.14999389648438,
+            -333.29998779296875
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            300.0,
+            10.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 2,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Platform1"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            -197.25,
+            -241.33299255371094
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            150.0,
+            10.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 2,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Platform2"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            -281.45001220703125,
+            -23.899999618530273
+          ],
+          "rotation" : -10.699999809265137,
+          "scale" : 
+          [
+            200.0,
+            10.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Platform3"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            503.79998779296875,
+            -52.099998474121094
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            250.0,
+            10.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 2,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Platform4"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            -439.5,
+            -213.05000305175781
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            25.0,
+            50.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "color" : 
+          [
+            0.0,
+            0.43137255311012268,
+            0.75294119119644165,
+            1.0
+          ],
+          "maxradius" : 250.0,
+          "raycount" : 128,
+          "speed" : 150.0,
+          "timelimit" : 2.5,
+          "type" : "ParticleEmitter"
+        }
+      ],
+      "name" : "WaterEffectPlaceholder"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            330.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            2000.0,
+            200.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "layerMask" : 0,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Ceiling"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 20.0,
+          "Grounded" : true,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
+          "position" : 
+          [
+            100.0,
+            -93.350006103515625
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            20.0,
+            50.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.36078432202339172,
+            0.0,
+            0.61568629741668701
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967282,
+          "layerMask" : 1,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "jumpHeight" : 10.0,
+          "max_speed" : 10.0,
+          "type" : "PlayerController"
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "maxradius" : 500.0,
+          "raycount" : 256,
+          "speed" : 300.0,
+          "timelimit" : 10.0,
+          "type" : "ParticleEmitter"
+        }
+      ],
+      "name" : "TestPlayer"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            520.5999755859375,
+            -377.70001220703125
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            10.0,
+            10.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "color" : 
+          [
+            0.42352941632270813,
+            0.85490196943283081,
+            0.30196079611778259,
+            1.0
+          ],
+          "maxradius" : 250.0,
+          "raycount" : 256,
+          "speed" : 150.0,
+          "timelimit" : 5.0,
+          "type" : "ParticleEmitter"
+        }
+      ],
+      "name" : "Water2"
+    }
+  ],
+  "name" : "PrototypeLvl"
+}

@@ -19,7 +19,7 @@
 
 namespace SceneIO
 {
-    static std::string defaultPath = "Scene/";
+    static std::string defaultPath = "Assets/Scene/";
 
     // ===== Component Serialization =====
     bool SerializeComponent(const Component& c, Json::Value& outComp)
@@ -165,7 +165,6 @@ namespace SceneIO
     // ===== Scene Serialization =====
     bool SerializeScene(const Scene& scene)
     {
-
         namespace fs = std::filesystem;
         try { fs::create_directories(defaultPath); }
         catch (...) {}
@@ -182,7 +181,8 @@ namespace SceneIO
         }
         root["gameObjects"] = gos;
 
-        const std::string path = defaultPath + scene.name() + ".scene";
+        //const std::string path = defaultPath + scene.name() + ".scene";
+        const std::string path = "../../Assets/Scene/" + scene.name() + ".scene";
         std::ofstream out(path, std::ios::binary);
         if (!out)
         {
@@ -198,7 +198,8 @@ namespace SceneIO
 
     bool DeserializeScene(Scene& outScene, const std::string& fileNameNoExt)
     {
-        const std::string path = defaultPath + fileNameNoExt + ".scene";
+        //const std::string path = defaultPath + fileNameNoExt + ".scene";
+        const std::string path = "Assets/Scene/" + fileNameNoExt + ".scene";
         std::ifstream in(path, std::ios::binary);
         if (!in) return false;
 

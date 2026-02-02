@@ -1,0 +1,256 @@
+{
+  "gameObjects" : 
+  [
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            -300.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            500.0,
+            5.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "GameObject_0"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            3.0,
+            300.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            500.0,
+            5.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "GameObject_1"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            -300.0,
+            0.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            5.0,
+            400.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "GameObject_2"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            300.0,
+            0.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            5.0,
+            500.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "GameObject_3"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            0.0,
+            0.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "type" : "EchoPingTest"
+        }
+      ],
+      "name" : "EMITTER"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            -338.89999389648438,
+            -291.75
+          ],
+          "rotation" : -60.599998474121094,
+          "scale" : 
+          [
+            300.0,
+            5.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "GameObject_5"
+    }
+  ],
+  "name" : "PHYSICS_SCENE"
+}
