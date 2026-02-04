@@ -68,11 +68,11 @@ struct PlayerController : Controller
 
         if (AEInputCheckCurr(AEVK_A))
         {
-            rb->velocity.x = -maxSpeed;
+            rb->velocity.x = -maxSpeed * dt * 50.f;
         }
         if (AEInputCheckCurr(AEVK_D))
         {
-            rb->velocity.x = maxSpeed;
+            rb->velocity.x = maxSpeed * dt * 50.f;
         }
 
         //Once if space is pressed once
@@ -81,7 +81,7 @@ struct PlayerController : Controller
             //Set the space bar velocity to true
             //Check if the player reach the height (dt)
             //rb.Affected_By_Gravity = false;
-            rb->velocity.y = jumpHeight;
+            rb->velocity.y = jumpHeight * dt * 60.f;
             rb->Is_Grounded = false;
             //t = 0.f;
         }
