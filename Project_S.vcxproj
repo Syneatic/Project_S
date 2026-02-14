@@ -21,11 +21,20 @@
     <ClCompile Include="Extern\jsoncpp\src\json_reader.cpp" />
     <ClCompile Include="Extern\jsoncpp\src\json_value.cpp" />
     <ClCompile Include="Extern\jsoncpp\src\json_writer.cpp" />
+    <ClCompile Include="Source\component.cpp" />
+    <ClCompile Include="Source\controller_components.cpp" />
+    <ClCompile Include="Source\emitter_components.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\physics.cpp" />
+    <ClCompile Include="Source\physics_components.cpp" />
     <ClCompile Include="Source\renderer.cpp" />
+    <ClCompile Include="Source\render_components.cpp" />
+    <ClCompile Include="Source\scene.cpp" />
+    <ClCompile Include="Source\scene_editor.cpp" />
     <ClCompile Include="Source\scene_manager.cpp" />
     <ClCompile Include="Source\scene_parser.cpp" />
     <ClCompile Include="Source\ui.cpp" />
+    <ClCompile Include="Source\ui_components.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Extern\ImGUI\imconfig.h" />
@@ -48,26 +57,24 @@
     <ClInclude Include="Extern\jsoncpp\include\version.h" />
     <ClInclude Include="Extern\jsoncpp\include\writer.h" />
     <ClInclude Include="Extern\jsoncpp\src\json_tool.h" />
-    <ClInclude Include="Source\collider_components.hpp" />
     <ClInclude Include="Source\color.hpp" />
     <ClInclude Include="Source\component.hpp" />
     <ClInclude Include="Source\emitter.hpp" />
-    <ClInclude Include="Source\emitter_component.hpp" />
+    <ClInclude Include="Source\emitter_components.hpp" />
     <ClInclude Include="Source\gameobject.hpp" />
     <ClInclude Include="Source\json_parser_helper.hpp" />
     <ClInclude Include="Source\math.hpp" />
-    <ClInclude Include="Source\controller.hpp" />
+    <ClInclude Include="Source\controller_components.hpp" />
     <ClInclude Include="Source\particle.hpp" />
     <ClInclude Include="Source\physics.hpp" />
-    <ClInclude Include="Source\physics_component.hpp" />
+    <ClInclude Include="Source\physics_components.hpp" />
     <ClInclude Include="Source\renderer.hpp" />
     <ClInclude Include="Source\render_components.hpp" />
     <ClInclude Include="Source\scene.hpp" />
     <ClInclude Include="Source\scene_editor.hpp" />
     <ClInclude Include="Source\scene_manager.hpp" />
     <ClInclude Include="Source\scene_parser.hpp" />
-    <ClInclude Include="Source\scene_play.hpp" />
-    <ClInclude Include="Source\ui_types.hpp" />
+    <ClInclude Include="Source\ui_components.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Extern\jsoncpp\src\json_valueiterator.inl" />

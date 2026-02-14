@@ -2,6 +2,7 @@
 #include <fstream>
 #include <memory>
 #include <string>
+#include <iostream>
 
 #include "json.h"
 #include "json_parser_helper.hpp"
@@ -10,12 +11,12 @@
 
 #include "scene.hpp"
 #include "gameobject.hpp"
+
 #include "component.hpp"
 #include "render_components.hpp"
-#include "collider_components.hpp"
-#include "controller.hpp"
-#include "ui_types.hpp"
-#include "emitter_component.hpp"
+#include "controller_components.hpp"
+#include "ui_components.hpp"
+#include "emitter_components.hpp"
 
 namespace SceneIO
 {

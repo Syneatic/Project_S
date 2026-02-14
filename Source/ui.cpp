@@ -1,9 +1,12 @@
 #include <iostream>
 
-#include "ui_types.hpp"
 #include "AEEngine.h"
-#include "render_components.hpp"
+
 #include "scene_manager.hpp"
+#include "gameobject.hpp"
+
+#include "ui_components.hpp"
+#include "render_components.hpp"
 
 namespace UISystem
 {

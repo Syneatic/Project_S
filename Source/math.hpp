@@ -11,13 +11,8 @@ struct float2
 	f32 x{};
 	f32 y{};
 
-	float2() : x(0.0f), y(0.0f)
-	{
-	}
-
-	float2(f32 ix,f32 iy) : x(ix), y(iy)
-	{
-	}
+	float2() : x(0), y(0) {};
+	float2(f32 ix, f32 iy) : x(ix), y(iy) {};
 
 	static float2 zero() { return float2{ 0.f,0.f }; }
 

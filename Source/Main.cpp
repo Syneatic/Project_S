@@ -17,7 +17,7 @@
 #include "scene_editor.hpp"
 #include "scene_parser.hpp"
 #include "scene_manager.hpp"
-#include "ui_types.hpp"
+#include "ui_components.hpp"
 //#include "scene_play.hpp" 
 
 
