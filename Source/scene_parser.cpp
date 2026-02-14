@@ -12,7 +12,6 @@
 #include "gameobject.hpp"
 #include "component.hpp"
 #include "render_components.hpp"
-#include "collider_components.hpp"
 #include "controller.hpp"
 #include "ui_types.hpp"
 #include "emitter_component.hpp"

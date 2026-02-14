@@ -6,7 +6,7 @@
 #include "ImGUI/imgui.h"
 
 #include "component.hpp"
-#include "collider_components.hpp"
+#include "physics_component.hpp"
 #include "physics.hpp"
 #include "particle.hpp"
 #include "color.hpp"

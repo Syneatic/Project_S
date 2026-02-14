@@ -167,9 +167,6 @@
     <ClInclude Include="Source\controller.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\collider_components.hpp">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
     <ClInclude Include="Source\render_components.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>

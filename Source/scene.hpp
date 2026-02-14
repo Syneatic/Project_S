@@ -6,7 +6,6 @@
 #include "physics.hpp"
 #include "renderer.hpp"
 #include "render_components.hpp"
-#include "collider_components.hpp"
 #include "physics_component.hpp"
 
 struct EditorScene;
