@@ -13,17 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\imgui">
-      <UniqueIdentifier>{fcf84cc3-6e71-46fb-a0c0-44566c794535}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\imgui\backends">
-      <UniqueIdentifier>{e61fd7f3-9a17-4556-bd5d-383ff844c78a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\imgui">
       <UniqueIdentifier>{0c61bca7-5c50-453f-9c7c-cfb170bea833}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\jsoncpp">
-      <UniqueIdentifier>{d3882381-7afd-4389-b6a9-ac78d0defcf4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\jsoncpp">
       <UniqueIdentifier>{7e08bde9-cebe-45be-91b1-c6e6152ec8b5}</UniqueIdentifier>
@@ -37,40 +28,55 @@
     <Filter Include="Header Files\systems">
       <UniqueIdentifier>{06a728a1-b739-475b-8b63-ab5179ae05aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\scene">
+      <UniqueIdentifier>{00c468b4-e74a-47c7-8f3a-19932309ede7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external">
+      <UniqueIdentifier>{78070fe4-1c50-4790-b6c6-ae25990eda7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external\imgui">
+      <UniqueIdentifier>{fcf84cc3-6e71-46fb-a0c0-44566c794535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external\imgui\backends">
+      <UniqueIdentifier>{e61fd7f3-9a17-4556-bd5d-383ff844c78a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external\jsoncpp">
+      <UniqueIdentifier>{d3882381-7afd-4389-b6a9-ac78d0defcf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Source Files\external\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_demo.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Source Files\external\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_draw.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Source Files\external\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_tables.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Source Files\external\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_widgets.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Source Files\external\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Extern\jsoncpp\src\json_reader.cpp">
-      <Filter>Source Files\jsoncpp</Filter>
+      <Filter>Source Files\external\jsoncpp</Filter>
     </ClCompile>
     <ClCompile Include="Extern\jsoncpp\src\json_value.cpp">
-      <Filter>Source Files\jsoncpp</Filter>
+      <Filter>Source Files\external\jsoncpp</Filter>
     </ClCompile>
     <ClCompile Include="Extern\jsoncpp\src\json_writer.cpp">
-      <Filter>Source Files\jsoncpp</Filter>
+      <Filter>Source Files\external\jsoncpp</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\imgui\backends</Filter>
+      <Filter>Source Files\external\imgui\backends</Filter>
     </ClCompile>
     <ClCompile Include="Extern\ImGUI\imgui_impl_win32.cpp">
-      <Filter>Source Files\imgui\backends</Filter>
+      <Filter>Source Files\external\imgui\backends</Filter>
     </ClCompile>
     <ClCompile Include="Source\renderer.cpp">
       <Filter>Source Files</Filter>
@@ -78,14 +84,20 @@
     <ClCompile Include="Source\ui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\scene_parser.cpp">
+    <ClCompile Include="Source\physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\scene_manager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\physics.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\scene_parser.cpp">
+      <Filter>Source Files\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\scene.cpp">
+      <Filter>Source Files\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\scene_editor.cpp">
+      <Filter>Source Files\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,13 +176,13 @@
     <ClInclude Include="Source\component.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\controller.hpp">
+    <ClInclude Include="Source\controller_components.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
     <ClInclude Include="Source\render_components.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ui_types.hpp">
+    <ClInclude Include="Source\ui_components.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
     <ClInclude Include="Source\physics_component.hpp">
@@ -194,9 +206,6 @@
     <ClInclude Include="Source\scene_play.hpp">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\emitter_component.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\emitter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -205,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="Source\physics.hpp">
       <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\emitter_component.hpp">
+      <Filter>Header Files\components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

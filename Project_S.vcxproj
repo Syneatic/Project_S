@@ -24,6 +24,8 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\physics.cpp" />
     <ClCompile Include="Source\renderer.cpp" />
+    <ClCompile Include="Source\scene.cpp" />
+    <ClCompile Include="Source\scene_editor.cpp" />
     <ClCompile Include="Source\scene_manager.cpp" />
     <ClCompile Include="Source\scene_parser.cpp" />
     <ClCompile Include="Source\ui.cpp" />
@@ -56,7 +58,7 @@
     <ClInclude Include="Source\gameobject.hpp" />
     <ClInclude Include="Source\json_parser_helper.hpp" />
     <ClInclude Include="Source\math.hpp" />
-    <ClInclude Include="Source\controller.hpp" />
+    <ClInclude Include="Source\controller_components.hpp" />
     <ClInclude Include="Source\particle.hpp" />
     <ClInclude Include="Source\physics.hpp" />
     <ClInclude Include="Source\physics_component.hpp" />
@@ -67,7 +69,7 @@
     <ClInclude Include="Source\scene_manager.hpp" />
     <ClInclude Include="Source\scene_parser.hpp" />
     <ClInclude Include="Source\scene_play.hpp" />
-    <ClInclude Include="Source\ui_types.hpp" />
+    <ClInclude Include="Source\ui_components.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Extern\jsoncpp\src\json_valueiterator.inl" />

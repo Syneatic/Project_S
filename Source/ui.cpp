@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "ui_types.hpp"
+#include "ui_components.hpp"
 #include "AEEngine.h"
 #include "render_components.hpp"
 #include "scene_manager.hpp"
