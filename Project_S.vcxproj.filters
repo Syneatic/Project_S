@@ -203,9 +203,6 @@
     <ClInclude Include="Source\scene_parser.hpp">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\scene_play.hpp">
-      <Filter>Header Files\scene</Filter>
-    </ClInclude>
     <ClInclude Include="Source\emitter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
