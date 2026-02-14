@@ -1,13 +1,10 @@
 #pragma once
-#include <iostream>
-#include <string>
+
 #include <unordered_map>
-#include <functional>
+
+#include "AEEngine.h"
 
 #include "component.hpp"
-#include "renderer.hpp"
-#include "math.hpp"
-#include "AEEngine.h"
 
 namespace UISystem
 {
@@ -69,23 +66,8 @@ public:
 		_buttonReg[key] = [f, args...]() { std::invoke(f, args...); };
 	}*/
 
-	void bindFunction(FunctionKey key, CallbackF callF)
-	{
-		_buttonReg[key] = callF;
-		std::cout << "Binded\n";
-	}
-
-	void handleMouseClick(FunctionKey key)
-	{
-		std::cout << "Clicked\n";
-		auto iterator = _buttonReg.find(key);
-
-		if (iterator != _buttonReg.end() && iterator->second)
-		{
-			std::cout << "Function Called\n";
-			iterator->second();
-		}
-	}
+	void bindFunction(FunctionKey key, CallbackF callF);
+	void handleMouseClick(FunctionKey key);
 
 private:
 	ButtonRegister _buttonReg;
@@ -97,14 +79,10 @@ struct Display : Behaviour
 {
 	AEGfxTexture* texture{ nullptr };
 
-	void DrawInInspector() override
-	{
-		ImGui::TextUnformatted("Texture");
-	}
-
-	void OnStart() override {}
-	void OnUpdate() override {}
-	void OnDestroy() override {}
+	void DrawInInspector() override;
+	void OnStart() override;
+	void OnUpdate() override;
+	void OnDestroy() override;
 
 	const std::string name() const override { return "Display"; }
 };
@@ -126,43 +104,12 @@ struct Button : Behaviour
 {
 	FunctionKey fKey{};
 
-	void DrawInInspector() override
-	{
-		if (ImGui::BeginCombo("ButtonMode", "SelectButton"))
-		{
-			for (int i = 0; i < static_cast<int>(FunctionKey::COUNT); i++)
-			{
-				bool is_selected = (i == static_cast<int>(fKey));
-
-				if (ImGui::Selectable(_buttonNames[i], is_selected))
-					fKey = static_cast<FunctionKey>(i);
-
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-
-			ImGui::EndCombo();
-		}
-	}
-
-	void Serialize(Json::Value& outComp) const override
-	{
-		outComp["buttonFunctionId"] = static_cast<int>(fKey);
-	}
-
-	void Deserialize(const Json::Value& compObj) override
-	{
-		if (compObj.isMember("buttonFunctionId"))
-			fKey = static_cast<FunctionKey>(compObj["buttonFunctionId"].asInt());
-	}
-
-	void OnStart() override {}
-	void OnUpdate() override
-	{
-		//GameObject& owner = *_owner;
-		UISystem::Hover_Logic(gameObject(), UIButtonRegister::Instance());
-	}
-	void OnDestroy() override {}
+	void DrawInInspector() override;
+	void Serialize(Json::Value& outComp) const override;
+	void Deserialize(const Json::Value& compObj) override;
+	void OnStart() override;
+	void OnUpdate() override;
+	void OnDestroy() override;
 
 	const std::string name() const override { return "Button"; }
 };

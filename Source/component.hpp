@@ -1,15 +1,9 @@
 #pragma once
-#include <string>
-#include <typeindex>
-#include "ImGUI/imgui.h"
 
 #include "json.h"
-#include "json_parser_helper.hpp"
+#include "math.hpp"
 
 struct GameObject;
-struct Collider;
-struct Renderer;
-struct ParticleEmitter;
 
 struct Component
 {
@@ -48,56 +42,11 @@ struct Transform : Component
 	float2 scale{1.f,1.f};
 	f32 rotation{};
 
-    //should only be available in debug mode
-	void DrawInInspector() override
-	{
-        ImGui::TextUnformatted("Position");
-        ImGui::DragFloat2("##transform_position", &position.x, 0.05f);
-        ImGui::SameLine();
-        if (ImGui::Button("Reset##Pos"))
-        {
-            position.x = 0.0f;
-            position.y = 0.0f;
-        }
-
-        ImGui::TextUnformatted("Scale");
-        ImGui::DragFloat2("##transform_scale", &scale.x, 0.05f);
-        ImGui::SameLine();
-        if (ImGui::Button("Reset##Scale"))
-        {
-            scale.x = 1.0f;
-            scale.y = 1.0f;
-        }
-
-        ImGui::TextUnformatted("Rotation");
-        ImGui::DragFloat("##transform_rotation", &rotation, 0.1f);
-        ImGui::SameLine();
-        if (ImGui::Button("Reset##Rot"))
-        {
-            rotation = 0.0f;
-        }
-	}
-
-    void Serialize(Json::Value& outComp) const override
-    {
-        outComp["position"] = WriteFloat2(position);
-        outComp["scale"] = WriteFloat2(scale);
-        outComp["rotation"] = rotation;
-    }
-
-    void Deserialize(const Json::Value& compObj) override
-    {
-        if (compObj.isMember("position")) ReadFloat2(compObj["position"], position);
-        if (compObj.isMember("scale"))    ReadFloat2(compObj["scale"], scale);
-        if (compObj.isMember("rotation") && compObj["rotation"].isNumeric())
-            rotation = compObj["rotation"].asFloat();
-    }
+    void DrawInInspector() override;
+    void Serialize(Json::Value& outComp) const override;
+    void Deserialize(const Json::Value& compObj) override;
 
 	const std::string name() const override { return "Transform"; }
 
-	Transform() {}
-
-	Transform(float2 pos,float2 scl,f32 rot) : position(pos), scale(scl), rotation(rot)
-	{
-	}
+    Transform(float2 pos = float2(), float2 scl = float2(), f32 rot = 0) : position(pos), scale(scl), rotation(rot) {}
 };

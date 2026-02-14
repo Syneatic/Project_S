@@ -2,6 +2,7 @@
 #include <shobjidl.h> 
 #include <string>
 #include <filesystem>
+#include <iostream>
 
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_opengl3.h"
@@ -15,9 +16,9 @@
 #include "scene_editor.hpp"
 
 #include "render_components.hpp"
-#include "physics_component.hpp"
+#include "physics_components.hpp"
 #include "controller_components.hpp"
-#include "emitter_component.hpp"
+#include "emitter_components.hpp"
 
 #include "ui_components.hpp"
 

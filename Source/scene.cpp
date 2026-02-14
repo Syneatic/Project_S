@@ -6,9 +6,10 @@
 #include "scene.hpp"
 #include "renderer.hpp"
 #include "physics.hpp"
+#include "gameobject.hpp"
 
 //comp
-#include "physics_component.hpp"
+#include "physics_components.hpp"
 #include "render_components.hpp"
 
 void Scene::InitializeGameObjects()

@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\imgui">
-      <UniqueIdentifier>{0c61bca7-5c50-453f-9c7c-cfb170bea833}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\jsoncpp">
-      <UniqueIdentifier>{7e08bde9-cebe-45be-91b1-c6e6152ec8b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\components">
       <UniqueIdentifier>{d7ed3a53-7e68-45e8-8fe6-d1cd242ebbe0}</UniqueIdentifier>
     </Filter>
@@ -42,6 +36,18 @@
     </Filter>
     <Filter Include="Source Files\external\jsoncpp">
       <UniqueIdentifier>{d3882381-7afd-4389-b6a9-ac78d0defcf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\external">
+      <UniqueIdentifier>{7f4f0e56-9d52-4e7a-9a2c-340a686dc6ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\external\jsoncpp">
+      <UniqueIdentifier>{7e08bde9-cebe-45be-91b1-c6e6152ec8b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\external\imgui">
+      <UniqueIdentifier>{0c61bca7-5c50-453f-9c7c-cfb170bea833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\components">
+      <UniqueIdentifier>{b0b2d243-c0df-45a3-8108-b1562e7ddd8a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +105,24 @@
     <ClCompile Include="Source\scene_editor.cpp">
       <Filter>Source Files\scene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\physics_components.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\controller_components.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\emitter_components.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\render_components.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ui_components.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -108,64 +132,64 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imstb_truetype.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\external\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imconfig.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\external\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imgui.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\external\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imgui_impl_opengl3.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\external\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imgui_impl_opengl3_loader.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\external\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imgui_impl_win32.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\external\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imgui_internal.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\external\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imstb_rectpack.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\external\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imstb_textedit.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\external\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\config.h">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\forwards.h">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\allocator.h">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\assertions.h">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\json.h">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\json_features.h">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\src\json_tool.h">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\reader.h">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\value.h">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\version.h">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Extern\jsoncpp\include\writer.h">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
     <ClInclude Include="Source\color.hpp">
       <Filter>Header Files</Filter>
@@ -184,9 +208,6 @@
     </ClInclude>
     <ClInclude Include="Source\ui_components.hpp">
       <Filter>Header Files\components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\physics_component.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\particle.hpp">
       <Filter>Header Files</Filter>
@@ -212,13 +233,16 @@
     <ClInclude Include="Source\physics.hpp">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\emitter_component.hpp">
+    <ClInclude Include="Source\emitter_components.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\physics_components.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Extern\jsoncpp\src\json_valueiterator.inl">
-      <Filter>Header Files\jsoncpp</Filter>
+      <Filter>Header Files\external\jsoncpp</Filter>
     </None>
   </ItemGroup>
 </Project>

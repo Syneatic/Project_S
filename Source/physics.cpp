@@ -9,7 +9,7 @@
 #include "physics.hpp"
 #include "gameobject.hpp"
 #include "component.hpp"
-#include "physics_component.hpp"
+#include "physics_components.hpp"
 
 namespace {
 	std::vector<Collider*> _colliders;
