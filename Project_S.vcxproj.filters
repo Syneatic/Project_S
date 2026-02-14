@@ -49,6 +49,9 @@
     <Filter Include="Source Files\components">
       <UniqueIdentifier>{b0b2d243-c0df-45a3-8108-b1562e7ddd8a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\systems">
+      <UniqueIdentifier>{aece7352-2868-4ba2-97f3-0dd73c82e125}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -84,13 +87,7 @@
     <ClCompile Include="Extern\ImGUI\imgui_impl_win32.cpp">
       <Filter>Source Files\external\imgui\backends</Filter>
     </ClCompile>
-    <ClCompile Include="Source\renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\scene_manager.cpp">
@@ -122,6 +119,12 @@
     </ClCompile>
     <ClCompile Include="Source\ui_components.cpp">
       <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\renderer.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physics.cpp">
+      <Filter>Source Files\systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
