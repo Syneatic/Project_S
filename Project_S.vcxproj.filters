@@ -34,6 +34,9 @@
     <Filter Include="Header Files\scene">
       <UniqueIdentifier>{19c7117f-e8f7-4897-af77-95fde955df69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\systems">
+      <UniqueIdentifier>{06a728a1-b739-475b-8b63-ab5179ae05aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -81,15 +84,15 @@
     <ClCompile Include="Source\scene_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\math.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\renderer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imstb_truetype.h">
@@ -173,9 +176,6 @@
     <ClInclude Include="Source\ui_types.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\physics.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\physics_component.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -202,6 +202,12 @@
     </ClInclude>
     <ClInclude Include="Source\emitter.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\renderer.hpp">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\physics.hpp">
+      <Filter>Header Files\systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

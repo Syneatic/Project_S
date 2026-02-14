@@ -5,6 +5,7 @@
 
 #include "component.hpp"
 #include "gameobject.hpp"
+#include "physics_component.hpp"
 #include "math.hpp"
 #include <iostream>
 

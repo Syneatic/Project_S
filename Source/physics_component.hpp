@@ -1,13 +1,11 @@
 #pragma once 
 #include "component.hpp"
 #include "math.hpp"
-#include "physics.hpp"
 #include "ImGUI/imgui.h"
 
 
 struct RigidBody :Component 
 { 
-
 	bool Affected_By_Gravity{ false };
 	bool Is_Static{ false };
 	bool Is_Grounded{ false };
