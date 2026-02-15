@@ -48,10 +48,10 @@ namespace RenderSystem {
 	//exposed api for drawing primitives
 	void DrawQuad(RenderData data);
 	void DrawTri(RenderData data);
-	void DrawCirc(RenderData data);
+	void DrawCircle(RenderData data);
 	void DrawPoint(float2 pos, Color objColor);
 	void DrawMyText(const char* text, RenderData data);
-	void DrawArrow(float2 pos);
+	void DrawArrow(RenderData data);
 
 	void RendererExit();
 }

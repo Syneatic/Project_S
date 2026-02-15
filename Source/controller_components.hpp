@@ -17,8 +17,7 @@ struct PlayerController : Controller
     f32 maxSpeed = 10.f;
     f32 jumpHeight = 500.f;
 
-    //should not cache like this
-    f32 dt = (f32)AEFrameRateControllerGetFrameTime();
+    f32 dt{};
 
     void DrawInInspector() override;
     void Serialize(Json::Value& outComp) const override;

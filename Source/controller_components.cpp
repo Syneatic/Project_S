@@ -42,6 +42,7 @@ void PlayerController::OnStart()
 
 void PlayerController::OnUpdate()
 {
+    dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
     GameObject& owner = *_owner;
     Transform* trans = owner.GetComponent<Transform>();
     RigidBody* rb = owner.GetComponent<RigidBody>();
@@ -52,11 +53,11 @@ void PlayerController::OnUpdate()
 
     if (AEInputCheckCurr(AEVK_A))
     {
-        rb->velocity.x = -maxSpeed;
+        rb->velocity.x = -maxSpeed * 50.f * dt;
     }
     if (AEInputCheckCurr(AEVK_D))
     {
-        rb->velocity.x = maxSpeed;
+        rb->velocity.x = maxSpeed * 50.f * dt;
     }
 
     //Once if space is pressed once
@@ -65,7 +66,7 @@ void PlayerController::OnUpdate()
         //Set the space bar velocity to true
         //Check if the player reach the height (dt)
         //rb.Affected_By_Gravity = false;
-        rb->velocity.y = jumpHeight;
+        rb->velocity.y = jumpHeight * 60.f * dt;
         rb->Is_Grounded = false;
         //t = 0.f;
     }

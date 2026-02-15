@@ -1,6 +1,7 @@
 #pragma once
 
 #include "scene.hpp"
+#include "gizmos.hpp"
 
 struct EditorScene : Scene
 {
@@ -9,7 +10,27 @@ private:
 
 	// ===== GAMEOBJECT =====
 	int selectedGameObjectIndex = -1; // -1 for no selection
-	
+	// For UI selection
+	int _uiIndex{};
+	const char* _uiTypes[2] = { "Display", "Button" };
+	const char* _previewType = _uiTypes[_uiIndex];
+
+	GizmoAxis activeAxis = GizmoAxis::NONE;
+	GizmoMode currentMode = GizmoMode::TRANSLATE;
+
+	float2 dragOffset{ 0.f, 0.f };
+	float startMouseAngle = 0.0f;
+	float startObjectRotation = 0.0f;
+
+	float2 startMousePos{ 0.f, 0.f };
+	float2 startObjectScale{ 1.f, 1.f };
+
+	float2 mouseWorld{};
+	bool isMouseDown{};
+	bool isMousePressed{};
+
+	void ReadInput();
+
 	void RefreshRenderers();
 	void RefreshColliders();
 	void RefreshRigidBodies();
@@ -18,13 +39,11 @@ private:
 	void BuildMenuBar();
 	void BuildSceneHierarchyWindow();
 
-	// For UI selection
-	int _uiIndex{};
-	const char* _uiTypes[2] = { "Display", "Button" };
-	const char* _previewType = _uiTypes[_uiIndex];
 
 	void BuildInspectorWindow();
 	void DrawUI();
+
+	void Gizmos();
 
 public:
 	//temporary boolean here...
@@ -34,5 +53,5 @@ public:
 	void OnUpdate() override;
 	void OnExit() override;
 
-	EditorScene();
+	EditorScene() { _name = "Editor"; }
 };

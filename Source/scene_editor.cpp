@@ -22,13 +22,23 @@
 
 #include "ui_components.hpp"
 
+
 namespace
 {
 	std::wstring OpenFile()
 	{
 		//get current directory
-		wchar_t cwd[MAX_PATH]{};
-		GetCurrentDirectoryW(MAX_PATH, cwd);
+		//wchar_t cwd[MAX_PATH]{};
+		//GetCurrentDirectoryW(MAX_PATH, cwd);
+		namespace fs = std::filesystem;
+		std::wstring targetDir = L"../../Assets/Scene/";
+
+		try {
+			if (fs::exists(targetDir)) {
+				targetDir = fs::absolute(targetDir).wstring();
+			}
+		}
+		catch (...) {}
 
 		//create dialog
 		HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
@@ -57,10 +67,13 @@ namespace
 
 		//starting folder
 		IShellItem* startFolder = nullptr;
-		if (SUCCEEDED(SHCreateItemFromParsingName(cwd, nullptr, IID_PPV_ARGS(&startFolder))))
+		hr = SHCreateItemFromParsingName(targetDir.c_str(), nullptr, IID_PPV_ARGS(&startFolder));
+		if (SUCCEEDED(hr))
 		{
-			pfd->SetDefaultFolder(startFolder);
+			// SetFolder makes the dialog open there immediately
+			// SetDefaultFolder only sets it the first time the user opens the dialog
 			pfd->SetFolder(startFolder);
+			pfd->SetDefaultFolder(startFolder);
 			startFolder->Release();
 		}
 
@@ -71,7 +84,7 @@ namespace
 		{
 			pfd->Release();
 			if (didCoInit && hr != RPC_E_CHANGED_MODE) CoUninitialize();
-			return L""; // cancelled or failed	
+			return L"";
 		}
 
 		IShellItem* result = nullptr;
@@ -165,8 +178,24 @@ namespace
 					Physics::UnregisterRigidBody(rb);
 		}
 	}
+
+
 }
 
+void EditorScene::ReadInput()
+{
+	s32 mX, mY;
+	AEInputGetCursorPosition(&mX, &mY);
+	mouseWorld.x = (float)mX - (AEGfxGetWindowWidth() * 0.5f);
+	mouseWorld.y = (AEGfxGetWindowHeight() * 0.5f) - (float)mY;
+
+	isMouseDown = AEInputCheckCurr(AEVK_LBUTTON);
+	isMousePressed = AEInputCheckTriggered(AEVK_LBUTTON);
+
+	if (AEInputCheckTriggered(AEVK_Q)) currentMode = GizmoMode::TRANSLATE;
+	if (AEInputCheckTriggered(AEVK_W)) currentMode = GizmoMode::ROTATE;
+	if (AEInputCheckTriggered(AEVK_E)) currentMode = GizmoMode::SCALE;
+}
 
 void EditorScene::RefreshRenderers()
 {
@@ -186,6 +215,8 @@ void EditorScene::RefreshRigidBodies()
 	RegisterSceneRigidBodies(loadedScene);
 }
 
+
+// ===== IMGUI =====
 void EditorScene::BuildDockSpace()
 {
 	ImGuiWindowFlags host_flags =
@@ -473,6 +504,65 @@ void EditorScene::DrawUI()
 	BuildSceneHierarchyWindow();
 	BuildInspectorWindow();
 }
+// ===== IMGUI =====
+
+void EditorScene::Gizmos() {
+	if (selectedGameObjectIndex < 0) return;
+
+	GameObject& selectedObj = *loadedScene.gameObjectList()[selectedGameObjectIndex];
+	Transform* trans = selectedObj.GetComponent<Transform>();
+	if (!trans) return;
+
+	// 1. Draw the active gizmo
+	switch (currentMode) {
+	case GizmoMode::TRANSLATE: DrawTranslationGizmo(trans->position); break;
+	case GizmoMode::ROTATE:    DrawRotationGizmo(trans->position); break;
+	case GizmoMode::SCALE:     DrawScaleGizmo(trans->position); break;
+	}
+
+	// 2. Handle Interaction
+	if (isMousePressed) {
+		activeAxis = GetHitAxis(mouseWorld, trans->position);
+
+		if (currentMode == GizmoMode::ROTATE && activeAxis == GizmoAxis::ROTATION) {
+			startMouseAngle = atan2f(mouseWorld.y - trans->position.y, mouseWorld.x - trans->position.x);
+			startObjectRotation = trans->rotation;
+		}
+		else if (currentMode == GizmoMode::SCALE) {
+			startMousePos = mouseWorld;
+			startObjectScale = trans->scale;
+		}
+		else {
+			dragOffset = trans->position - mouseWorld;
+		}
+	}
+
+	if (isMouseDown && activeAxis != GizmoAxis::NONE) {
+		if (currentMode == GizmoMode::TRANSLATE) {
+			if (activeAxis == GizmoAxis::X || activeAxis == GizmoAxis::CENTER)
+				trans->position.x = mouseWorld.x + dragOffset.x;
+			if (activeAxis == GizmoAxis::Y || activeAxis == GizmoAxis::CENTER)
+				trans->position.y = mouseWorld.y + dragOffset.y;
+		}
+		else if (currentMode == GizmoMode::ROTATE) {
+			float currentAngle = atan2f(mouseWorld.y - trans->position.y, mouseWorld.x - trans->position.x);
+			trans->rotation = startObjectRotation + (currentAngle - startMouseAngle) * (180.0f / 3.14159f);
+		}
+		else if (currentMode == GizmoMode::SCALE) {
+			float2 delta = mouseWorld - startMousePos;
+			if (activeAxis == GizmoAxis::X) trans->scale.x = startObjectScale.x + delta.x;
+			if (activeAxis == GizmoAxis::Y) trans->scale.y = startObjectScale.y + delta.y;
+			if (activeAxis == GizmoAxis::CENTER)
+			{
+				float factor = 1.0f + (delta.x / 100.0f);
+				trans->scale = startObjectScale * factor;
+			}
+		}
+	}
+	else if (!isMouseDown) {
+		activeAxis = GizmoAxis::NONE;
+	}
+}
 
 void EditorScene::OnEnter()
 {
@@ -487,14 +577,17 @@ void EditorScene::OnUpdate()
 	RefreshColliders();
 	RefreshRigidBodies();
 
-	//draw gizmos
+	ReadInput();
+
 	AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 	f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 
+	RenderSystem::Draw();
 
 	bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
 
-	RenderSystem::Draw();
+	//draw gizmos last
+	Gizmos();
 
 	//draw imgui after game render
 	if (imguiInitialized)
@@ -510,6 +603,7 @@ void EditorScene::OnUpdate()
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		ImGui::EndFrame();
 	}
+
 }
 
 void EditorScene::OnExit() 
@@ -519,5 +613,3 @@ void EditorScene::OnExit()
 	Physics::FlushColliders();
 	Physics::FlushRigidBody();
 }
-
-EditorScene::EditorScene() { _name = "Editor"; }

@@ -229,38 +229,32 @@ namespace RenderSystem
 
 	void DrawTri(RenderData data) {
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-		AEMtx33 transform;
-		AEMtx33Identity(&transform);
-		AEMtx33 scale;
-		AEMtx33Scale(&scale, data.transform.scale.x, data.transform.scale.y);
-		AEMtx33 rotate;
-		AEMtx33RotDeg(&rotate, data.transform.rotation);
-		AEMtx33 translate;
-		AEMtx33Trans(&translate, data.transform.position.x, data.transform.position.y);
+		AEGfxSetColorToMultiply(data.color.r, data.color.g, data.color.b, data.color.a);
 
-		AEMtx33Concat(&transform, &rotate, &scale);
-		AEMtx33Concat(&transform, &translate, &transform);
+		AEMtx33 transform;
+		SetTransform(data.transform, data.alignment, transform);
 		AEGfxSetTransform(transform.m);
 
 		AEGfxMeshDraw(_triangleMesh, AE_GFX_MDM_TRIANGLES);
 	}
 
-	void DrawCirc(RenderData data) {
-		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-		AEMtx33 transform;
-		AEMtx33Identity(&transform);
-		AEMtx33 scale;
-		AEMtx33Scale(&scale, data.transform.scale.x, data.transform.scale.y);
-		AEMtx33 rotate;
-		AEMtx33RotDeg(&rotate, data.transform.rotation);
-		AEMtx33 translate;
-		AEMtx33Trans(&translate, data.transform.position.x, data.transform.position.y);
+	void DrawCircle(RenderData data) 
+	{
+		AEGfxSetRenderMode(data.renderMode);
+		AEGfxSetBlendMode(data.blendMode);
 
-		AEMtx33Concat(&transform, &rotate, &scale);
-		AEMtx33Concat(&transform, &translate, &transform);
+		AEGfxSetColorToAdd(0, 0, 0, 0);
+		AEGfxSetBlendColor(0, 0, 0, 0);
+		AEGfxSetColorToMultiply(data.color.r, data.color.g, data.color.b, 1.0f);
+		AEGfxSetTransparency(data.color.a);
+
+		AEGfxTextureSet(nullptr, 0.f, 0.f);
+
+		AEMtx33 transform{};
+		SetTransform(data.transform, data.alignment, transform);
 		AEGfxSetTransform(transform.m);
 
-		AEGfxMeshDraw(_circleMesh, AE_GFX_MDM_TRIANGLES);
+		AEGfxMeshDraw(_circleMesh, data.meshMode);
 	}
 
 	void DrawMyText(const char* text, RenderData data) {
@@ -300,12 +294,25 @@ namespace RenderSystem
 		AEGfxPrint(pFont, text, screenPosX -offX, screenPosY-offY, data.transform.scale.x, data.color.r, data.color.g, data.color.b, data.color.a);
 	}
 
-	void DrawArrow(float2 pos)
+	void DrawArrow(RenderData data)
 	{
-		//draw rect
-		//DrawRect(pos - float2(0,0),0,float2(5,50),center);
-		//draw arrow
-		//DrawTri(pos + float2(0,25), 0, 25);
+		// 1. Draw the Stem (Quad)
+		RenderData stem = data;
+		stem.transform.scale = { data.transform.scale.x, data.transform.scale.y * 0.2f }; // Thin stem
+		stem.alignment = ML; // Align to start at position
+		DrawQuad(stem);
+
+		// 2. Draw the Tip (Triangle)
+		RenderData tip = data;
+		// Offset tip to the end of the stem
+		float angleRad = data.transform.rotation * (PI / 180.0f);
+		tip.transform.position.x += cosf(angleRad) * data.transform.scale.x;
+		tip.transform.position.y += sinf(angleRad) * data.transform.scale.x;
+
+		tip.transform.scale = { data.transform.scale.y, data.transform.scale.y };
+		tip.transform.rotation -= 90.0f; // Adjust tri mesh orientation to point along axis
+		tip.alignment = MC;
+		DrawTri(tip);
 	}
 
 	//call after game loop

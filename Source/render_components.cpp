@@ -9,14 +9,14 @@
 // ===== RENDERER DEF =====
 void Renderer::DrawInInspector()
 {
-    static const char* _blendNames[] = { "NONE", "BLEND", "ADD", "MULTIPLY", "NUM"};
-    static const char* _renderNames[] = { "NONE", "COLOR", "TEXTURE", "NUM"};
-    static const char* _meshDrawNames[] = { "POINTS", "LINES", "LINES_STRIP", "TRIS","NUM"};
+    static const char* _blendNames[] = { "NONE", "BLEND", "ADD", "MULTIPLY"};
+    static const char* _renderNames[] = { "NONE", "COLOR", "TEXTURE"};
+    static const char* _meshDrawNames[] = { "POINTS", "LINES", "LINES_STRIP", "TRIS"};
     static const char* _alignmentNames[] = { "Top left", "Top", "Top right", "Left", "Center", "Right", "Bottom Left", "Bottom", "Bottom right"};
 
     if (ImGui::BeginCombo("Blend Mode", _blendNames[(int)blendMode]))
     {
-        for (int i = 0; i < 5; ++i)
+        for (int i = 0; i < static_cast<int>(AE_GFX_BM_NUM); ++i)
         {
             bool selected = (i == blendMode);
             if (ImGui::Selectable(_blendNames[i], selected))
@@ -32,7 +32,7 @@ void Renderer::DrawInInspector()
 
     if (ImGui::BeginCombo("Render Mode", _renderNames[(int)renderMode]))
     {
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < static_cast<int>(AE_GFX_RM_NUM); ++i)
         {
             bool selected = (i == renderMode);
             if (ImGui::Selectable(_renderNames[i], selected))
@@ -48,7 +48,7 @@ void Renderer::DrawInInspector()
 
     if (ImGui::BeginCombo("Mesh Draw Mode", _meshDrawNames[(int)meshDrawMode]))
     {
-        for (int i = 0; i < 5; ++i)
+        for (int i = 0; i < static_cast<int>(AE_GFX_MDM_NUM); ++i)
         {
             bool selected = (i == meshDrawMode);
             if (ImGui::Selectable(_meshDrawNames[i], selected))

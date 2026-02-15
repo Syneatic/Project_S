@@ -62,6 +62,7 @@
     <ClInclude Include="Source\emitter.hpp" />
     <ClInclude Include="Source\emitter_components.hpp" />
     <ClInclude Include="Source\gameobject.hpp" />
+    <ClInclude Include="Source\gizmos.hpp" />
     <ClInclude Include="Source\json_parser_helper.hpp" />
     <ClInclude Include="Source\math.hpp" />
     <ClInclude Include="Source\controller_components.hpp" />
