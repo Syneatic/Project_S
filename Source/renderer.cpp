@@ -6,20 +6,27 @@
 #include <unordered_set>
 #include <vector>
 
-
 #include "AEEngine.h"
 #include "math.hpp"
 #include "renderer.hpp"
 #include "render_components.hpp"
 #include "component.hpp"
 
-
+//fwd decl
+void AddVertex(float2 p, Color c, float2 uv)
+{
+	AEGfxVertexAdd(p.x, p.y, c.hex(), uv.x, uv.y);
+}
 namespace {
 	//NOT EXPOSED!!
 	AEGfxVertexList* _quadMesh = 0;
 	AEGfxVertexList* _triangleMesh = 0;
 	AEGfxVertexList* _circleMesh = 0;
 	AEGfxVertexList* _pointMesh = 0;
+
+	//only for gizmos
+	AEGfxVertexList* _boxMesh = 0;
+
 	s8 pFont{};
 	AEGfxTexture* pTex{};
 	
@@ -77,6 +84,31 @@ namespace {
 		AEGfxVertexAdd(0.f,0.f,0xFFFFFFFF,0.f,0.f);
 		_pointMesh = AEGfxMeshEnd();
 	}
+
+	void GenerateBoxMesh()
+	{
+		Color c(1.f, 1.f, 1.f);
+		AEGfxMeshStart();
+
+		//top line
+		AddVertex(float2(-0.5, 0.5), c, float2(0, 0));
+		AddVertex(float2(0.5, 0.5), c,  float2(0, 0));
+
+		//left
+		AddVertex(float2(-0.5, 0.5), c, float2(0, 0));
+		AddVertex(float2(-0.5, -0.5), c, float2(0, 0));
+
+		//right
+		AddVertex(float2(0.5, 0.5), c, float2(0, 0));
+		AddVertex(float2(0.5, -0.5), c, float2(0, 0));
+
+		//bottom
+		AddVertex(float2(-0.5, -0.5), c, float2(0, 0));
+		AddVertex(float2(0.5, -0.5), c, float2(0, 0));
+
+
+		_boxMesh = AEGfxMeshEnd();
+	}
 }
 
 
@@ -88,6 +120,8 @@ namespace RenderSystem
 		GenerateQuadMesh();
 		GenerateTriMesh();
 		GenerateCircleMesh();
+		GenerateBoxMesh();
+
 		pFont = AEGfxCreateFont("./Assets/liberation-mono.ttf", 72);
 		pTex = AEGfxTextureLoad("./Assets/PlanetTexture.png");
 		std::cout << "\ninit success\n";
@@ -170,6 +204,53 @@ namespace RenderSystem
 		AEMtx33RotDeg(&rotate, t.rotation);
 		AEMtx33 translate{}; //reset
 		AEMtx33Trans(&translate, t.position.x, t.position.y);
+
+		AEMtx33Concat(&mtx, &scale, &mtx);
+		AEMtx33Concat(&mtx, &rotate, &mtx);
+		AEMtx33Concat(&mtx, &translate, &mtx);
+	}
+
+	void SetTransform(float2 t, float2 s, f32 r, Alignment mode, AEMtx33& mtx)
+	{
+		AEMtx33Identity(&mtx);
+		AEMtx33 align{};
+		switch (mode) {
+		case TL:
+			AEMtx33Trans(&align, 0.5f, -0.5f);
+			break;
+		case TC:
+			AEMtx33Trans(&align, 0.f, -0.5f);
+			break;
+		case TR:
+			AEMtx33Trans(&align, -0.5f, -0.5f);
+			break;
+		case ML:
+			AEMtx33Trans(&align, 0.5f, 0.f);
+			break;
+		case MC:
+			AEMtx33Trans(&align, 0.f, 0.f);
+			break;
+		case MR:
+			AEMtx33Trans(&align, -0.5f, 0.f);
+			break;
+		case BL:
+			AEMtx33Trans(&align, 0.5f, 0.5f);
+			break;
+		case BC:
+			AEMtx33Trans(&align, 0.f, 0.5f);
+			break;
+		case BR:
+			AEMtx33Trans(&align, -0.5f, 0.5f);
+			break;
+		}
+		AEMtx33Concat(&mtx, &align, &mtx);
+
+		AEMtx33 scale{};
+		AEMtx33Scale(&scale, s.x, s.y);
+		AEMtx33 rotate{};
+		AEMtx33RotDeg(&rotate, r);
+		AEMtx33 translate{};
+		AEMtx33Trans(&translate, t.x, t.y);
 
 		AEMtx33Concat(&mtx, &scale, &mtx);
 		AEMtx33Concat(&mtx, &rotate, &mtx);
@@ -315,11 +396,28 @@ namespace RenderSystem
 		DrawTri(tip);
 	}
 
+	//not used for gameobject rendering
+	void DrawBox(float2 p,float2 scl,f32 rot,Color c)
+	{
+		//std::cout << scl.x << ", " << scl.y << std::endl;
+
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		AEGfxSetBlendMode(AE_GFX_BM_NONE);
+		AEGfxSetColorToMultiply(c.r, c.g, c.b, 1.f);
+		AEGfxSetTransparency(1.f);
+		AEMtx33 transform{};
+		SetTransform(p, scl, rot, Alignment::MC, transform);
+		AEGfxSetTransform(transform.m);
+
+		AEGfxMeshDraw(_boxMesh, AE_GFX_MDM_LINES);
+	}
+
 	//call after game loop
 	void RendererExit() {
 		AEGfxMeshFree(_quadMesh);
 		AEGfxMeshFree(_triangleMesh);
 		AEGfxMeshFree(_circleMesh);
+		AEGfxMeshFree(_boxMesh);
 		//AEGfxMeshFree(_pointMesh);
 
 		AEGfxDestroyFont(pFont);

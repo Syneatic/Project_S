@@ -36,8 +36,11 @@ struct RenderData //pass in this data to Draw functions
 	AEGfxTexture* texture = nullptr;
 };
 
+void AddVertex(float2 p, Color c, float2 uv);
+
 namespace RenderSystem {
 	void RendererInitialize();
+
 
 	//exposed api for registering renderer when loading levels
 	void RegisterRenderer(Renderer* r);
@@ -52,6 +55,7 @@ namespace RenderSystem {
 	void DrawPoint(float2 pos, Color objColor);
 	void DrawMyText(const char* text, RenderData data);
 	void DrawArrow(RenderData data);
+	void DrawBox(float2 p, float2 scl, f32 rot, Color c);
 
 	void RendererExit();
 }

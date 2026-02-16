@@ -513,6 +513,9 @@ void EditorScene::Gizmos() {
 	Transform* trans = selectedObj.GetComponent<Transform>();
 	if (!trans) return;
 
+	//draw selection outline
+	RenderSystem::DrawBox(trans->position, trans->scale, trans->rotation, Color(0xFFFC673A));
+
 	// 1. Draw the active gizmo
 	switch (currentMode) {
 	case GizmoMode::TRANSLATE: DrawTranslationGizmo(trans->position); break;

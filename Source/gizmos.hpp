@@ -95,7 +95,7 @@ inline void DrawScaleGizmo(float2 pos, float scale = 0.65f) {
     RenderData centerBox;
     centerBox.transform.position = pos;
     centerBox.transform.rotation = 90.0f;
-    centerBox.transform.scale = { boxSize,boxSize };    
+    centerBox.transform.scale = { thickness * 1.f, thickness * 1.f };
     centerBox.color = { 1, 1, 0, 1 };
     centerBox.alignment = MC;
     centerBox.blendMode = AE_GFX_BM_NONE;
@@ -169,13 +169,3 @@ inline GizmoAxis GetHitAxis(float2 mouseWorld, float2 handlePos, float scale = 0
 // ===== TRANSFORM GIZMOS =====
 
 
-
-inline void DrawBox(float2 pos, float2 size, Color color)
-{
-    RenderData rd;
-    rd.transform.position = pos;
-    rd.transform.scale = size;
-    rd.color = color;
-    rd.meshMode = AE_GFX_MDM_LINES; // Draw as wireframe
-    RenderSystem::DrawQuad(rd);
-}

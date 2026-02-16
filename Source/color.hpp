@@ -11,4 +11,21 @@ struct Color
 	Color() = default;
 	Color(f32 red, f32 green, f32 blue) : r(red), g(green), b(blue) { a = 1.f; };
 	Color(f32 red, f32 green, f32 blue,f32 alpha) : r(red), g(green), b(blue),a(alpha) {};
+	Color(u32 c)
+	{
+		a = ((c >> 24) & 0xFF) / 255.0f;
+		r = ((c >> 16) & 0xFF) / 255.0f;
+		g = ((c >> 8) & 0xFF) / 255.0f;
+		b = ((c >> 0) & 0xFF) / 255.0f;
+	}
+
+	u32 hex()
+	{
+		u32 ua = static_cast<u32>(a * 255.0f) << 24;
+		u32 ur = static_cast<u32>(r * 255.0f) << 16;
+		u32 ug = static_cast<u32>(g * 255.0f) << 8;
+		u32 ub = static_cast<u32>(b * 255.0f);
+
+		return ua | ur | ug | ub;
+	}
 };
