@@ -21,6 +21,7 @@
     <ClCompile Include="Extern\jsoncpp\src\json_reader.cpp" />
     <ClCompile Include="Extern\jsoncpp\src\json_value.cpp" />
     <ClCompile Include="Extern\jsoncpp\src\json_writer.cpp" />
+    <ClCompile Include="Source\audio.cpp" />
     <ClCompile Include="Source\component.cpp" />
     <ClCompile Include="Source\controller_components.cpp" />
     <ClCompile Include="Source\emitter_components.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="Extern\jsoncpp\include\version.h" />
     <ClInclude Include="Extern\jsoncpp\include\writer.h" />
     <ClInclude Include="Extern\jsoncpp\src\json_tool.h" />
+    <ClInclude Include="Source\audio.hpp" />
     <ClInclude Include="Source\color.hpp" />
     <ClInclude Include="Source\component.hpp" />
     <ClInclude Include="Source\emitter.hpp" />

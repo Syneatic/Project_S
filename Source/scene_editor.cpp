@@ -22,7 +22,7 @@
 
 #include "ui_components.hpp"
 
-#include "SFML/Audio.hpp"
+#include "audio.hpp"
 
 namespace
 {
@@ -179,9 +179,6 @@ namespace
 					Physics::UnregisterRigidBody(rb);
 		}
 	}
-
-	sf::SoundBuffer buffer("Assets/button_click.wav");
-	sf::Sound sound(buffer);
 }
 
 void EditorScene::ReadInput()
@@ -201,11 +198,7 @@ void EditorScene::ReadInput()
 
 	if (AEInputCheckTriggered(AEVK_F))
 	{
-		std::cout << "'F' TRIGERRED!" << std::endl;
-		sound.setVolume(100.f);
-		sound.setPan(-1);
-		sound.play();
-		//
+		Audio::PlayAudio("TEST",100.f,AERandFloat(), 1.f);
 	}
 }
 
@@ -581,6 +574,9 @@ void EditorScene::Gizmos() {
 
 void EditorScene::OnEnter()
 {
+	//remove later
+	Audio::LoadAudio("button_click.wav", "TEST");
+
 	RefreshRenderers();
 	RefreshColliders();
 	RefreshRigidBodies();
@@ -588,6 +584,8 @@ void EditorScene::OnEnter()
 
 void EditorScene::OnUpdate()
 {
+	Audio::Update(); //remove
+
 	//laze so im refreshing every frame
 	RefreshColliders();
 	RefreshRigidBodies();
