@@ -22,6 +22,7 @@
 
 #include "ui_components.hpp"
 
+#include "SFML/Audio.hpp"
 
 namespace
 {
@@ -179,7 +180,8 @@ namespace
 		}
 	}
 
-
+	sf::SoundBuffer buffer("Assets/button_click.wav");
+	sf::Sound sound(buffer);
 }
 
 void EditorScene::ReadInput()
@@ -195,6 +197,16 @@ void EditorScene::ReadInput()
 	if (AEInputCheckTriggered(AEVK_Q)) currentMode = GizmoMode::TRANSLATE;
 	if (AEInputCheckTriggered(AEVK_W)) currentMode = GizmoMode::ROTATE;
 	if (AEInputCheckTriggered(AEVK_E)) currentMode = GizmoMode::SCALE;
+
+
+	if (AEInputCheckTriggered(AEVK_F))
+	{
+		std::cout << "'F' TRIGERRED!" << std::endl;
+		sound.setVolume(100.f);
+		sound.setPan(-1);
+		sound.play();
+		//
+	}
 }
 
 void EditorScene::RefreshRenderers()
