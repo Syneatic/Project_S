@@ -1,7 +1,6 @@
 #pragma once
 
-#include "json.h"
-#include "component.hpp"
+#include "base_components.hpp"
 
 //abstract
 struct Controller : Behaviour

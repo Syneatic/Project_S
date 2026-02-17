@@ -10,7 +10,7 @@
 #include "math.hpp"
 #include "renderer.hpp"
 #include "render_components.hpp"
-#include "component.hpp"
+#include "base_components.hpp"
 
 //fwd decl
 void AddVertex(float2 p, Color c, float2 uv)

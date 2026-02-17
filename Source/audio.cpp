@@ -1,7 +1,7 @@
-#include <unordered_map>
-#include <string>
 #include <list>
+#include <string>
 #include <iostream>
+#include <unordered_map>
 
 #include "SFML/Audio.hpp"
 
@@ -13,7 +13,7 @@ namespace
 
 	std::unordered_map<std::string, std::string> _musicMap{}; //<id,path>
 	std::unordered_map<std::string, sf::SoundBuffer> _soundMap{};
-	std::list<sf::Sound> _activeSounds{};
+	std::list<sf::Sound> _activeSounds{}; //prevents moving memory arnd and efficient deletion
 	sf::Music _activeMusic{};
 
 	float _masterVolume = 1.f;
@@ -23,6 +23,7 @@ namespace
 
 namespace Audio
 {
+
 	void LoadAudio(std::string fileName, std::string id)
 	{
 		sf::SoundBuffer buffer;

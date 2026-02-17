@@ -1,6 +1,6 @@
 #include "ImGUI/imgui.h"
 
-#include "component.hpp"
+#include "transform_component.hpp"
 #include "json_parser_helper.hpp"
 
 //should only be available in debug mode

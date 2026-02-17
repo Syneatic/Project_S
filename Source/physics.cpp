@@ -8,7 +8,7 @@
 #include "math.hpp"
 #include "physics.hpp"
 #include "gameobject.hpp"
-#include "component.hpp"
+#include "base_components.hpp"
 #include "physics_components.hpp"
 
 namespace {

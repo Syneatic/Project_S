@@ -3,7 +3,7 @@
 #include <unordered_set>
 
 #include "AEEngine.h"
-#include "component.hpp"
+#include "transform_component.hpp"
 #include "color.hpp"
 
 struct Renderer;

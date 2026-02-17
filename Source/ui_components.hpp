@@ -4,7 +4,7 @@
 
 #include "AEEngine.h"
 
-#include "component.hpp"
+#include "base_components.hpp"
 
 namespace UISystem
 {

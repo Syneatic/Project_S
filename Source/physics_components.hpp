@@ -1,5 +1,6 @@
 #pragma once 
-#include "component.hpp"
+
+#include "base_components.hpp"
 
 enum class Layer : uint32_t
 {

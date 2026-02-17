@@ -8,21 +8,20 @@
 #include "ImGUI/imgui_impl_opengl3.h"
 #include "ImGUI/imgui_impl_win32.h"
 
+//systems
 #include "renderer.hpp"
 #include "physics.hpp"
 #include "gameobject.hpp"
+#include "audio.hpp"
 
+//scene
 #include "scene_parser.hpp"
 #include "scene_editor.hpp"
 
-#include "render_components.hpp"
-#include "physics_components.hpp"
-#include "controller_components.hpp"
-#include "emitter_components.hpp"
+//comps
+#include "components.hpp"
 
-#include "ui_components.hpp"
 
-#include "audio.hpp"
 
 namespace
 {

@@ -1,9 +1,8 @@
 #pragma once
 #include "AEEngine.h"
-#include "json.h"
 
-#include "component.hpp"
 #include "renderer.hpp"
+#include "base_components.hpp"
 
 
 //abstract

@@ -105,9 +105,6 @@
     <ClCompile Include="Source\physics_components.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\component.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
     <ClCompile Include="Source\controller_components.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
@@ -128,6 +125,12 @@
     </ClCompile>
     <ClCompile Include="Source\audio.cpp">
       <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\audio_components.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\transform_component.cpp">
+      <Filter>Source Files\components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,7 +206,7 @@
     <ClInclude Include="Source\json_parser_helper.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\component.hpp">
+    <ClInclude Include="Source\base_components.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
     <ClInclude Include="Source\controller_components.hpp">
@@ -250,6 +253,15 @@
     </ClInclude>
     <ClInclude Include="Source\audio.hpp">
       <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\audio_components.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\transform_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\components.hpp">
+      <Filter>Header Files\components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

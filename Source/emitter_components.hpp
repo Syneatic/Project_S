@@ -1,9 +1,8 @@
 #pragma once
 
 #include <vector>
-#include <string>
 #include "particle.hpp"
-#include "math.hpp"
+#include "base_components.hpp"
 
 const int RAY_COUNT = 256;
 

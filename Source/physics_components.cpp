@@ -2,7 +2,7 @@
 #include "json_parser_helper.hpp"
 
 #include "physics_components.hpp"
-#include "component.hpp"
+#include "base_components.hpp"
 #include "math.hpp"
 
 const char* LayerToString(Layer layer)

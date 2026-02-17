@@ -8,7 +8,7 @@
 #include "physics.hpp"
 #include "gameobject.hpp"
 
-//comp
+//comps to register
 #include "physics_components.hpp"
 #include "render_components.hpp"
 

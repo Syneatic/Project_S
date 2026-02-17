@@ -12,11 +12,8 @@
 #include "scene.hpp"
 #include "gameobject.hpp"
 
-#include "component.hpp"
-#include "render_components.hpp"
-#include "controller_components.hpp"
-#include "ui_components.hpp"
-#include "emitter_components.hpp"
+#include "base_components.hpp"
+#include "components.hpp"
 
 namespace SceneIO
 {

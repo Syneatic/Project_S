@@ -7,7 +7,7 @@
 #include <type_traits>
 #include <stdexcept>
 
-#include "component.hpp"
+#include "base_components.hpp"
 #include "render_components.hpp"
 #include "physics_components.hpp"
 #include "emitter_components.hpp"

@@ -11,7 +11,6 @@
 #include "AEEngine.h"
 
 #include "gameobject.hpp"
-#include "component.hpp"
 #include "renderer.hpp"
 #include "scene.hpp"
 #include "scene_editor.hpp"

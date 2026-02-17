@@ -1,6 +1,7 @@
 #pragma once
-#include "AETypes.h"
+#include <cmath>
 
+#include "AETypes.h"
 namespace
 {
 	constexpr float kEps = 1e-6f;
