@@ -537,7 +537,7 @@
       [
         {
           "Affected By Gravity" : true,
-          "Gravity" : 20.0,
+          "Gravity" : 800.0,
           "Grounded" : true,
           "Is Static" : false,
           "Velocity" : 0.0,
@@ -583,8 +583,9 @@
           "type" : "BoxCollider"
         },
         {
-          "jumpHeight" : 10.0,
-          "max_speed" : 10.0,
+          "jumpHeight" : 120.0,
+          "max_speed" : 250.0,
+          "time" : 1.0,
           "type" : "PlayerController"
         },
         {
@@ -730,6 +731,80 @@
         }
       ],
       "name" : "QuitText"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            -146.0,
+            183.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            15.0,
+            15.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 500.0,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967282,
+          "layerMask" : 0,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "maxradius" : 500.0,
+          "raycount" : 256,
+          "speed" : 300.0,
+          "timelimit" : 100.0,
+          "type" : "ParticleEmitter"
+        },
+        {
+          "throwAngle" : 0.0,
+          "throwSpeed" : 300.0,
+          "type" : "RockController"
+        }
+      ],
+      "name" : "Rock"
     }
   ],
   "name" : "PrototypeLvl"

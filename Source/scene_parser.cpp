@@ -79,6 +79,12 @@ namespace SceneIO
             pc.Deserialize(compObj);
             go.AddComponent<PlayerController>(pc);
         }
+        else if (type == "RockController")
+        {
+            RockController rc{};
+            rc.Deserialize(compObj);
+            go.AddComponent<RockController>(rc);
+        }
         /*else if (type == "Text")
         {
             Text str{};

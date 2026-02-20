@@ -38,6 +38,12 @@ void Scene::InitializeGameObjects()
 				std::cout << "  -> Registering RigidBody!" << std::endl;
 				Physics::RegisterRigidBody(rb);
 			}
+
+			if (auto* pc = dynamic_cast<PlayerController*>(comp.get()))
+			{
+				pc->rockObject = FindGameObjectByName("Rock");
+			}
+
 			//OnStart behaviours
 			if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
 				b->OnStart();
@@ -45,6 +51,16 @@ void Scene::InitializeGameObjects()
 			
 		}
 	}
+}
+
+GameObject* Scene::FindGameObjectByName(const std::string& name)
+{
+    for (auto& go : _gameObjectList)
+    {
+        if (go->name() == name)
+            return go.get();
+    }
+    return nullptr;
 }
 
 void Scene::OnEnter()

@@ -24,9 +24,14 @@ void ParticleEmitter::OnUpdate()
 	if (AEInputCheckTriggered(pingKey) && _owner->GetComponent<PlayerController>()) {
 		Ping();
 	}
-	if (time >= timeLimit && !_owner->GetComponent<PlayerController>()) {
-		Ping();
-		time = 0.0f;
+	if (time >= timeLimit) {
+		if (_owner->GetComponent<PlayerController>());
+		else if (_owner->GetComponent<RockController>());
+		else 
+		{
+			Ping();
+			time = 0.0f;
+		}
 	}
 
 	// draw revealed points
@@ -180,4 +185,9 @@ void ParticleEmitter::DrawHits()
 
 		RenderSystem::DrawPoint(par.pos, color);
 	}
+}
+
+void ParticleEmitter::TriggerPing()
+{
+	Ping();
 }
