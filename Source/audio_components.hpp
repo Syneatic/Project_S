@@ -1,84 +1,53 @@
 #pragma once
-#include <algorithm>
-#include <iostream>
+#include <string>
+#include "SFML/Audio.hpp"
 #include "AETypes.h"
 
-#include "audio.hpp"
-#include "SFML/Audio.hpp"
-
 #include "gameobject.hpp"
-#include "transform_component.hpp"
 #include "base_components.hpp"
 
+#include "transform_component.hpp"
+
 //requires transform
-struct AudioEmitter : Behaviour
+struct AudioEmitter : Component
 {
-private:
-	sf::Sound _sound;
-	Transform* _transform;
-	f32 _volume{1};		//  0    to 1
-	f32 _pitch{1};		//  0.5  to 2
-	bool _loop{false};
+	//sf::Sound _sound;
+	std::string fileName{};
 
+	std::unique_ptr<sf::Sound> soundPtr{nullptr};
 
-public:
-	void SetVolume(f32 vol)
-	{
-		_volume = std::clamp(vol, 0.0f, 1.0f);
-	}
+	Transform* transform{nullptr};
+	f32 volume{1};		//  0    to 1
+	f32 pitch{1};		//  0.5  to 2
+	bool loop{false};
+	bool spatialize{ false };
+	bool relativeToListener{ false};
 
-	void SetPitch(f32 pitch)
-	{
-		_pitch = std::clamp(pitch, 0.5f, 2.0f);
-	}
+	void Initialize();
+	void SetVolume(f32 vol);
+	void SetPitch(f32 pitch);
+	void SetLoop(bool loop);
 
-	void SetLoop(bool loop)
-	{
-		_loop = loop;
-	}
+	void Play();
 
-	void OnStart() override
-	{
-		_transform = _owner->GetComponent<Transform>();
-		if (!_transform)
-		{
-			std::cout << "NO TRANSFORM FOUND IN " << _owner->name() << std::endl;
-		}
-	}
+	void DrawInInspector() override;
+	void Serialize(Json::Value& outComp) const override;
+	void Deserialize(const Json::Value& compObj) override;
 
-	void OnUpdate() override
-	{
-		if (_transform)
-		{
-			sf::Vector3f pos(_transform->position.x, _transform->position.y, 0.f);
-			_sound.setPosition(pos);
-		}
-
-		//_sound.setVolume();
-	}
+	const std::string name() const override { return "AudioEmitter"; }
 };
 
 struct AudioListener : Behaviour
 {
-private:
-	Transform* _transform;
+	Transform* transform;
 
-public:
-	void OnStart() override
-	{
-		_transform = _owner->GetComponent<Transform>();
-		if (!_transform)
-		{
-			std::cout << "NO TRANSFORM FOUND IN " << _owner->name() << std::endl;
-		}
-	}
+	void OnStart() override;
+	void OnUpdate() override;
+	void OnDestroy() override {};
 
-	void OnUpdate() override
-	{
-		if (_transform)
-		{
-			sf::Vector3f pos(_transform->position.x, _transform->position.y, 0.f);
-			sf::Listener::setPosition(pos);
-		}
-	}
+	void DrawInInspector() override;
+	void Serialize(Json::Value& outComp) const override;
+	void Deserialize(const Json::Value& compObj) override;
+
+	const std::string name() const override { return "AudioListener"; }
 };

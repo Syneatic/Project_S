@@ -27,6 +27,13 @@ void ParticleEmitter::OnUpdate()
 	if (time >= timeLimit && !_owner->GetComponent<PlayerController>()) {
 		Ping();
 		time = 0.0f;
+
+		//try play audio
+		auto* audio = _owner->GetComponent<AudioEmitter>();
+		if (audio)
+		{
+			audio->Play();
+		}
 	}
 
 	// draw revealed points
