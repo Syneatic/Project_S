@@ -132,6 +132,9 @@
     <ClCompile Include="Source\transform_component.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
+    <ClCompile Include="dispatcher.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -262,6 +265,12 @@
     </ClInclude>
     <ClInclude Include="Source\components.hpp">
       <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="dispatcher.hpp">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="event.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
