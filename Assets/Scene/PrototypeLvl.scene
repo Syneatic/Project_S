@@ -479,6 +479,15 @@
           "speed" : 150.0,
           "timelimit" : 2.5,
           "type" : "ParticleEmitter"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
         }
       ],
       "name" : "WaterEffectPlaceholder"
@@ -535,6 +544,9 @@
       "children" : [],
       "components" : 
       [
+        {
+          "type" : "AudioListener"
+        },
         {
           "Affected By Gravity" : true,
           "Gravity" : 20.0,
@@ -649,8 +661,17 @@
           "maxradius" : 250.0,
           "raycount" : 256,
           "speed" : 150.0,
-          "timelimit" : 5.0,
+          "timelimit" : 1.0,
           "type" : "ParticleEmitter"
+        },
+        {
+          "fileName" : "button_click.wav",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
         }
       ],
       "name" : "Water2"

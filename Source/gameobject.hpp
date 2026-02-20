@@ -8,10 +8,8 @@
 #include <stdexcept>
 
 #include "base_components.hpp"
-#include "render_components.hpp"
-#include "physics_components.hpp"
-#include "emitter_components.hpp"
-#include "controller_components.hpp"
+
+#include "components.hpp"
 
 struct GameObject
 {

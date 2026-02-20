@@ -103,6 +103,17 @@ namespace SceneIO
             rb.Deserialize(compObj);
             go.AddComponent<RigidBody>(rb);
         }
+        //AUDIO COMPONENTS
+        else if (type == "AudioEmitter")
+        {
+            AudioEmitter& ae = go.AddComponent<AudioEmitter>();
+            ae.Deserialize(compObj);
+        }
+        else if (type == "AudioListener")
+        {
+            AudioListener& al = go.AddComponent<AudioListener>();
+            al.Deserialize(compObj);
+        }
     }
 
     // ===== GameObject Serialization =====

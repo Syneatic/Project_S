@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <cmath>
 
 #include "AETypes.h"
@@ -48,9 +49,15 @@ struct float2
 	}
 };
 
+inline std::ostream& operator<< (std::ostream& o,const float2& f)
+{
+	o << "(" << f.x << ", " << f.y << ")";
+	return o;
+}
+
 static float dot(float2 a, float2 b) { return a.x * b.x + a.y * b.y; }
 static float lengthsq(float2 a) { return a.x * a.x + a.y * a.y; }
-static float length(float2 a) { return std::sqrt(lengthsq(a)); }
+inline float length(float2 a) { return std::sqrt(lengthsq(a)); }
 
 inline float2 normalize(float2 a)
 {

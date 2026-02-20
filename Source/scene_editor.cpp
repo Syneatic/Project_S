@@ -180,12 +180,6 @@ void EditorScene::ReadInput()
 	if (AEInputCheckTriggered(AEVK_Q)) currentMode = GizmoMode::TRANSLATE;
 	if (AEInputCheckTriggered(AEVK_W)) currentMode = GizmoMode::ROTATE;
 	if (AEInputCheckTriggered(AEVK_E)) currentMode = GizmoMode::SCALE;
-
-
-	if (AEInputCheckTriggered(AEVK_F))
-	{
-		Audio::PlayAudio("TEST",100.f,AERandFloat(), 1.f);
-	}
 }
 
 void EditorScene::RefreshRenderers()
@@ -455,6 +449,21 @@ void EditorScene::BuildInspectorWindow()
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Audio"))
+		{
+			if (ImGui::MenuItem("Audio Emitter"))
+			{
+				selectedObj.AddComponent<AudioEmitter>();
+			}
+
+			if (ImGui::MenuItem("Audio Listener"))
+			{
+				selectedObj.AddComponent<AudioListener>();
+			}
+
+			ImGui::EndMenu();
+		}
+
 
 		if (ImGui::BeginMenu("UI Type"))
 		{
@@ -560,9 +569,6 @@ void EditorScene::Gizmos() {
 
 void EditorScene::OnEnter()
 {
-	//remove later
-	Audio::LoadAudio("button_click.wav", "TEST");
-
 	RefreshRenderers();
 	RefreshColliders();
 	RefreshRigidBodies();
@@ -570,8 +576,6 @@ void EditorScene::OnEnter()
 
 void EditorScene::OnUpdate()
 {
-	Audio::Update(); //remove
-
 	//laze so im refreshing every frame
 	RefreshColliders();
 	RefreshRigidBodies();

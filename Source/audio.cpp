@@ -1,7 +1,7 @@
 #include <list>
-#include <string>
 #include <iostream>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "SFML/Audio.hpp"
 
@@ -11,9 +11,12 @@ namespace
 {
 	std::string assetPath{ "Assets/" };
 
+	//ref to all audio emitters
+	std::vector<AudioEmitter*> _audioEmitters{};
+	std::unordered_set<AudioEmitter*> _audioEmitterSet;
+
 	std::unordered_map<std::string, std::string> _musicMap{}; //<id,path>
-	std::unordered_map<std::string, sf::SoundBuffer> _soundMap{};
-	std::list<sf::Sound> _activeSounds{}; //prevents moving memory arnd and efficient deletion
+	std::unordered_map<std::string, std::unique_ptr<sf::SoundBuffer>> _soundBufferMap{}; //<filename,buffer>
 	sf::Music _activeMusic{};
 
 	float _masterVolume = 1.f;
@@ -23,74 +26,135 @@ namespace
 
 namespace Audio
 {
-
-	void LoadAudio(std::string fileName, std::string id)
+	sf::SoundBuffer* LoadAudio(std::string fileName)
 	{
 		sf::SoundBuffer buffer;
 		if (buffer.loadFromFile(assetPath + fileName))
 		{
-			_soundMap[id] = buffer;
-		}
-	}
-
-	void UnloadAudio(std::string id)
-	{
-	
-	}
-
-	void PlayAudio(std::string id, float vol,float pitch, float pan)
-	{
-		if (_soundMap.find(id) == _soundMap.end())
-		{
-			std::cout << "UNABLE TO FIND " + id + " IN BUFFER!\n";
-			return;
+			_soundBufferMap[fileName] = std::make_unique<sf::SoundBuffer>(buffer);
+			return _soundBufferMap[fileName].get();
 		}
 
-
-		//get buffer
-		auto& buffer = _soundMap[id];
-		_activeSounds.emplace_back(buffer); //create an instance and place back
-		auto& sound = _activeSounds.back();
-		sound.setVolume(vol);
-		sound.setPitch(pitch);
-		sound.setPan(pan);
-		sound.play();
-	}
-
-	void Update()
-	{
-		//clean up dead audio
-		_activeSounds.remove_if(
-			[](const sf::Sound& sf)
-			{
-				return sf.getStatus() == sf::SoundSource::Status::Stopped;
-			}
-		);
-
-		std::cout << "ACTIVE SOUNDS : " << _activeSounds.size() << std::endl;
-
-		for (auto& s : _activeSounds)
-		{
-			s.setVolume(100.f * _masterVolume * _sfxVolume);
-		}
-
-		_activeMusic.setVolume(100.f * _masterVolume * _musicVolume);
+		return nullptr;
 	}
 
 	void UnloadAll()
 	{
-		//stop all audio
-		for (auto& s : _activeSounds)
+		for (auto e : _audioEmitters)
 		{
-			s.stop();
+			e->soundPtr.get()->stop();
 		}
-
-		//clear all active
-		_activeSounds.clear();
-
 		//unload from memory
-		_soundMap.clear();
+		_soundBufferMap.clear();
 
 		_activeMusic.stop();
+	}
+
+	bool HasBuffer(std::string fileName)
+	{
+		return _soundBufferMap.find(fileName) != _soundBufferMap.end();
+	}
+
+	void RegisterEmitter(AudioEmitter* e)
+	{
+		if (!e) return;
+
+		if (_audioEmitterSet.insert(e).second)
+		{
+			_audioEmitters.push_back(e);
+
+			sf::SoundBuffer* buffer{ nullptr };
+			if (_soundBufferMap.find(e->fileName) == _soundBufferMap.end())
+				//create an audio buffer from file
+				buffer = LoadAudio(e->fileName);
+			else
+				//get existing buffer
+				buffer = _soundBufferMap[e->fileName].get();
+			
+			if (!buffer)
+			{
+				std::cout << "AUDIO BUFFER IS NULL!" << std::endl;
+				return;
+			}
+
+			e->soundPtr = std::make_unique<sf::Sound>(*buffer);
+			e->Initialize();
+		}
+	}
+
+	void UnregisterEmitter(AudioEmitter* e)
+	{
+		if (!e) return;
+		if (_audioEmitterSet.erase(e) == 0) return;
+
+		//find the renderer
+		auto it = std::find(_audioEmitters.begin(), _audioEmitters.end(), e);
+		if (it != _audioEmitters.end())
+		{
+			//push to back and pop
+			*it = _audioEmitters.back();
+			_audioEmitters.pop_back();
+
+			//unload audio
+		}
+	}
+
+	void FlushEmitters()
+	{
+		_audioEmitters.clear();
+		_audioEmitterSet.clear();
+	}
+
+	void Update()
+	{
+		for (auto* emitter : _audioEmitters)
+		{
+			auto& transform = emitter->transform;
+			auto& sound = *emitter->soundPtr.get();
+
+			sound.setVolume(100.f * emitter->volume * _sfxVolume * _masterVolume);
+			sound.setPitch(emitter->pitch);
+
+			//update position
+			if (transform)
+			{
+				sf::Vector3f pos(transform->position.x, transform->position.y, 0.f);
+				sound.setPosition(pos);
+				auto dir = sound.getPosition() - sf::Listener::getPosition();
+				std::cout << "Distance : " << dir.length();
+				std::cout << ", relative : " << sound.isRelativeToListener();
+				std::cout << ", spatial : " << sound.isSpatializationEnabled() << std::endl;
+			}
+		}
+	}
+
+	void SetMasterVolume(f32 vol)
+	{
+		_masterVolume = std::clamp(vol, 0.f, 1.f);
+	}
+
+	void SetSFXVolume(f32 vol)
+	{
+		_sfxVolume = std::clamp(vol, 0.f, 1.f);
+	}
+
+	void SetMusicVolume(f32 vol)
+	{
+		_musicVolume = std::clamp(vol, 0.f, 1.f);
+	}
+
+	f32 GetMasterVolume()
+	{
+		return _masterVolume;
+	}
+
+	f32 GetSFXVolume()
+	{
+		return _sfxVolume;
+	}
+
+	f32 GetMusicVolume()
+	{
+		return _musicVolume;
 	}
 }

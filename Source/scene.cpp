@@ -6,11 +6,11 @@
 #include "scene.hpp"
 #include "renderer.hpp"
 #include "physics.hpp"
+#include "audio.hpp"
+
 #include "gameobject.hpp"
 
-//comps to register
-#include "physics_components.hpp"
-#include "render_components.hpp"
+#include "components.hpp"
 
 void Scene::InitializeGameObjects()
 {
@@ -28,16 +28,16 @@ void Scene::InitializeGameObjects()
 
 			//register collider
 			if (auto* c = dynamic_cast<Collider*>(comp.get()))
-			{
-				std::cout << "  -> Registering Collider!" << std::endl;
 				Physics::RegisterCollider(c);
-			}
+			
 			//Register RigidBody
 			if (auto* rb = dynamic_cast<RigidBody*>(comp.get()))
-			{
-				std::cout << "  -> Registering RigidBody!" << std::endl;
 				Physics::RegisterRigidBody(rb);
-			}
+			
+			if (auto* a = dynamic_cast<AudioEmitter*>(comp.get()))
+				Audio::RegisterEmitter(a);
+
+
 			//OnStart behaviours
 			if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
 				b->OnStart();
@@ -72,6 +72,7 @@ void Scene::OnUpdate()
 		}
 	}
 
+	Audio::Update();
 	Physics::Step((f32)AEFrameRateControllerGetFrameTime());
 	RenderSystem::Draw();
 }
@@ -82,6 +83,7 @@ void Scene::OnExit()
 	RenderSystem::FlushRenderers();
 	Physics::FlushColliders();
 	Physics::FlushRigidBody();
+	Audio::FlushEmitters();
 }
 
 //===== SERIALIZATION =====

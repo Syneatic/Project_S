@@ -1,16 +1,24 @@
 #pragma once
 
 #include <string>
+#include "AETypes.h"
+#include "audio_components.hpp"
 
 namespace Audio
 {
-	struct Sound
-	{
-
-	};
-
-	void LoadAudio(std::string fileName, std::string id);
-	void PlayAudio(std::string id, float vol = 100.f, float pitch = 1.f, float pan = 0.f);
+	void RegisterEmitter(AudioEmitter* emitter);
+	void FlushEmitters();
 	void Update();
+
+	sf::SoundBuffer* LoadAudio(std::string fileName);
 	void UnloadAll();
+	bool HasBuffer(std::string fileName);
+
+
+	void SetMasterVolume(f32 vol);
+	void SetSFXVolume(f32 vol);
+	void SetMusicVolume(f32 vol);
+	f32 GetMasterVolume();
+	f32 GetSFXVolume();
+	f32 GetMusicVolume();
 }
