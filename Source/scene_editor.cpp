@@ -41,15 +41,15 @@ namespace
 		catch (...) {}
 
 		//create dialog
-		HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
-		bool didCoInit = SUCCEEDED(hr) || hr == RPC_E_CHANGED_MODE;
+		HRESULT hrInit = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+		bool didCoInit = SUCCEEDED(hrInit) || hrInit == RPC_E_CHANGED_MODE;
 
 		//check if successful
 		IFileOpenDialog* pfd = nullptr;
-		hr = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd));
-		if (FAILED(hr) || !pfd)
+		HRESULT hrCreate = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd));
+		if (FAILED(hrCreate) || !pfd)
 		{
-			if (didCoInit && hr != RPC_E_CHANGED_MODE) CoUninitialize();
+			if (didCoInit && hrCreate != RPC_E_CHANGED_MODE) CoUninitialize();
 			return L"";
 		}
 
@@ -67,49 +67,36 @@ namespace
 
 		//starting folder
 		IShellItem* startFolder = nullptr;
-		hr = SHCreateItemFromParsingName(targetDir.c_str(), nullptr, IID_PPV_ARGS(&startFolder));
-		if (SUCCEEDED(hr))
+		if (SUCCEEDED(SHCreateItemFromParsingName(targetDir.c_str(), nullptr, IID_PPV_ARGS(&startFolder))))
 		{
-			// SetFolder makes the dialog open there immediately
-			// SetDefaultFolder only sets it the first time the user opens the dialog
 			pfd->SetFolder(startFolder);
 			pfd->SetDefaultFolder(startFolder);
 			startFolder->Release();
 		}
 
 		//display dialog
-		HWND owner = AESysGetWindowHandle();
-		hr = pfd->Show(owner);
-		if (FAILED(hr))
-		{
-			pfd->Release();
-			if (didCoInit && hr != RPC_E_CHANGED_MODE) CoUninitialize();
-			return L"";
-		}
-
-		IShellItem* result = nullptr;
-		hr = pfd->GetResult(&result);
-		if (FAILED(hr) || !result)
-		{
-			pfd->Release();
-			if (didCoInit && hr != RPC_E_CHANGED_MODE) CoUninitialize();
-			return L"";
-		}
-
-		PWSTR path = nullptr;
-		hr = result->GetDisplayName(SIGDN_FILESYSPATH, &path);
+		HRESULT hrShow = pfd->Show(nullptr);
 
 		std::wstring out;
-		if (SUCCEEDED(hr) && path)
+		if (SUCCEEDED(hrShow))
 		{
-			out = path;
-			CoTaskMemFree(path);
+			IShellItem* result = nullptr;
+			if (SUCCEEDED(pfd->GetResult(&result)) && result)
+			{
+				PWSTR path = nullptr;
+				if (SUCCEEDED(result->GetDisplayName(SIGDN_FILESYSPATH, &path)) && path)
+				{
+					out = path;
+					CoTaskMemFree(path);
+				}
+				result->Release();
+			}
 		}
 
-		result->Release();
 		pfd->Release();
+		if (didCoInit && hrInit != RPC_E_CHANGED_MODE)
+			CoUninitialize();
 
-		if (didCoInit && hr != RPC_E_CHANGED_MODE) CoUninitialize();
 		return out;
 	}
 
