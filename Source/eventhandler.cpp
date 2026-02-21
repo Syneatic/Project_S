@@ -1,32 +1,28 @@
 #include "eventhandler.hpp"
 
-//void Dispatcher::RaiseEvent(std::unique_ptr<IEvent> e)
-//{
-//	eQueue.push_back(std::move(e));
-//}
-
 void EventHandler::CallQ()
 {
-	// Make a temp queue in case events push new events to original queue
-	// to prevent possible iteration to out of bounds.
-	std::vector<std::unique_ptr<IEvent>> processingQueue;
-	processingQueue.swap(eQueue);
-
-	for (auto& event : processingQueue)
+	while(eQueue.size())
 	{
-		auto type{ event->getType() };
+		auto& event = *(eQueue.front());
+		auto type = event.getType();
 
 		if (subscribers.count(type))
 		{
 			for (auto& callback : subscribers[type])
 			{
-				callback(event.get());
-			}
+				callback(&event);
+			}			
 		}
+		eQueue.pop();
 	}
 }
 
-void EventHandler::FlushQ()
+void EventHandler::Flush()
 {
-	eQueue.clear();
+	while (!eQueue.empty())
+	{
+		eQueue.pop();
+	}
+	subscribers.clear();
 }

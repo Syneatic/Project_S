@@ -36,47 +36,38 @@ namespace UISystem
 //	std::cout << "Binded\n";
 //}
 
-void UIButtonRegister::init()
+void UISystem::init()
 {
-	EventHandler::Subscribe<UIButtonEvent>([this](IEvent* e)
+	EventHandler::Subscribe<UIButtonEvent>([](IEvent* e)
+	{
+		auto uiEv = static_cast<UIButtonEvent*>(e); // Cast to access the fKey
+		// This single function handles ALL UI buttons for this system
+		switch (uiEv->fKey) 
 		{
-			auto uiEv = static_cast<UIButtonEvent*>(e); // Cast to access the fKey
-
-			// This single function handles ALL UI buttons for this system
-			switch (uiEv->fKey) 
-			{
-			case FunctionKey::PLAY_GAME:
-				UISystem::Play();
-				break;
-			case FunctionKey::PAUSE_GAME:
-				UISystem::Pause();
-				break;
-			case FunctionKey::RESTART_GAME:
-				UISystem::Restart();
-				break;
-			case FunctionKey::QUIT_GAME:
-				UISystem::Quit();
-				break;
-			case FunctionKey::EXIT_APP:
-				UISystem::Exit();
-				break;
-			default:
-				break;
-			}
-		});
+		case FunctionKey::PLAY_GAME:
+			UISystem::Play();
+			break;
+		case FunctionKey::PAUSE_GAME:
+			UISystem::Pause();
+			break;
+		case FunctionKey::RESTART_GAME:
+			UISystem::Restart();
+			break;
+		case FunctionKey::QUIT_GAME:
+			UISystem::Quit();
+			break;
+		case FunctionKey::EXIT_APP:
+			UISystem::Exit();
+			break;
+		default:
+			break;
+		}
+	});
 }
 
-void UIButtonRegister::handleMouseClick(FunctionKey key)
+void UISystem::handleMouseClick(FunctionKey key)
 {
-	std::cout << "Clicked\n";
 	EventHandler::RaiseEvent<UIButtonEvent>(key);
-	/*auto iterator = _buttonReg.find(key);
-
-	if (iterator != _buttonReg.end() && iterator->second)
-	{
-		std::cout << "Function Called\n";
-		iterator->second();
-	}*/
 }
 
 void Display::DrawInInspector()
@@ -122,6 +113,6 @@ void Button::OnStart() {}
 void Button::OnUpdate()
 {
 	//GameObject& owner = *_owner;
-	UISystem::Hover_Logic(gameObject(), UIButtonRegister::Instance());
+	UISystem::Hover_Logic(gameObject());
 }
 void Button::OnDestroy(){}

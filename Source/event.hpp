@@ -18,4 +18,10 @@ struct Event : public IEvent
 struct UIButtonEvent : public Event<UIButtonEvent> 
 {
 	FunctionKey fKey;
+	UIButtonEvent(FunctionKey fKey) : fKey{ fKey } {}
+};
+
+struct AudioEvent : public Event<AudioEvent>
+{
+
 };

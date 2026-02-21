@@ -33,29 +33,6 @@ using CallbackF = void(*)(); // Identifier for void pointer function with void p
 // Identifier for unordered_map with FunctionKey & Function Pointer.
 //using ButtonRegister = std::unordered_map<FunctionKey, CallbackF/*std::function<void()>, EnumHash*/>;
 
-// UIButtonRegister for handling ButtonRegister assignment & CallbackF logic.
-class UIButtonRegister
-{
-public:
-	// Singleton.
-	static UIButtonRegister& Instance()
-	{
-		static UIButtonRegister instance;
-		return instance;
-	}
-	UIButtonRegister(const UIButtonRegister&) = delete;
-	UIButtonRegister& operator=(const UIButtonRegister&) = delete;
-	UIButtonRegister(UIButtonRegister&&) = delete;
-	UIButtonRegister& operator=(UIButtonRegister&&) = delete;
-
-	//void bindFunction(FunctionKey key, CallbackF callF);
-	
-
-private:
-	//ButtonRegister _buttonReg;
-	UIButtonRegister() {}
-};
-
 // Display component to attach image or custom texture.
 struct Display : Behaviour
 {
@@ -77,8 +54,9 @@ static char const* _buttonNames[]
 
 namespace UISystem
 {
-	//void BindButtonFunctions(UIButtonRegister& bReg);
-	void Hover_Logic(GameObject& button, UIButtonRegister& bReg);
+	void init();
+	void handleMouseClick(FunctionKey key);
+	void Hover_Logic(GameObject& button);
 }
 
 // Button Component to assign function callback.

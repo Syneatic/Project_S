@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="eventhandler.cpp" />
     <ClCompile Include="Extern\ImGUI\imgui.cpp" />
     <ClCompile Include="Extern\ImGUI\imgui_demo.cpp" />
     <ClCompile Include="Extern\ImGUI\imgui_draw.cpp" />
@@ -26,6 +25,7 @@
     <ClCompile Include="Source\audio_components.cpp" />
     <ClCompile Include="Source\controller_components.cpp" />
     <ClCompile Include="Source\emitter_components.cpp" />
+    <ClCompile Include="Source\eventhandler.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\physics.cpp" />
     <ClCompile Include="Source\physics_components.cpp" />
@@ -40,8 +40,6 @@
     <ClCompile Include="Source\ui_components.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="eventhandler.hpp" />
-    <ClInclude Include="event.hpp" />
     <ClInclude Include="Extern\ImGUI\imconfig.h" />
     <ClInclude Include="Extern\ImGUI\imgui.h" />
     <ClInclude Include="Extern\ImGUI\imgui_impl_opengl3.h" />
@@ -69,6 +67,8 @@
     <ClInclude Include="Source\components.hpp" />
     <ClInclude Include="Source\emitter.hpp" />
     <ClInclude Include="Source\emitter_components.hpp" />
+    <ClInclude Include="Source\event.hpp" />
+    <ClInclude Include="Source\eventhandler.hpp" />
     <ClInclude Include="Source\gameobject.hpp" />
     <ClInclude Include="Source\gizmos.hpp" />
     <ClInclude Include="Source\json_parser_helper.hpp" />

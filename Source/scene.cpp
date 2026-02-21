@@ -12,6 +12,7 @@
 //comps to register
 #include "physics_components.hpp"
 #include "render_components.hpp"
+#include "ui_components.hpp"
 
 void Scene::InitializeGameObjects()
 {
@@ -56,6 +57,8 @@ void Scene::OnEnter()
 	if (_gameObjectList.empty()) return;
 
 	InitializeGameObjects();
+
+	UISystem::init();
 }
 
 void Scene::OnUpdate()
@@ -74,13 +77,14 @@ void Scene::OnUpdate()
 	}
 
 	Physics::Step((f32)AEFrameRateControllerGetFrameTime());
-	Dispatcher::Instance().FlushQ();
+	EventHandler::CallQ();
 	RenderSystem::Draw();
 }
 
 void Scene::OnExit()
 {
 	//delete
+	EventHandler::Flush();
 	RenderSystem::FlushRenderers();
 	Physics::FlushColliders();
 	Physics::FlushRigidBody();

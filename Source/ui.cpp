@@ -41,7 +41,7 @@ namespace UISystem
         return checkX && checkY;
     }
 
-    void Hover_Logic(GameObject& button, UIButtonRegister& bReg)
+    void Hover_Logic(GameObject& button)
     {
         Transform* t = button.GetComponent<Transform>();
         SpriteRenderer* r = button.GetComponent<SpriteRenderer>();
@@ -62,9 +62,9 @@ namespace UISystem
 
             if (AEInputCheckReleased(AEVK_LBUTTON))
             {
-                // Get Button component & use enum key to call function pointer from button key registry.
+                // Get Button component & use enum key to call function pointer from button key registry. 
                 Button* b = button.GetComponent<Button>();
-                bReg.handleMouseClick(b->fKey);
+                EventHandler::RaiseEvent<UIButtonEvent>(b->fKey);
             }
         }
         else
