@@ -1,5 +1,6 @@
 #pragma once
 
+#include <typeindex>
 #include "base_components.hpp"
 #include "ui_components.hpp"
 
