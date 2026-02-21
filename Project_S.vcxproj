@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dispatcher.cpp" />
+    <ClCompile Include="eventhandler.cpp" />
     <ClCompile Include="Extern\ImGUI\imgui.cpp" />
     <ClCompile Include="Extern\ImGUI\imgui_demo.cpp" />
     <ClCompile Include="Extern\ImGUI\imgui_draw.cpp" />
@@ -40,7 +40,7 @@
     <ClCompile Include="Source\ui_components.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dispatcher.hpp" />
+    <ClInclude Include="eventhandler.hpp" />
     <ClInclude Include="event.hpp" />
     <ClInclude Include="Extern\ImGUI\imconfig.h" />
     <ClInclude Include="Extern\ImGUI\imgui.h" />

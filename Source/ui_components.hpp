@@ -30,17 +30,8 @@ enum class FunctionKey
 
 using CallbackF = void(*)(); // Identifier for void pointer function with void param.
 
-//struct EnumHash 
-//{
-//	template <typename T>
-//	std::size_t operator()(T t) const
-//	{
-//		return static_cast<std::size_t>(t);
-//	}
-//};
-
 // Identifier for unordered_map with FunctionKey & Function Pointer.
-using ButtonRegister = std::unordered_map<FunctionKey, CallbackF/*std::function<void()>, EnumHash*/>;
+//using ButtonRegister = std::unordered_map<FunctionKey, CallbackF/*std::function<void()>, EnumHash*/>;
 
 // UIButtonRegister for handling ButtonRegister assignment & CallbackF logic.
 class UIButtonRegister
@@ -57,20 +48,11 @@ public:
 	UIButtonRegister(UIButtonRegister&&) = delete;
 	UIButtonRegister& operator=(UIButtonRegister&&) = delete;
 
-	// The template register to bind functions. 
-	// If function is a class member the second parameter MUST be the class object itself.
-	/*template<typename Func, typename... Args>
-	void bindFunction(FunctionKey key, Func f, Args... args) 
-	{
-		std::cout << "Binding" << static_cast<int>(key) << std::endl;
-		_buttonReg[key] = [f, args...]() { std::invoke(f, args...); };
-	}*/
-
-	void bindFunction(FunctionKey key, CallbackF callF);
-	void handleMouseClick(FunctionKey key);
+	//void bindFunction(FunctionKey key, CallbackF callF);
+	
 
 private:
-	ButtonRegister _buttonReg;
+	//ButtonRegister _buttonReg;
 	UIButtonRegister() {}
 };
 
@@ -95,7 +77,7 @@ static char const* _buttonNames[]
 
 namespace UISystem
 {
-	void BindButtonFunctions(UIButtonRegister& bReg);
+	//void BindButtonFunctions(UIButtonRegister& bReg);
 	void Hover_Logic(GameObject& button, UIButtonRegister& bReg);
 }
 
@@ -113,6 +95,12 @@ struct Button : Behaviour
 
 	const std::string name() const override { return "Button"; }
 };
+
+
+
+
+
+
 
 // Text component to assign text on screen.
 //struct Text : Behaviour

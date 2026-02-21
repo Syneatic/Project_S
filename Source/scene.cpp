@@ -7,6 +7,7 @@
 #include "renderer.hpp"
 #include "physics.hpp"
 #include "gameobject.hpp"
+#include "eventhandler.hpp"
 
 //comps to register
 #include "physics_components.hpp"
@@ -73,6 +74,7 @@ void Scene::OnUpdate()
 	}
 
 	Physics::Step((f32)AEFrameRateControllerGetFrameTime());
+	Dispatcher::Instance().FlushQ();
 	RenderSystem::Draw();
 }
 

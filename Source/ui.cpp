@@ -2,44 +2,21 @@
 
 #include "AEEngine.h"
 
-#include "scene_manager.hpp"
 #include "gameobject.hpp"
-
+#include "eventhandler.hpp"
 #include "ui_components.hpp"
 #include "render_components.hpp"
 
 namespace UISystem
 {
-    // Functions for UI buttons.
-    static void Play() 
-    {
-        SceneManager::RequestSceneSwitch("PrototypeLvl");
-    }
-
-    static void Pause() {}
-    static void Restart() 
-    {
-        SceneManager::RequestSceneReload();
-    }
-
-    static void Quit()
-    {
-        SceneManager::RequestSceneSwitch("MainMenu");
-    }
-
-    static void Exit() 
-    {
-        SceneManager::QuitApplication();
-    }
-
-    void BindButtonFunctions(UIButtonRegister& bReg)
-    {
-        bReg.bindFunction(FunctionKey::PLAY_GAME, Play);
-        bReg.bindFunction(FunctionKey::PAUSE_GAME, Pause);
-        bReg.bindFunction(FunctionKey::RESTART_GAME, Restart);
-        bReg.bindFunction(FunctionKey::QUIT_GAME, Quit);
-        bReg.bindFunction(FunctionKey::EXIT_APP, Exit);
-    }
+    //void BindButtonFunctions(UIButtonRegister& bReg)
+    //{
+    //    bReg.bindFunction(FunctionKey::PLAY_GAME, Play);
+    //    bReg.bindFunction(FunctionKey::PAUSE_GAME, Pause);
+    //    bReg.bindFunction(FunctionKey::RESTART_GAME, Restart);
+    //    bReg.bindFunction(FunctionKey::QUIT_GAME, Quit);
+    //    bReg.bindFunction(FunctionKey::EXIT_APP, Exit);
+    //}
 
     float2 ScreenToWorld(s32 x, s32 y)
     {
