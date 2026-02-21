@@ -175,22 +175,15 @@ void RockController::OnUpdate()
     case RockState::Thrown:
 
         // Detect impact (ground, wall, ceiling)
-        if (rb->Is_Grounded || length(rb->velocity) < 1.f)
+        if (rb->HitEnvironment)
         {
+            rb->HitEnvironment = false;
             OnImpact();
-            emitter->TriggerPing();
         }
 
         break;
 
     case RockState::Impact:
-
-        lifeTimer += dt;
-
-        if (lifeTimer >= impactDuration)
-        {
-            ResetRock();
-        }
 
         break;
     }
@@ -202,40 +195,49 @@ void RockController::OnDestroy()
 
 }
 
+float2 ScreenToWorld(s32 mouseX, s32 mouseY)
+{
+    float winWidth = (float)AEGfxGetWinMaxX() - (float)AEGfxGetWinMinX();
+    float winHeight = (float)AEGfxGetWinMaxY() - (float)AEGfxGetWinMinY();
+
+    float2 world;
+
+    world.x = (float)mouseX - winWidth * 0.5f;
+    world.y = (winHeight * 0.5f) - (float)mouseY;
+
+    return world;
+}
+
 //=========|Rock Mechanic Helper Function|==================
-void RockController::Throw(const float2& startPos)
+void RockController::Throw(const float2& playerPos)
 {
     if (!trans || !rb) return;
 
-    trans->position = startPos + float2{ 0.f, 10.f };
-
-    std::cout << "Throw Called\n";
     s32 mouseX, mouseY;
     AEInputGetCursorPosition(&mouseX, &mouseY);
 
-    float2 mousePos;
-    mousePos.x = static_cast<float>(mouseX);
-    mousePos.y = static_cast<float>(mouseY);
+    float2 mouseWorld = ScreenToWorld(mouseX, mouseY);
 
-    float2 dir = mousePos - startPos;
+    float2 dir = mouseWorld - playerPos;
 
     if (length(dir) < 0.001f)
         return;
 
     dir = normalize(dir);
 
+    trans->position = playerPos + dir * 10.f;
     rb->velocity = dir * throwSpeed;
+    rb->Affected_By_Gravity = true;
+
+    rb->HitEnvironment = false;
+    rb->Is_Grounded = false;
 
     state = RockState::Thrown;
-    lifeTimer = 0.f;
-
-    _owner->active(true);
 }
 
 void RockController::OnImpact()
 {
     state = RockState::Impact;
-    lifeTimer = 0.f;
 
     rb->velocity = float2::zero();
 
@@ -250,9 +252,5 @@ void RockController::OnImpact()
 void RockController::ResetRock()
 {
     state = RockState::Idle;
-    rb->velocity = float2::zero();
-    lifeTimer = 0.f;
-
-    _owner->active(false);
 }
 

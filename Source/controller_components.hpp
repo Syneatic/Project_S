@@ -45,7 +45,6 @@ struct RockController : Controller
     };
     RockState state = RockState::Idle;
 
-    float lifeTimer = 0.f;
     float impactDuration = 0.5f;
 
     f32 throwSpeed = 250.f;

@@ -464,6 +464,18 @@ namespace Physics
 						bool rb1Static = (!rb1 || rb1->Is_Static);
 						bool rb2Static = (!rb2 || rb2->Is_Static);
 
+						if (rb1 && !rb1->Is_Static)
+						{
+							if (c2->layerMask == static_cast<uint32_t>(Layer::Environment))
+								rb1->HitEnvironment = true;
+						}
+
+						if (rb2 && !rb2->Is_Static)
+						{
+							if (c1->layerMask == static_cast<uint32_t>(Layer::Environment))
+								rb2->HitEnvironment = true;
+						}
+
 						if (rb1Static && rb2Static) continue;
 
 						float2 separation = info.normal * info.penetration;
@@ -559,7 +571,10 @@ namespace Physics
 
 		// Reset grounded
 		for (auto* rb : _rigidbodies)
-			if (rb) rb->Is_Grounded = false;
+			if (rb) {
+				rb->Is_Grounded = false;
+				rb->HitEnvironment = false;
+			}
 
 		//apply gravity
 		for (auto* rb : _rigidbodies)
