@@ -45,8 +45,6 @@ struct RockController : Controller
     };
     RockState state = RockState::Idle;
 
-    float impactDuration = 0.5f;
-
     f32 throwSpeed = 250.f;
     f32 throwAngle = 0.f; //degrees
 

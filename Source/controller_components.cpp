@@ -213,6 +213,8 @@ void RockController::Throw(const float2& playerPos)
 {
     if (!trans || !rb) return;
 
+    state = RockState::Thrown;
+
     s32 mouseX, mouseY;
     AEInputGetCursorPosition(&mouseX, &mouseY);
 
@@ -231,8 +233,6 @@ void RockController::Throw(const float2& playerPos)
 
     rb->HitEnvironment = false;
     rb->Is_Grounded = false;
-
-    state = RockState::Thrown;
 }
 
 void RockController::OnImpact()
@@ -241,11 +241,9 @@ void RockController::OnImpact()
 
     rb->velocity = float2::zero();
 
-    std::cout << "Echo Triggered!\n";
     if (emitter)
     {
         emitter->TriggerPing();
-        std::cout << "Ping\n";
     }
 }
 

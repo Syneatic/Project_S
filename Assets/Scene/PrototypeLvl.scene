@@ -7,6 +7,14 @@
       "components" : 
       [
         {
+          "Affected By Gravity" : false,
+          "Gravity" : 9.8000001907348633,
+          "Grounded" : false,
+          "Is Static" : true,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
           "position" : 
           [
             237.55000305175781,
@@ -19,14 +27,6 @@
             300.0
           ],
           "type" : "Transform"
-        },
-        {
-          "Affected By Gravity" : false,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
-          "Is Static" : true,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -536,14 +536,6 @@
       "components" : 
       [
         {
-          "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : true,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
-        },
-        {
           "position" : 
           [
             100.0,
@@ -556,6 +548,14 @@
             50.0
           ],
           "type" : "Transform"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : true,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -573,6 +573,12 @@
           "type" : "SpriteRenderer"
         },
         {
+          "jumpHeight" : 120.0,
+          "max_speed" : 250.0,
+          "time" : 1.0,
+          "type" : "PlayerController"
+        },
+        {
           "collisionMask" : 4294967282,
           "layerMask" : 1,
           "size" : 
@@ -581,12 +587,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "jumpHeight" : 120.0,
-          "max_speed" : 250.0,
-          "time" : 1.0,
-          "type" : "PlayerController"
         },
         {
           "color" : 
@@ -738,6 +738,14 @@
       "components" : 
       [
         {
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
           "position" : 
           [
             -146.0,
@@ -750,14 +758,6 @@
             15.0
           ],
           "type" : "Transform"
-        },
-        {
-          "Affected By Gravity" : true,
-          "Gravity" : 500.0,
-          "Grounded" : false,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
