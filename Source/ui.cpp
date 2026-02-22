@@ -47,6 +47,7 @@ namespace UISystem
         SpriteRenderer* r = button.GetComponent<SpriteRenderer>();
         if (checkBounds(*t))
         {
+            // set button hover rgba.
             r->color.r = r->color.g = r->color.b = r->color.a * .75f;
 
             if (AEInputCheckTriggered(AEVK_LBUTTON))
@@ -54,7 +55,7 @@ namespace UISystem
                 // play button press sfx
             }
 
-            // set button hover rgba.
+            // set button click rgba.
             if (AEInputCheckCurr(AEVK_LBUTTON))
             {
                 r->color.r = r->color.g = r->color.b = r->color.a * .5f;
@@ -62,11 +63,12 @@ namespace UISystem
 
             if (AEInputCheckReleased(AEVK_LBUTTON))
             {
-                // Get Button component & use enum key to call function pointer from button key registry. 
+                // Get Button component & use enum key to raise UIButtonEvent on EventHandler. 
                 Button* b = button.GetComponent<Button>();
                 EventHandler::RaiseEvent<UIButtonEvent>(b->fKey);
             }
         }
+        // set button rgba to default.
         else
             r->color.r = r->color.g = r->color.b = r->color.a;
     }

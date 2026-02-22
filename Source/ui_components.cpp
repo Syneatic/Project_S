@@ -5,69 +5,71 @@
 #include "eventhandler.hpp"
 #include "ui_components.hpp"
 
-namespace UISystem
-{
-	static void Play()
-	{
-		SceneManager::RequestSceneSwitch("PrototypeLvl");
-	}
-
-	static void Pause() {}
-
-	static void Restart()
-	{
-		SceneManager::RequestSceneReload();
-	}
-
-	static void Quit()
-	{
-		SceneManager::RequestSceneSwitch("MainMenu");
-	}
-
-	static void Exit()
-	{
-		SceneManager::QuitApplication();
-	}
-}
-
+//namespace UISystem
+//{
+//	static void Play()
+//	{
+//		SceneManager::RequestSceneSwitch("PrototypeLvl");
+//	}
+//
+//	static void Pause() {}
+//
+//	static void Restart()
+//	{
+//		SceneManager::RequestSceneReload();
+//	}
+//
+//	static void Quit()
+//	{
+//		SceneManager::RequestSceneSwitch("MainMenu");
+//	}
+//
+//	static void Exit()
+//	{
+//		SceneManager::QuitApplication();
+//	}
+//}
+//
 //void UIButtonRegister::bindFunction(FunctionKey key, CallbackF callF)
 //{
 //	_buttonReg[key] = callF;
 //	std::cout << "Binded\n";
 //}
 
+// Subscribe each button function as an event to event handler.
 void UISystem::init()
 {
-	EventHandler::Subscribe<UIButtonEvent>([](IEvent* e)
-	{
-		auto uiEv = static_cast<UIButtonEvent*>(e); // Cast to access the fKey
-		// This single function handles ALL UI buttons for this system
-		switch (uiEv->fKey) 
-		{
-		case FunctionKey::PLAY_GAME:
-			UISystem::Play();
-			break;
-		case FunctionKey::PAUSE_GAME:
-			UISystem::Pause();
-			break;
-		case FunctionKey::RESTART_GAME:
-			UISystem::Restart();
-			break;
-		case FunctionKey::QUIT_GAME:
-			UISystem::Quit();
-			break;
-		case FunctionKey::EXIT_APP:
-			UISystem::Exit();
-			break;
-		default:
-			break;
-		}
-	});
-}
+	//EventHandler::Subscribe<UIButtonEvent>([](IEvent* e)
+	//{
+	//	auto uiEv = static_cast<UIButtonEvent*>(e); // Cast to access the fKey
+	//	// This single function handles ALL UI buttons for this system
+	//	switch (uiEv->fKey) 
+	//	{
+	//	case FunctionKey::PLAY_GAME:
+	//		UISystem::Play();
+	//		break;
+	//	case FunctionKey::PAUSE_GAME:
+	//		UISystem::Pause();
+	//		break;
+	//	case FunctionKey::RESTART_GAME:
+	//		UISystem::Restart();
+	//		break;
+	//	case FunctionKey::QUIT_GAME:
+	//		UISystem::Quit();
+	//		break;
+	//	case FunctionKey::EXIT_APP:
+	//		UISystem::Exit();
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//});
 
-void UISystem::handleMouseClick(FunctionKey key)
-{
-	EventHandler::RaiseEvent<UIButtonEvent>(key);
+	SubscribeFunctionKey(FunctionKey::PLAY_GAME, []() { SceneManager::RequestSceneSwitch("PrototypeLvl"); });
+	SubscribeFunctionKey(FunctionKey::PAUSE_GAME, []() { std::cout << "Pause\n"; });
+	SubscribeFunctionKey(FunctionKey::RESTART_GAME, []() { SceneManager::RequestSceneReload(); });
+	SubscribeFunctionKey(FunctionKey::QUIT_GAME, []() { SceneManager::RequestSceneSwitch("MainMenu"); });
+	SubscribeFunctionKey(FunctionKey::EXIT_APP, []() { SceneManager::QuitApplication(); });
 }
 
 void Display::DrawInInspector()
@@ -112,7 +114,6 @@ void Button::Deserialize(const Json::Value& compObj)
 void Button::OnStart() {}
 void Button::OnUpdate()
 {
-	//GameObject& owner = *_owner;
 	UISystem::Hover_Logic(gameObject());
 }
 void Button::OnDestroy(){}

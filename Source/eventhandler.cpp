@@ -1,5 +1,6 @@
 #include "eventhandler.hpp"
 
+// Execute all function callbacks on queue and pop them at end of frame.
 void EventHandler::CallQ()
 {
 	while(eQueue.size())
@@ -18,6 +19,7 @@ void EventHandler::CallQ()
 	}
 }
 
+// Flush subscribers & queue (e.g. on scene switch)
 void EventHandler::Flush()
 {
 	while (!eQueue.empty())

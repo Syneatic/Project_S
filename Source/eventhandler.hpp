@@ -15,12 +15,14 @@ namespace EventHandler
 	inline std::unordered_map<std::type_index, std::vector<EventCallback>> subscribers;
 	inline std::queue<std::unique_ptr<IEvent>> eQueue;
 
+	// Add new subscriber to event handler.
 	template<typename T>
 	void Subscribe(EventCallback cb)
 	{
 		subscribers[typeid(T)].push_back(cb);
 	}
 	
+	// Push a event to queue.
 	template <typename T, typename... Args>
 	void RaiseEvent(Args&& ... args)
 	{		
@@ -29,4 +31,16 @@ namespace EventHandler
 	
 	void CallQ();
 	void Flush();
+}
+
+// Function helper for subscribing UI buttons.
+inline void SubscribeFunctionKey(FunctionKey key, std::function<void()> func)
+{
+	// need to have [key, func] cause external params.
+	EventHandler::Subscribe<UIButtonEvent>([key, func](IEvent* e)
+		{
+			auto uiEv = static_cast<UIButtonEvent*>(e);
+			if (uiEv->fKey == key)
+				func();
+		});
 }

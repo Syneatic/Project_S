@@ -28,8 +28,7 @@ enum class FunctionKey
 	COUNT
 };
 
-using CallbackF = void(*)(); // Identifier for void pointer function with void param.
-
+//using CallbackF = void(*)(); // Identifier for void pointer function with void param.
 // Identifier for unordered_map with FunctionKey & Function Pointer.
 //using ButtonRegister = std::unordered_map<FunctionKey, CallbackF/*std::function<void()>, EnumHash*/>;
 
@@ -55,7 +54,6 @@ static char const* _buttonNames[]
 namespace UISystem
 {
 	void init();
-	void handleMouseClick(FunctionKey key);
 	void Hover_Logic(GameObject& button);
 }
 
@@ -73,12 +71,6 @@ struct Button : Behaviour
 
 	const std::string name() const override { return "Button"; }
 };
-
-
-
-
-
-
 
 // Text component to assign text on screen.
 //struct Text : Behaviour
