@@ -412,8 +412,13 @@ namespace RenderSystem
 		AEGfxMeshDraw(_boxMesh, AE_GFX_MDM_LINES);
 	}
 
+
+	AEGfxVertexList* GetQuadMesh() { return _quadMesh; }
+
+
 	//call after game loop
-	void RendererExit() {
+	void RendererExit() 
+	{
 		AEGfxMeshFree(_quadMesh);
 		AEGfxMeshFree(_triangleMesh);
 		AEGfxMeshFree(_circleMesh);

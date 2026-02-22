@@ -47,6 +47,12 @@ struct float2
 	{
 		return float2(x * rhs, y * rhs);
 	}
+
+	static float2 up()		{ return float2(0.f , 1.f); }
+	static float2 down()	{ return float2(0.f ,-1.f); }
+	static float2 left()	{ return float2(-1.f, 0.f); }
+	static float2 right()	{ return float2(1.f , 0.f); }
+
 };
 
 inline std::ostream& operator<< (std::ostream& o,const float2& f)

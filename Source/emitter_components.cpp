@@ -96,6 +96,7 @@ void ParticleEmitter::DrawInInspector()
 	ImGui::TextUnformatted("Time Limit (for auto ping)");
 	ImGui::DragFloat("##emitter_timelimit", &timeLimit, 1.f, 1.f, 60.f);
 }
+
 Collider* ParticleEmitter::GetSelfCollider()
 {
 	if (auto* c = gameObject().GetComponent<CircleCollider>()) return c;

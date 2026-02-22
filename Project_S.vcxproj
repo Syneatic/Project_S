@@ -26,6 +26,7 @@
     <ClCompile Include="Source\controller_components.cpp" />
     <ClCompile Include="Source\emitter_components.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\particle.cpp" />
     <ClCompile Include="Source\physics.cpp" />
     <ClCompile Include="Source\physics_components.cpp" />
     <ClCompile Include="Source\renderer.cpp" />
@@ -64,8 +65,8 @@
     <ClInclude Include="Source\color.hpp" />
     <ClInclude Include="Source\base_components.hpp" />
     <ClInclude Include="Source\components.hpp" />
-    <ClInclude Include="Source\emitter.hpp" />
     <ClInclude Include="Source\emitter_components.hpp" />
+    <ClInclude Include="Source\enginectx.hpp" />
     <ClInclude Include="Source\gameobject.hpp" />
     <ClInclude Include="Source\gizmos.hpp" />
     <ClInclude Include="Source\json_parser_helper.hpp" />

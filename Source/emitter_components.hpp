@@ -51,3 +51,36 @@ private:
 	void Ping();
 	void DrawHits();
 };
+
+struct ParticleEmitter2 : Behaviour
+{
+	float spawnRate = 10.f; // particle/sec
+	float speed = 200.f;
+	float spread = 30.f;
+	float lifetime = 2.f;
+	float timer = 0.f;
+
+
+	//void OnStart() override;
+
+	void OnUpdate() override
+	{
+		timer += AEFrameRateControllerGetFrameTime();
+		float interval = 1.0f / spawnRate;
+
+		while (timer >= interval)
+		{
+			//float2 origin = _owner->GetComponent<Transform>()->position;
+
+			
+			//ParticleSystem::Emit();
+			timer -= interval;
+		}
+	}
+
+	//void OnDestroy() override;
+
+	//void Burst();
+
+	const std::string name() const override { return "ParticleEmitter"; }
+};

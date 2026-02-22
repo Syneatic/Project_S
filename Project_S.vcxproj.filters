@@ -132,6 +132,9 @@
     <ClCompile Include="Source\transform_component.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -233,9 +236,6 @@
     <ClInclude Include="Source\scene_parser.hpp">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\emitter.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\renderer.hpp">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
@@ -262,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="Source\components.hpp">
       <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\enginectx.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

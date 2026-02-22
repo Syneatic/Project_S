@@ -122,10 +122,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				SceneManager::RequestSceneSwitch("MainMenu");
 			}
 		}
-		//renderSys::DrawArrow(float2::zero());
 		SceneManager::OnUpdate();
 
-		//renderSys::drawRect(float2::zero(), 0, float2{ 10,10 }, center);
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();

@@ -57,5 +57,8 @@ namespace RenderSystem {
 	void DrawArrow(RenderData data);
 	void DrawBox(float2 p, float2 scl, f32 rot, Color c);
 
+
+	AEGfxVertexList* GetQuadMesh();
+
 	void RendererExit();
 }
