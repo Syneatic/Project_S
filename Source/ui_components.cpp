@@ -1,30 +1,14 @@
 #include <iostream>
 
 #include "ImGUI/imgui.h"
-
+#include "eventhandler.hpp"
 #include "ui_components.hpp"
 
-
-void UIButtonRegister::bindFunction(FunctionKey key, CallbackF callF)
-{
-	_buttonReg[key] = callF;
-	std::cout << "Binded\n";
-}
-
-void UIButtonRegister::handleMouseClick(FunctionKey key)
-{
-	std::cout << "Clicked\n";
-	auto iterator = _buttonReg.find(key);
-
-	if (iterator != _buttonReg.end() && iterator->second)
-	{
-		std::cout << "Function Called\n";
-		iterator->second();
-	}
-}
-
-
-
+//void UIButtonRegister::bindFunction(FunctionKey key, CallbackF callF)
+//{
+//	_buttonReg[key] = callF;
+//	std::cout << "Binded\n";
+//}
 
 void Display::DrawInInspector()
 {
@@ -34,8 +18,6 @@ void Display::DrawInInspector()
 void Display::OnStart()  {}
 void Display::OnUpdate() {}
 void Display::OnDestroy(){}
-
-
 
 void Button::DrawInInspector()
 {
@@ -70,7 +52,6 @@ void Button::Deserialize(const Json::Value& compObj)
 void Button::OnStart() {}
 void Button::OnUpdate()
 {
-	//GameObject& owner = *_owner;
-	UISystem::Hover_Logic(gameObject(), UIButtonRegister::Instance());
+	UISystem::Hover_Logic(gameObject());
 }
 void Button::OnDestroy(){}

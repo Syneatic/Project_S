@@ -9,6 +9,7 @@
 #include "audio.hpp"
 
 #include "gameobject.hpp"
+#include "eventhandler.hpp"
 
 #include "components.hpp"
 
@@ -67,6 +68,8 @@ void Scene::OnEnter()
 	if (_gameObjectList.empty()) return;
 
 	InitializeGameObjects();
+
+	UISystem::init();
 }
 
 void Scene::OnUpdate()
@@ -86,12 +89,14 @@ void Scene::OnUpdate()
 
 	Audio::Update();
 	Physics::Step((f32)AEFrameRateControllerGetFrameTime());
+	EventHandler::CallQ();
 	RenderSystem::Draw();
 }
 
 void Scene::OnExit()
 {
 	//delete
+	EventHandler::Flush();
 	RenderSystem::FlushRenderers();
 	Physics::FlushColliders();
 	Physics::FlushRigidBody();

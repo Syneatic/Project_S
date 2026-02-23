@@ -1,44 +1,60 @@
 #include <iostream>
+#include <vector>
 
 #include "AEEngine.h"
 
-#include "scene_manager.hpp"
 #include "gameobject.hpp"
-
+#include "scene_manager.hpp"
+#include "eventhandler.hpp"
 #include "ui_components.hpp"
 #include "render_components.hpp"
 
 namespace UISystem
 {
-    // Functions for UI buttons.
-    static void Play() 
-    {
-        SceneManager::RequestSceneSwitch("PrototypeLvl");
-    }
+    //void BindButtonFunctions(UIButtonRegister& bReg)
+    //{
+    //    bReg.bindFunction(FunctionKey::PLAY_GAME, Play);
+    //    bReg.bindFunction(FunctionKey::PAUSE_GAME, Pause);
+    //    bReg.bindFunction(FunctionKey::RESTART_GAME, Restart);
+    //    bReg.bindFunction(FunctionKey::QUIT_GAME, Quit);
+    //    bReg.bindFunction(FunctionKey::EXIT_APP, Exit);
+    //}
 
-    static void Pause() {}
-    static void Restart() 
+    std::vector<EventHandler::SubscriptionHandle> handlers;
+    // Subscribe each button function as an event to event handler.
+    void init()
     {
-        SceneManager::RequestSceneReload();
-    }
+        //EventHandler::Subscribe<UIButtonEvent>([](IEvent* e)
+        //{
+        //	auto uiEv = static_cast<UIButtonEvent*>(e); // Cast to access the fKey
+        //	// This single function handles ALL UI buttons for this system
+        //	switch (uiEv->fKey) 
+        //	{
+        //	case FunctionKey::PLAY_GAME:
+        //		UISystem::Play();
+        //		break;
+        //	case FunctionKey::PAUSE_GAME:
+        //		UISystem::Pause();
+        //		break;
+        //	case FunctionKey::RESTART_GAME:
+        //		UISystem::Restart();
+        //		break;
+        //	case FunctionKey::QUIT_GAME:
+        //		UISystem::Quit();
+        //		break;
+        //	case FunctionKey::EXIT_APP:
+        //		UISystem::Exit();
+        //		break;
+        //	default:
+        //		break;
+        //	}
+        //});
 
-    static void Quit()
-    {
-        SceneManager::RequestSceneSwitch("MainMenu");
-    }
-
-    static void Exit() 
-    {
-        SceneManager::QuitApplication();
-    }
-
-    void BindButtonFunctions(UIButtonRegister& bReg)
-    {
-        bReg.bindFunction(FunctionKey::PLAY_GAME, Play);
-        bReg.bindFunction(FunctionKey::PAUSE_GAME, Pause);
-        bReg.bindFunction(FunctionKey::RESTART_GAME, Restart);
-        bReg.bindFunction(FunctionKey::QUIT_GAME, Quit);
-        bReg.bindFunction(FunctionKey::EXIT_APP, Exit);
+        handlers.push_back(SubscribeFunctionKey(FunctionKey::PLAY_GAME, []() { SceneManager::RequestSceneSwitch("PrototypeLvl"); }));
+        handlers.push_back(SubscribeFunctionKey(FunctionKey::PAUSE_GAME, []() { std::cout << "Pause\n"; }));
+        handlers.push_back(SubscribeFunctionKey(FunctionKey::RESTART_GAME, []() { SceneManager::RequestSceneReload(); }));
+        handlers.push_back(SubscribeFunctionKey(FunctionKey::QUIT_GAME, []() { SceneManager::RequestSceneSwitch("MainMenu"); }));
+        handlers.push_back(SubscribeFunctionKey(FunctionKey::EXIT_APP, []() { SceneManager::QuitApplication(); }));
     }
 
     float2 ScreenToWorld(s32 x, s32 y)
@@ -64,12 +80,13 @@ namespace UISystem
         return checkX && checkY;
     }
 
-    void Hover_Logic(GameObject& button, UIButtonRegister& bReg)
+    void Hover_Logic(GameObject& button)
     {
         Transform* t = button.GetComponent<Transform>();
         SpriteRenderer* r = button.GetComponent<SpriteRenderer>();
         if (checkBounds(*t))
         {
+            // set button hover rgba.
             r->color.r = r->color.g = r->color.b = r->color.a * .75f;
 
             if (AEInputCheckTriggered(AEVK_LBUTTON))
@@ -77,7 +94,7 @@ namespace UISystem
                 // play button press sfx
             }
 
-            // set button hover rgba.
+            // set button click rgba.
             if (AEInputCheckCurr(AEVK_LBUTTON))
             {
                 r->color.r = r->color.g = r->color.b = r->color.a * .5f;
@@ -85,12 +102,22 @@ namespace UISystem
 
             if (AEInputCheckReleased(AEVK_LBUTTON))
             {
-                // Get Button component & use enum key to call function pointer from button key registry.
+                // Get Button component & use enum key to raise UIButtonEvent on EventHandler. 
                 Button* b = button.GetComponent<Button>();
-                bReg.handleMouseClick(b->fKey);
+                EventHandler::RaiseEvent<UIButtonEvent>(b->fKey);
             }
         }
+        // set button rgba to default.
         else
             r->color.r = r->color.g = r->color.b = r->color.a;
+    }
+
+    // test function for unsub.
+    void exit()
+    {
+        for (auto& eh : handlers)
+        {
+            EventHandler::Unsubscribe(eh);
+        }
     }
 }
