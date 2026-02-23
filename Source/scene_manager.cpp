@@ -14,10 +14,12 @@ namespace
 
 	std::vector<std::string> _sceneRegistry{}; //hold all scene in 'Scene' folder
 
-	Scene* _current;
+	std::unique_ptr<Scene> _current;
+
 	std::string _nextSceneName;
 	bool _requestSwitch = false;
 	bool _requestReload = false;
+
 	EditorScene _editor{};
 	int* originLoop{};
 
@@ -35,9 +37,9 @@ namespace
 		return e == ext;
 	}
 
-	Scene* LoadSceneFromDisk(const std::string& name)
+	std::unique_ptr<Scene> LoadSceneFromDisk(const std::string& name)
 	{
-		Scene* scn = new Scene(name);
+		auto scn = std::make_unique<Scene>(name);
 		SceneIO::DeserializeScene(*scn, name);
 		return scn;
 	}
@@ -48,7 +50,6 @@ namespace
 		if (_nextSceneName.empty()) return;
 
 		if (_current) _current->OnExit();
-		delete _current;                      // unload old scene NOW
 
 		_current = LoadSceneFromDisk(_nextSceneName);
 		if (_current) _current->OnEnter();
@@ -64,7 +65,6 @@ namespace
 
 		const std::string name = _current->name(); // you already have name()
 		_current->OnExit();
-		delete _current;
 
 		_current = LoadSceneFromDisk(name);
 		if (_current) _current->OnEnter();
@@ -120,10 +120,11 @@ namespace SceneManager
 		_requestSwitch = false;
 
 		if (_current) _current->OnExit();
-		delete _current;                      // unload old scene NOW
-		EditorScene* e = new EditorScene;
+
+		auto e = std::make_unique<EditorScene>();
 		e->imguiInitialized = true;
-		_current = e;
+		_current = std::move(e);
+
 		if (_current) _current->OnEnter();
 
 		_nextSceneName.clear();
