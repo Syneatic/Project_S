@@ -7,6 +7,14 @@
       "components" : 
       [
         {
+          "Affected By Gravity" : false,
+          "Gravity" : 9.8000001907348633,
+          "Grounded" : false,
+          "Is Static" : true,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
           "position" : 
           [
             237.55000305175781,
@@ -19,14 +27,6 @@
             300.0
           ],
           "type" : "Transform"
-        },
-        {
-          "Affected By Gravity" : false,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
-          "Is Static" : true,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -548,14 +548,6 @@
           "type" : "AudioListener"
         },
         {
-          "Affected By Gravity" : true,
-          "Gravity" : 20.0,
-          "Grounded" : true,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
-        },
-        {
           "position" : 
           [
             100.0,
@@ -568,6 +560,14 @@
             50.0
           ],
           "type" : "Transform"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : true,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -585,6 +585,12 @@
           "type" : "SpriteRenderer"
         },
         {
+          "jumpHeight" : 120.0,
+          "max_speed" : 250.0,
+          "time" : 1.0,
+          "type" : "PlayerController"
+        },
+        {
           "collisionMask" : 4294967282,
           "layerMask" : 1,
           "size" : 
@@ -593,11 +599,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "jumpHeight" : 10.0,
-          "max_speed" : 10.0,
-          "type" : "PlayerController"
         },
         {
           "color" : 
@@ -751,6 +752,80 @@
         }
       ],
       "name" : "QuitText"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
+          "position" : 
+          [
+            -146.0,
+            183.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            15.0,
+            15.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 500,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967282,
+          "layerMask" : 0,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "maxradius" : 500.0,
+          "raycount" : 256,
+          "speed" : 300.0,
+          "timelimit" : 100.0,
+          "type" : "ParticleEmitter"
+        },
+        {
+          "throwAngle" : 0.0,
+          "throwSpeed" : 300.0,
+          "type" : "RockController"
+        }
+      ],
+      "name" : "Rock"
     }
   ],
   "name" : "PrototypeLvl"

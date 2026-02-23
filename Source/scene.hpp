@@ -23,6 +23,7 @@ public:
 	const std::string& name(std::string name);
 	std::vector<std::unique_ptr<GameObject>>& gameObjectList();
 	const std::vector<std::unique_ptr<GameObject>>& gameObjectList() const;
+	GameObject* FindGameObjectByName(const std::string& name);
 
 
 	Scene();
