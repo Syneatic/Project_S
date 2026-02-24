@@ -2,6 +2,7 @@
 
 #include "particle.hpp"
 #include "physics.hpp"
+#include "ImGUI/imgui.h"
 
 namespace
 {
@@ -106,7 +107,7 @@ namespace ParticleSystem
 			activeParticles++;
 		}
 
-		std::cout << "Active Particles : " << activeParticles << ", FPS : " << AEFrameRateControllerGetFrameRate() << "\n";
+		//std::cout << "Active Particles : " << activeParticles << ", FPS : " << AEFrameRateControllerGetFrameRate() << "\n";
 	}
 
 	void Render() //by pass our wrapper for performance's sake

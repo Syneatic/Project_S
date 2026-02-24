@@ -2,7 +2,7 @@
 
 #include "audio_components.hpp"
 #include "controller_components.hpp"
-#include "emitter_components.hpp"
+#include "particle_components.hpp"
 #include "physics_components.hpp"
 #include "render_components.hpp"
 #include "transform_component.hpp"

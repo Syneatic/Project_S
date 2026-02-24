@@ -4,7 +4,7 @@
 #include "math.hpp"
 #include "gameobject.hpp"
 #include "physics_components.hpp"
-#include "emitter_components.hpp"
+#include "particle_components.hpp"
 
 //abstract
 struct Controller : Behaviour

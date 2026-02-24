@@ -86,12 +86,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	bool m_ImGUIInitialized = false;
 	InitializeImGUI(m_ImGUIInitialized);
 
-	// Create a global buttonRegister,
-	// bind all functions & assign as
-	// pointer to all buttons with static
-	// struct function.
-	//UISystem::BindButtonFunctions(UIButtonRegister::Instance());
-
 	//grab all scene
 	SceneManager::Initialize(&gGameRunning);
 
@@ -101,7 +95,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Initialize render system
 	RenderSystem::RendererInitialize();
 
-	//editorScene.imguiInitialized = true;
 	// ===== END INITIALIZE SYSTEMS =====
 	
 	// Game Loop
@@ -110,8 +103,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// Informing the system about the loop's start
 		AESysFrameStart();
 		f32 dt = (f32)AEFrameRateControllerGetFrameTime();
-		// Your own rendering logic goes here
-		// Set the background to black.
+
 		
 		if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{

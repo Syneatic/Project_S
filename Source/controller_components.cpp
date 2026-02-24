@@ -7,7 +7,7 @@
 #include "AEEngine.h"
 
 #include "controller_components.hpp"
-#include "emitter_components.hpp"
+#include "particle_components.hpp"
 
 #include "math.hpp"
 #include "gameobject.hpp"

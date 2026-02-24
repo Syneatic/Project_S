@@ -6,7 +6,7 @@
 
 #include "gameobject.hpp"
 #include "physics.hpp"
-#include "emitter_components.hpp"
+#include "particle_components.hpp"
 
 struct PlayerController;
 
