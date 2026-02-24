@@ -70,7 +70,11 @@ namespace ParticleSystem
 	void Update()
 	{
 		f64 dt = AEFrameRateControllerGetFrameTime();
+		uint32_t mask = 1 << 1;
+		mask |= 1 << 2;
+		mask |= 1 << 3;
 		int activeParticles{};
+
 		for (int i = 0; i < MAX_PARTICLES; ++i) {
 			if (!g_pool.active[i]) continue; //skip inactive
 
@@ -82,25 +86,33 @@ namespace ParticleSystem
 				g_pool.freeStack[++g_pool.freeStackTop] = i;
 				continue;
 			}
-
-			float dist = length(g_pool.vel[i] * dt);
-			//
-			//update pos
-			g_pool.pos[i].x += g_pool.vel[i].x * dt;
-			g_pool.pos[i].y += g_pool.vel[i].y * dt;
-
-			uint32_t mask = 1 << 1;
-			mask |= 1 << 2;
-			mask |= 1 << 3;
-
-			Physics::RaycastHit hit;
-			if (Physics::Raycast(g_pool.pos[i], g_pool.vel[i], length(g_pool.vel[i] * dt), hit, mask))
+			if (g_pool.collide[i])
 			{
-				//commented out until optimized
-				//RecursiveEmit(hit,g_pool.vel[i],g_pool.lifetime[i],g_pool.burstRemaining[i],g_pool.color[i]);
-				
-				//kill momentum
-				g_pool.vel[i] = float2::zero();
+				float2 velocity = g_pool.vel[i] * dt;
+				float dist = length(velocity);
+				if (dist > 0.001f) //if hit
+				{
+					float2 dir = normalize(g_pool.vel[i]);
+					Physics::RaycastHit hit;
+
+					if (Physics::Raycast(g_pool.pos[i], dir, dist, hit, mask))
+					{
+						
+						g_pool.pos[i] = hit.point;
+						//kill momentum
+						g_pool.vel[i] = float2::zero();
+						//commented out until optimized
+						RecursiveEmit(hit, velocity, g_pool.lifetime[i], g_pool.burstRemaining[i], g_pool.color[i]);
+					}
+					else
+					{
+						g_pool.pos[i] += velocity;
+					}
+				}
+			}
+			else
+			{
+				g_pool.pos[i] += g_pool.vel[i] * dt;
 			}
 
 			activeParticles++;
