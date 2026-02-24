@@ -40,8 +40,7 @@ void AddVertex(float2 p, Color c, float2 uv);
 
 namespace RenderSystem {
 	void RendererInitialize();
-
-
+	
 	//exposed api for registering renderer when loading levels
 	void RegisterRenderer(Renderer* r);
 	void UnregisterRenderer(Renderer* r);

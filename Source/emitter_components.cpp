@@ -189,3 +189,57 @@ void ParticleEmitter::DrawHits()
 		RenderSystem::DrawPoint(par.pos, color);
 	}
 }
+
+
+void ParticleEmitter2::OnStart() 
+{
+	transform = _owner->GetComponent<Transform>();
+}
+
+void ParticleEmitter2::OnUpdate() 
+{
+	if (isBurst) return;
+
+	timer += AEFrameRateControllerGetFrameTime();
+	float interval = 1.0f / spawnRate;
+
+	//spawn particles
+	while (timer >= interval)
+	{
+		float2 pos = transform->position;
+		float rot = transform->rotation;
+
+		//rotate to get direction
+		float baseAngle = rot * (PI / 180.0f);
+		float randomOffset = ((rand() % 1000 / 1000.0f) - 0.5f) * spread * (PI / 180.0f);
+		float finalAngle = baseAngle + randomOffset;
+
+		float2 velocity = {
+			cosf(finalAngle) * speed,
+			sinf(finalAngle) * speed
+		};
+
+		ParticleSystem::Emit(pos, velocity, lifetime, color);
+		timer -= interval;
+	}
+}
+
+//void ParticleEmitter2::OnDestroy() {};
+
+void ParticleEmitter2::Burst()
+{
+	float2 origin = _owner->GetComponent<Transform>()->position;
+	int burstCount = static_cast<int>(spawnRate);
+
+	for (int i = 0; i < burstCount; ++i)
+	{
+		//shoot 360
+		float angle = (rand() % 360) * (PI / 180.0f);
+		float randomSpeed = speed * (0.5f + (rand() % 100 / 100.0f));
+
+
+		float2 velocity = { cosf(angle) * randomSpeed, sinf(angle) * randomSpeed };
+
+		ParticleSystem::Emit(origin, velocity, lifetime, color);
+	}
+}

@@ -11,6 +11,7 @@
 #include "renderer.hpp"
 #include "render_components.hpp"
 #include "base_components.hpp"
+#include "particle.hpp"
 
 //fwd decl
 void AddVertex(float2 p, Color c, float2 uv)
@@ -159,7 +160,15 @@ namespace RenderSystem
 
 	void Draw()
 	{
-		for (auto r : _renderers) r->Draw();
+		for (auto r : _renderers) {
+			if (r->renderLayer < UI) r->Draw();
+		}
+
+		ParticleSystem::Render();
+
+		for (auto r : _renderers) {
+			if (r->renderLayer>= UI) r->Draw();
+		}
 	}
 
 	void SetTransform(Transform t, Alignment mode, AEMtx33& mtx)

@@ -60,27 +60,21 @@ struct ParticleEmitter2 : Behaviour
 	float lifetime = 2.f;
 	float timer = 0.f;
 
+	bool isBurst = false;
+	Color color{};
 
-	//void OnStart() override;
+	Transform* transform{ nullptr };
 
-	void OnUpdate() override
-	{
-		timer += AEFrameRateControllerGetFrameTime();
-		float interval = 1.0f / spawnRate;
-
-		while (timer >= interval)
-		{
-			//float2 origin = _owner->GetComponent<Transform>()->position;
-
-			
-			//ParticleSystem::Emit();
-			timer -= interval;
-		}
-	}
+	void OnStart() override;
+	void OnUpdate() override;
 
 	//void OnDestroy() override;
 
-	//void Burst();
+	void Burst();
+
+	void Serialize(Json::Value& outComp) const override;
+	void Deserialize(const Json::Value& compObj) override;
+	void DrawInInspector() override;
 
 	const std::string name() const override { return "ParticleEmitter"; }
 };
