@@ -370,6 +370,7 @@ namespace Physics
 			auto* tr = c->gameObject().GetComponent<Transform>();
 			if (!tr) continue;
 
+
 			float tHit = 0.0f;
 			float2 nHit = float2::zero();
 			bool hit = false;

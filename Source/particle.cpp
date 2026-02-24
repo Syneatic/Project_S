@@ -3,6 +3,55 @@
 #include "particle.hpp"
 #include "physics.hpp"
 
+namespace
+{
+	void RecursiveEmit(Physics::RaycastHit hit,float2 vel,float lifetime,int childrenToSpawn,Color color)
+	{
+		float2 reflectedVel = reflect(vel, hit.normal);
+		float speed = length(vel);
+
+		if (childrenToSpawn > 4)
+		{
+			int nextBurstCount = childrenToSpawn / 4;
+
+			float baseAngle = atan2f(hit.normal.y, hit.normal.x); // Angle of the wall normal
+			float splashRange = PI;
+
+			Color startCol = color;
+			Color endCol = { 1.0f, 1.0f, 0.0f, 1.0f }; // Example: Shift towards a deep blue
+
+
+			float t = 1.0f - (float)nextBurstCount / 128.f;
+
+			Color nextColor;
+			nextColor.r = startCol.r + (endCol.r - startCol.r) * t; // Shift 40% per bounce
+			nextColor.g = startCol.g + (endCol.g - startCol.g) * t;
+			nextColor.b = startCol.b + (endCol.b - startCol.b) * t;
+			nextColor.a = startCol.a;
+
+			for (int j = 0; j < childrenToSpawn; ++j)
+			{
+				//constraint to 180
+				float offset = (j / (float)nextBurstCount) * splashRange - (splashRange / 2.0f);
+				float finalAngle = baseAngle + offset;
+
+				float2 spawnDir = { cosf(finalAngle), sinf(finalAngle) };
+
+				ParticleSystem::Emit(
+					hit.point + (hit.normal * 1.0f),
+					spawnDir * speed,
+					lifetime * 0.8f,
+					nextColor,
+					true,            // These children will also collide and echo
+					nextBurstCount   // Pass the reduced count for the next generation
+				);
+			}
+		}
+		
+	}
+}
+
+
 //SoA approach
 namespace ParticleSystem
 {
@@ -34,10 +83,7 @@ namespace ParticleSystem
 				continue;
 			}
 
-			float2& pos = g_pool.pos[i];
-			float2& vel = g_pool.vel[i];
-			float2 dir = normalize(vel);
-			float dist = length(vel * dt);
+			float dist = length(g_pool.vel[i] * dt);
 			//
 			//update pos
 			g_pool.pos[i].x += g_pool.vel[i].x * dt;
@@ -48,59 +94,19 @@ namespace ParticleSystem
 			mask |= 1 << 3;
 
 			Physics::RaycastHit hit;
-			if (Physics::Raycast(g_pool.pos[i], vel, dist, hit, mask)) 
+			if (Physics::Raycast(g_pool.pos[i], g_pool.vel[i], length(g_pool.vel[i] * dt), hit, mask))
 			{
-				float2 reflectedVel = reflect(g_pool.vel[i], hit.normal);
-				float speed = length(vel);
-
-				int childrenToSpawn = g_pool.burstRemaining[i];
-
-				if (childrenToSpawn > 4) 
-				{
-					int nextBurstCount = childrenToSpawn / 4;
-
-					float baseAngle = atan2f(hit.normal.y, hit.normal.x); // Angle of the wall normal
-					float splashRange = PI;
-
-					Color startCol = g_pool.color[i];
-					Color endCol = { 1.0f, 1.0f, 0.0f, 1.0f }; // Example: Shift towards a deep blue
-
-	
-					float t = 1.0f - (float)nextBurstCount / 128.f;
-
-					Color nextColor;
-					nextColor.r = startCol.r + (endCol.r - startCol.r) * t; // Shift 40% per bounce
-					nextColor.g = startCol.g + (endCol.g - startCol.g) * t;
-					nextColor.b = startCol.b + (endCol.b - startCol.b) * t;
-					nextColor.a = startCol.a;
-
-					for (int j = 0; j < childrenToSpawn; ++j) 
-					{
-						//constraint to 180
-						float offset = (j / (float)nextBurstCount) * splashRange - (splashRange / 2.0f);
-						float finalAngle = baseAngle + offset;
-
-						float2 spawnDir = { cosf(finalAngle), sinf(finalAngle) };
-
-						ParticleSystem::Emit(
-							hit.point + (hit.normal * 1.0f),
-							spawnDir * speed,
-							g_pool.lifetime[i] * 0.8f,
-							nextColor,
-							true,            // These children will also collide and echo
-							nextBurstCount   // Pass the reduced count for the next generation
-						);
-					}
-				}
+				//commented out until optimized
+				//RecursiveEmit(hit,g_pool.vel[i],g_pool.lifetime[i],g_pool.burstRemaining[i],g_pool.color[i]);
 				
 				//kill momentum
-				vel = float2::zero();
+				g_pool.vel[i] = float2::zero();
 			}
 
 			activeParticles++;
 		}
 
-		//std::cout << "Active Particles : " << activeParticles << ", FPS : " << AEFrameRateControllerGetFrameRate() << "\n";
+		std::cout << "Active Particles : " << activeParticles << ", FPS : " << AEFrameRateControllerGetFrameRate() << "\n";
 	}
 
 	void Render() //by pass our wrapper for performance's sake
