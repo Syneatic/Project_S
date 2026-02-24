@@ -65,7 +65,7 @@ static float dot(float2 a, float2 b) { return a.x * b.x + a.y * b.y; }
 static float lengthsq(float2 a) { return a.x * a.x + a.y * a.y; }
 inline float length(float2 a) { return std::sqrt(lengthsq(a)); }
 
-inline float2 normalize(float2 a)
+inline float2 normalize(const float2& a)
 {
 	float len = length(a);
 	if (len < kEps) return float2::zero();
@@ -73,3 +73,9 @@ inline float2 normalize(float2 a)
 }
 
 inline float absf(f32 a) { return a < 0.f ? -a : a; }
+
+inline float2 reflect(const float2& v, const float2& n) 
+{
+	float d = dot(v, n);
+	return v - (n * (2.0f * d));
+}

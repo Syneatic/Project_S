@@ -1,5 +1,6 @@
 #pragma once
 #include "AETypes.h"
+#include <iostream>
 
 struct Color
 {
@@ -7,8 +8,8 @@ struct Color
 	f32 g{};
 	f32 b{};
 	f32 a{};
-
-	Color() = default;
+	//
+	Color() : r(1.f), g(1.f), b(1.f), a(1.f) {};
 	Color(f32 red, f32 green, f32 blue) : r(red), g(green), b(blue) { a = 1.f; };
 	Color(f32 red, f32 green, f32 blue,f32 alpha) : r(red), g(green), b(blue),a(alpha) {};
 	Color(u32 c)
@@ -31,3 +32,7 @@ struct Color
 		return ua | ur | ug | ub;
 	}
 };
+
+Color operator+ (const Color& lhs, const Color& rhs);
+
+std::ostream& operator<< (std::ostream& o, const Color& c);

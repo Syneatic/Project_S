@@ -53,7 +53,7 @@ struct RockController : Controller
     Transform* trans = nullptr;
     RigidBody* rb = nullptr;
 
-    ParticleEmitter* emitter = nullptr;
+    //ParticleEmitter* emitter = nullptr;
 
     void DrawInInspector() override;
     void Serialize(Json::Value& outComp) const override;

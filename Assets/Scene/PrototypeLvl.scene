@@ -7,14 +7,6 @@
       "components" : 
       [
         {
-          "Affected By Gravity" : false,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
-          "Is Static" : true,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
-        },
-        {
           "position" : 
           [
             237.55000305175781,
@@ -27,6 +19,14 @@
             300.0
           ],
           "type" : "Transform"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Gravity" : 9.8000001907348633,
+          "Grounded" : false,
+          "Is Static" : true,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -474,10 +474,11 @@
             0.75294119119644165,
             1.0
           ],
-          "maxradius" : 250.0,
-          "raycount" : 128,
+          "isBurst" : false,
+          "lifetime" : 2.0,
+          "spawnRate" : 10.0,
           "speed" : 150.0,
-          "timelimit" : 2.5,
+          "spread" : 30.0,
           "type" : "ParticleEmitter"
         },
         {
@@ -528,7 +529,7 @@
         },
         {
           "collisionMask" : 4294967295,
-          "layerMask" : 0,
+          "layerMask" : 2,
           "size" : 
           [
             1.0,
@@ -545,7 +546,12 @@
       "components" : 
       [
         {
-          "type" : "AudioListener"
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : true,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "position" : 
@@ -562,12 +568,7 @@
           "type" : "Transform"
         },
         {
-          "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : true,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
+          "type" : "AudioListener"
         },
         {
           "alignment" : 4,
@@ -585,12 +586,6 @@
           "type" : "SpriteRenderer"
         },
         {
-          "jumpHeight" : 120.0,
-          "max_speed" : 250.0,
-          "time" : 1.0,
-          "type" : "PlayerController"
-        },
-        {
           "collisionMask" : 4294967282,
           "layerMask" : 1,
           "size" : 
@@ -601,6 +596,12 @@
           "type" : "BoxCollider"
         },
         {
+          "jumpHeight" : 120.0,
+          "max_speed" : 250.0,
+          "time" : 1.0,
+          "type" : "PlayerController"
+        },
+        {
           "color" : 
           [
             1.0,
@@ -608,10 +609,11 @@
             1.0,
             1.0
           ],
-          "maxradius" : 500.0,
-          "raycount" : 256,
+          "isBurst" : false,
+          "lifetime" : 2.0,
+          "spawnRate" : 10.0,
           "speed" : 300.0,
-          "timelimit" : 10.0,
+          "spread" : 30.0,
           "type" : "ParticleEmitter"
         }
       ],
@@ -659,10 +661,11 @@
             0.30196079611778259,
             1.0
           ],
-          "maxradius" : 250.0,
-          "raycount" : 256,
+          "isBurst" : false,
+          "lifetime" : 2.0,
+          "spawnRate" : 10.0,
           "speed" : 150.0,
-          "timelimit" : 1.0,
+          "spread" : 30.0,
           "type" : "ParticleEmitter"
         },
         {
@@ -759,14 +762,6 @@
       "components" : 
       [
         {
-          "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : false,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
-        },
-        {
           "position" : 
           [
             -146.0,
@@ -779,6 +774,14 @@
             15.0
           ],
           "type" : "Transform"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -813,10 +816,11 @@
             1.0,
             1.0
           ],
-          "maxradius" : 500.0,
-          "raycount" : 256,
+          "isBurst" : false,
+          "lifetime" : 2.0,
+          "spawnRate" : 10.0,
           "speed" : 300.0,
-          "timelimit" : 100.0,
+          "spread" : 30.0,
           "type" : "ParticleEmitter"
         },
         {
@@ -849,17 +853,17 @@
         {
           "color" : 
           [
-            1.0,
-            0.0,
-            0.0,
+            0.86274510622024536,
+            0.56608319282531738,
+            0.19031140208244324,
             1.0
           ],
-          "isBurst" : false,
+          "isBurst" : true,
           "lifetime" : 5.0,
-          "spawnRate" : 4096.0,
-          "speed" : 110.40000152587891,
-          "spread" : 88.699996948242188,
-          "type" : "ParticleEmitter2"
+          "spawnRate" : 128.0,
+          "speed" : 200.0,
+          "spread" : 30.0,
+          "type" : "ParticleEmitter"
         }
       ],
       "name" : "GameObject_16"

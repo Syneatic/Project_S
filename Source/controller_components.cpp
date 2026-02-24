@@ -156,7 +156,7 @@ void RockController::OnStart()
 
     trans = _owner->GetComponent<Transform>();
     rb = _owner->GetComponent<RigidBody>();
-    emitter = _owner->GetComponent<ParticleEmitter>();
+    //emitter = _owner->GetComponent<ParticleEmitter>();
 }
 
 void RockController::OnUpdate()
@@ -240,10 +240,10 @@ void RockController::OnImpact()
 
     rb->velocity = float2::zero();
 
-    if (emitter)
-    {
-        emitter->TriggerPing();
-    }
+    //if (emitter)
+    //{
+    //    emitter->TriggerPing();
+    //}
 }
 
 void RockController::ResetRock()

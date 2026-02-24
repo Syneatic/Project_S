@@ -451,11 +451,6 @@ void EditorScene::BuildInspectorWindow()
 				selectedObj.AddComponent<ParticleEmitter>();
 			}
 
-			if (ImGui::MenuItem("Particle Emitter2"))
-			{
-				selectedObj.AddComponent<ParticleEmitter2>();
-			}
-
 			ImGui::EndMenu();
 		}
 

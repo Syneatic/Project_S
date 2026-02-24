@@ -97,12 +97,6 @@ namespace SceneIO
             ept.Deserialize(compObj);
             go.AddComponent<ParticleEmitter>(ept);
         }
-        else if (type == "ParticleEmitter2")
-        {
-            ParticleEmitter2 ept{};
-            ept.Deserialize(compObj);
-            go.AddComponent<ParticleEmitter2>(ept);
-        }
         else if (type == "Button")
         {
             Button b{};
