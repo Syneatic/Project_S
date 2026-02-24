@@ -21,6 +21,8 @@
           "type" : "Transform"
         },
         {
+          "collisionMask" : 4294967295,
+          "layerMask" : 0,
           "size" : 
           [
             1.0,
@@ -66,6 +68,8 @@
           "type" : "Transform"
         },
         {
+          "collisionMask" : 4294967295,
+          "layerMask" : 0,
           "size" : 
           [
             1.0,
@@ -111,6 +115,8 @@
           "type" : "Transform"
         },
         {
+          "collisionMask" : 4294967295,
+          "layerMask" : 0,
           "size" : 
           [
             1.0,
@@ -156,6 +162,8 @@
           "type" : "Transform"
         },
         {
+          "collisionMask" : 4294967295,
+          "layerMask" : 0,
           "size" : 
           [
             1.0,
@@ -199,9 +207,6 @@
             1.0
           ],
           "type" : "Transform"
-        },
-        {
-          "type" : "EchoPingTest"
         }
       ],
       "name" : "EMITTER"
@@ -226,6 +231,8 @@
           "type" : "Transform"
         },
         {
+          "collisionMask" : 4294967295,
+          "layerMask" : 0,
           "size" : 
           [
             1.0,

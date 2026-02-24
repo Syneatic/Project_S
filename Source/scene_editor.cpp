@@ -13,6 +13,7 @@
 #include "physics.hpp"
 #include "gameobject.hpp"
 #include "audio.hpp"
+#include "camera.hpp"
 
 //scene
 #include "scene_parser.hpp"
@@ -577,6 +578,7 @@ void EditorScene::OnEnter()
 	RefreshRenderers();
 	RefreshColliders();
 	RefreshRigidBodies();
+	CameraSystem::OnStart();
 }
 
 void EditorScene::OnUpdate()
@@ -586,6 +588,7 @@ void EditorScene::OnUpdate()
 	RefreshRigidBodies();
 
 	ReadInput();
+	CameraSystem::OnUpdate(); // Check input and update camera matrix
 
 	AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 	f32 dt = (f32)AEFrameRateControllerGetFrameTime();
@@ -620,4 +623,5 @@ void EditorScene::OnExit()
 	RenderSystem::FlushRenderers();
 	Physics::FlushColliders();
 	Physics::FlushRigidBody();
+	CameraSystem::OnExit();
 }
