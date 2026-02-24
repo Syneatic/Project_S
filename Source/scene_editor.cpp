@@ -98,6 +98,9 @@ namespace
 		if (didCoInit && hrInit != RPC_E_CHANGED_MODE)
 			CoUninitialize();
 
+
+		CameraSystem::OnStart();
+
 		return out;
 	}
 

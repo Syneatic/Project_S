@@ -1,15 +1,17 @@
 #include "AEEngine.h"
 #include "camera.hpp"
+#include <iostream>
 
 
-int zoom, fX, fY;
-float posX, posY;
+int fX, fY, zoom;
+float posX, posY, zoomMult{ 1 };
 bool scrollHeld{};
 
 namespace CameraSystem {
 
 	void OnStart() {
 		AEMtx33Identity(&CameraData::camMatrix);
+		AEGfxSetCamPosition(0,0);
 	}
 
 	void OnUpdate() {
@@ -18,6 +20,7 @@ namespace CameraSystem {
 		if (AEInputCheckTriggered(AEVK_MBUTTON)) {
 			AEInputGetCursorPosition(&fX, &fY);
 			scrollHeld = true;
+			std::cout << "AABB" << std::endl;
 		}
 		if (scrollHeld == true) {
 			int lX, lY, dX, dY;
@@ -32,7 +35,7 @@ namespace CameraSystem {
 
 			// set cam position
 			AEGfxGetCamPosition(&posX, &posY);
-			AEGfxSetCamPosition(posX - dX, posY + dY);
+			AEGfxSetCamPosition(posX - dX/zoomMult, posY + dY/ zoomMult);
 
 			// reset first X and Y on release
 			if (AEInputCheckReleased(AEVK_MBUTTON)){
@@ -41,17 +44,31 @@ namespace CameraSystem {
 			}
 		}
 
-		AEInputMouseWheelDelta(&zoom); // check scroll
+		//AEInputMouseWheelDelta(&zoom); // check scroll
+		zoom = 0;
+		if (AEInputCheckTriggered(AEVK_I)) { zoom = 1; };
+		if (AEInputCheckTriggered(AEVK_O)) { zoom = -1; };
+		if (zoom != 0) {
+			std::cout << "Works" << std::endl;
+			const float step = 1.5f; // 10% per notch
+			if (zoom > 0) zoomMult *= step;
+			else           zoomMult /= step;
+		}
 
-		AEMtx33 scale{}, translate{};
-		AEMtx33Scale(&scale, zoom, zoom);
+		// Translate to origin, scale, translate back
+		AEMtx33 scale{}, negCamPos{}, camPos{};
+		AEMtx33Scale(&scale, zoomMult, zoomMult);
+		AEMtx33Trans(&negCamPos, -posX, -posY);
+		AEMtx33Trans(&camPos, posX, posY);
 
-		AEMtx33Identity(&CameraData::camMatrix); // reset
-		AEMtx33Concat(&CameraData::camMatrix, &scale, &translate);
+		AEMtx33Concat(&negCamPos, &scale, &negCamPos);
+		AEMtx33Concat(&CameraData::camMatrix, &camPos, &negCamPos);
 	}
 
 	void OnExit() {
 		AEMtx33Identity(&CameraData::camMatrix);
+		AEGfxSetCamPosition(0, 0);
+		zoomMult = 1;
 	}
 
 	void MoveCamera(Transform parentTrans) {
