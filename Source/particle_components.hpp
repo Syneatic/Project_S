@@ -4,6 +4,8 @@
 #include "particle.hpp"
 #include "base_components.hpp"
 
+//use this more as a generic particle generator
+//for atmosphere, etc...
 struct ParticleEmitter : Behaviour
 {
 	float spawnRate = 10.f; // particle/sec

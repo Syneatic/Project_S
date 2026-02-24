@@ -52,6 +52,24 @@
     <Filter Include="Source Files\systems">
       <UniqueIdentifier>{aece7352-2868-4ba2-97f3-0dd73c82e125}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\components\engine">
+      <UniqueIdentifier>{b5f1a17b-f0a5-4824-8ccc-e9ee2fbcda72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\components\game">
+      <UniqueIdentifier>{35cfb57a-cd93-40fe-81a2-6c5a5ed5c1f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\components\engine">
+      <UniqueIdentifier>{2dcbe0cb-ba1f-4e13-9278-fe5bc3624e56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\components\game">
+      <UniqueIdentifier>{f391d41a-bf83-4759-a502-de12f4ebe0ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\datatypes">
+      <UniqueIdentifier>{fbf90792-adaa-4438-9f3e-b4776e580b36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\datatypes">
+      <UniqueIdentifier>{ae1d6f29-798c-4b3d-a301-e7c4076cf66d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -102,21 +120,6 @@
     <ClCompile Include="Source\scene_editor.cpp">
       <Filter>Source Files\scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\physics_components.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\controller_components.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\emitter_components.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\render_components.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ui_components.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
     <ClCompile Include="Source\renderer.cpp">
       <Filter>Source Files\systems</Filter>
     </ClCompile>
@@ -126,24 +129,39 @@
     <ClCompile Include="Source\audio.cpp">
       <Filter>Source Files\systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\audio_components.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\transform_component.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\particle.cpp">
+    <ClCompile Include="Source\eventhandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dispatcher.cpp">
+    <ClCompile Include="Source\audio_components.cpp">
+      <Filter>Source Files\components\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\physics_components.cpp">
+      <Filter>Source Files\components\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\render_components.cpp">
+      <Filter>Source Files\components\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\transform_component.cpp">
+      <Filter>Source Files\components\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\controller_components.cpp">
+      <Filter>Source Files\components\game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ui_components.cpp">
+      <Filter>Source Files\components\game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\color.cpp">
+      <Filter>Source Files\datatypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\particle.cpp">
       <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\particle_components.cpp">
+      <Filter>Source Files\components\engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\math.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Extern\ImGUI\imstb_truetype.h">
@@ -206,25 +224,7 @@
     <ClInclude Include="Extern\jsoncpp\include\writer.h">
       <Filter>Header Files\external\jsoncpp</Filter>
     </ClInclude>
-    <ClInclude Include="Source\color.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\json_parser_helper.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\base_components.hpp">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\controller_components.hpp">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\render_components.hpp">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ui_components.hpp">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\particle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\scene.hpp">
@@ -245,35 +245,59 @@
     <ClInclude Include="Source\physics.hpp">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\emitter_components.hpp">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\physics_components.hpp">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\gizmos.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\audio.hpp">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\audio_components.hpp">
-      <Filter>Header Files\components</Filter>
+    <ClInclude Include="Source\event.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\transform_component.hpp">
-      <Filter>Header Files\components</Filter>
+    <ClInclude Include="Source\eventhandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\audio_components.hpp">
+      <Filter>Header Files\components\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\base_components.hpp">
+      <Filter>Header Files\components\engine</Filter>
     </ClInclude>
     <ClInclude Include="Source\components.hpp">
-      <Filter>Header Files\components</Filter>
+      <Filter>Header Files\components\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\physics_components.hpp">
+      <Filter>Header Files\components\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\render_components.hpp">
+      <Filter>Header Files\components\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\transform_component.hpp">
+      <Filter>Header Files\components\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\controller_components.hpp">
+      <Filter>Header Files\components\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\noise_component.hpp">
+      <Filter>Header Files\components\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ui_components.hpp">
+      <Filter>Header Files\components\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\color.hpp">
+      <Filter>Header Files\datatypes</Filter>
     </ClInclude>
     <ClInclude Include="Source\enginectx.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatypes</Filter>
     </ClInclude>
-    <ClInclude Include="dispatcher.hpp">
+    <ClInclude Include="Source\gizmos.hpp">
       <Filter>Header Files\systems</Filter>
     </ClInclude>
-    <ClInclude Include="event.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\math.hpp">
+      <Filter>Header Files\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\particle.hpp">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\particle_components.hpp">
+      <Filter>Header Files\components\engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

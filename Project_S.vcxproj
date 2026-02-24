@@ -67,6 +67,7 @@
     <ClInclude Include="Source\color.hpp" />
     <ClInclude Include="Source\base_components.hpp" />
     <ClInclude Include="Source\components.hpp" />
+    <ClInclude Include="Source\noise_component.hpp" />
     <ClInclude Include="Source\particle_components.hpp" />
     <ClInclude Include="Source\enginectx.hpp" />
     <ClInclude Include="Source\event.hpp" />

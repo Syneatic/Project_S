@@ -17,8 +17,6 @@
 #include "scene_parser.hpp"
 #include "scene_manager.hpp"
 #include "ui_components.hpp"
-//#include "scene_play.hpp" 
-
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -104,16 +102,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		AESysFrameStart();
 		f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 
-		
-		if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+		ImGuiIO& io = ImGui::GetIO();
+		if (!io.WantCaptureMouse && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
-			if (AEInputCheckTriggered(AEVK_1)) SceneManager::SwitchToEditor();
-			if (AEInputCheckTriggered(AEVK_2))
-			{
-				// Load new scene
-				SceneManager::RequestSceneSwitch("MainMenu");
-			}
+			if (AEInputCheckTriggered(AEVK_1)) 
+				SceneManager::SwitchToEditor();
+
+			if (AEInputCheckTriggered(AEVK_2)) 
+				SceneManager::RequestSceneSwitch("MainMenu");	
 		}
+
+		
 		SceneManager::OnUpdate();
 
 

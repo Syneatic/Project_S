@@ -8,8 +8,6 @@
 #include "physics.hpp"
 #include "particle_components.hpp"
 
-struct PlayerController;
-
 void ParticleEmitter::OnStart() 
 {
 	transform = _owner->GetComponent<Transform>();
