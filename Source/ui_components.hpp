@@ -28,52 +28,6 @@ enum class FunctionKey
 	COUNT
 };
 
-using CallbackF = void(*)(); // Identifier for void pointer function with void param.
-
-//struct EnumHash 
-//{
-//	template <typename T>
-//	std::size_t operator()(T t) const
-//	{
-//		return static_cast<std::size_t>(t);
-//	}
-//};
-
-// Identifier for unordered_map with FunctionKey & Function Pointer.
-using ButtonRegister = std::unordered_map<FunctionKey, CallbackF/*std::function<void()>, EnumHash*/>;
-
-// UIButtonRegister for handling ButtonRegister assignment & CallbackF logic.
-class UIButtonRegister
-{
-public:
-	// Singleton.
-	static UIButtonRegister& Instance()
-	{
-		static UIButtonRegister instance;
-		return instance;
-	}
-	UIButtonRegister(const UIButtonRegister&) = delete;
-	UIButtonRegister& operator=(const UIButtonRegister&) = delete;
-	UIButtonRegister(UIButtonRegister&&) = delete;
-	UIButtonRegister& operator=(UIButtonRegister&&) = delete;
-
-	// The template register to bind functions. 
-	// If function is a class member the second parameter MUST be the class object itself.
-	/*template<typename Func, typename... Args>
-	void bindFunction(FunctionKey key, Func f, Args... args) 
-	{
-		std::cout << "Binding" << static_cast<int>(key) << std::endl;
-		_buttonReg[key] = [f, args...]() { std::invoke(f, args...); };
-	}*/
-
-	void bindFunction(FunctionKey key, CallbackF callF);
-	void handleMouseClick(FunctionKey key);
-
-private:
-	ButtonRegister _buttonReg;
-	UIButtonRegister() {}
-};
-
 // Display component to attach image or custom texture.
 struct Display : Behaviour
 {
@@ -93,12 +47,6 @@ static char const* _buttonNames[]
 	"SfxUp", "SfxDown", "GameSave", "GameLoad", "ToggleCredits", "GameQuit", "AppExit"
 };
 
-namespace UISystem
-{
-	void BindButtonFunctions(UIButtonRegister& bReg);
-	void Hover_Logic(GameObject& button, UIButtonRegister& bReg);
-}
-
 // Button Component to assign function callback.
 struct Button : Behaviour
 {
@@ -113,6 +61,13 @@ struct Button : Behaviour
 
 	const std::string name() const override { return "Button"; }
 };
+
+namespace UISystem
+{
+	void init();
+	void Hover_Logic(GameObject& button);
+	void exit();
+}
 
 // Text component to assign text on screen.
 //struct Text : Behaviour

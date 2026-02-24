@@ -63,6 +63,7 @@ public:
 	bool Affected_By_Gravity{ false };
 	bool Is_Static{ false };
 	bool Is_Grounded{ false };
+    bool HitEnvironment{ false };
 	float gravity{ 9.8f };
 	float terminalVelocity{ 12.0f };
 	float2 velocity{ 0.0f,0.0f };

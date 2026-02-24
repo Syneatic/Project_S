@@ -24,15 +24,20 @@ void ParticleEmitter::OnUpdate()
 	if (AEInputCheckTriggered(pingKey) && _owner->GetComponent<PlayerController>()) {
 		Ping();
 	}
-	if (time >= timeLimit && !_owner->GetComponent<PlayerController>()) {
-		Ping();
-		time = 0.0f;
-
-		//try play audio
-		auto* audio = _owner->GetComponent<AudioEmitter>();
-		if (audio)
+	if (time >= timeLimit) {
+		if (_owner->GetComponent<PlayerController>());
+		else if (_owner->GetComponent<RockController>());
+		else 
 		{
-			audio->Play();
+			Ping();
+			time = 0.0f;
+
+			//try play audio
+			auto* audio = _owner->GetComponent<AudioEmitter>();
+			if (audio)
+			{
+				audio->Play();
+			}
 		}
 	}
 
@@ -242,4 +247,8 @@ void ParticleEmitter2::Burst()
 
 		ParticleSystem::Emit(origin, velocity, lifetime, color);
 	}
+}
+void ParticleEmitter::TriggerPing()
+{
+	Ping();
 }

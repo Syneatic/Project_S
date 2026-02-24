@@ -9,6 +9,7 @@
 #include "audio.hpp"
 
 #include "gameobject.hpp"
+#include "eventhandler.hpp"
 
 #include "components.hpp"
 
@@ -37,6 +38,8 @@ void Scene::InitializeGameObjects()
 			if (auto* a = dynamic_cast<AudioEmitter*>(comp.get()))
 				Audio::RegisterEmitter(a);
 
+			if (auto* pc = dynamic_cast<PlayerController*>(comp.get()))
+				pc->rockObject = FindGameObjectByName("Rock");
 
 			//OnStart behaviours
 			if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
@@ -47,6 +50,16 @@ void Scene::InitializeGameObjects()
 	}
 }
 
+GameObject* Scene::FindGameObjectByName(const std::string& name)
+{
+    for (auto& go : _gameObjectList)
+    {
+        if (go->name() == name)
+            return go.get();
+    }
+    return nullptr;
+}
+
 void Scene::OnEnter()
 {
 	//load data from file
@@ -55,6 +68,8 @@ void Scene::OnEnter()
 	if (_gameObjectList.empty()) return;
 
 	InitializeGameObjects();
+
+	UISystem::init();
 }
 
 void Scene::OnUpdate()
@@ -74,12 +89,14 @@ void Scene::OnUpdate()
 
 	Audio::Update();
 	Physics::Step((f32)AEFrameRateControllerGetFrameTime());
+	EventHandler::CallQ();
 	RenderSystem::Draw();
 }
 
 void Scene::OnExit()
 {
 	//delete
+	EventHandler::Flush();
 	RenderSystem::FlushRenderers();
 	Physics::FlushColliders();
 	Physics::FlushRigidBody();

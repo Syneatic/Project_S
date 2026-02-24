@@ -464,6 +464,18 @@ namespace Physics
 						bool rb1Static = (!rb1 || rb1->Is_Static);
 						bool rb2Static = (!rb2 || rb2->Is_Static);
 
+						if (rb1 && !rb1->Is_Static)
+						{
+							if (c2->layerMask == static_cast<uint32_t>(Layer::Environment))
+								rb1->HitEnvironment = true;
+						}
+
+						if (rb2 && !rb2->Is_Static)
+						{
+							if (c1->layerMask == static_cast<uint32_t>(Layer::Environment))
+								rb2->HitEnvironment = true;
+						}
+
 						if (rb1Static && rb2Static) continue;
 
 						float2 separation = info.normal * info.penetration;
@@ -494,7 +506,17 @@ namespace Physics
 							if (info.normal.y < -0.7f)
 							{
 								rb1->Is_Grounded = true;
-								rb1->velocity.y = 0.f;
+								/*rb1->velocity.y = 0.f;*/
+
+								if (rb1->velocity.y < 0.f) rb1->velocity.y = 0.f;
+							}
+							else if (info.normal.y > 0.7f)
+							{
+								if (rb1->velocity.y > 0.f) rb1->velocity.y = 0.f;
+							}
+							else
+							{
+								rb1->velocity.x = 0.f;
 							}
 						}
 						else
@@ -510,7 +532,17 @@ namespace Physics
 							if (info.normal.y > 0.7f)
 							{
 								rb2->Is_Grounded = true;
-								rb2->velocity.y = 0.f;
+								/*rb2->velocity.y = 0.f;*/
+
+								if (rb2->velocity.y < 0.f) rb2->velocity.y = 0.f;
+							}
+							else if (info.normal.y < -0.7f)
+							{
+								if (rb2->velocity.y > 0.f) rb2->velocity.y = 0.f;
+							}
+							else
+							{
+								rb2->velocity.x = 0.f;
 							}
 						}
 					}
@@ -539,7 +571,22 @@ namespace Physics
 
 		// Reset grounded
 		for (auto* rb : _rigidbodies)
-			if (rb) rb->Is_Grounded = false;
+			if (rb) {
+				rb->Is_Grounded = false;
+				rb->HitEnvironment = false;
+			}
+
+		//apply gravity
+		for (auto* rb : _rigidbodies)
+		{
+			if (!rb || rb->Is_Static) continue;
+
+			if (rb->Affected_By_Gravity)
+			{
+				rb->velocity.y -= rb->gravity * dt;
+
+			}
+		}
 
 		// Integrate motion
 		for (auto* rb : _rigidbodies)
@@ -552,16 +599,11 @@ namespace Physics
 			//	<< " static=" << rb->Is_Static << std::endl;
 
 			Transform* t = rb->gameObject().GetComponent<Transform>();
+
 			if (!t) continue;
 
-			if (rb->Affected_By_Gravity && !rb->Is_Grounded)
-			{
-				rb->velocity.y -= rb->gravity * dt;
+			t->position += rb->velocity * dt;
 
-			}
-
-
-			t->position += rb->velocity;
 		}
 
 		// Resolve ALL collisions

@@ -135,6 +135,9 @@
     <ClCompile Include="Source\particle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dispatcher.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -264,6 +267,12 @@
       <Filter>Header Files\components</Filter>
     </ClInclude>
     <ClInclude Include="Source\enginectx.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dispatcher.hpp">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="event.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

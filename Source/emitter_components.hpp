@@ -45,6 +45,7 @@ struct ParticleEmitter : Behaviour
 	void Serialize(Json::Value& outComp) const override;
 	void Deserialize(const Json::Value& compObj) override;
 	void DrawInInspector() override;
+	void TriggerPing();
 
 private:
 	Collider* GetSelfCollider();
