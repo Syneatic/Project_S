@@ -4,20 +4,17 @@
 #include "camera.hpp"
 #include "base_components.hpp"
 
-
-struct Camera : Component
+struct MainCamera : Behaviour
 {
-    void DrawInInspector() override;
-    void Serialize(Json::Value& outComp) const override;
-    void Deserialize(const Json::Value& compObj) override;
-    virtual void SetPos();
-};
+	Transform* transform;
 
-struct MainCamera : Camera
-{
-    void SetPos() override;
+	void OnStart() override;
+	void OnUpdate() override;
+	void OnDestroy() override;
 
-    //no override since sprite is quite normal
+	void DrawInInspector() override;
+	void Serialize(Json::Value& outComp) const override;
+	void Deserialize(const Json::Value& compObj) override;
 
-    const std::string name() const override { return "Camera"; }
+	const std::string name() const override { return "Camera"; }
 };

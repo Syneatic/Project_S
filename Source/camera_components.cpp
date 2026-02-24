@@ -6,13 +6,18 @@
 #include "camera_components.hpp"
 #include "gameobject.hpp"
 
+void MainCamera::OnStart()
+{
+	transform = _owner->GetComponent<Transform>();
+	CameraSystem::OnStart();
+};
+void MainCamera::OnUpdate() {
+	CameraSystem::MoveCamera(*transform);
+};
+void MainCamera::OnDestroy() {
+	CameraSystem::OnExit();
+};
 
-void Camera::DrawInInspector() {}
-void Camera::Serialize(Json::Value& outComp) const {}
-void Camera::Deserialize(const Json::Value& compObj) {}
-void Camera::SetPos(){}
-
-void MainCamera::SetPos(){
-	GameObject& owner = *_owner;
-	CameraSystem::MoveCamera(*owner.GetComponent<Transform>());
-}
+void MainCamera::DrawInInspector() {};
+void MainCamera::Serialize(Json::Value& outComp) const {};
+void MainCamera::Deserialize(const Json::Value& compObj) {};
