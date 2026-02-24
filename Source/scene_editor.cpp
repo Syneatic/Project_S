@@ -175,8 +175,11 @@ void EditorScene::ReadInput()
 {
 	s32 mX, mY;
 	AEInputGetCursorPosition(&mX, &mY);
-	mouseWorld.x = (float)mX - (AEGfxGetWindowWidth() * 0.5f);
-	mouseWorld.y = (AEGfxGetWindowHeight() * 0.5f) - (float)mY;
+	f32 camX, camY;
+	AEGfxGetCamPosition(&camX, &camY);
+
+	mouseWorld.x = camX + (((float)mX - AEGfxGetWindowWidth() * 0.5f) / CameraData::zoomMult);
+	mouseWorld.y = camY + ((AEGfxGetWindowHeight() * 0.5f - (float)mY) / CameraData::zoomMult);
 
 	isMouseDown = AEInputCheckCurr(AEVK_LBUTTON);
 	isMousePressed = AEInputCheckTriggered(AEVK_LBUTTON);

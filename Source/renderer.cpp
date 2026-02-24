@@ -412,6 +412,7 @@ namespace RenderSystem
 		AEGfxSetTransparency(1.f);
 		AEMtx33 transform{};
 		SetTransform(p, scl, rot, Alignment::MC, transform);
+		AEMtx33Concat(&transform, &CameraData::camMatrix, &transform);
 		AEGfxSetTransform(transform.m);
 
 		AEGfxMeshDraw(_boxMesh, AE_GFX_MDM_LINES);

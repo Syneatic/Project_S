@@ -9,6 +9,7 @@ struct Camera;
 struct CameraData // Pass to renderer
 {
 	inline static AEMtx33 camMatrix;
+	inline static float zoomMult{ 1 };
 };
 
 namespace CameraSystem {

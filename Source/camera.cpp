@@ -10,7 +10,7 @@
 
 
 int fX, fY, zoom;
-float posX, posY, zoomMult{ 1 };
+float posX, posY;
 bool scrollHeld{};
 
 namespace CameraSystem {
@@ -41,7 +41,7 @@ namespace CameraSystem {
 
 			// set cam position
 			AEGfxGetCamPosition(&posX, &posY);
-			AEGfxSetCamPosition(posX - dX/zoomMult, posY + dY/ zoomMult);
+			AEGfxSetCamPosition(posX - dX/ CameraData::zoomMult, posY + dY/ CameraData::zoomMult);
 
 			// reset first X and Y on release
 			if (AEInputCheckReleased(AEVK_MBUTTON)){
@@ -57,13 +57,13 @@ namespace CameraSystem {
 		if (zoom != 0) {
 			std::cout << "Works" << std::endl;
 			const float step = 1.5f; // 10% per notch
-			if (zoom > 0) zoomMult *= step;
-			else           zoomMult /= step;
+			if (zoom > 0) CameraData::zoomMult *= step;
+			else           CameraData::zoomMult /= step;
 		}
 
 		// Translate to origin, scale, translate back
 		AEMtx33 scale{}, negCamPos{}, camPos{};
-		AEMtx33Scale(&scale, zoomMult, zoomMult);
+		AEMtx33Scale(&scale, CameraData::zoomMult, CameraData::zoomMult);
 		AEMtx33Trans(&negCamPos, -posX, -posY);
 		AEMtx33Trans(&camPos, posX, posY);
 
@@ -74,7 +74,7 @@ namespace CameraSystem {
 	void OnExit() {
 		AEMtx33Identity(&CameraData::camMatrix);
 		AEGfxSetCamPosition(0, 0);
-		zoomMult = 1;
+		CameraData::zoomMult = 1;
 	}
 
 	void MoveCamera(Transform parentTrans) {
