@@ -120,6 +120,11 @@ namespace SceneIO
             AudioListener& al = go.AddComponent<AudioListener>();
             al.Deserialize(compObj);
         }
+        else if (type == "Camera")
+        {
+            MainCamera& cm = go.AddComponent<MainCamera>();
+            cm.Deserialize(compObj);
+        }
     }
 
     // ===== GameObject Serialization =====

@@ -1,4 +1,6 @@
 #pragma once
+#include <unordered_set>
+
 #include "AEEngine.h"
 #include "transform_component.hpp"
 

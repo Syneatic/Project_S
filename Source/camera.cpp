@@ -1,6 +1,12 @@
+#include <iostream>
+#include <unordered_set>
+#include <vector>
+
 #include "AEEngine.h"
 #include "camera.hpp"
-#include <iostream>
+#include "camera_components.hpp"
+#include "base_components.hpp"
+
 
 
 int fX, fY, zoom;
@@ -72,6 +78,7 @@ namespace CameraSystem {
 	}
 
 	void MoveCamera(Transform parentTrans) {
-
+		AEMtx33Identity(&CameraData::camMatrix);
+		AEGfxSetCamPosition(parentTrans.position.x, parentTrans.position.y);
 	}
 }

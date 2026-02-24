@@ -500,6 +500,16 @@ void EditorScene::BuildInspectorWindow()
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Camera"))
+		{
+			if (ImGui::MenuItem("Main Camera"))
+			{
+				selectedObj.AddComponent<MainCamera>();
+			}
+
+			ImGui::EndMenu();
+		}
+
 		ImGui::EndPopup();
 	}
 
