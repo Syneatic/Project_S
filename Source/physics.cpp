@@ -566,9 +566,9 @@ namespace Physics
 
 	void Step(float dt)
 	{
-		//std::cout << "=== PHYSICS STEP ===" << std::endl;
-		//std::cout << "dt: " << dt << std::endl;
-		//std::cout << "Total rigidbodies: " << _rigidbodies.size() << std::endl;
+		const float MAX_DT = 0.05f;
+		if (dt > MAX_DT)
+			dt = MAX_DT;
 
 		// Reset grounded
 		for (auto* rb : _rigidbodies)
