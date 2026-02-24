@@ -195,6 +195,15 @@ void ParticleEmitter::DrawHits()
 	}
 }
 
+void ParticleEmitter::TriggerPing()
+{
+	Ping();
+}
+
+
+
+
+
 
 void ParticleEmitter2::OnStart() 
 {
@@ -203,7 +212,15 @@ void ParticleEmitter2::OnStart()
 
 void ParticleEmitter2::OnUpdate() 
 {
-	if (isBurst) return;
+	if (isBurst)
+	{
+		if (AEInputCheckTriggered(AEVK_G))
+		{
+			Burst();
+		}
+		return;
+	}
+
 
 	timer += AEFrameRateControllerGetFrameTime();
 	float interval = 1.0f / spawnRate;
@@ -229,7 +246,7 @@ void ParticleEmitter2::OnUpdate()
 	}
 }
 
-//void ParticleEmitter2::OnDestroy() {};
+void ParticleEmitter2::OnDestroy() {};
 
 void ParticleEmitter2::Burst()
 {
@@ -248,7 +265,57 @@ void ParticleEmitter2::Burst()
 		ParticleSystem::Emit(origin, velocity, lifetime, color);
 	}
 }
-void ParticleEmitter::TriggerPing()
+
+void ParticleEmitter2::Serialize(Json::Value& outComp) const
 {
-	Ping();
+	outComp["spawnRate"] = spawnRate;
+	outComp["speed"] = speed;
+	outComp["spread"] = spread;
+	outComp["lifetime"] = lifetime;
+
+	outComp["isBurst"] = isBurst;
+	outComp["color"] = WriteColor(color);
+}
+
+void ParticleEmitter2::Deserialize(const Json::Value& compObj)
+{
+	if (compObj.isMember("spawnRate") && compObj["spawnRate"].isNumeric())
+		spawnRate = compObj["spawnRate"].asFloat();
+
+	if (compObj.isMember("speed") && compObj["speed"].isNumeric())
+		speed = compObj["speed"].asFloat();
+
+	if (compObj.isMember("spread") && compObj["spread"].isNumeric())
+		spread = compObj["spread"].asFloat();
+
+	if (compObj.isMember("lifetime") && compObj["lifetime"].isNumeric())
+		lifetime = compObj["lifetime"].asFloat();
+
+	if (compObj.isMember("isBurst") && compObj["isBurst"].isBool())
+		isBurst = compObj["isBurst"].asBool();
+
+	if (compObj.isMember("color"))
+		ReadColor(compObj["color"], color);
+}
+
+void ParticleEmitter2::DrawInInspector()
+{
+	ImGui::SeparatorText("Emitter Properties");
+	ImGui::TextUnformatted("Spawn Rate");
+	ImGui::DragFloat("##emitter_spawnrate", &spawnRate, 0.1f, 0, 512);
+	ImGui::TextUnformatted("Burst");
+	ImGui::Checkbox("##emitter_burst", &isBurst);
+	ImGui::Spacing();
+
+	ImGui::SeparatorText("Particle Properties");
+	ImGui::TextUnformatted("Particle Speed");
+	ImGui::DragFloat("##emitter_speed", &speed, 0.1f, 0, 512);
+	ImGui::TextUnformatted("Particle Spread");
+	ImGui::DragFloat("##emitter_spread", &spread, 0.1f, 0, 360);
+	ImGui::TextUnformatted("Particle Lifetime");
+	ImGui::InputFloat("##emitter_lifetime",&lifetime,0.01f,1.f);
+	ImGui::TextUnformatted("Particle Color");
+	float c[4]{color.r,color.g,color.b,color.a};
+	ImGui::ColorEdit4("##emitter_color", c);
+	color = Color(c);
 }

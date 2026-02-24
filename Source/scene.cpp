@@ -70,6 +70,7 @@ void Scene::OnEnter()
 	InitializeGameObjects();
 
 	UISystem::init();
+	ParticleSystem::Initialize();
 }
 
 void Scene::OnUpdate()
@@ -89,6 +90,7 @@ void Scene::OnUpdate()
 
 	Audio::Update();
 	Physics::Step((f32)AEFrameRateControllerGetFrameTime());
+	ParticleSystem::Update();
 	EventHandler::CallQ();
 	RenderSystem::Draw();
 }
@@ -101,6 +103,7 @@ void Scene::OnExit()
 	Physics::FlushColliders();
 	Physics::FlushRigidBody();
 	Audio::FlushEmitters();
+	ParticleSystem::Flush();
 }
 
 //===== SERIALIZATION =====

@@ -35,7 +35,7 @@ namespace
 //SoA approach
 namespace ParticleSystem
 {
-	const int MAX_PARTICLES = 5096;
+	const int MAX_PARTICLES = 5096 * 8;
 
 	struct Pool
 	{
@@ -66,4 +66,5 @@ namespace ParticleSystem
 	void Update();
 	void Render();
 	void Emit(float2 pos, float2 vel, float life, Color col);
+	void Flush();
 }

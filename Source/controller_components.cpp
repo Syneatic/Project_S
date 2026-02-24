@@ -187,7 +187,6 @@ void RockController::OnUpdate()
 
         break;
     }
-    std::cout << "Rock state: " << (int)state << "\n";
 }
 
 void RockController::OnDestroy()

@@ -69,7 +69,7 @@ struct ParticleEmitter2 : Behaviour
 	void OnStart() override;
 	void OnUpdate() override;
 
-	//void OnDestroy() override;
+	void OnDestroy() override;
 
 	void Burst();
 
@@ -77,5 +77,5 @@ struct ParticleEmitter2 : Behaviour
 	void Deserialize(const Json::Value& compObj) override;
 	void DrawInInspector() override;
 
-	const std::string name() const override { return "ParticleEmitter"; }
+	const std::string name() const override { return "ParticleEmitter2"; }
 };

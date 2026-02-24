@@ -121,9 +121,6 @@ namespace Audio
 				sf::Vector3f pos(transform->position.x, transform->position.y, 0.f);
 				sound.setPosition(pos);
 				auto dir = sound.getPosition() - sf::Listener::getPosition();
-				std::cout << "Distance : " << dir.length();
-				std::cout << ", relative : " << sound.isRelativeToListener();
-				std::cout << ", spatial : " << sound.isSpatializationEnabled() << std::endl;
 			}
 		}
 	}

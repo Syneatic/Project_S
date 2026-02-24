@@ -826,6 +826,43 @@
         }
       ],
       "name" : "Rock"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            60.0,
+            27.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            0.0,
+            0.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "isBurst" : false,
+          "lifetime" : 5.0,
+          "spawnRate" : 4096.0,
+          "speed" : 110.40000152587891,
+          "spread" : 88.699996948242188,
+          "type" : "ParticleEmitter2"
+        }
+      ],
+      "name" : "GameObject_16"
     }
   ],
   "name" : "PrototypeLvl"

@@ -19,6 +19,8 @@ struct Color
 		b = ((c >> 0) & 0xFF) / 255.0f;
 	}
 
+	Color(float c[4]) : r(c[0]), g(c[1]), b(c[2]), a(c[3]) {};
+
 	u32 hex()
 	{
 		u32 ua = static_cast<u32>(a * 255.0f) << 24;

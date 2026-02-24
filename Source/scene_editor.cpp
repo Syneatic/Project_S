@@ -244,8 +244,8 @@ void EditorScene::BuildMenuBar()
 			{
 				std::filesystem::path p(fileW);
 
-				std::string fileNameNoExt = p.stem().string();
-				SceneIO::DeserializeScene(loadedScene, fileNameNoExt);
+				//std::string fileNameNoExt = p.stem().string();
+				SceneIO::DeserializeSceneEditor(loadedScene, p.string());
 				selectedGameObjectIndex = -1; //reset index selection
 				RefreshRenderers();
 				RefreshRigidBodies();
@@ -444,11 +444,16 @@ void EditorScene::BuildInspectorWindow()
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Audio Emitters"))
+		if (ImGui::BeginMenu("Particle"))
 		{
 			if (ImGui::MenuItem("Particle Emitter"))
 			{
 				selectedObj.AddComponent<ParticleEmitter>();
+			}
+
+			if (ImGui::MenuItem("Particle Emitter2"))
+			{
+				selectedObj.AddComponent<ParticleEmitter2>();
 			}
 
 			ImGui::EndMenu();

@@ -20,7 +20,7 @@ namespace ParticleSystem
 	void Update()
 	{
 		f64 dt = AEFrameRateControllerGetFrameTime();
-
+		int activeParticles{};
 		for (int i = 0; i < MAX_PARTICLES; ++i) {
 			if (!g_pool.active[i]) continue; //skip inactive
 
@@ -36,7 +36,11 @@ namespace ParticleSystem
 			//update pos
 			g_pool.pos[i].x += g_pool.vel[i].x * dt;
 			g_pool.pos[i].y += g_pool.vel[i].y * dt;
+
+			activeParticles++;
 		}
+
+		std::cout << "Active Particles : " << activeParticles << ", FPS : " << AEFrameRateControllerGetFrameRate() << "\n";
 	}
 
 	void Render() //by pass our wrapper for performance's sake
@@ -67,7 +71,6 @@ namespace ParticleSystem
 
 			AEGfxSetTransform(finalMtx.m);
 			
-
 			AEGfxMeshDraw(RenderSystem::GetQuadMesh(), AE_GFX_MDM_TRIANGLES);
 		}
 	}
@@ -84,5 +87,15 @@ namespace ParticleSystem
 		g_pool.lifetime[index] = life;
 		g_pool.color[index] = col;
 		g_pool.active[index] = true;
+	}
+
+	void Flush()
+	{
+		g_pool.freeStackTop = MAX_PARTICLES - 1;
+		//set all to inactive
+		for (int i = 0; i < MAX_PARTICLES; ++i) {
+			g_pool.freeStack[i] = i; //reset stack
+			g_pool.active[i] = false;
+		}
 	}
 }
