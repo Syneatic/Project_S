@@ -23,6 +23,8 @@
     <ClCompile Include="Extern\jsoncpp\src\json_writer.cpp" />
     <ClCompile Include="Source\audio.cpp" />
     <ClCompile Include="Source\audio_components.cpp" />
+    <ClCompile Include="Source\camera.cpp" />
+    <ClCompile Include="Source\camera_components.cpp" />
     <ClCompile Include="Source\controller_components.cpp" />
     <ClCompile Include="Source\emitter_components.cpp" />
     <ClCompile Include="Source\eventhandler.cpp" />
@@ -62,6 +64,8 @@
     <ClInclude Include="Extern\jsoncpp\src\json_tool.h" />
     <ClInclude Include="Source\audio.hpp" />
     <ClInclude Include="Source\audio_components.hpp" />
+    <ClInclude Include="Source\camera.hpp" />
+    <ClInclude Include="Source\camera_components.hpp" />
     <ClInclude Include="Source\color.hpp" />
     <ClInclude Include="Source\base_components.hpp" />
     <ClInclude Include="Source\components.hpp" />
