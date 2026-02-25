@@ -7,6 +7,14 @@
       "components" : 
       [
         {
+          "Affected By Gravity" : false,
+          "Gravity" : 9.8000001907348633,
+          "Grounded" : false,
+          "Is Static" : true,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
           "position" : 
           [
             237.55000305175781,
@@ -19,14 +27,6 @@
             300.0
           ],
           "type" : "Transform"
-        },
-        {
-          "Affected By Gravity" : false,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
-          "Is Static" : true,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -531,12 +531,7 @@
       "components" : 
       [
         {
-          "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : true,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
+          "type" : "AudioListener"
         },
         {
           "position" : 
@@ -553,7 +548,12 @@
           "type" : "Transform"
         },
         {
-          "type" : "AudioListener"
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : true,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -571,6 +571,12 @@
           "type" : "SpriteRenderer"
         },
         {
+          "jumpHeight" : 120.0,
+          "max_speed" : 250.0,
+          "time" : 1.0,
+          "type" : "PlayerController"
+        },
+        {
           "collisionMask" : 4294967282,
           "layerMask" : 1,
           "size" : 
@@ -581,10 +587,7 @@
           "type" : "BoxCollider"
         },
         {
-          "jumpHeight" : 120.0,
-          "max_speed" : 250.0,
-          "time" : 1.0,
-          "type" : "PlayerController"
+          "type" : "Camera"
         }
       ],
       "name" : "TestPlayer"
@@ -624,15 +627,6 @@
           "type" : "SpriteRenderer"
         },
         {
-          "fileName" : "button_click.wav",
-          "loop" : false,
-          "pitch" : 1.0,
-          "relative" : false,
-          "spatialize" : true,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
-        },
-        {
           "color" : 
           [
             0.86764675378799438,
@@ -647,6 +641,15 @@
           "repeatInterval" : 0.10000000149011612,
           "speed" : 200.0,
           "type" : "NoiseSource"
+        },
+        {
+          "fileName" : "button_click.wav",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
         }
       ],
       "name" : "Water2"
@@ -733,6 +736,14 @@
       "components" : 
       [
         {
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
           "position" : 
           [
             -146.0,
@@ -745,14 +756,6 @@
             15.0
           ],
           "type" : "Transform"
-        },
-        {
-          "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : false,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
