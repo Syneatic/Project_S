@@ -19,7 +19,7 @@ namespace
 	};
 }
 
-void Collision(float2& pos, float2& vel, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit)
+void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit)
 {
 	float dt = AEFrameRateControllerGetFrameTime();
 	uint32_t mask = 1 << 1;
@@ -38,7 +38,8 @@ void Collision(float2& pos, float2& vel, float& lifetime, Color& col, bool& shou
 
 			if (Physics::Raycast(pos, dir, dist, hit, mask))
 			{
-				
+				//version1
+				/*
 				if (burstLimit > 16)
 				{
 					float centerAngle = atan2f(hit.normal.y, hit.normal.x);
@@ -57,9 +58,19 @@ void Collision(float2& pos, float2& vel, float& lifetime, Color& col, bool& shou
 						ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), b_velocity, lifetime * 0.6f, col, true, burstLimit/ 2, Collision);
 					}
 				}
+				*/
+				
+				//get reflected vector
+				float2 refl = reflect(dir,hit.normal);
+				float2 b_velocity = (normalize(refl) + float2(Random::RandFloat(-0.005f, 0.005f),Random::RandFloat(-0.005f,0.005f))) * speed;
+				ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), b_velocity,0.f, lifetime * 0.85f, col, true, burstLimit / 2, Collision);
+
+
 
 				//reset lifetime when hit
+				time = 0.f;
 				lifetime = 5.f;
+				
 				shouldCollide = false;
 				if (hit.layerHit == (1 << 1))
 					col = Color(1.0f, 1.0f, 1.0f);
@@ -132,10 +143,10 @@ void NoiseSource::Emit()
 	for (int i = 0; i < numParticles; i++)
 	{
 		float currentAngle = i * angleStep;
-		currentAngle += Random::RandFloat(-(angleStep/2), angleStep/2);
+		currentAngle += Random::RandFloat(-(angleStep/1.5), angleStep/1.5);
 		float2 velocity = { cosf(currentAngle) , sinf(currentAngle) };
 		velocity = normalize(velocity) * speed;
-		ParticleSystem::Emit(transform->position, velocity, lifetime, color, true, numParticles/2,Collision);
+		ParticleSystem::Emit(transform->position, velocity,0.f, lifetime, color, true, numParticles/2,Collision);
 	}
 }
 
@@ -149,7 +160,6 @@ void NoiseSource::DrawInInspector()
 	ImGui::DragInt("##noise_particlecount", &numParticles,1,0);
 	ImGui::TextUnformatted("Particle Lifetime");
 	ImGui::TextDisabled("%.2f", lifetime);
-	//ImGui::DragFloat("##noise_particlelife", &lifetime, 0.1f,0.f);
 	ImGui::TextUnformatted("Color");
 	float c[4]{ color.r,color.g,color.b,color.a };
 	ImGui::ColorEdit4("##emitter_color", c);

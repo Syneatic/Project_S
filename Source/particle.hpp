@@ -6,7 +6,7 @@
 //SoA approach
 namespace ParticleSystem
 {
-	using FN = void(*)(float2& pos, float2& vel, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit);
+	using FN = void(*)(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit);
 
 	const int MAX_PARTICLES = 5096 * 8;
 
@@ -42,6 +42,6 @@ namespace ParticleSystem
 	void Initialize();
 	void Update();
 	void Render();
-	void Emit(float2 pos, float2 vel, float life, Color col, bool shouldCollide, int burstLimit, FN behaviour);
+	void Emit(float2 pos, float2 vel,float time, float life, Color col, bool shouldCollide, int burstLimit, FN behaviour);
 	void Flush();
 }

@@ -627,15 +627,6 @@
           "type" : "SpriteRenderer"
         },
         {
-          "fileName" : "button_click.wav",
-          "loop" : false,
-          "pitch" : 1.0,
-          "relative" : false,
-          "spatialize" : true,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
-        },
-        {
           "color" : 
           [
             0.86764675378799438,
@@ -643,12 +634,21 @@
             0.86764705181121826,
             1.0
           ],
-          "lifetime" : 8.0,
+          "lifetime" : 0.0,
           "noiseLevel" : 0.0,
           "numParticles" : 128,
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
+        },
+        {
+          "fileName" : "button_click.wav",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
         }
       ],
       "name" : "Water2"
@@ -796,7 +796,7 @@
           ],
           "lifetime" : 1.0,
           "noiseLevel" : 10.0,
-          "numParticles" : 64,
+          "numParticles" : 256,
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
@@ -833,15 +833,6 @@
           "type" : "Transform"
         },
         {
-          "fileName" : "ore.mp3",
-          "loop" : false,
-          "pitch" : 1.0,
-          "relative" : false,
-          "spatialize" : false,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
-        },
-        {
           "color" : 
           [
             0.91176474094390869,
@@ -849,13 +840,21 @@
             0.0,
             1.0
           ],
-          "lifetime" : 2.0,
+          "lifetime" : 0.5,
           "noiseLevel" : 5.0,
           "numParticles" : 32,
-          "repeat" : true,
+          "repeat" : false,
           "repeatInterval" : 3.0,
-          "speed" : 100.0,
           "type" : "NoiseSource"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
         }
       ],
       "name" : "GameObject_16"

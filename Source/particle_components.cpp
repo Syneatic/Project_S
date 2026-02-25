@@ -44,7 +44,7 @@ void ParticleEmitter::OnUpdate()
 			sinf(finalAngle) * speed
 		};
 
-		ParticleSystem::Emit(pos, velocity, lifetime, color,true,spawnRate/2,nullptr);
+		ParticleSystem::Emit(pos, velocity,0.f, lifetime, color,true,spawnRate/2,nullptr);
 		timer -= interval;
 	}
 }
@@ -62,7 +62,7 @@ void ParticleEmitter::Burst()
 		float currentAngle = i * angleStep;
 		float2 velocity = { cosf(currentAngle) * speed, sinf(currentAngle) * speed};
 
-		ParticleSystem::Emit(origin, velocity, lifetime, color,true, burstCount/4,nullptr);
+		ParticleSystem::Emit(origin, velocity,0.f, lifetime, color,true, burstCount/4,nullptr);
 	}
 }
 

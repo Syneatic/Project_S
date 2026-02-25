@@ -57,7 +57,8 @@ namespace ParticleSystem
 			if (g_pool.behaviour[i]) 
 				g_pool.behaviour[i](
 					g_pool.pos[i], 
-					g_pool.vel[i], 
+					g_pool.vel[i],
+					g_pool.time[i],
 					g_pool.lifetime[i], 
 					g_pool.color[i], 
 					g_pool.collide[i], 
@@ -100,7 +101,7 @@ namespace ParticleSystem
 		}
 	}
 
-	void Emit(float2 pos,float2 vel,float life,Color col, bool shouldCollide, int burstLimit, FN behaviour)
+	void Emit(float2 pos,float2 vel,float time,float life,Color col, bool shouldCollide, int burstLimit, FN behaviour)
 	{
 		if (g_pool.freeStackTop < 0) return; // Pool is full
 
