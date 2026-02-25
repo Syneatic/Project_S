@@ -396,6 +396,7 @@ namespace Physics
 				out.distance = tHit;
 				out.normal = nHit;
 				out.point = origin + (dirN * tHit);
+				out.layerHit = c->layerMask;
 				hitAny = true;
 			}
 		}

@@ -23,6 +23,12 @@ void Collision(float2& pos, float2& vel, float& lifetime, Color& col, bool& shou
 		//commented out until optimized
 		//RecursiveEmit(hit,g_pool.vel[i],g_pool.lifetime[i],g_pool.burstRemaining[i],g_pool.color[i]);
 
+		if (hit.layerHit == (1 << 1))
+			col = Color(1.0f, 1.0f, 1.0f);
+
+		if (hit.layerHit == (1 << 2))
+			col = Color(1.0f, 0.0f, 0.0f);
+
 		//kill momentum
 		pos = hit.point;
 		vel = float2::zero();

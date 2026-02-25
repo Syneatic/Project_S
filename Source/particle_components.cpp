@@ -62,7 +62,6 @@ void ParticleEmitter::Burst()
 		float currentAngle = i * angleStep;
 		float2 velocity = { cosf(currentAngle) * speed, sinf(currentAngle) * speed};
 
-
 		ParticleSystem::Emit(origin, velocity, lifetime, color,true, burstCount/4,nullptr);
 	}
 }

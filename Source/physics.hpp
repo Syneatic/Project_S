@@ -17,6 +17,7 @@ namespace Physics
 		float2 point{};
 		float2 normal{};
 		float distance{};
+		uint32_t layerHit{};
 	};
 
 	struct CollisionInfo
