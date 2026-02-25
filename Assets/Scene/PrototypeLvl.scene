@@ -7,14 +7,6 @@
       "components" : 
       [
         {
-          "Affected By Gravity" : false,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
-          "Is Static" : true,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
-        },
-        {
           "position" : 
           [
             237.55000305175781,
@@ -27,6 +19,14 @@
             300.0
           ],
           "type" : "Transform"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Gravity" : 9.8000001907348633,
+          "Grounded" : false,
+          "Is Static" : true,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -545,7 +545,12 @@
       "components" : 
       [
         {
-          "type" : "AudioListener"
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : true,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "position" : 
@@ -562,12 +567,7 @@
           "type" : "Transform"
         },
         {
-          "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : true,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
+          "type" : "AudioListener"
         },
         {
           "alignment" : 4,
@@ -585,12 +585,6 @@
           "type" : "SpriteRenderer"
         },
         {
-          "jumpHeight" : 120.0,
-          "max_speed" : 250.0,
-          "time" : 1.0,
-          "type" : "PlayerController"
-        },
-        {
           "collisionMask" : 4294967282,
           "layerMask" : 1,
           "size" : 
@@ -599,6 +593,12 @@
             1.0
           ],
           "type" : "BoxCollider"
+        },
+        {
+          "jumpHeight" : 120.0,
+          "max_speed" : 250.0,
+          "time" : 1.0,
+          "type" : "PlayerController"
         },
         {
           "color" : 
@@ -613,6 +613,9 @@
           "speed" : 300.0,
           "timelimit" : 10.0,
           "type" : "ParticleEmitter"
+        },
+        {
+          "type" : "Camera"
         }
       ],
       "name" : "TestPlayer"
@@ -759,14 +762,6 @@
       "components" : 
       [
         {
-          "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : false,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
-        },
-        {
           "position" : 
           [
             -146.0,
@@ -779,6 +774,14 @@
             15.0
           ],
           "type" : "Transform"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
