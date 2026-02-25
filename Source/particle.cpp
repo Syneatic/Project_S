@@ -72,7 +72,11 @@ namespace ParticleSystem
 	void Update()
 	{
 		f64 dt = AEFrameRateControllerGetFrameTime();
+		uint32_t mask = 1 << 1;
+		mask |= 1 << 2;
+		mask |= 1 << 3;
 		int activeParticles{};
+
 		for (int i = 0; i < MAX_PARTICLES; ++i) {
 			if (!g_pool.active[i]) continue; //skip inactive
 
