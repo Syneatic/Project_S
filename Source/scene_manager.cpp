@@ -8,6 +8,8 @@
 #include "scene.hpp"
 #include "scene_editor.hpp"
 
+#include "gameobject.hpp"
+
 namespace
 {
 	namespace fs = std::filesystem;
@@ -51,6 +53,7 @@ namespace
 
 		if (_current) _current->OnExit();
 
+		//GameObject::nextId = 0;
 		_current = LoadSceneFromDisk(_nextSceneName);
 		if (_current) _current->OnEnter();
 

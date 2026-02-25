@@ -10,6 +10,8 @@ void EventHandler::CallQ()
 		auto type = event.getType(); // Get the std::type_index of the IEvent.
 		auto it = subscribers.find(type); // Find the iterator to event inner map element in subscriber outer map.
 
+		//std::cout << "Queue size: " << eQueue.size() << '\n';
+
 		// Check iterator is valid.
 		if (it != subscribers.end())
 		{
@@ -23,14 +25,9 @@ void EventHandler::CallQ()
 			}
 		}
 
+		//tmp = tmp2 = 0;
+
 		eQueue.pop();
-		/*if (subscribers.count(type))
-		{
-			for (auto& callback : it->second)
-			{
-				callback(&event);
-			}			
-		}*/
 	}
 }
 
