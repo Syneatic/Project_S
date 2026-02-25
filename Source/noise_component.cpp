@@ -72,9 +72,11 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 				lifetime = 5.f;
 				
 				shouldCollide = false;
+				//hit environment
 				if (hit.layerHit == (1 << 1))
 					col = Color(1.0f, 1.0f, 1.0f);
 
+				//hit enemy
 				if (hit.layerHit == (1 << 2))
 					col = Color(1.0f, 0.0f, 0.0f);
 				
@@ -148,6 +150,8 @@ void NoiseSource::Emit()
 		velocity = normalize(velocity) * speed;
 		ParticleSystem::Emit(transform->position, velocity,0.f, lifetime, color, true, numParticles/2,Collision);
 	}
+	audioEmitter->Play();
+	//EventHandler::RaiseEvent<PingEvent>(_owner->id, AUDIO);
 }
 
 
