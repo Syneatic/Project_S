@@ -2,7 +2,6 @@
 
 #include "particle.hpp"
 #include "physics.hpp"
-#include "ImGUI/imgui.h"
 
 namespace
 {

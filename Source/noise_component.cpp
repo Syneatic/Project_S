@@ -1,8 +1,3 @@
-#include <vector>
-
-#include "IMGUI/imgui.h"
-#include "json_parser_helper.hpp"
-
 #include "math.hpp"
 #include "gameobject.hpp"
 #include "particle.hpp"

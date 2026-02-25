@@ -1,12 +1,7 @@
-#include <cmath>
-#include <cstdint>
-#include "ImGUI/imgui.h"
-
-#include "json_parser_helper.hpp"
-
 #include "gameobject.hpp"
 #include "physics.hpp"
 #include "particle_components.hpp"
+#include "particle.hpp"
 
 void ParticleEmitter::OnStart() 
 {

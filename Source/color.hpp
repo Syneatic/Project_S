@@ -1,6 +1,4 @@
 #pragma once
-#include "AETypes.h"
-#include <iostream>
 
 struct Color
 {

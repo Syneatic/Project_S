@@ -1,17 +1,7 @@
-#include <crtdbg.h>
-#include <iostream>
-#include <algorithm>
-#include <string>
-#include <filesystem>
-#include <unordered_set>
-#include <vector>
-
-#include "AEEngine.h"
 #include "math.hpp"
 #include "renderer.hpp"
 #include "camera.hpp"
 #include "render_components.hpp"
-#include "base_components.hpp"
 #include "particle.hpp"
 
 //fwd decl

@@ -1,7 +1,10 @@
 #pragma once
 
-#include <typeindex>
+#include "math.hpp"
 #include "ui_components.hpp"
+
+//fwd decl
+struct GameObject;
 
 // Event interface
 struct IEvent
@@ -29,4 +32,16 @@ struct PingEvent : public Event<PingEvent>
 {
 	size_t targetId; int callee;
 	PingEvent(size_t target, int calleeVal) : targetId{ target }, callee{ calleeVal } {}
+};
+
+//physics event
+struct OnCollisionEvent : public Event<OnCollisionEvent>
+{
+	GameObject* self;
+	GameObject* other;
+	float2 normal;
+	float impulse;
+
+	OnCollisionEvent(GameObject* s, GameObject* o, float2 n, float i)
+		: self(s), other(o), normal(n), impulse(i) {}
 };

@@ -1,9 +1,5 @@
 #pragma once
-#include <vector>
-#include <unordered_set>
 
-#include "AEEngine.h"
-#include "transform_component.hpp"
 #include "color.hpp"
 
 struct Renderer;

@@ -1,7 +1,6 @@
 #pragma once
 // parse a scene object into a scene file
 // read it back from the scene file into object on load
-#include "json.h"
 
 struct Scene;
 struct GameObject;

@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "base_components.hpp"
+struct Collision;
 
 enum class Layer : uint32_t
 {
@@ -18,6 +18,11 @@ struct Collider : Component
 {
     uint32_t layerMask{ static_cast<uint32_t>(Layer::Nothing) };
     uint32_t collisionMask{ 0xFFFFFFFF };
+
+    using CollisionCallback = std::function<void(const Collision&)>;
+    std::vector<CollisionCallback> onCollisionListeners;
+
+    void OnCollision(const Collision& data);
 
     bool Has_Layer(Layer layer) const;
     void Add_Layer(Layer layer);
@@ -57,7 +62,7 @@ struct BoxCollider : Collider
     const std::string name() const override { return "BoxCollider"; }
 };
 
-struct RigidBody :Component 
+struct RigidBody : Component 
 { 
 public:
 	bool Affected_By_Gravity{ false };

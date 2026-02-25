@@ -1,6 +1,5 @@
 #pragma once
 
-#include "base_components.hpp"
 #include "math.hpp"
 
 struct GameObject;

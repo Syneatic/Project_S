@@ -1,9 +1,3 @@
-#include <vector>
-#include <string>
-#include <filesystem>
-#include <iostream>
-#include <memory>
-
 #include "scene_parser.hpp"
 #include "scene.hpp"
 #include "scene_editor.hpp"

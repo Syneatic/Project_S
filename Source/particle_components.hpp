@@ -1,9 +1,5 @@
 #pragma once
 
-#include <vector>
-#include "particle.hpp"
-#include "base_components.hpp"
-
 //use this more as a generic particle generator
 //for atmosphere, etc...
 struct ParticleEmitter : Behaviour
@@ -17,7 +13,7 @@ struct ParticleEmitter : Behaviour
 	bool isBurst = false;
 	Color color{};
 
-	Transform* transform{ nullptr };
+	Transform* transform = nullptr;
 
 	void OnStart() override;
 	void OnUpdate() override;

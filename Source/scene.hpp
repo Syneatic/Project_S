@@ -1,6 +1,4 @@
 #pragma once
-#include <vector>
-#include <string>
 
 //forward decl
 struct GameObject;

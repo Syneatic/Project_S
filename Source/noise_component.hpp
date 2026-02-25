@@ -1,9 +1,6 @@
 #pragma once
 
-#include <vector>
-#include <optional>
 #include "eventhandler.hpp"
-#include "base_components.hpp"
 #include "color.hpp"
 
 struct AudioEmitter;

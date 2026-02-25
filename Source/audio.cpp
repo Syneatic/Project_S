@@ -1,10 +1,3 @@
-#include <list>
-#include <iostream>
-#include <unordered_map>
-#include <unordered_set>
-
-#include "SFML/Audio.hpp"
-
 #include "audio.hpp"
 
 namespace

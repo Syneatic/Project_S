@@ -1,6 +1,5 @@
 #pragma once
-#include <ostream>
-#include "AETypes.h"
+
 constexpr float kEps = 1e-6f;
 
 struct float2

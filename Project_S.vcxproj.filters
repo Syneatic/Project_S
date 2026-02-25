@@ -162,6 +162,18 @@
     <ClCompile Include="Source\noise_component.cpp">
       <Filter>Source Files\components\game</Filter>
     </ClCompile>
+    <ClCompile Include="Source\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\camera_components.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\math.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -301,6 +313,15 @@
     </ClInclude>
     <ClInclude Include="Source\particle_components.hpp">
       <Filter>Header Files\components\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\camera.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\camera_components.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\pch.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

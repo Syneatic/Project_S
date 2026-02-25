@@ -1,17 +1,16 @@
-#pragma once
-#include <vector>
-#include <string>
-#include <iostream>
-
 #include "scene.hpp"
 #include "renderer.hpp"
 #include "physics.hpp"
 #include "audio.hpp"
+#include"particle.hpp"
 
 #include "gameobject.hpp"
 #include "eventhandler.hpp"
 
 #include "components.hpp"
+
+float accumulator{ 0 };
+float fixedDt = 1.f / 60.f;
 
 void Scene::InitializeGameObjects()
 {
@@ -75,6 +74,7 @@ void Scene::OnEnter()
 
 void Scene::OnUpdate()
 {
+	f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 	//test draw
 	AEGfxSetBackgroundColor(0.f,0.f,0.f);
 
@@ -89,7 +89,14 @@ void Scene::OnUpdate()
 	}
 
 	Audio::Update();
-	Physics::Step((f32)AEFrameRateControllerGetFrameTime());
+
+	accumulator += dt;
+	while (accumulator >= fixedDt)
+	{
+		Physics::Step(fixedDt);
+		accumulator -= fixedDt;
+	}
+
 	ParticleSystem::Update();
 	EventHandler::CallQ();
 	RenderSystem::Draw();

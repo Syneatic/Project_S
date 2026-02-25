@@ -1,12 +1,3 @@
-#include <windows.h>
-#include <shobjidl.h> 
-#include <string>
-#include <filesystem>
-#include <iostream>
-
-#include "ImGUI/imgui.h"
-#include "ImGUI/imgui_impl_opengl3.h"
-#include "ImGUI/imgui_impl_win32.h"
 
 //systems
 #include "renderer.hpp"

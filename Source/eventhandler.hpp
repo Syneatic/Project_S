@@ -1,16 +1,7 @@
 #pragma once
 
-#include <unordered_map>
-#include <vector>
-#include <functional>
-#include <string>
-#include <typeindex>
-#include <typeinfo>
-#include <queue>
 #include "event.hpp"
 
-#include <type_traits> 
-#include <iostream>
 namespace EventHandler
 {
 	using EventCallback = std::function<void(IEvent*)>;
@@ -43,16 +34,6 @@ namespace EventHandler
 	void RaiseEvent(Args&& ... args)
 	{
 		eQueue.push(std::make_unique<T>(std::forward<Args>(args)...));
-
-		// DEBUG
-		/*if constexpr (std::is_same_v<T, PingEvent>)
-			tmp++;
-		else if constexpr (std::is_same_v<T, UIButtonEvent>)
-			tmp2++;
-		std::cout << "Emitter Sub size: " << subscribers[typeid(PingEvent)].size() << '\n';
-		std::cout << "UIButton Sub size: " << subscribers[typeid(UIButtonEvent)].size() << '\n';
-		std::cout << "PingEvent Raised: " << tmp << '\n';
-		std::cout << "UIButtonEvent Raised: " << tmp2 << '\n';*/
 	}
 	
 	void Unsubscribe(const SubscriptionHandle& handle);

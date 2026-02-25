@@ -1,11 +1,5 @@
 #pragma once
-#include <string>
-#include "SFML/Audio.hpp"
-#include "AETypes.h"
-
 #include "gameobject.hpp"
-#include "base_components.hpp"
-
 #include "transform_component.hpp"
 
 //requires transform

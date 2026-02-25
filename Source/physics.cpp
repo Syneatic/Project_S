@@ -1,14 +1,6 @@
-//std lib
-#include <vector>
-#include <unordered_set>
-#include <algorithm>
-#include <cmath>
-#include <cfloat>
-
 #include "math.hpp"
 #include "physics.hpp"
 #include "gameobject.hpp"
-#include "base_components.hpp"
 #include "physics_components.hpp"
 
 namespace {
@@ -364,7 +356,7 @@ namespace Physics
 		{
 			if (!c) continue;
 
-			if ((c->layerMask & layerMask) == 0)
+			if (!(c->layerMask & layerMask))
 				continue;
 
 			auto* tr = c->gameObject().GetComponent<Transform>();
@@ -468,13 +460,13 @@ namespace Physics
 
 						if (rb1 && !rb1->Is_Static)
 						{
-							if (c2->layerMask == static_cast<uint32_t>(Layer::Environment))
+							if (c2->layerMask & static_cast<uint32_t>(Layer::Environment))
 								rb1->HitEnvironment = true;
 						}
 
 						if (rb2 && !rb2->Is_Static)
 						{
-							if (c1->layerMask == static_cast<uint32_t>(Layer::Environment))
+							if (c1->layerMask & static_cast<uint32_t>(Layer::Environment))
 								rb2->HitEnvironment = true;
 						}
 
@@ -567,10 +559,6 @@ namespace Physics
 
 	void Step(float dt)
 	{
-		const float MAX_DT = 0.05f;
-		if (dt > MAX_DT)
-			dt = MAX_DT;
-
 		// Reset grounded
 		for (auto* rb : _rigidbodies)
 			if (rb) {
@@ -593,12 +581,16 @@ namespace Physics
 		// Integrate motion
 		for (auto* rb : _rigidbodies)
 		{
+			//ignore if velocity is too low
 			if (!rb || rb->Is_Static) continue;
 
 			//std::cout << rb->name()
 			//	<< " vel=" << rb->velocity.y
 			//	<< " grounded=" << rb->Is_Grounded
 			//	<< " static=" << rb->Is_Static << std::endl;
+
+			//ignore if velocity is too low
+			if (lengthsq(rb->velocity) <= 0.0005f) continue;
 
 			Transform* t = rb->gameObject().GetComponent<Transform>();
 

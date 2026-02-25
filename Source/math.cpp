@@ -1,4 +1,3 @@
-#include <cmath>
 #include "math.hpp"
 
 //operator overload

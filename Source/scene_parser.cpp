@@ -1,18 +1,8 @@
-#include <filesystem>
-#include <fstream>
-#include <memory>
-#include <string>
-#include <iostream>
-
-#include "json.h"
-#include "json_parser_helper.hpp"
-
 #include "math.hpp"
 
 #include "scene.hpp"
 #include "gameobject.hpp"
 
-#include "base_components.hpp"
 #include "components.hpp"
 
 namespace SceneIO

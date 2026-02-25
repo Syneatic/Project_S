@@ -1,15 +1,8 @@
 #pragma once
-#include <vector>
-#include <unordered_map>
-#include <typeindex>
-#include <string>
-#include <memory>
-#include <type_traits>
-#include <stdexcept>
-
-#include "base_components.hpp"
 
 #include "components.hpp"
+
+//cant be in cpp cause of template function
 
 struct GameObject
 {
@@ -23,11 +16,6 @@ private:
 	ComponentMap _componentMap{}; //only 1 of each type of component can be attached
 	std::vector<std::unique_ptr<GameObject>> _children{};
 	 
-	void Initialize()
-	{
-		
-	}
-
 public:
 	void Start()
 	{

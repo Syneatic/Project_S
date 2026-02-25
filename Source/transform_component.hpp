@@ -1,7 +1,6 @@
 #pragma once
 
 #include "math.hpp"
-#include "base_components.hpp"
 
 struct Transform : Component
 {

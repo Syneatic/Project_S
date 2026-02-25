@@ -1,9 +1,5 @@
 #pragma once
-#include "AEEngine.h"
-
 #include "renderer.hpp"
-#include "base_components.hpp"
-
 
 //abstract
 struct Renderer : Component

@@ -1,8 +1,3 @@
-#include <iostream>
-#include <vector>
-
-#include "AEEngine.h"
-
 #include "gameobject.hpp"
 #include "scene_manager.hpp"
 #include "eventhandler.hpp"

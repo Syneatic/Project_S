@@ -1,11 +1,5 @@
-#include <iostream>
-#include <unordered_set>
-#include <vector>
-
-#include "AEEngine.h"
 #include "camera.hpp"
 #include "camera_components.hpp"
-#include "base_components.hpp"
 
 
 
