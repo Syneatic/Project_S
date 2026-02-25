@@ -17,21 +17,38 @@ void Collision(float2& pos, float2& vel, float& lifetime, Color& col, bool& shou
 	mask |= 1 << 2;
 	mask |= 1 << 3;
 
-	Physics::RaycastHit hit;
-	if (Physics::Raycast(pos, vel, length(vel * dt), hit, mask))
+	if (shouldCollide)
 	{
-		//commented out until optimized
-		//RecursiveEmit(hit,g_pool.vel[i],g_pool.lifetime[i],g_pool.burstRemaining[i],g_pool.color[i]);
+		float2 velocity = vel * dt;
+		float speed = length(velocity);
+		float dist = length(velocity);
+		if (dist > 0.001f) //if particle not moving, skip raycast
+		{
+			float2 dir = normalize(vel);
+			Physics::RaycastHit hit;
 
-		if (hit.layerHit == (1 << 1))
-			col = Color(1.0f, 1.0f, 1.0f);
+			if (Physics::Raycast(pos, dir, dist, hit, mask))
+			{
+				/*float angleStep = (2.0f * PI) / burstLimit;
+				for (int i = 0; i < burstLimit; i++)
+				{
+					float currentAngle = i * angleStep;
+					currentAngle += Random::RandFloat(-(angleStep / 2), angleStep / 2);
+					float2 velocity = { cosf(currentAngle) * speed, sinf(currentAngle) * speed };
+					ParticleSystem::Emit(hit.point, velocity, lifetime, col, true, burstLimit/ 2, Collision);
+				}*/
 
-		if (hit.layerHit == (1 << 2))
-			col = Color(1.0f, 0.0f, 0.0f);
+				if (hit.layerHit == (1 << 1))
+					col = Color(1.0f, 1.0f, 1.0f);
 
-		//kill momentum
-		pos = hit.point;
-		vel = float2::zero();
+				if (hit.layerHit == (1 << 2))
+					col = Color(1.0f, 0.0f, 0.0f);
+				
+				pos = hit.point;
+				//kill momentum
+				vel = float2::zero();
+			}
+		}
 	}
 }
 
@@ -72,7 +89,7 @@ void NoiseSource::Emit()
 		float currentAngle = i * angleStep;
 		currentAngle += Random::RandFloat(-(angleStep/2), angleStep/2);
 		float2 velocity = { cosf(currentAngle) * speed, sinf(currentAngle) * speed };
-		ParticleSystem::Emit(transform->position, velocity, lifetime, color, true, 0,Collision);
+		ParticleSystem::Emit(transform->position, velocity, lifetime, color, true, numParticles/2,Collision);
 	}
 }
 
