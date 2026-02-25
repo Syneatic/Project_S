@@ -496,6 +496,11 @@ void EditorScene::BuildInspectorWindow()
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::MenuItem("Noise Source"))
+		{
+			selectedObj.AddComponent<NoiseSource>();
+		}
+
 		ImGui::EndPopup();
 	}
 

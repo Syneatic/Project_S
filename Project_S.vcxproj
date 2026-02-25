@@ -25,6 +25,8 @@
     <ClCompile Include="Source\audio_components.cpp" />
     <ClCompile Include="Source\color.cpp" />
     <ClCompile Include="Source\controller_components.cpp" />
+    <ClCompile Include="Source\math.cpp" />
+    <ClCompile Include="Source\noise_component.cpp" />
     <ClCompile Include="Source\particle_components.cpp" />
     <ClCompile Include="Source\eventhandler.cpp" />
     <ClCompile Include="Source\Main.cpp" />

@@ -44,7 +44,8 @@ namespace
 					lifetime * 0.8f,
 					nextColor,
 					true,            // These children will also collide and echo
-					nextBurstCount   // Pass the reduced count for the next generation
+					nextBurstCount,   // Pass the reduced count for the next generation
+					nullptr
 				);
 			}
 		}
@@ -84,30 +85,25 @@ namespace ParticleSystem
 				continue;
 			}
 
-			float dist = length(g_pool.vel[i] * dt);
-			//
+			activeParticles++;
+
 			//update pos
 			g_pool.pos[i].x += g_pool.vel[i].x * dt;
 			g_pool.pos[i].y += g_pool.vel[i].y * dt;
 
-			uint32_t mask = 1 << 1;
-			mask |= 1 << 2;
-			mask |= 1 << 3;
-
-			Physics::RaycastHit hit;
-			if (Physics::Raycast(g_pool.pos[i], g_pool.vel[i], length(g_pool.vel[i] * dt), hit, mask))
-			{
-				//commented out until optimized
-				//RecursiveEmit(hit,g_pool.vel[i],g_pool.lifetime[i],g_pool.burstRemaining[i],g_pool.color[i]);
-				
-				//kill momentum
-				g_pool.vel[i] = float2::zero();
-			}
-
-			activeParticles++;
+			//execute behaviour
+			if (g_pool.behaviour[i]) 
+				g_pool.behaviour[i](
+					g_pool.pos[i], 
+					g_pool.vel[i], 
+					g_pool.lifetime[i], 
+					g_pool.color[i], 
+					g_pool.collide[i], 
+					g_pool.burstRemaining[i]
+					);
 		}
 
-		//std::cout << "Active Particles : " << activeParticles << ", FPS : " << AEFrameRateControllerGetFrameRate() << "\n";
+		std::cout << "Active Particles : " << activeParticles << ", FPS : " << AEFrameRateControllerGetFrameRate() << "\n";
 	}
 
 	void Render() //by pass our wrapper for performance's sake
@@ -142,7 +138,7 @@ namespace ParticleSystem
 		}
 	}
 
-	void Emit(float2 pos,float2 vel,float life,Color col, bool shouldCollide, int burstLimit)
+	void Emit(float2 pos,float2 vel,float life,Color col, bool shouldCollide, int burstLimit, FN behaviour)
 	{
 		if (g_pool.freeStackTop < 0) return; // Pool is full
 
@@ -157,6 +153,8 @@ namespace ParticleSystem
 
 		g_pool.burstRemaining[index] = burstLimit;
 		g_pool.collide[index] = shouldCollide;
+
+		g_pool.behaviour[index] = behaviour;
 	}
 
 	void Flush()

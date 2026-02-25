@@ -6,6 +6,8 @@
 //SoA approach
 namespace ParticleSystem
 {
+	using FN = void(*)(float2& pos, float2& vel, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit);
+
 	const int MAX_PARTICLES = 5096 * 8;
 
 	struct Pool
@@ -19,6 +21,7 @@ namespace ParticleSystem
 
 		int burstRemaining[MAX_PARTICLES]{}; //keep track of how many generation of reflection remain
 		bool collide[MAX_PARTICLES]{};
+		FN behaviour[MAX_PARTICLES]{nullptr};
 
 		int freeStack[MAX_PARTICLES]{};
 		int freeStackTop = -1;
@@ -39,6 +42,6 @@ namespace ParticleSystem
 	void Initialize();
 	void Update();
 	void Render();
-	void Emit(float2 pos, float2 vel, float life, Color col, bool shouldCollide, int burstLimit);
+	void Emit(float2 pos, float2 vel, float life, Color col, bool shouldCollide, int burstLimit, FN behaviour);
 	void Flush();
 }

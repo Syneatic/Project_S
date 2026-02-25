@@ -120,6 +120,12 @@ namespace SceneIO
             AudioListener& al = go.AddComponent<AudioListener>();
             al.Deserialize(compObj);
         }
+        else if (type == "NoiseSource")
+        {
+            NoiseSource& ns = go.AddComponent<NoiseSource>();
+            ns.Deserialize(compObj);
+        }
+
     }
 
     // ===== GameObject Serialization =====

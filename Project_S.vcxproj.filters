@@ -159,6 +159,9 @@
     <ClCompile Include="Source\particle_components.cpp">
       <Filter>Source Files\components\engine</Filter>
     </ClCompile>
+    <ClCompile Include="Source\noise_component.cpp">
+      <Filter>Source Files\components\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
