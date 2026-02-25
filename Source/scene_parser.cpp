@@ -125,7 +125,11 @@ namespace SceneIO
             NoiseSource& ns = go.AddComponent<NoiseSource>();
             ns.Deserialize(compObj);
         }
-
+        else if (type == "Camera")
+        {
+            MainCamera& cm = go.AddComponent<MainCamera>();
+            cm.Deserialize(compObj);
+        }
     }
 
     // ===== GameObject Serialization =====

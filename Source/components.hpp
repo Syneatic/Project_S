@@ -11,3 +11,4 @@
 //game components
 #include "controller_components.hpp"
 #include "noise_component.hpp"
+#include "camera_components.hpp"

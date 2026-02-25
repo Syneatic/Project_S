@@ -13,6 +13,7 @@
 #include "physics.hpp"
 #include "gameobject.hpp"
 #include "audio.hpp"
+#include "camera.hpp"
 
 //scene
 #include "scene_parser.hpp"
@@ -97,6 +98,9 @@ namespace
 		if (didCoInit && hrInit != RPC_E_CHANGED_MODE)
 			CoUninitialize();
 
+
+		CameraSystem::OnStart();
+
 		return out;
 	}
 
@@ -171,8 +175,11 @@ void EditorScene::ReadInput()
 {
 	s32 mX, mY;
 	AEInputGetCursorPosition(&mX, &mY);
-	mouseWorld.x = (float)mX - (AEGfxGetWindowWidth() * 0.5f);
-	mouseWorld.y = (AEGfxGetWindowHeight() * 0.5f) - (float)mY;
+	f32 camX, camY;
+	AEGfxGetCamPosition(&camX, &camY);
+
+	mouseWorld.x = camX + (((float)mX - AEGfxGetWindowWidth() * 0.5f) / CameraData::zoomMult);
+	mouseWorld.y = camY + ((AEGfxGetWindowHeight() * 0.5f - (float)mY) / CameraData::zoomMult);
 
 	isMouseDown = AEInputCheckCurr(AEVK_LBUTTON);
 	isMousePressed = AEInputCheckTriggered(AEVK_LBUTTON);
@@ -500,6 +507,16 @@ void EditorScene::BuildInspectorWindow()
 		{
 			selectedObj.AddComponent<NoiseSource>();
 		}
+		
+		if (ImGui::BeginMenu("Camera"))
+		{
+			if (ImGui::MenuItem("Main Camera"))
+			{
+				selectedObj.AddComponent<MainCamera>();
+			}
+
+			ImGui::EndMenu();
+		}
 
 		ImGui::EndPopup();
 	}
@@ -582,6 +599,7 @@ void EditorScene::OnEnter()
 	RefreshRenderers();
 	RefreshColliders();
 	RefreshRigidBodies();
+	CameraSystem::OnStart();
 }
 
 void EditorScene::OnUpdate()
@@ -591,6 +609,7 @@ void EditorScene::OnUpdate()
 	RefreshRigidBodies();
 
 	ReadInput();
+	CameraSystem::OnUpdate(); // Check input and update camera matrix
 
 	AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 	f32 dt = (f32)AEFrameRateControllerGetFrameTime();
@@ -625,4 +644,5 @@ void EditorScene::OnExit()
 	RenderSystem::FlushRenderers();
 	Physics::FlushColliders();
 	Physics::FlushRigidBody();
+	CameraSystem::OnExit();
 }

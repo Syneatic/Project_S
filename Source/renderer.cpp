@@ -9,6 +9,7 @@
 #include "AEEngine.h"
 #include "math.hpp"
 #include "renderer.hpp"
+#include "camera.hpp"
 #include "render_components.hpp"
 #include "base_components.hpp"
 #include "particle.hpp"
@@ -287,6 +288,7 @@ namespace RenderSystem
 		AEMtx33Trans(&translate, pos.x, pos.y);
 		AEMtx33Concat(&transform, &transform, &scale);
 		AEMtx33Concat(&transform, &translate, &transform);
+		AEMtx33Concat(&transform, &CameraData::camMatrix, &transform);
 		AEGfxSetTransform(transform.m);
 
 		AEGfxMeshDraw(_quadMesh, AE_GFX_MDM_TRIANGLES);
@@ -312,6 +314,7 @@ namespace RenderSystem
 
 		AEMtx33 transform{};
 		SetTransform(data.transform,data.alignment,transform);
+		AEMtx33Concat(&transform, &CameraData::camMatrix, &transform);
 		AEGfxSetTransform(transform.m);
 
 		AEGfxMeshDraw(_quadMesh, data.meshMode);
@@ -323,6 +326,7 @@ namespace RenderSystem
 
 		AEMtx33 transform;
 		SetTransform(data.transform, data.alignment, transform);
+		AEMtx33Concat(&transform, &CameraData::camMatrix, &transform);
 		AEGfxSetTransform(transform.m);
 
 		AEGfxMeshDraw(_triangleMesh, AE_GFX_MDM_TRIANGLES);
@@ -342,6 +346,7 @@ namespace RenderSystem
 
 		AEMtx33 transform{};
 		SetTransform(data.transform, data.alignment, transform);
+		AEMtx33Concat(&transform, &CameraData::camMatrix, &transform);
 		AEGfxSetTransform(transform.m);
 
 		AEGfxMeshDraw(_circleMesh, data.meshMode);
@@ -416,6 +421,7 @@ namespace RenderSystem
 		AEGfxSetTransparency(1.f);
 		AEMtx33 transform{};
 		SetTransform(p, scl, rot, Alignment::MC, transform);
+		AEMtx33Concat(&transform, &CameraData::camMatrix, &transform);
 		AEGfxSetTransform(transform.m);
 
 		AEGfxMeshDraw(_boxMesh, AE_GFX_MDM_LINES);
