@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <optional>
+#include "eventhandler.hpp"
 #include "base_components.hpp"
 #include "color.hpp"
 
@@ -35,4 +38,7 @@ struct NoiseSource : Behaviour
 	void DrawInInspector() override;
 	void Serialize(Json::Value& outComp) const override;
 	void Deserialize(const Json::Value& compObj) override;
+
+private:
+	std::vector<std::optional<EventHandler::SubscriptionHandle>> emitterSH;
 };

@@ -1,14 +1,23 @@
+#include <vector>
+
 #include "IMGUI/imgui.h"
 #include "json_parser_helper.hpp"
 
 #include "math.hpp"
-
 #include "gameobject.hpp"
 #include "particle.hpp"
 #include "physics.hpp"
 #include "audio_components.hpp"
-
 #include "noise_component.hpp"
+
+namespace
+{
+	enum PingEventID
+	{
+		AUDIO,
+		EMIT
+	};
+}
 
 void Collision(float2& pos, float2& vel, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit)
 {
@@ -82,6 +91,16 @@ void NoiseSource::OnStart()
 	
 	//calculate lifetime
 	lifetime = GetLifetime(noiseLevel);
+
+	emitterSH.push_back(SubscribeFilter(&PingEvent::targetId, _owner->id, [this]()
+	{
+		audioEmitter->Play();
+	}));
+
+	emitterSH.push_back(SubscribeFilter(&PingEvent::targetId, _owner->id, [this]()
+	{
+		Emit();
+	}));
 }
 
 void NoiseSource::OnUpdate() 
@@ -93,14 +112,18 @@ void NoiseSource::OnUpdate()
 
 	if (repeatTimer >= repeatInterval)
 	{
-		Emit();
+		EventHandler::RaiseEvent<PingEvent>(_owner->id, AUDIO);
+		EventHandler::RaiseEvent<PingEvent>(_owner->id, EMIT);
 		repeatTimer = 0.0f;
 	}
 }
 
 void NoiseSource::OnDestroy() 
 {
-
+	for (auto& e : emitterSH)
+	{
+		EventHandler::Unsubscribe(e.value());
+	}
 }
 
 void NoiseSource::Emit()

@@ -15,12 +15,14 @@ struct GameObject
 {
 	using ComponentMap = std::unordered_map<std::type_index, std::unique_ptr<Component>>;
 
+	inline static size_t nextId{ 0 };
+	const size_t id;
 private:
 	bool _active{ true };
 	std::string _name{};
 	ComponentMap _componentMap{}; //only 1 of each type of component can be attached
 	std::vector<std::unique_ptr<GameObject>> _children{};
-
+	 
 	void Initialize()
 	{
 		
@@ -145,16 +147,15 @@ public:
 	bool active(bool state) { return _active = state; }
 
 	//constructor
-	GameObject(const char* name)
+	GameObject(const char* name) : id(nextId++)
 	{
 		_name = name ? name : "";
 	}
 
-	GameObject(std::string name)
+	GameObject(std::string name) : id(nextId++)
 	{
 		_name = name;
 	}
-
 };
 
 //for now dont use

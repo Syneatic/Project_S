@@ -627,6 +627,15 @@
           "type" : "SpriteRenderer"
         },
         {
+          "fileName" : "button_click.wav",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
           "color" : 
           [
             0.86764675378799438,
@@ -640,15 +649,6 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
-        },
-        {
-          "fileName" : "button_click.wav",
-          "loop" : false,
-          "pitch" : 1.0,
-          "relative" : false,
-          "spatialize" : true,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
         }
       ],
       "name" : "Water2"
@@ -833,19 +833,29 @@
           "type" : "Transform"
         },
         {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
           "color" : 
           [
-            0.86274510622024536,
-            0.56608319282531738,
-            0.19031140208244324,
+            0.91176474094390869,
+            1.0,
+            0.0,
             1.0
           ],
-          "isBurst" : true,
-          "lifetime" : 5.0,
-          "spawnRate" : 128.0,
-          "speed" : 200.0,
-          "spread" : 30.0,
-          "type" : "ParticleEmitter"
+          "lifetime" : 2.0,
+          "noiseLevel" : 5.0,
+          "numParticles" : 32,
+          "repeat" : true,
+          "repeatInterval" : 3.0,
+          "speed" : 100.0,
+          "type" : "NoiseSource"
         }
       ],
       "name" : "GameObject_16"

@@ -9,6 +9,8 @@
 #include <queue>
 #include "event.hpp"
 
+#include <type_traits> 
+#include <iostream>
 namespace EventHandler
 {
 	using EventCallback = std::function<void(IEvent*)>;
@@ -24,6 +26,9 @@ namespace EventHandler
 	inline std::queue<std::unique_ptr<IEvent>> eQueue;
 	inline size_t nextId{ 0 };
 
+	// DEBUG
+	//inline int tmp{}, tmp2{};
+
 	// Add new subscriber to event handler.
 	template<typename T> 
 	SubscriptionHandle Subscribe(EventCallback cb) 
@@ -32,17 +37,22 @@ namespace EventHandler
 		subscribers[typeid(T)][id] = std::move(cb); 
 		return { typeid(T), id }; 
 	}
-	/*template<typename T>
-	void Subscribe(EventCallback cb)
-	{
-		subscribers[typeid(T)].push_back(cb);
-	}*/
 
 	// Push a event to queue.
 	template <typename T, typename... Args>
 	void RaiseEvent(Args&& ... args)
-	{		
+	{
 		eQueue.push(std::make_unique<T>(std::forward<Args>(args)...));
+
+		// DEBUG
+		/*if constexpr (std::is_same_v<T, PingEvent>)
+			tmp++;
+		else if constexpr (std::is_same_v<T, UIButtonEvent>)
+			tmp2++;
+		std::cout << "Emitter Sub size: " << subscribers[typeid(PingEvent)].size() << '\n';
+		std::cout << "UIButton Sub size: " << subscribers[typeid(UIButtonEvent)].size() << '\n';
+		std::cout << "PingEvent Raised: " << tmp << '\n';
+		std::cout << "UIButtonEvent Raised: " << tmp2 << '\n';*/
 	}
 	
 	void Unsubscribe(const SubscriptionHandle& handle);
@@ -50,14 +60,17 @@ namespace EventHandler
 	void Flush();
 }
 
-// Function helper for subscribing UI buttons.
-inline EventHandler::SubscriptionHandle SubscribeFunctionKey(FunctionKey key, std::function<void()> func)
+// Helper function to subscribe any event callback to a element in subscribers container.
+template <typename T, typename M>
+inline EventHandler::SubscriptionHandle SubscribeFilter(M T::* member, M matchValue, std::function<void()> func)
 {
-	// need to have [key, func] cause external params.
-	return EventHandler::Subscribe<UIButtonEvent>([key, func](IEvent* e)
+	return EventHandler::Subscribe<T>([member, matchValue, func](IEvent* e)
 		{
-			auto uiEv = static_cast<UIButtonEvent*>(e);
-			if (uiEv->fKey == key)
+			// Cast the base interface to the specific derived event type
+			auto derivedEvent = static_cast<T*>(e);
+
+			// Access the member using the pointer-to-member syntax (->*)
+			if (derivedEvent->*member == matchValue)
 				func();
 		});
 }
