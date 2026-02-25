@@ -97,6 +97,16 @@ void Scene::OnUpdate()
 
 void Scene::OnExit()
 {
+	for (auto& pgo : _gameObjectList)
+	{
+		auto go = pgo.get();
+		for (auto& [type, comp] : go->componentMap())
+		{
+			if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
+				b->OnDestroy();
+		}
+	}
+
 	//delete
 	EventHandler::Flush();
 	RenderSystem::FlushRenderers();

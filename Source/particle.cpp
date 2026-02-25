@@ -6,51 +6,9 @@
 
 namespace
 {
-	void RecursiveEmit(Physics::RaycastHit hit,float2 vel,float lifetime,int childrenToSpawn,Color color)
-	{
-		float2 reflectedVel = reflect(vel, hit.normal);
-		float speed = length(vel);
-
-		if (childrenToSpawn > 4)
-		{
-			int nextBurstCount = childrenToSpawn / 4;
-
-			float baseAngle = atan2f(hit.normal.y, hit.normal.x); // Angle of the wall normal
-			float splashRange = PI;
-
-			Color startCol = color;
-			Color endCol = { 1.0f, 1.0f, 0.0f, 1.0f }; // Example: Shift towards a deep blue
-
-
-			float t = 1.0f - (float)nextBurstCount / 128.f;
-
-			Color nextColor;
-			nextColor.r = startCol.r + (endCol.r - startCol.r) * t; // Shift 40% per bounce
-			nextColor.g = startCol.g + (endCol.g - startCol.g) * t;
-			nextColor.b = startCol.b + (endCol.b - startCol.b) * t;
-			nextColor.a = startCol.a;
-
-			for (int j = 0; j < childrenToSpawn; ++j)
-			{
-				//constraint to 180
-				float offset = (j / (float)nextBurstCount) * splashRange - (splashRange / 2.0f);
-				float finalAngle = baseAngle + offset;
-
-				float2 spawnDir = { cosf(finalAngle), sinf(finalAngle) };
-
-				ParticleSystem::Emit(
-					hit.point + (hit.normal * 1.0f),
-					spawnDir * speed,
-					lifetime * 0.8f,
-					nextColor,
-					true,            // These children will also collide and echo
-					nextBurstCount,   // Pass the reduced count for the next generation
-					nullptr
-				);
-			}
-		}
+	
 		
-	}
+	
 }
 
 

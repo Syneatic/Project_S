@@ -20,7 +20,7 @@ void Collision(float2& pos, float2& vel, float& lifetime, Color& col, bool& shou
 	if (shouldCollide)
 	{
 		float2 velocity = vel * dt;
-		float speed = length(velocity);
+		float speed = length(vel);
 		float dist = length(velocity);
 		if (dist > 0.001f) //if particle not moving, skip raycast
 		{
@@ -29,15 +29,29 @@ void Collision(float2& pos, float2& vel, float& lifetime, Color& col, bool& shou
 
 			if (Physics::Raycast(pos, dir, dist, hit, mask))
 			{
-				/*float angleStep = (2.0f * PI) / burstLimit;
-				for (int i = 0; i < burstLimit; i++)
+				
+				if (burstLimit > 16)
 				{
-					float currentAngle = i * angleStep;
-					currentAngle += Random::RandFloat(-(angleStep / 2), angleStep / 2);
-					float2 velocity = { cosf(currentAngle) * speed, sinf(currentAngle) * speed };
-					ParticleSystem::Emit(hit.point, velocity, lifetime, col, true, burstLimit/ 2, Collision);
-				}*/
+					float centerAngle = atan2f(hit.normal.y, hit.normal.x);
 
+					float arcRange = PI;
+					float angleStep = arcRange / (burstLimit - 1);
+
+					float startAngle = centerAngle - (arcRange / 2.0f);
+					
+					for (int i = 0; i < burstLimit; i++)
+					{
+						float currentAngle = startAngle + (i * angleStep);
+						currentAngle += Random::RandFloat(-(angleStep / 4.0f), angleStep / 4.0f);
+						float2 b_velocity = { cosf(currentAngle) , sinf(currentAngle) };
+						b_velocity = normalize(b_velocity) * speed;
+						ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), b_velocity, lifetime * 0.6f, col, true, burstLimit/ 2, Collision);
+					}
+				}
+
+				//reset lifetime when hit
+				lifetime = 5.f;
+				shouldCollide = false;
 				if (hit.layerHit == (1 << 1))
 					col = Color(1.0f, 1.0f, 1.0f);
 
@@ -52,6 +66,11 @@ void Collision(float2& pos, float2& vel, float& lifetime, Color& col, bool& shou
 	}
 }
 
+float GetLifetime(float noise)
+{
+	return noise / 10.f;
+}
+
 void NoiseSource::OnStart() 
 {
 	//get references
@@ -60,6 +79,9 @@ void NoiseSource::OnStart()
 
 	audioEmitter = _owner->GetComponent<AudioEmitter>();
 	if (!audioEmitter) throw std::runtime_error("NoiseSource requires AudioEmitter component");
+	
+	//calculate lifetime
+	lifetime = GetLifetime(noiseLevel);
 }
 
 void NoiseSource::OnUpdate() 
@@ -88,7 +110,8 @@ void NoiseSource::Emit()
 	{
 		float currentAngle = i * angleStep;
 		currentAngle += Random::RandFloat(-(angleStep/2), angleStep/2);
-		float2 velocity = { cosf(currentAngle) * speed, sinf(currentAngle) * speed };
+		float2 velocity = { cosf(currentAngle) , sinf(currentAngle) };
+		velocity = normalize(velocity) * speed;
 		ParticleSystem::Emit(transform->position, velocity, lifetime, color, true, numParticles/2,Collision);
 	}
 }
@@ -97,13 +120,13 @@ void NoiseSource::Emit()
 
 void NoiseSource::DrawInInspector() 
 {
+	lifetime = GetLifetime(noiseLevel);
 	ImGui::SeparatorText("Particle Properties");
 	ImGui::TextUnformatted("Particle Count");
 	ImGui::DragInt("##noise_particlecount", &numParticles,1,0);
-	ImGui::TextUnformatted("Particle Speed");
-	ImGui::DragFloat("##noise_particlespeed", &speed, 0.1f);
 	ImGui::TextUnformatted("Particle Lifetime");
-	ImGui::DragFloat("##noise_particlelife", &lifetime, 0.1f,0.f);
+	ImGui::TextDisabled("%.2f", lifetime);
+	//ImGui::DragFloat("##noise_particlelife", &lifetime, 0.1f,0.f);
 	ImGui::TextUnformatted("Color");
 	float c[4]{ color.r,color.g,color.b,color.a };
 	ImGui::ColorEdit4("##emitter_color", c);
@@ -124,7 +147,6 @@ void NoiseSource::DrawInInspector()
 void NoiseSource::Serialize(Json::Value& outComp) const
 {
 	outComp["numParticles"] = numParticles;
-	outComp["speed"] = speed;
 	outComp["lifetime"] = lifetime;
 	outComp["color"] = WriteColor(color);
 
@@ -137,9 +159,6 @@ void NoiseSource::Deserialize(const Json::Value& compObj)
 {
 	if (compObj.isMember("numParticles") && compObj["numParticles"].isNumeric())
 		numParticles = compObj["numParticles"].asInt();
-
-	if (compObj.isMember("speed") && compObj["speed"].isNumeric())
-		speed = compObj["speed"].asFloat();;
 
 	if (compObj.isMember("lifetime") && compObj["lifetime"].isNumeric())
 		lifetime = compObj["lifetime"].asFloat();

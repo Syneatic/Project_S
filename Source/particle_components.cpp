@@ -10,7 +10,6 @@
 
 void ParticleEmitter::OnStart() 
 {
-	//
 	transform = _owner->GetComponent<Transform>();
 }
 

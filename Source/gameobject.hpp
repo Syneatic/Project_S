@@ -78,10 +78,20 @@ public:
 			GetOrAddComponent<Transform>();
 		}
 
+		if constexpr (std::is_base_of<NoiseSource, T>::value)
+		{
+			GetOrAddComponent<Transform>();
+			GetOrAddComponent<AudioEmitter>();
+		}
+
+
 		std::type_index type{ typeid(T) };
 		//check if alrdy exists
 		if (_componentMap.find(type) != _componentMap.end())
-			throw std::runtime_error("Component already exists");
+		{
+			T* component = dynamic_cast<T*>(_componentMap[type].get());
+			return *component;
+		}
 
 
 		auto ptr = std::make_unique<T>(std::forward<Args>(args)...);

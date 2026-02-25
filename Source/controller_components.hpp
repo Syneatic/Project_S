@@ -2,9 +2,10 @@
 
 #include "base_components.hpp"
 #include "math.hpp"
-#include "gameobject.hpp"
-#include "physics_components.hpp"
-#include "particle_components.hpp"
+
+struct GameObject;
+struct RigidBody;
+struct NoiseSource;
 
 //abstract
 struct Controller : Behaviour
@@ -52,8 +53,7 @@ struct RockController : Controller
 
     Transform* trans = nullptr;
     RigidBody* rb = nullptr;
-
-    //ParticleEmitter* emitter = nullptr;
+    NoiseSource* ns = nullptr;
 
     void DrawInInspector() override;
     void Serialize(Json::Value& outComp) const override;

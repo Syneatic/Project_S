@@ -6,14 +6,12 @@
 #include "json_parser_helper.hpp"
 #include "AEEngine.h"
 
-#include "controller_components.hpp"
-#include "particle_components.hpp"
-
-#include "math.hpp"
+#include "camera.hpp"
 #include "gameobject.hpp"
-#include "scene.hpp"
 
-#include "physics_components.hpp"
+#include "controller_components.hpp"
+
+
 
 
 //===================|Player Controller|===================
@@ -156,7 +154,7 @@ void RockController::OnStart()
 
     trans = _owner->GetComponent<Transform>();
     rb = _owner->GetComponent<RigidBody>();
-    //emitter = _owner->GetComponent<ParticleEmitter>();
+    ns = _owner->GetComponent<NoiseSource>();
 }
 
 void RockController::OnUpdate()
@@ -194,18 +192,6 @@ void RockController::OnDestroy()
 
 }
 
-float2 ScreenToWorld(s32 mouseX, s32 mouseY)
-{
-    float winWidth = (float)AEGfxGetWinMaxX() - (float)AEGfxGetWinMinX();
-    float winHeight = (float)AEGfxGetWinMaxY() - (float)AEGfxGetWinMinY();
-
-    float2 world;
-
-    world.x = (float)mouseX - winWidth * 0.5f;
-    world.y = (winHeight * 0.5f) - (float)mouseY;
-
-    return world;
-}
 
 //=========|Rock Mechanic Helper Function|==================
 void RockController::Throw(const float2& playerPos)
@@ -217,7 +203,7 @@ void RockController::Throw(const float2& playerPos)
     s32 mouseX, mouseY;
     AEInputGetCursorPosition(&mouseX, &mouseY);
 
-    float2 mouseWorld = ScreenToWorld(mouseX, mouseY);
+    float2 mouseWorld = CameraSystem::ScreenToWorld(float2(mouseX,mouseY));
 
     float2 dir = mouseWorld - playerPos;
 
@@ -237,13 +223,13 @@ void RockController::Throw(const float2& playerPos)
 void RockController::OnImpact()
 {
     state = RockState::Impact;
-
+    //
     rb->velocity = float2::zero();
 
-    //if (emitter)
-    //{
-    //    emitter->TriggerPing();
-    //}
+    if (ns)
+    {
+        ns->Emit();
+    }
 }
 
 void RockController::ResetRock()

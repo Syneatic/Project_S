@@ -11,8 +11,8 @@ struct NoiseSource : Behaviour
 {
 	//particle properties
 	int numParticles{128};
-	float speed{200.f};
-	float lifetime{2.f};
+	float speed{300.f}; //keep standard to this speed
+	float lifetime{2.f}; //determines how far the particle can travel
 	Color color{};
 	//audio properties
 	AudioEmitter* audioEmitter { nullptr };
