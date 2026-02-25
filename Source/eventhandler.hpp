@@ -12,21 +12,23 @@ namespace EventHandler
 		size_t id;
 	};
 
-	//inline std::unordered_map<std::type_index, std::vector<EventCallback>> subscribers;
 	inline std::unordered_map<std::type_index, std::unordered_map<size_t, EventCallback>> subscribers;
 	inline std::queue<std::unique_ptr<IEvent>> eQueue;
 	inline size_t nextId{ 0 };
 
-	// DEBUG
-	//inline int tmp{}, tmp2{};
 
 	// Add new subscriber to event handler.
-	template<typename T> 
-	SubscriptionHandle Subscribe(EventCallback cb) 
-	{ 
-		size_t id = nextId++; 
-		subscribers[typeid(T)][id] = std::move(cb); 
-		return { typeid(T), id }; 
+	template<typename T>
+	SubscriptionHandle Subscribe(std::function<void(const T&)> cb)
+	{
+		static_assert(std::is_base_of<IEvent, T>::value, "T must derive from IEvent");
+
+		size_t id = nextId++;
+		// We wrap the type-specific callback inside the generic IEvent* callback
+		subscribers[typeid(T)][id] = [cb](IEvent* e) {
+			cb(*static_cast<T*>(e));
+			};
+		return { typeid(T), id };
 	}
 
 	// Push a event to queue.
@@ -36,22 +38,18 @@ namespace EventHandler
 		eQueue.push(std::make_unique<T>(std::forward<Args>(args)...));
 	}
 	
+	// Cleaned up SubscribeFilter for the new system
+	template <typename T, typename M>
+	SubscriptionHandle SubscribeFilter(M T::* member, M matchValue, std::function<void(const T&)> func)
+	{
+		return Subscribe<T>([member, matchValue, func](const T& e)
+			{
+				if (e.*member == matchValue)
+					func(e);
+			});
+	}
+
 	void Unsubscribe(const SubscriptionHandle& handle);
 	void CallQ();
 	void Flush();
-}
-
-// Helper function to subscribe any event callback to a element in subscribers container.
-template <typename T, typename M>
-inline EventHandler::SubscriptionHandle SubscribeFilter(M T::* member, M matchValue, std::function<void()> func)
-{
-	return EventHandler::Subscribe<T>([member, matchValue, func](IEvent* e)
-		{
-			// Cast the base interface to the specific derived event type
-			auto derivedEvent = static_cast<T*>(e);
-
-			// Access the member using the pointer-to-member syntax (->*)
-			if (derivedEvent->*member == matchValue)
-				func();
-		});
 }

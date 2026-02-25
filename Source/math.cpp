@@ -10,6 +10,10 @@ float2 float2::operator-(const float2& rhs) const
 {
 	return float2(x - rhs.x, y - rhs.y);
 }
+float2 float2::operator-() const
+{
+	return float2(-x, -y);
+}
 
 float2& float2::operator+=(const float2& rhs)
 {

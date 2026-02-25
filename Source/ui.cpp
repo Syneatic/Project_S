@@ -9,19 +9,19 @@ namespace UISystem
     std::vector<EventHandler::SubscriptionHandle> handlers;
 
     // Wrapper for function.
-    EventHandler::SubscriptionHandle SubscribeButton(FunctionKey matchValue, std::function<void()> func)
+    EventHandler::SubscriptionHandle SubscribeButton(FunctionKey matchValue, std::function<void(const UIButtonEvent&)> func)
     {
-        return SubscribeFilter(&UIButtonEvent::fKey, matchValue, func);
+        return EventHandler::SubscribeFilter(&UIButtonEvent::fKey, matchValue, func);
     }
 
     // Subscribe each button function as an event to event handler.
     void init()
     {
-        handlers.push_back(SubscribeButton(FunctionKey::PLAY_GAME, []() { SceneManager::RequestSceneSwitch("PrototypeLvl"); }));
-        handlers.push_back(SubscribeButton(FunctionKey::PAUSE_GAME, []() { std::cout << "Pause\n"; }));
-        handlers.push_back(SubscribeButton(FunctionKey::RESTART_GAME, []() { SceneManager::RequestSceneReload(); }));
-        handlers.push_back(SubscribeButton(FunctionKey::QUIT_GAME, []() { SceneManager::RequestSceneSwitch("MainMenu"); }));
-        handlers.push_back(SubscribeButton(FunctionKey::EXIT_APP, []() { SceneManager::QuitApplication(); }));
+        handlers.push_back(SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent& e) { SceneManager::RequestSceneSwitch("PrototypeLvl"); }));
+        handlers.push_back(SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent& e) { std::cout << "Pause\n"; }));
+        handlers.push_back(SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent& e) { SceneManager::RequestSceneReload(); }));
+        handlers.push_back(SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent& e) { SceneManager::RequestSceneSwitch("MainMenu"); }));
+        handlers.push_back(SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent& e) { SceneManager::QuitApplication(); }));
     }
 
     float2 ScreenToWorld(s32 x, s32 y)

@@ -154,7 +154,15 @@ void RockController::OnStart()
 
     trans = _owner->GetComponent<Transform>();
     rb = _owner->GetComponent<RigidBody>();
-    ns = _owner->GetComponent<NoiseSource>();
+
+    EventHandler::SubscribeFilter<OnCollisionEvent, GameObject*>(
+        &OnCollisionEvent::self,
+        _owner,
+        [this](const OnCollisionEvent& e)
+        {
+            this->OnImpact(e);
+        }
+    );
 }
 
 void RockController::OnUpdate()
@@ -164,27 +172,27 @@ void RockController::OnUpdate()
     float dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 
 
-    switch (state)
-    {
-    case RockState::Idle:
-        rb->velocity = float2::zero();
-        break;
+    //switch (state)
+    //{
+    //case RockState::Idle:
+    //    rb->velocity = float2::zero();
+    //    break;
 
-    case RockState::Thrown:
+    //case RockState::Thrown:
 
-        // Detect impact (ground, wall, ceiling)
-        if (rb->HitEnvironment)
-        {
-            rb->HitEnvironment = false;
-            OnImpact();
-        }
+    //    // Detect impact (ground, wall, ceiling)
+    //    if (rb->HitEnvironment)
+    //    {
+    //        rb->HitEnvironment = false;
+    //        OnImpact();
+    //    }
 
-        break;
+    //    break;
 
-    case RockState::Impact:
+    //case RockState::Impact:
 
-        break;
-    }
+    //    break;
+    //}
 }
 
 void RockController::OnDestroy()
@@ -220,16 +228,11 @@ void RockController::Throw(const float2& playerPos)
     rb->Is_Grounded = false;
 }
 
-void RockController::OnImpact()
+void RockController::OnImpact(const OnCollisionEvent& e)
 {
     state = RockState::Impact;
-    //
-    rb->velocity = float2::zero();
-
-    if (ns)
-    {
-        ns->Emit();
-    }
+    float2 vel = normalize(rb->velocity) + (-e.normal);
+    rb->velocity = vel * e.impulse * 0.6f;
 }
 
 void RockController::ResetRock()

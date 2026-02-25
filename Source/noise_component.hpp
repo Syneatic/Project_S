@@ -29,6 +29,7 @@ struct NoiseSource : Behaviour
 	void OnDestroy() override;
 
 	void Emit();
+	void HandleHit(const OnCollisionEvent& e);
 
 	const std::string name() const override { return "NoiseSource"; }
 
