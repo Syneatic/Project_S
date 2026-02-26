@@ -1,6 +1,7 @@
 #pragma once
 
 #include "math.hpp"
+#include "eventhandler.hpp"
 
 struct GameObject;
 struct RigidBody;
@@ -64,7 +65,7 @@ struct RockController : Controller
     void OnDestroy() override;
 
     void Throw(const float2& startPos);
-    void OnImpact();
+    void OnImpact(const OnCollisionEvent& e);
     void ResetRock();
 
     const std::string name() const override { return "RockController"; }

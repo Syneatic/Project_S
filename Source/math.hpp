@@ -17,6 +17,8 @@ struct float2
 
 	float2 operator-(const float2& rhs) const;
 
+	float2 operator-() const;
+
 	float2& operator+=(const float2& rhs);
 
 	float2& operator-=(const float2& rhs);

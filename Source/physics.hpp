@@ -24,6 +24,7 @@ namespace Physics
 		bool collided{ false };
 		float2 normal{ 0,0 };
 		float penetration{ 0 };
+		float2 contactPoint{ 0,0 };
 	};
 
 	//needs to be registered at start of scene

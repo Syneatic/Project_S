@@ -11,7 +11,6 @@ struct IEvent
 {
 	virtual ~IEvent() = default;
 	virtual std::type_index getType() const = 0;
-	//size_t targetId{ 0 };
 };
 
 // Base event that uses Curiously Recurring Template Pattern
@@ -30,8 +29,8 @@ struct UIButtonEvent : public Event<UIButtonEvent>
 
 struct PingEvent : public Event<PingEvent>
 {
-	size_t targetId; int callee;
-	PingEvent(size_t target, int calleeVal) : targetId{ target }, callee{ calleeVal } {}
+	size_t targetId;
+	PingEvent(size_t target) : targetId{ target } {}
 };
 
 //physics event
@@ -40,8 +39,9 @@ struct OnCollisionEvent : public Event<OnCollisionEvent>
 	GameObject* self;
 	GameObject* other;
 	float2 normal;
+	float2 contactPoint;
 	float impulse;
 
-	OnCollisionEvent(GameObject* s, GameObject* o, float2 n, float i)
-		: self(s), other(o), normal(n), impulse(i) {}
+	OnCollisionEvent(GameObject* s, GameObject* o,float2 c, float2 n, float i)
+		: self(s), other(o),contactPoint(c), normal(n), impulse(i) { }
 };

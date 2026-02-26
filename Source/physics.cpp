@@ -340,6 +340,9 @@ namespace Physics
 		info.collided = true;
 		info.normal = collisionNormal;
 		info.penetration = minPenetration;
+		float2 posA = ta.position;
+		float2 posB = tb.position;
+		info.contactPoint = posA + (normalize(posB - posA) * (length(posB - posA) * 0.5f));
 		return info;
 	}
 
@@ -539,6 +542,32 @@ namespace Physics
 								rb2->velocity.x = 0.f;
 							}
 						}
+
+						float impulse = 0.0f;
+						if (rb1 || rb2) {
+							float2 v1 = rb1 ? rb1->velocity : float2{ 0,0 };
+							float2 v2 = rb2 ? rb2->velocity : float2{ 0,0 };
+							float2 relativeVel = v1 - v2;
+							//impulse = abs(dot(relativeVel, info.normal));
+							impulse = length(relativeVel);
+						}
+
+						EventHandler::RaiseEvent<OnCollisionEvent>(
+							&c1->gameObject(),
+							&c2->gameObject(),
+							info.contactPoint,
+							info.normal,
+							impulse
+						);
+
+						// Raise for Object B (Invert normal)
+						EventHandler::RaiseEvent<OnCollisionEvent>(
+							&c2->gameObject(),
+							&c1->gameObject(),
+							info.contactPoint,
+							-info.normal,
+							impulse
+						);
 					}
 				}
 
