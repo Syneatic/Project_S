@@ -9,7 +9,7 @@
 
 void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit)
 {
-	float dt = AEFrameRateControllerGetFrameTime();
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	uint32_t mask = 1 << 1;
 	mask |= 1 << 2;
 	mask |= 1 << 3;
@@ -109,7 +109,7 @@ void NoiseSource::OnUpdate()
 {
 	if (!repeat) return;
 
-	float dt = AEFrameRateControllerGetFrameTime();
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	repeatTimer += dt;
 
 	if (repeatTimer >= repeatInterval)
@@ -133,7 +133,7 @@ void NoiseSource::Emit()
 	for (int i = 0; i < numParticles; i++)
 	{
 		float currentAngle = i * angleStep;
-		currentAngle += Random::RandFloat(-(angleStep/1.5), angleStep/1.5);
+		currentAngle += Random::RandFloat(-(angleStep/1.5f), angleStep/1.5f);
 		float2 velocity = { cosf(currentAngle) , sinf(currentAngle) };
 		velocity = normalize(velocity) * speed;
 		ParticleSystem::Emit(transform->position, velocity,0.f, lifetime, color, true, numParticles/2,Collision);

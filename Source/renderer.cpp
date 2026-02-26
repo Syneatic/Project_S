@@ -52,12 +52,12 @@ namespace {
 		AEGfxMeshStart();
 
 		//definitely needs to be change to f32 for no conversion
-		double baseX = 0.5f;
-		double baseY = 0.f;
+		f32 baseX = 0.5f;
+		f32 baseY = 0.f;
 		for (int i = 0; i < 16; i++) {
-			double angle = (2 * PI / 16);
-			double rotatedX = cos(angle) * baseX + -sin(angle) * baseY;
-			double rotatedY = sin(angle) * baseX + cos(angle) * baseY;
+			f32 angle = (2.f * PI / 16.f);
+			f32 rotatedX = cos(angle) * baseX + -sin(angle) * baseY;
+			f32 rotatedY = sin(angle) * baseX + cos(angle) * baseY;
 			AEGfxTriAdd(
 				0.f, 0.f, 0xFFFFFFFF, 0.f, 0.f,
 				baseX, baseY, 0xFFFFFFFF, 1.0f, 1.0f,

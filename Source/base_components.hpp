@@ -13,11 +13,11 @@ public:
     void SetOwner(GameObject* owner) { _owner = owner; }
     GameObject& gameObject() { return *_owner; }
     const GameObject& gameObject() const { return *_owner; }
-    friend class GameObject; //allow GameObject class to access private and protected
+    friend struct GameObject; //allow GameObject class to access private and protected
 
 	virtual void DrawInInspector() {};
-    virtual void Serialize(Json::Value& outComp) const{};
-    virtual void Deserialize(const Json::Value& compObj) {};
+    virtual void Serialize(Json::Value& /*outComp*/) const {};
+    virtual void Deserialize(const Json::Value& /*compObj*/) {};
 
 	virtual const std::string name() const = 0;
 	virtual ~Component() = default;

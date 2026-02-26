@@ -62,7 +62,6 @@ void PlayerController::OnStart()
 void PlayerController::OnUpdate()
 {
     dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
-    GameObject& owner = *_owner;
     if (!trans || !rb) return;
 
     float input = 0.f;
@@ -168,31 +167,6 @@ void RockController::OnStart()
 void RockController::OnUpdate()
 {
     if (!trans || !rb) return;
-
-    float dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
-
-
-    //switch (state)
-    //{
-    //case RockState::Idle:
-    //    rb->velocity = float2::zero();
-    //    break;
-
-    //case RockState::Thrown:
-
-    //    // Detect impact (ground, wall, ceiling)
-    //    if (rb->HitEnvironment)
-    //    {
-    //        rb->HitEnvironment = false;
-    //        OnImpact();
-    //    }
-
-    //    break;
-
-    //case RockState::Impact:
-
-    //    break;
-    //}
 }
 
 void RockController::OnDestroy()
@@ -211,7 +185,7 @@ void RockController::Throw(const float2& playerPos)
     s32 mouseX, mouseY;
     AEInputGetCursorPosition(&mouseX, &mouseY);
 
-    float2 mouseWorld = CameraSystem::ScreenToWorld(float2(mouseX,mouseY));
+    float2 mouseWorld = CameraSystem::ScreenToWorld(float2(static_cast<f32>(mouseX), static_cast<f32>(mouseY)));
 
     float2 dir = mouseWorld - playerPos;
 

@@ -28,7 +28,7 @@ namespace ParticleSystem
 
 	void Update()
 	{
-		f64 dt = AEFrameRateControllerGetFrameTime();
+		f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 		uint32_t mask = 1 << 1;
 		mask |= 1 << 2;
 		mask |= 1 << 3;
@@ -100,7 +100,7 @@ namespace ParticleSystem
 		}
 	}
 
-	void Emit(float2 pos,float2 vel,float time,float life,Color col, bool shouldCollide, int burstLimit, FN behaviour)
+	void Emit(float2 pos,float2 vel,float /*time*/, float life, Color col, bool shouldCollide, int burstLimit, FN behaviour)
 	{
 		if (g_pool.freeStackTop < 0) return; // Pool is full
 

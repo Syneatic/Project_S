@@ -49,8 +49,6 @@ struct RockController : Controller
     f32 throwSpeed = 250.f;
     f32 throwAngle = 0.f; //degrees
 
-    float2 dir{0.f, 0.f};
-
     Transform* trans = nullptr;
     RigidBody* rb = nullptr;
     NoiseSource* ns = nullptr;

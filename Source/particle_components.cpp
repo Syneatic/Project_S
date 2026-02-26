@@ -20,7 +20,7 @@ void ParticleEmitter::OnUpdate()
 	}
 
 
-	timer += AEFrameRateControllerGetFrameTime();
+	timer += static_cast<float>(AEFrameRateControllerGetFrameTime());
 	float interval = 1.0f / spawnRate;
 
 	//spawn particles
@@ -39,7 +39,7 @@ void ParticleEmitter::OnUpdate()
 			sinf(finalAngle) * speed
 		};
 
-		ParticleSystem::Emit(pos, velocity,0.f, lifetime, color,true,spawnRate/2,nullptr);
+		ParticleSystem::Emit(pos, velocity,0.f, lifetime, color,true,static_cast<int>(spawnRate/2),nullptr);
 		timer -= interval;
 	}
 }

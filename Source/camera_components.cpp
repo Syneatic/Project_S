@@ -14,5 +14,5 @@ void MainCamera::OnDestroy() {
 };
 
 void MainCamera::DrawInInspector() {};
-void MainCamera::Serialize(Json::Value& outComp) const {};
-void MainCamera::Deserialize(const Json::Value& compObj) {};
+void MainCamera::Serialize(Json::Value& /*outComp*/) const {};
+void MainCamera::Deserialize(const Json::Value& /*compObj*/) {};

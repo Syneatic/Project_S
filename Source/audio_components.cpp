@@ -76,14 +76,14 @@ void AudioEmitter::SetVolume(f32 vol)
 	volume = std::clamp(vol, 0.0f, 1.0f);
 }
 
-void AudioEmitter::SetPitch(f32 pitch)
+void AudioEmitter::SetPitch(f32 p)
 {
-	pitch = std::clamp(pitch, 0.5f, 2.0f);
+	pitch = std::clamp(p, 0.5f, 2.0f);
 }
 
-void AudioEmitter::SetLoop(bool loop)
+void AudioEmitter::SetLoop(bool l)
 {
-	loop = loop;
+	loop = l;
 }
 
 void AudioEmitter::Initialize()
@@ -201,12 +201,12 @@ void AudioListener::DrawInInspector()
 
 }
 
-void AudioListener::Serialize(Json::Value& outComp) const
+void AudioListener::Serialize(Json::Value& /*outComp*/) const
 {
 
 }
 
-void AudioListener::Deserialize(const Json::Value& compObj)
+void AudioListener::Deserialize(const Json::Value& /*compObj*/)
 {
 
 }

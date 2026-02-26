@@ -603,11 +603,11 @@ void EditorScene::OnUpdate()
 	CameraSystem::OnUpdate(); // Check input and update camera matrix
 
 	AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
-	f32 dt = (f32)AEFrameRateControllerGetFrameTime();
+	//f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 
 	RenderSystem::Draw();
 
-	bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
+	//bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
 
 	//draw gizmos last
 	Gizmos();
