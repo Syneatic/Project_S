@@ -543,6 +543,7 @@ namespace Physics
 							}
 						}
 
+						//find a new way to calculate impulse
 						float impulse = 0.0f;
 						if (rb1 || rb2) {
 							float2 v1 = rb1 ? rb1->velocity : float2{ 0,0 };

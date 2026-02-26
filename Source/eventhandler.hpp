@@ -5,16 +5,16 @@
 namespace EventHandler
 {
 	using EventCallback = std::function<void(IEvent*)>;
-
+	using CallbackId = size_t;
 	struct SubscriptionHandle 
 	{ 
 		std::type_index type; 
-		size_t id;
+		CallbackId id;
 	};
 
-	inline std::unordered_map<std::type_index, std::unordered_map<size_t, EventCallback>> subscribers;
+	inline std::unordered_map<std::type_index, std::unordered_map<CallbackId, EventCallback>> subscribers;
 	inline std::queue<std::unique_ptr<IEvent>> eQueue;
-	inline size_t nextId{ 0 };
+	inline CallbackId nextId{ 0 };
 
 
 	// Add new subscriber to event handler.
@@ -23,7 +23,7 @@ namespace EventHandler
 	{
 		static_assert(std::is_base_of<IEvent, T>::value, "T must derive from IEvent");
 
-		size_t id = nextId++;
+		CallbackId id = nextId++;
 		// We wrap the type-specific callback inside the generic IEvent* callback
 		subscribers[typeid(T)][id] = [cb](IEvent* e) {
 			cb(*static_cast<T*>(e));

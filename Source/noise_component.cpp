@@ -6,14 +6,6 @@
 #include "noise_component.hpp"
 #include "event.hpp"
 
-namespace
-{
-	enum PingEventID
-	{
-		AUDIO,
-		EMIT
-	};
-}
 
 void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit)
 {
@@ -101,17 +93,7 @@ void NoiseSource::OnStart()
 	//calculate lifetime
 	lifetime = GetLifetime(noiseLevel);
 
-	EventHandler::SubscribeFilter<PingEvent,size_t>(
-		&PingEvent::targetId, 
-		_owner->id,
-		[this](const PingEvent& e)
-		{
-			if(this->audioEmitter)
-				this->audioEmitter->Play();
-		}
-	);
-
-	EventHandler::SubscribeFilter<OnCollisionEvent,GameObject*>(
+	auto collisionhandle = EventHandler::SubscribeFilter<OnCollisionEvent,GameObject*>(
 		&OnCollisionEvent::self, 
 		_owner,                
 		[this](const OnCollisionEvent& e)
@@ -119,6 +101,8 @@ void NoiseSource::OnStart()
 			this->HandleHit(e);
 		}
 	);
+
+	eventSubscriptionList.push_back(collisionhandle);
 }
 
 void NoiseSource::OnUpdate() 
@@ -137,9 +121,9 @@ void NoiseSource::OnUpdate()
 
 void NoiseSource::OnDestroy() 
 {
-	for (auto& e : emitterSH)
+	for (auto& e : eventSubscriptionList)
 	{
-		EventHandler::Unsubscribe(e.value());
+		EventHandler::Unsubscribe(e);
 	}
 }
 
@@ -155,7 +139,7 @@ void NoiseSource::Emit()
 		ParticleSystem::Emit(transform->position, velocity,0.f, lifetime, color, true, numParticles/2,Collision);
 	}
 
-	EventHandler::RaiseEvent<PingEvent>(_owner->id);
+	if (audioEmitter) audioEmitter->Play();
 }
 
 void NoiseSource::HandleHit(const OnCollisionEvent& e)
@@ -163,9 +147,6 @@ void NoiseSource::HandleHit(const OnCollisionEvent& e)
 	// Only emit noise if the impact was significant
 	if (e.impulse > 45.0f)
 	{
-		// Play sound if we have an emitter
-		if (audioEmitter) audioEmitter->Play();
-
 		this->Emit();
 	}
 }

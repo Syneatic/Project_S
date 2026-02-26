@@ -38,5 +38,5 @@ struct NoiseSource : Behaviour
 	void Deserialize(const Json::Value& compObj) override;
 
 private:
-	std::vector<std::optional<EventHandler::SubscriptionHandle>> emitterSH;
+	std::vector<EventHandler::SubscriptionHandle> eventSubscriptionList;
 };
