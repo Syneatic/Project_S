@@ -218,7 +218,7 @@
         },
         {
           "collisionMask" : 4294967295,
-          "layerMask" : 2,
+          "layerMask" : 4,
           "size" : 
           [
             1.0,
@@ -467,20 +467,6 @@
           "type" : "SpriteRenderer"
         },
         {
-          "color" : 
-          [
-            0.0,
-            0.43137255311012268,
-            0.75294119119644165,
-            1.0
-          ],
-          "maxradius" : 250.0,
-          "raycount" : 128,
-          "speed" : 150.0,
-          "timelimit" : 2.5,
-          "type" : "ParticleEmitter"
-        },
-        {
           "fileName" : "ore.mp3",
           "loop" : false,
           "pitch" : 1.0,
@@ -528,7 +514,7 @@
         },
         {
           "collisionMask" : 4294967295,
-          "layerMask" : 0,
+          "layerMask" : 2,
           "size" : 
           [
             1.0,
@@ -595,24 +581,10 @@
           "type" : "BoxCollider"
         },
         {
-          "jumpHeight" : 120.0,
+          "jumpHeight" : 150.0,
           "max_speed" : 250.0,
           "time" : 1.0,
           "type" : "PlayerController"
-        },
-        {
-          "color" : 
-          [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "maxradius" : 500.0,
-          "raycount" : 256,
-          "speed" : 300.0,
-          "timelimit" : 10.0,
-          "type" : "ParticleEmitter"
         },
         {
           "type" : "Camera"
@@ -657,16 +629,17 @@
         {
           "color" : 
           [
-            0.42352941632270813,
-            0.85490196943283081,
-            0.30196079611778259,
+            0.86764675378799438,
+            0.26794981956481934,
+            0.86764705181121826,
             1.0
           ],
-          "maxradius" : 250.0,
-          "raycount" : 256,
-          "speed" : 150.0,
-          "timelimit" : 1.0,
-          "type" : "ParticleEmitter"
+          "lifetime" : 0.0,
+          "noiseLevel" : 0.0,
+          "numParticles" : 128,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
         },
         {
           "fileName" : "button_click.wav",
@@ -809,26 +782,82 @@
           "type" : "BoxCollider"
         },
         {
-          "color" : 
-          [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "maxradius" : 500.0,
-          "raycount" : 256,
-          "speed" : 300.0,
-          "timelimit" : 100.0,
-          "type" : "ParticleEmitter"
-        },
-        {
           "throwAngle" : 0.0,
           "throwSpeed" : 300.0,
           "type" : "RockController"
+        },
+        {
+          "color" : 
+          [
+            0.4117647111415863,
+            0.82352942228317261,
+            0.43598619103431702,
+            1.0
+          ],
+          "lifetime" : 1.0,
+          "noiseLevel" : 10.0,
+          "numParticles" : 256,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "fileName" : "button_click.wav",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
         }
       ],
       "name" : "Rock"
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "position" : 
+          [
+            60.0,
+            27.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            0.0,
+            0.0
+          ],
+          "type" : "Transform"
+        },
+        {
+          "color" : 
+          [
+            0.91176474094390869,
+            1.0,
+            0.0,
+            1.0
+          ],
+          "lifetime" : 0.5,
+          "noiseLevel" : 5.0,
+          "numParticles" : 32,
+          "repeat" : false,
+          "repeatInterval" : 3.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        }
+      ],
+      "name" : "GameObject_16"
     }
   ],
   "name" : "PrototypeLvl"

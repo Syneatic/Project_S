@@ -1,8 +1,4 @@
 #pragma once
-#include <unordered_set>
-
-#include "AEEngine.h"
-#include "transform_component.hpp"
 
 struct Camera;
 
@@ -17,4 +13,6 @@ namespace CameraSystem {
 	void OnUpdate();
 	void OnExit();
 	void MoveCamera(Transform parentTrans);
+
+	float2 ScreenToWorld(float2 screen);
 }

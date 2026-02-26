@@ -1,9 +1,5 @@
 #pragma once
-#include <vector>
-#include <unordered_set>
 
-#include "AEEngine.h"
-#include "transform_component.hpp"
 #include "color.hpp"
 
 struct Renderer;
@@ -40,8 +36,7 @@ void AddVertex(float2 p, Color c, float2 uv);
 
 namespace RenderSystem {
 	void RendererInitialize();
-
-
+	
 	//exposed api for registering renderer when loading levels
 	void RegisterRenderer(Renderer* r);
 	void UnregisterRenderer(Renderer* r);
@@ -56,6 +51,9 @@ namespace RenderSystem {
 	void DrawMyText(const char* text, RenderData data);
 	void DrawArrow(RenderData data);
 	void DrawBox(float2 p, float2 scl, f32 rot, Color c);
+
+
+	AEGfxVertexList* GetQuadMesh();
 
 	void RendererExit();
 }

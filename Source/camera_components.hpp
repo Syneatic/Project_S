@@ -1,8 +1,6 @@
 #pragma once
-#include "AEEngine.h"
 
 #include "camera.hpp"
-#include "base_components.hpp"
 
 struct MainCamera : Behaviour
 {

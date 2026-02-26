@@ -1,11 +1,5 @@
 #pragma once
 
-#include <unordered_map>
-
-#include "AEEngine.h"
-
-#include "base_components.hpp"
-
 namespace UISystem
 {
 	// Preset value.

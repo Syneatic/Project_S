@@ -1,6 +1,3 @@
-#include <iostream>
-
-#include "ImGUI/imgui.h"
 #include "eventhandler.hpp"
 #include "ui_components.hpp"
 

@@ -1,11 +1,5 @@
-#include <iostream>
-#include <unordered_set>
-#include <vector>
-
-#include "AEEngine.h"
 #include "camera.hpp"
 #include "camera_components.hpp"
-#include "base_components.hpp"
 
 
 
@@ -13,14 +7,16 @@ int fX, fY, zoom;
 float posX, posY;
 bool scrollHeld{};
 
-namespace CameraSystem {
-
-	void OnStart() {
+namespace CameraSystem 
+{
+	void OnStart() 
+	{
 		AEMtx33Identity(&CameraData::camMatrix);
 		AEGfxSetCamPosition(0,0);
 	}
 
-	void OnUpdate() {
+	void OnUpdate() 
+	{
 		// check middle mouse held down, get first cursor pos
 		// and current cursor pos
 		if (AEInputCheckTriggered(AEVK_MBUTTON)) {
@@ -31,7 +27,6 @@ namespace CameraSystem {
 		if (scrollHeld == true) {
 			int lX, lY, dX, dY;
 			AEInputGetCursorPosition(&lX, &lY);
-
 			// get the difference between current cursor pos
 			// and first cursor pos
 			dX = lX - fX; dY = lY - fY;
@@ -71,14 +66,33 @@ namespace CameraSystem {
 		AEMtx33Concat(&CameraData::camMatrix, &camPos, &negCamPos);
 	}
 
-	void OnExit() {
+	void OnExit() 
+	{
 		AEMtx33Identity(&CameraData::camMatrix);
 		AEGfxSetCamPosition(0, 0);
 		CameraData::zoomMult = 1;
 	}
 
-	void MoveCamera(Transform parentTrans) {
+	void MoveCamera(Transform parentTrans) 
+	{
 		AEMtx33Identity(&CameraData::camMatrix);
 		AEGfxSetCamPosition(parentTrans.position.x, parentTrans.position.y);
+	}
+
+	float2 ScreenToWorld(float2 pos)
+	{
+		float2 worldPos;
+		float2 screen{(f32)AEGfxGetWindowWidth(),(f32)AEGfxGetWindowHeight()};
+		float2 camera{};
+		AEGfxGetCamPosition(&camera.x, &camera.y);
+
+		float ndcX = (pos.x / screen.x) - 0.5f;
+		float ndcY = 0.5f - (pos.y / screen.y);
+
+		worldPos.x = (ndcX * screen.x / CameraData::zoomMult) + camera.x;
+		worldPos.y = (ndcY * screen.y / CameraData::zoomMult) + camera.y;
+
+
+		return worldPos;
 	}
 }

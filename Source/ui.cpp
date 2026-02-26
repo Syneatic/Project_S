@@ -1,8 +1,3 @@
-#include <iostream>
-#include <vector>
-
-#include "AEEngine.h"
-
 #include "gameobject.hpp"
 #include "scene_manager.hpp"
 #include "eventhandler.hpp"
@@ -11,50 +6,22 @@
 
 namespace UISystem
 {
-    //void BindButtonFunctions(UIButtonRegister& bReg)
-    //{
-    //    bReg.bindFunction(FunctionKey::PLAY_GAME, Play);
-    //    bReg.bindFunction(FunctionKey::PAUSE_GAME, Pause);
-    //    bReg.bindFunction(FunctionKey::RESTART_GAME, Restart);
-    //    bReg.bindFunction(FunctionKey::QUIT_GAME, Quit);
-    //    bReg.bindFunction(FunctionKey::EXIT_APP, Exit);
-    //}
-
     std::vector<EventHandler::SubscriptionHandle> handlers;
+
+    // Wrapper for function.
+    EventHandler::SubscriptionHandle SubscribeButton(FunctionKey matchValue, std::function<void()> func)
+    {
+        return SubscribeFilter(&UIButtonEvent::fKey, matchValue, func);
+    }
+
     // Subscribe each button function as an event to event handler.
     void init()
     {
-        //EventHandler::Subscribe<UIButtonEvent>([](IEvent* e)
-        //{
-        //	auto uiEv = static_cast<UIButtonEvent*>(e); // Cast to access the fKey
-        //	// This single function handles ALL UI buttons for this system
-        //	switch (uiEv->fKey) 
-        //	{
-        //	case FunctionKey::PLAY_GAME:
-        //		UISystem::Play();
-        //		break;
-        //	case FunctionKey::PAUSE_GAME:
-        //		UISystem::Pause();
-        //		break;
-        //	case FunctionKey::RESTART_GAME:
-        //		UISystem::Restart();
-        //		break;
-        //	case FunctionKey::QUIT_GAME:
-        //		UISystem::Quit();
-        //		break;
-        //	case FunctionKey::EXIT_APP:
-        //		UISystem::Exit();
-        //		break;
-        //	default:
-        //		break;
-        //	}
-        //});
-
-        handlers.push_back(SubscribeFunctionKey(FunctionKey::PLAY_GAME, []() { SceneManager::RequestSceneSwitch("PrototypeLvl"); }));
-        handlers.push_back(SubscribeFunctionKey(FunctionKey::PAUSE_GAME, []() { std::cout << "Pause\n"; }));
-        handlers.push_back(SubscribeFunctionKey(FunctionKey::RESTART_GAME, []() { SceneManager::RequestSceneReload(); }));
-        handlers.push_back(SubscribeFunctionKey(FunctionKey::QUIT_GAME, []() { SceneManager::RequestSceneSwitch("MainMenu"); }));
-        handlers.push_back(SubscribeFunctionKey(FunctionKey::EXIT_APP, []() { SceneManager::QuitApplication(); }));
+        handlers.push_back(SubscribeButton(FunctionKey::PLAY_GAME, []() { SceneManager::RequestSceneSwitch("PrototypeLvl"); }));
+        handlers.push_back(SubscribeButton(FunctionKey::PAUSE_GAME, []() { std::cout << "Pause\n"; }));
+        handlers.push_back(SubscribeButton(FunctionKey::RESTART_GAME, []() { SceneManager::RequestSceneReload(); }));
+        handlers.push_back(SubscribeButton(FunctionKey::QUIT_GAME, []() { SceneManager::RequestSceneSwitch("MainMenu"); }));
+        handlers.push_back(SubscribeButton(FunctionKey::EXIT_APP, []() { SceneManager::QuitApplication(); }));
     }
 
     float2 ScreenToWorld(s32 x, s32 y)

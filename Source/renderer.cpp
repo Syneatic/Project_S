@@ -1,17 +1,8 @@
-#include <crtdbg.h>
-#include <iostream>
-#include <algorithm>
-#include <string>
-#include <filesystem>
-#include <unordered_set>
-#include <vector>
-
-#include "AEEngine.h"
 #include "math.hpp"
 #include "renderer.hpp"
 #include "camera.hpp"
 #include "render_components.hpp"
-#include "base_components.hpp"
+#include "particle.hpp"
 
 //fwd decl
 void AddVertex(float2 p, Color c, float2 uv)
@@ -160,7 +151,15 @@ namespace RenderSystem
 
 	void Draw()
 	{
-		for (auto r : _renderers) r->Draw();
+		for (auto r : _renderers) {
+			if (r->renderLayer < UI) r->Draw();
+		}
+
+		ParticleSystem::Render();
+
+		for (auto r : _renderers) {
+			if (r->renderLayer>= UI) r->Draw();
+		}
 	}
 
 	void SetTransform(Transform t, Alignment mode, AEMtx33& mtx)
@@ -418,8 +417,13 @@ namespace RenderSystem
 		AEGfxMeshDraw(_boxMesh, AE_GFX_MDM_LINES);
 	}
 
+
+	AEGfxVertexList* GetQuadMesh() { return _quadMesh; }
+
+
 	//call after game loop
-	void RendererExit() {
+	void RendererExit() 
+	{
 		AEGfxMeshFree(_quadMesh);
 		AEGfxMeshFree(_triangleMesh);
 		AEGfxMeshFree(_circleMesh);

@@ -1,14 +1,3 @@
-#include <shobjidl.h> 
-#include <algorithm>
-#include <iostream>
-#include <cstdlib>
-//#include <windows.h>
-//#include <string>
-//#include <filesystem>
-
-
-#include "ImGUI/imgui.h"
-
 #include "audio_components.hpp"
 #include "audio.hpp"
 

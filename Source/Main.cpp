@@ -17,8 +17,6 @@
 #include "scene_parser.hpp"
 #include "scene_manager.hpp"
 #include "ui_components.hpp"
-//#include "scene_play.hpp" 
-
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -86,12 +84,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	bool m_ImGUIInitialized = false;
 	InitializeImGUI(m_ImGUIInitialized);
 
-	// Create a global buttonRegister,
-	// bind all functions & assign as
-	// pointer to all buttons with static
-	// struct function.
-	//UISystem::BindButtonFunctions(UIButtonRegister::Instance());
-
 	//grab all scene
 	SceneManager::Initialize(&gGameRunning);
 
@@ -101,7 +93,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Initialize render system
 	RenderSystem::RendererInitialize();
 
-	//editorScene.imguiInitialized = true;
 	// ===== END INITIALIZE SYSTEMS =====
 	
 	// Game Loop
@@ -110,22 +101,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// Informing the system about the loop's start
 		AESysFrameStart();
 		f32 dt = (f32)AEFrameRateControllerGetFrameTime();
-		// Your own rendering logic goes here
-		// Set the background to black.
-		
-		if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+
+		ImGuiIO& io = ImGui::GetIO();
+		if (!io.WantCaptureMouse && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
-			if (AEInputCheckTriggered(AEVK_1)) SceneManager::SwitchToEditor();
-			if (AEInputCheckTriggered(AEVK_2))
-			{
-				// Load new scene
-				SceneManager::RequestSceneSwitch("MainMenu");
-			}
+			if (AEInputCheckTriggered(AEVK_1)) 
+				SceneManager::SwitchToEditor();
+
+			if (AEInputCheckTriggered(AEVK_2)) 
+				SceneManager::RequestSceneSwitch("MainMenu");	
 		}
-		//renderSys::DrawArrow(float2::zero());
+
+		
 		SceneManager::OnUpdate();
 
-		//renderSys::drawRect(float2::zero(), 0, float2{ 10,10 }, center);
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();

@@ -1,31 +1,21 @@
 #pragma once
-#include <vector>
-#include <unordered_map>
-#include <typeindex>
-#include <string>
-#include <memory>
-#include <type_traits>
-#include <stdexcept>
-
-#include "base_components.hpp"
 
 #include "components.hpp"
+
+//cant be in cpp cause of template function
 
 struct GameObject
 {
 	using ComponentMap = std::unordered_map<std::type_index, std::unique_ptr<Component>>;
 
+	inline static size_t nextId{ 0 };
+	const size_t id;
 private:
 	bool _active{ true };
 	std::string _name{};
 	ComponentMap _componentMap{}; //only 1 of each type of component can be attached
 	std::vector<std::unique_ptr<GameObject>> _children{};
-
-	void Initialize()
-	{
-		
-	}
-
+	 
 public:
 	void Start()
 	{
@@ -78,10 +68,20 @@ public:
 			GetOrAddComponent<Transform>();
 		}
 
+		if constexpr (std::is_base_of<NoiseSource, T>::value)
+		{
+			GetOrAddComponent<Transform>();
+			GetOrAddComponent<AudioEmitter>();
+		}
+
+
 		std::type_index type{ typeid(T) };
 		//check if alrdy exists
 		if (_componentMap.find(type) != _componentMap.end())
-			throw std::runtime_error("Component already exists");
+		{
+			T* component = dynamic_cast<T*>(_componentMap[type].get());
+			return *component;
+		}
 
 
 		auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
@@ -135,16 +135,15 @@ public:
 	bool active(bool state) { return _active = state; }
 
 	//constructor
-	GameObject(const char* name)
+	GameObject(const char* name) : id(nextId++)
 	{
 		_name = name ? name : "";
 	}
 
-	GameObject(std::string name)
+	GameObject(std::string name) : id(nextId++)
 	{
 		_name = name;
 	}
-
 };
 
 //for now dont use

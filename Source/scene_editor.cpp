@@ -1,12 +1,3 @@
-#include <windows.h>
-#include <shobjidl.h> 
-#include <string>
-#include <filesystem>
-#include <iostream>
-
-#include "ImGUI/imgui.h"
-#include "ImGUI/imgui_impl_opengl3.h"
-#include "ImGUI/imgui_impl_win32.h"
 
 //systems
 #include "renderer.hpp"
@@ -251,8 +242,8 @@ void EditorScene::BuildMenuBar()
 			{
 				std::filesystem::path p(fileW);
 
-				std::string fileNameNoExt = p.stem().string();
-				SceneIO::DeserializeScene(loadedScene, fileNameNoExt);
+				//std::string fileNameNoExt = p.stem().string();
+				SceneIO::DeserializeSceneEditor(loadedScene, p.string());
 				selectedGameObjectIndex = -1; //reset index selection
 				RefreshRenderers();
 				RefreshRigidBodies();
@@ -451,7 +442,7 @@ void EditorScene::BuildInspectorWindow()
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Audio Emitters"))
+		if (ImGui::BeginMenu("Particle"))
 		{
 			if (ImGui::MenuItem("Particle Emitter"))
 			{
@@ -503,6 +494,11 @@ void EditorScene::BuildInspectorWindow()
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::MenuItem("Noise Source"))
+		{
+			selectedObj.AddComponent<NoiseSource>();
+		}
+		
 		if (ImGui::BeginMenu("Camera"))
 		{
 			if (ImGui::MenuItem("Main Camera"))

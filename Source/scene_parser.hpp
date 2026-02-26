@@ -1,7 +1,6 @@
 #pragma once
 // parse a scene object into a scene file
 // read it back from the scene file into object on load
-#include "json.h"
 
 struct Scene;
 struct GameObject;
@@ -23,4 +22,7 @@ namespace SceneIO
     bool SerializeScene(const Scene& scene);
 
     bool DeserializeScene(Scene& outScene, const std::string& fileNameNoExt);
+
+    bool DeserializeSceneEditor(Scene& outScene, const std::string& fileNameNoExt);
+
 }

@@ -1,18 +1,8 @@
-#include <filesystem>
-#include <fstream>
-#include <memory>
-#include <string>
-#include <iostream>
-
-#include "json.h"
-#include "json_parser_helper.hpp"
-
 #include "math.hpp"
 
 #include "scene.hpp"
 #include "gameobject.hpp"
 
-#include "base_components.hpp"
 #include "components.hpp"
 
 namespace SceneIO
@@ -120,6 +110,11 @@ namespace SceneIO
             AudioListener& al = go.AddComponent<AudioListener>();
             al.Deserialize(compObj);
         }
+        else if (type == "NoiseSource")
+        {
+            NoiseSource& ns = go.AddComponent<NoiseSource>();
+            ns.Deserialize(compObj);
+        }
         else if (type == "Camera")
         {
             MainCamera& cm = go.AddComponent<MainCamera>();
@@ -226,6 +221,37 @@ namespace SceneIO
     {
         //const std::string path = defaultPath + fileNameNoExt + ".scene";
         const std::string path = "Assets/Scene/" + fileNameNoExt + ".scene";
+        std::ifstream in(path, std::ios::binary);
+        if (!in) return false;
+
+        Json::CharReaderBuilder rbuilder;
+        std::string errs;
+        Json::Value root;
+
+        if (!parseFromStream(rbuilder, in, &root, &errs))
+            return false;
+
+        if (root.isMember("name") && root["name"].isString())
+            outScene.name(root["name"].asString());
+
+        auto& list = outScene.gameObjectList();
+        list.clear();
+
+        if (root.isMember("gameObjects") && root["gameObjects"].isArray())
+        {
+            for (const auto& g : root["gameObjects"])
+            {
+                auto go = DeserializeGameObject(g);
+                if (go) list.emplace_back(std::move(go));
+            }
+        }
+
+        return true;
+    }
+
+    bool DeserializeSceneEditor(Scene& outScene, const std::string& path)
+    {
+        //const std::string path = defaultPath + fileNameNoExt + ".scene";
         std::ifstream in(path, std::ios::binary);
         if (!in) return false;
 

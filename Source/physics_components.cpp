@@ -1,6 +1,3 @@
-#include "ImGUI/imgui.h"
-#include "json_parser_helper.hpp"
-
 #include "physics_components.hpp"
 #include "base_components.hpp"
 #include "math.hpp"
@@ -19,6 +16,15 @@ const char* LayerToString(Layer layer)
 }
 
 // ===== COLLIDER DEFINITIONS =====
+void Collider::OnCollision(const Collision& data)
+{
+    for (const auto& callback : onCollisionListeners) 
+    {
+        callback(data);
+    }
+}
+
+
 bool Collider::Has_Layer(Layer layer) const
 {
     return (layerMask & static_cast<uint32_t>(layer)) != 0;
@@ -46,12 +52,12 @@ void Collider::Remove_CollisionLayer(Layer layer)
 
 bool Collider::CollidesWithLayer(Layer layer)const
 {
-    return (collisionMask & static_cast<uint32_t>(layer)) != 0;
+    return (collisionMask & static_cast<uint32_t>(layer));
 }
 
 bool Collider::ShouldCollide(const Collider& other)const
 {
-    return (collisionMask & other.layerMask) != 0;
+    return (collisionMask & other.layerMask);
 }
 
 void Collider::DrawLayerInInspector()
