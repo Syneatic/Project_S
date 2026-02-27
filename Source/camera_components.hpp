@@ -13,4 +13,6 @@ struct MainCamera : Component
 	void Deserialize(const Json::Value& compObj) override;
 
 	const std::string name() const override { return "Camera"; }
+
+	MainCamera(GameObject& go) : Component(go) {};
 };

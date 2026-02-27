@@ -23,6 +23,7 @@ public:
     using CollisionCallback = std::function<void(const Collision&)>;
     std::vector<CollisionCallback> onCollisionListeners;
 
+    void OnStart() override;
     void OnCollision(const Collision& data);
 
     bool Has_Layer(Layer layer) const;
@@ -33,6 +34,8 @@ public:
     bool CollidesWithLayer(Layer layer)const;
     bool ShouldCollide(const Collider& other)const;
     void DrawLayerInInspector();
+
+    Collider(GameObject& go) : Component(go) {};
 };
 
 class CircleCollider : public Collider
@@ -45,6 +48,8 @@ public:
     void Deserialize(const Json::Value& compObj) override;
 
     const std::string name() const override { return "CircleCollider"; }
+
+    CircleCollider(GameObject& go) : Collider(go) {};
 };
 
 class BoxCollider : public Collider
@@ -57,6 +62,8 @@ public:
 	void Deserialize(const Json::Value& compObj) override;
 
     const std::string name() const override { return "BoxCollider"; }
+
+    BoxCollider(GameObject& go) : Collider(go) {};
 };
 
 class RigidBody : public Component
@@ -73,7 +80,12 @@ public:
 	void DrawInInspector()override;
 	void Serialize(Json::Value& outComp) const override;
     void Deserialize(const Json::Value& compObj) override;
+
+
+    void OnStart() override;
     void Clear_Forces();
 
 	const std::string name() const override { return "RigidBody"; }
+
+    RigidBody(GameObject& go) : Component(go) {};
 };

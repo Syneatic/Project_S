@@ -1,8 +1,6 @@
 #pragma once
 
 #include "components.hpp"
-#include "physics.hpp"
-#include "audio.hpp"
 //cant be in cpp cause of template function
 
 class GameObject
@@ -26,18 +24,6 @@ public:
 		for (auto& [type, comp] : _componentMap)
 		{
 			comp.get()->OnStart();
-
-			//register collider
-			if (auto* c = dynamic_cast<Collider*>(comp.get()))
-				Physics::RegisterCollider(c);
-
-			//Register RigidBody
-			if (auto* rb = dynamic_cast<RigidBody*>(comp.get()))
-				Physics::RegisterRigidBody(rb);
-
-			if (auto* a = dynamic_cast<AudioEmitter*>(comp.get()))
-				Audio::RegisterEmitter(a);
-
 			/*if (auto* pc = dynamic_cast<PlayerController*>(comp.get()))
 				pc->rockObject = FindGameObjectByName("Rock");*/
 		}
@@ -94,15 +80,15 @@ public:
 		return ref;
 	}
 
-	template<class T, class... Args>
-	T& GetOrAddComponent(Args&&... args)
+	template<class T>
+	T& GetOrAddComponent()
 	{
 		static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
 
 		if (auto* existing = GetComponent<T>())
 			return *existing;
 
-		return AddComponent<T>(std::forward<Args>(args)...);
+		return AddComponent<T>();
 	}
 
 	void RemoveComponent(std::type_index type)

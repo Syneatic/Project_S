@@ -26,4 +26,6 @@ public:
 	void DrawInInspector() override;
 
 	const std::string name() const override { return "ParticleEmitter"; }
+
+	ParticleEmitter(GameObject& go) : Component(go) {};
 };

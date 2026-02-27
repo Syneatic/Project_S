@@ -71,7 +71,6 @@ namespace Audio
 			}
 
 			e->soundPtr = std::make_unique<sf::Sound>(*buffer);
-			e->Initialize();
 		}
 	}
 

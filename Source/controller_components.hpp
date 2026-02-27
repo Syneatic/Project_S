@@ -10,7 +10,8 @@ struct NoiseSource;
 //abstract
 class Controller : public Component
 {
-
+public:
+    Controller(GameObject& go) : Component(go) {};
 };
 
 class PlayerController : public Controller
@@ -34,6 +35,8 @@ public:
     void OnDestroy() override;
 
     const std::string name() const override { return "PlayerController"; }
+
+    PlayerController(GameObject& go) : Controller(go) {};
 };
 
 class RockController : public Controller
@@ -59,4 +62,5 @@ public:
     void ResetRock();
 
     const std::string name() const override { return "RockController"; }
+    RockController(GameObject& go) : Controller(go) {};
 };

@@ -15,7 +15,7 @@ public:
 	bool spatialize{ false };
 	bool relativeToListener{ false};
 
-	void Initialize();
+	void OnStart() override;
 	void SetVolume(f32 vol);
 	void SetPitch(f32 pitch);
 	void SetLoop(bool loop);
@@ -27,6 +27,9 @@ public:
 	void Deserialize(const Json::Value& compObj) override;
 
 	const std::string name() const override { return "AudioEmitter"; }
+
+	AudioEmitter(GameObject& go) : Component(go) {};
+
 };
 
 class AudioListener : public Component
@@ -41,4 +44,6 @@ public:
 	void Deserialize(const Json::Value& compObj) override;
 
 	const std::string name() const override { return "AudioListener"; }
+
+	AudioListener(GameObject& go) : Component(go) {};
 };

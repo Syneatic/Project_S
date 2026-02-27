@@ -34,6 +34,8 @@ public:
 	void OnDestroy() override;
 
 	const std::string name() const override { return "Display"; }
+
+	Display(GameObject& go) : Component(go) {};
 };
 
 static char const* _buttonNames[]
@@ -56,6 +58,8 @@ public:
 	void OnDestroy() override;
 
 	const std::string name() const override { return "Button"; }
+
+	Button(GameObject& go) : Component(go) {};
 };
 
 namespace UISystem

@@ -38,6 +38,7 @@ public:
 	void Serialize(Json::Value& outComp) const override;
 	void Deserialize(const Json::Value& compObj) override;
 
+	NoiseSource(GameObject& go) : Component(go) {};
 private:
 	std::vector<EventHandler::SubscriptionHandle> eventSubscriptionList;
 };

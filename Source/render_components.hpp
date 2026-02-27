@@ -28,6 +28,8 @@ public:
     }
 
     void OnDestroy() override {};
+
+    Renderer(GameObject& go) : Component(go) {};
 };
 
 class SpriteRenderer : public Renderer
@@ -38,6 +40,8 @@ public:
     //no override since sprite is quite normal
 
     const std::string name() const override { return "SpriteRenderer"; }
+
+    SpriteRenderer(GameObject& go) : Renderer(go) {};
 };
 
 class MeshRenderer : public Renderer
@@ -49,6 +53,8 @@ public:
     void Deserialize(const Json::Value& compObj) override;
 
     const std::string name() const override { return "MeshRenderer"; }
+
+    MeshRenderer(GameObject& go) : Renderer(go) {};
 };
 
 class TextRenderer : public Renderer
@@ -62,4 +68,6 @@ public:
     void Deserialize(const Json::Value& compObj) override;
 
     const std::string name() const override { return "TextRenderer"; }
+
+    TextRenderer(GameObject& go) : Renderer(go) {};
 };

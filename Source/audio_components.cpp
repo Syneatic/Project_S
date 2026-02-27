@@ -86,8 +86,9 @@ void AudioEmitter::SetLoop(bool l)
 	loop = l;
 }
 
-void AudioEmitter::Initialize()
+void AudioEmitter::OnStart()
 {
+	Audio::RegisterEmitter(this);
 	auto& sound = *soundPtr.get();
 	sound.setVolume(volume);
 	sound.setPitch(pitch);

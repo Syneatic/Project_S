@@ -162,9 +162,6 @@
     <ClCompile Include="Source\camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\camera_components.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -175,6 +172,9 @@
       <Filter>Source Files\systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\base_components .cpp">
+      <Filter>Source Files\components\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\camera_components.cpp">
       <Filter>Source Files\components\engine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -317,9 +317,6 @@
     <ClInclude Include="Source\camera.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\camera_components.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\pch.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -328,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="Source\transform.hpp">
       <Filter>Header Files\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\camera_components.hpp">
+      <Filter>Header Files\components\engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
