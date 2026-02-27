@@ -31,6 +31,7 @@ private:
 
 	void ReadInput();
 
+	void RefreshScene();
 	void RefreshRenderers();
 	void RefreshColliders();
 	void RefreshRigidBodies();

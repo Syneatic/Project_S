@@ -45,6 +45,11 @@ namespace {
 			 0.f  , 0.86603f, 0xFFFFFFFF, 1.0f, 1.0f,
 			-0.5f , 0		, 0xFFFFFFFF, 1.0f, 1.0f,
 			 0.5f ,	0		, 0xFFFFFFFF, 1.0f, 1.0f);
+
+		//AEGfxTriAdd(
+		//	0.0f, 0.57735f, 0xFFFFFFFF, 1.0f, 1.0f,
+		//	-0.5f, -0.28867f, 0xFFFFFFFF, 1.0f, 1.0f,
+		//	0.5f, -0.28867f, 0xFFFFFFFF, 1.0f, 1.0f);
 		_triangleMesh = AEGfxMeshEnd();
 	}
 
@@ -52,7 +57,7 @@ namespace {
 		AEGfxMeshStart();
 
 		//definitely needs to be change to f32 for no conversion
-		f32 baseX = 0.5f;
+		/*f32 baseX = 0.5f;
 		f32 baseY = 0.f;
 		for (int i = 0; i < 16; i++) {
 			f32 angle = (2.f * PI / 16.f);
@@ -64,6 +69,31 @@ namespace {
 				rotatedX, rotatedY, 0xFFFFFFFF, 1.0f, 1.0f);
 			baseX = rotatedX;
 			baseY = rotatedY;
+		}*/
+
+
+		const int segments = 32; //resolution of circle
+		const f32 radius = 0.5f; //produces a unit circle (dia = 1)
+		const f32 angleStep = (2.0f * PI) / segments;
+
+		for (int i = 0; i < segments; i++)
+		{
+			f32 theta1 = i * angleStep;
+			f32 theta2 = (i + 1) * angleStep;
+
+			//vertices
+			float2 v0 = { 0.0f, 0.0f }; // center
+			float2 v1 = { cosf(theta1) * radius, sinf(theta1) * radius };
+			float2 v2 = { cosf(theta2) * radius, sinf(theta2) * radius };
+
+			float2 uv0 = { 0.5f, 0.5f };
+			float2 uv1 = { (v1.x + 0.5f), (v1.y + 0.5f) };
+			float2 uv2 = { (v2.x + 0.5f), (v2.y + 0.5f) };
+
+			AEGfxTriAdd(
+				v0.x, v0.y, 0xFFFFFFFF, 0.f, 0.f,
+				v1.x, v1.y, 0xFFFFFFFF, 1.0f, 1.0f,
+				v2.x, v2.y, 0xFFFFFFFF, 1.0f, 1.0f);
 		}
 
 		// Saving the mesh (list of triangles) in pMesh
@@ -342,41 +372,47 @@ namespace RenderSystem
 		AEGfxMeshDraw(_circleMesh, data.meshMode);
 	}
 
-	void DrawMyText(const char* text, RenderData data) {
-		f32 screenPosX = data.transform.position.x / AEGfxGetWindowWidth();
-		f32 screenPosY = data.transform.position.y / AEGfxGetWindowHeight();
-		f32 textWidth{}, textHeight{}, offX{}, offY{};
-		AEGfxGetPrintSize(pFont, text, data.transform.scale.x, &textWidth, &textHeight);
-		switch (data.alignment) {
-		case TL:
-			offX = 0; offY = textHeight;
-			break;
-		case TC:
-			offX = textWidth / 2; offY = textHeight;
-			break;
-		case TR:
-			offX = textWidth; offY = textHeight;
-			break;
-		case ML:
-			offX = 0; offY = textHeight / 2;
-			break;
-		case MC:
-			offX = textWidth / 2; offY = textHeight / 2;
-			break;
-		case MR:
-			offX = textWidth; offY = textHeight / 2;
-			break;
-		case BL:
-			offX = 0; offY = 0;
-			break;
-		case BC:
-			offX = textWidth / 2; offY = 0;
-			break;
-		case BR:
-			offX = textWidth; offY = 0;
-			break;
+	void DrawMyText(const char* text, RenderData data) 
+	{
+		f32 winW = (f32)AEGfxGetWindowWidth();
+		f32 winH = (f32)AEGfxGetWindowHeight();
+		f32 halfW = winW * 0.5f;
+		f32 halfH = winH * 0.5f;
+
+		float2 screenPixelPos = data.transform.position;
+		f32 aeX = screenPixelPos.x / halfW;
+		f32 aeY = screenPixelPos.y / halfH;
+
+		f32 textW, textH;
+		AEGfxGetPrintSize(pFont, text, data.transform.scale.x, &textW, &textH);
+
+		f32 offX = 0, offY = 0;
+		switch (data.alignment)
+		{
+		case Alignment::TL:
+			offX = 0;           offY = textH;           break;
+		case Alignment::TC:
+			offX = textW * 0.5f; offY = textH;           break;
+		case Alignment::TR:
+			offX = textW;        offY = textH;           break;
+
+		case Alignment::ML:
+			offX = 0;           offY = textH * 0.5f; break;
+		case Alignment::MC:
+			offX = textW * 0.5f; offY = textH * 0.5f; break;
+		case Alignment::MR:
+			offX = textW;        offY = textH * 0.5f; break;
+
+		case Alignment::BL:
+			offX = 0;           offY = 0;        break;
+		case Alignment::BC:
+			offX = textW * 0.5f; offY = 0;        break;
+		case Alignment::BR:
+			offX = textW;        offY = 0;        break;
 		}
-		AEGfxPrint(pFont, text, screenPosX -offX, screenPosY-offY, data.transform.scale.x, data.color.r, data.color.g, data.color.b, data.color.a);
+
+		AEGfxPrint(pFont, text, aeX - offX, aeY - offY,
+			data.transform.scale.x, data.color.r, data.color.g, data.color.b, data.color.a);
 	}
 
 	void DrawArrow(RenderData data)

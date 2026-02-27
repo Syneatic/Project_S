@@ -97,6 +97,7 @@
     <ClCompile Include="Source\camera.cpp" />
     <ClCompile Include="Source\camera_components.cpp" />
     <ClCompile Include="Source\controller_components.cpp" />
+    <ClCompile Include="Source\debug.cpp" />
     <ClCompile Include="Source\math.cpp" />
     <ClCompile Include="Source\noise_component.cpp" />
     <ClCompile Include="Source\particle_components.cpp" />
@@ -110,6 +111,7 @@
     <ClCompile Include="Source\physics.cpp" />
     <ClCompile Include="Source\physics_components.cpp" />
     <ClCompile Include="Source\renderer.cpp" />
+    <ClCompile Include="Source\renderer2.cpp" />
     <ClCompile Include="Source\render_components.cpp" />
     <ClCompile Include="Source\scene.cpp" />
     <ClCompile Include="Source\scene_editor.cpp" />
@@ -147,6 +149,7 @@
     <ClInclude Include="Source\color.hpp" />
     <ClInclude Include="Source\base_components.hpp" />
     <ClInclude Include="Source\components.hpp" />
+    <ClInclude Include="Source\debug.hpp" />
     <ClInclude Include="Source\noise_component.hpp" />
     <ClInclude Include="Source\particle_components.hpp" />
     <ClInclude Include="Source\enginectx.hpp" />
@@ -162,6 +165,7 @@
     <ClInclude Include="Source\physics.hpp" />
     <ClInclude Include="Source\physics_components.hpp" />
     <ClInclude Include="Source\renderer.hpp" />
+    <ClInclude Include="Source\renderer2.hpp" />
     <ClInclude Include="Source\render_components.hpp" />
     <ClInclude Include="Source\scene.hpp" />
     <ClInclude Include="Source\scene_editor.hpp" />

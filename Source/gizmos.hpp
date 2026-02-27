@@ -1,6 +1,7 @@
 #pragma once
 
-#include "renderer.hpp"
+//#include "renderer.hpp"
+#include "renderer2.hpp"
 #include "math.hpp"
 
 enum class GizmoAxis { NONE, X, Y, CENTER, ROTATION };
@@ -8,113 +9,156 @@ enum class GizmoMode { TRANSLATE, ROTATE, SCALE };
 
 
 // ===== TRANSFORM GIZMOS =====
-inline void DrawTranslationGizmo(float2 pos, float scale = 0.65f) {
+inline void DrawTranslationGizmo(float2 pos, float scale = 0.65f) 
+{
+    ////spatial
+    //float2 pos;
+    //float2 scale;
+    //f32 rot;
+    //Alignment alignment{ Alignment::MC };
+    //bool isScreenSpace = false;
+
+    ////sorting
+    //RenderLayer layer{ DEFAULT };
+    //f32 sortOrder{ 0.f };
+
+    ////visuals
+    //Texture* texture = nullptr;
+    //Color color;
+
+    ////AE
+    //BlendMode blendMode{ AE_GFX_BM_BLEND };
+    //RenderMode renderMode{ AE_GFX_RM_COLOR };
+    //DrawMode drawMode{ AE_GFX_MDM_TRIANGLES };
+
     float handleLength = 65.0f * scale;
     float thickness = 25.0f * scale;
 
     // --- X Axis (Red) ---
-    RenderData xArrow;
-    xArrow.transform.position = pos;
-    xArrow.transform.rotation = 0.0f;
-    xArrow.transform.scale = { handleLength, thickness };
+    Graphics::RenderData xArrow;
+    xArrow.pos = pos;
+    xArrow.rot = 0.0f;
+    xArrow.scale = { handleLength, thickness };
+    xArrow.layer = Graphics::RenderLayer::GIZMOS;
     xArrow.color = { 1.0f, 0.0f, 0.0f, 1.0f }; // Red
     xArrow.blendMode = AE_GFX_BM_NONE;
-    RenderSystem::DrawArrow(xArrow);
+    xArrow.drawMode = AE_GFX_MDM_TRIANGLES;
+    Graphics::SubmitArrow(xArrow);
+    //RenderSystem::DrawArrow(xArrow);
 
     // --- Y Axis (Green) ---
-    RenderData yArrow;
-    yArrow.transform.position = pos;
-    yArrow.transform.rotation = 90.0f;
-    yArrow.transform.scale = { handleLength, thickness };
+    Graphics::RenderData yArrow;
+    yArrow.pos = pos;
+    yArrow.rot = 90.0f;
+    yArrow.scale = { handleLength, thickness };
+    yArrow.layer = Graphics::RenderLayer::GIZMOS;
     yArrow.color = { 0.0f, 1.0f, 0.0f, 1.0f }; // Green
     yArrow.blendMode = AE_GFX_BM_NONE;
-    RenderSystem::DrawArrow(yArrow);
+    yArrow.drawMode = AE_GFX_MDM_TRIANGLES;
+    Graphics::SubmitArrow(yArrow);
+    //RenderSystem::DrawArrow(yArrow);
 
     // --- Center Handle (Yellow/White) ---
-    RenderData centerBox;
-    centerBox.transform.position = pos;
-    centerBox.transform.scale = { thickness * 1.f, thickness * 1.f };
+    Graphics::RenderData centerBox;
+    centerBox.pos = pos;
+    centerBox.scale = { thickness * 1.f, thickness * 1.f };
+    centerBox.layer = Graphics::RenderLayer::GIZMOS;
     centerBox.color = { 1.0f, 1.0f, 0.0f, 1.0f }; // Yellow
-    centerBox.alignment = MC;
+    centerBox.alignment = Graphics::Alignment::MC;
     centerBox.blendMode = AE_GFX_BM_NONE;
-    RenderSystem::DrawQuad(centerBox);
+    centerBox.drawMode = AE_GFX_MDM_TRIANGLES;
+    Graphics::Submit(centerBox,Graphics::PrimitiveType::QUAD);
+    //RenderSystem::DrawQuad(centerBox);
 }
 
 inline void DrawRotationGizmo(float2 pos, float scale = 0.5f) {
     float rotationRadius = 65.0f * scale * 1.2f;
 
-    RenderData ring;
-    ring.transform.position = pos;
-    ring.transform.scale = { rotationRadius * 2.0f, rotationRadius * 2.0f };
+    Graphics::RenderData ring;
+    ring.pos = pos;
+    ring.scale = { rotationRadius * 2.0f, rotationRadius * 2.0f };
     ring.color = { 0.0f, 1.0f, 1.0f, 1.0f }; // Cyan
-    ring.meshMode = AE_GFX_MDM_LINES_STRIP;
-    ring.alignment = MC;
+    ring.drawMode = AE_GFX_MDM_LINES_STRIP;
+    ring.alignment = Graphics::Alignment::MC;
     ring.blendMode = AE_GFX_BM_NONE;
-    RenderSystem::DrawCircle(ring);
+    Graphics::Submit(ring, Graphics::PrimitiveType::CIRCLE);
+    //RenderSystem::DrawCircle(ring);
 }
 
 inline void DrawScaleGizmo(float2 pos, float scale = 0.65f) {
     float handleLength = 65.0f * scale;
     float thickness = 25.0f * scale;
     float boxSize = thickness * 0.65f;
-    // X Scale (Red with Box end)
-    RenderData xBar;
-    xBar.transform.position = pos;
-    xBar.transform.scale = { handleLength, thickness * 0.2f };
-    xBar.color = { 1.0f, 0.0f, 0.0f, 1.0f };
-    xBar.alignment = ML;
-    xBar.blendMode = AE_GFX_BM_NONE;
-    RenderSystem::DrawQuad(xBar);
 
-    RenderData xBox;
-    xBox.transform.position = { pos.x + handleLength, pos.y };
-    xBox.transform.scale = { boxSize, boxSize };
+    // X Scale (Red with Box end)
+    Graphics::RenderData xBar;
+    xBar.pos = pos;
+    xBar.scale = { handleLength, thickness * 0.2f };
+    xBar.color = { 1.0f, 0.0f, 0.0f, 1.0f };
+    xBar.alignment = Graphics::Alignment::ML;
+    xBar.blendMode = AE_GFX_BM_NONE;
+    xBar.layer = Graphics::RenderLayer::GIZMOS;
+    Graphics::Submit(xBar,Graphics::PrimitiveType::QUAD);
+    //RenderSystem::DrawQuad(xBar);
+
+    Graphics::RenderData xBox;
+    xBox.pos = { pos.x + handleLength, pos.y };
+    xBox.scale = { boxSize, boxSize };
     xBox.color = { 1.0f, 0.0f, 0.0f, 1.0f };
-    xBox.alignment = MC;
+    xBox.alignment = Graphics::Alignment::MC;
     xBox.blendMode = AE_GFX_BM_NONE;
-    RenderSystem::DrawQuad(xBox);
+    xBox.layer = Graphics::RenderLayer::GIZMOS;
+    Graphics::Submit(xBox,Graphics::PrimitiveType::QUAD);
+    //RenderSystem::DrawQuad(xBox);
 
     // Y Scale (Green with Box end)
-    RenderData yBar;
-    yBar.transform.position = pos;
-    yBar.transform.rotation = 90.0f;
-    yBar.transform.scale = { handleLength, thickness * 0.2f };
+    Graphics::RenderData yBar;
+    yBar.pos = pos;
+    yBar.rot = 90.0f;
+    yBar.scale = { handleLength, thickness * 0.2f };
     yBar.color = { 0.0f, 1.0f, 0.0f, 1.0f };
-    yBar.alignment = ML;
+    yBar.alignment = Graphics::Alignment::ML;
     yBar.blendMode = AE_GFX_BM_NONE;
-    RenderSystem::DrawQuad(yBar);
+    yBar.layer = Graphics::RenderLayer::GIZMOS;
+    Graphics::Submit(yBar,Graphics::PrimitiveType::QUAD);
+    //RenderSystem::DrawQuad(yBar);
 
-    RenderData yBox;
-    yBox.transform.position = { pos.x, pos.y + handleLength };
-    yBox.transform.scale = { boxSize, boxSize };
+    Graphics::RenderData yBox;
+    yBox.pos = { pos.x, pos.y + handleLength };
+    yBox.scale = { boxSize, boxSize };
     yBox.color = { 0.0f, 1.0f, 0.0f, 1.0f };
-    yBox.alignment = MC;
+    yBox.alignment = Graphics::Alignment::MC;
     yBox.blendMode = AE_GFX_BM_NONE;
-    RenderSystem::DrawQuad(yBox);
+    yBox.layer = Graphics::RenderLayer::GIZMOS;
+    Graphics::Submit(yBox,Graphics::PrimitiveType::QUAD);
+    //RenderSystem::DrawQuad(yBox);
 
-    RenderData centerBox;
-    centerBox.transform.position = pos;
-    centerBox.transform.rotation = 90.0f;
-    centerBox.transform.scale = { thickness * 1.f, thickness * 1.f };
+    Graphics::RenderData centerBox;
+    centerBox.pos = pos;
+    centerBox.rot = 90.0f;
+    centerBox.scale = { thickness * 1.f, thickness * 1.f };
     centerBox.color = { 1, 1, 0, 1 };
-    centerBox.alignment = MC;
+    centerBox.alignment = Graphics::Alignment::MC;
     centerBox.blendMode = AE_GFX_BM_NONE;
-    RenderSystem::DrawQuad(centerBox);
+    centerBox.layer = Graphics::RenderLayer::GIZMOS;
+    Graphics::Submit(centerBox,Graphics::PrimitiveType::QUAD);
+    //RenderSystem::DrawQuad(centerBox);
 }
 
 // Helper for AABB collision
-inline bool IsPointInRect(float2 p, float2 pos, float2 size, Alignment align) {
+inline bool IsPointInRect(float2 p, float2 pos, float2 size, Graphics::Alignment align) 
+{
     float left, right, top, bottom;
 
     // Logic derived from RenderSystem::SetTransform in renderer.cpp
     switch (align) {
-    case ML: // Middle-Left: Origin is at the left center
+    case Graphics::Alignment::ML: // Middle-Left: Origin is at the left center
         left = pos.x;
         right = pos.x + size.x;
         top = pos.y + size.y * 0.5f;
         bottom = pos.y - size.y * 0.5f;
         break;
-    case MC: // Middle-Center: Origin is exactly in the middle
+    case Graphics::Alignment::MC: // Middle-Center: Origin is exactly in the middle
         left = pos.x - size.x * 0.5f;
         right = pos.x + size.x * 0.5f;
         top = pos.y + size.y * 0.5f;
@@ -143,14 +187,14 @@ inline GizmoAxis GetHitAxis(float2 mouseWorld, float2 handlePos, float scale = 0
     float rotationRadius = length * 1.2f;
 
     // 1. Center Check (Yellow box)
-    if (IsPointInRect(mouseWorld, handlePos, { thick * 1.5f, thick * 1.5f }, MC))
+    if (IsPointInRect(mouseWorld, handlePos, { thick * 1.5f, thick * 1.5f }, Graphics::Alignment::MC))
         return GizmoAxis::CENTER;
 
     if (IsPointOnRing(mouseWorld, handlePos, rotationRadius, thick * 0.75f))
         return GizmoAxis::ROTATION;
 
     // 2. X Axis Check (Red Arrow)
-    if (IsPointInRect(mouseWorld, handlePos, { length, thick }, ML))
+    if (IsPointInRect(mouseWorld, handlePos, { length, thick }, Graphics::Alignment::ML))
         return GizmoAxis::X;
 
     // 3. Y Axis Check (Green Arrow)

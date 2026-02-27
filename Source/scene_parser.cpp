@@ -202,8 +202,27 @@ namespace SceneIO
         }
         root["gameObjects"] = gos;
 
-        //const std::string path = defaultPath + scene.name() + ".scene";
-        const std::string path = "../../Assets/Scene/" + scene.name() + ".scene";
+        Json::StreamWriterBuilder builder;
+        builder["indentation"] = "  ";
+        std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+
+#ifdef _DEBUG
+        //for debug
+        const std::string dpath = "../../Assets/Scene/" + scene.name() + ".scene";
+        std::ofstream dout(dpath, std::ios::binary);
+        if (!dout)
+        {
+            std::cout << "UNABLE TO CREATE FILE\n";
+            return false;
+        }
+
+        if (writer->write(root, &dout) != 0)
+        {
+            std::cout << "SCENE SERIALIZE FAILED\n";
+        }
+#endif
+
+        const std::string path = "Assets/Scene/" + scene.name() + ".scene";
         std::ofstream out(path, std::ios::binary);
         if (!out)
         {
@@ -211,47 +230,16 @@ namespace SceneIO
             return false;
         }
 
-        Json::StreamWriterBuilder builder;
-        builder["indentation"] = "  ";
-        std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
         return (writer->write(root, &out) == 0);
     }
 
     bool DeserializeScene(Scene& outScene, const std::string& fileNameNoExt)
     {
-        //const std::string path = defaultPath + fileNameNoExt + ".scene";
+#ifdef _DEBUG
+        const std::string path = "../../Assets/Scene/" + fileNameNoExt + ".scene";
+#else
         const std::string path = "Assets/Scene/" + fileNameNoExt + ".scene";
-        std::ifstream in(path, std::ios::binary);
-        if (!in) return false;
-
-        Json::CharReaderBuilder rbuilder;
-        std::string errs;
-        Json::Value root;
-
-        if (!parseFromStream(rbuilder, in, &root, &errs))
-            return false;
-
-        if (root.isMember("name") && root["name"].isString())
-            outScene.name(root["name"].asString());
-
-        auto& list = outScene.gameObjectList();
-        list.clear();
-
-        if (root.isMember("gameObjects") && root["gameObjects"].isArray())
-        {
-            for (const auto& g : root["gameObjects"])
-            {
-                auto go = DeserializeGameObject(g);
-                if (go) list.emplace_back(std::move(go));
-            }
-        }
-
-        return true;
-    }
-
-    bool DeserializeSceneEditor(Scene& outScene, const std::string& path)
-    {
-        //const std::string path = defaultPath + fileNameNoExt + ".scene";
+#endif
         std::ifstream in(path, std::ios::binary);
         if (!in) return false;
 

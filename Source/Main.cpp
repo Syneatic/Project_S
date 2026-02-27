@@ -1,17 +1,6 @@
-#include "ImGUI/imgui.h"
-#include "ImGUI/imgui_impl_opengl3.h"
-#include "ImGUI/imgui_impl_win32.h"
-
-#include <crtdbg.h> // To check for memory leaks
-#include <vector>
-#include <string>
-#include <iostream>
-#include <typeindex>
-
-#include "AEEngine.h"
-
 #include "gameobject.hpp"
 #include "renderer.hpp"
+#include "renderer2.hpp"
 #include "scene.hpp"
 #include "scene_editor.hpp"
 #include "scene_parser.hpp"
@@ -87,12 +76,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	//grab all scene
 	SceneManager::Initialize(&gGameRunning);
 
+#ifdef _DEBUG
 	SceneManager::SwitchToEditor();
-	//SceneManager::RequestSceneSwitch("MainMenu");
-	
+#else
+	SceneManager::RequestSceneSwitch("MainMenu");
+#endif
+
 	// Initialize render system
 	RenderSystem::RendererInitialize();
-
+	Graphics::Initialize();
 	// ===== END INITIALIZE SYSTEMS =====
 	
 	// Game Loop
@@ -102,6 +94,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		AESysFrameStart();
 		//f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 
+#ifdef _DEBUG
 		ImGuiIO& io = ImGui::GetIO();
 		if (!io.WantCaptureMouse && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
@@ -111,6 +104,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			if (AEInputCheckTriggered(AEVK_2)) 
 				SceneManager::RequestSceneSwitch("MainMenu");	
 		}
+#endif
 
 		
 		SceneManager::OnUpdate();
@@ -118,6 +112,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
+		////clear results at end of frame
+		//Debug::ClearTimerResults();
 
 		//std::cout << AEFrameRateControllerGetFrameRate() << std::endl;
 		// check if forcing the application to quit

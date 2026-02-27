@@ -64,8 +64,6 @@ namespace ParticleSystem
 					g_pool.burstRemaining[i]
 					);
 		}
-
-		//std::cout << "Active Particles : " << activeParticles << ", FPS : " << AEFrameRateControllerGetFrameRate() << "\n";
 	}
 
 	void Render() //by pass our wrapper for performance's sake

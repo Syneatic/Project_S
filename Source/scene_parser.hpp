@@ -23,6 +23,5 @@ namespace SceneIO
 
     bool DeserializeScene(Scene& outScene, const std::string& fileNameNoExt);
 
-    bool DeserializeSceneEditor(Scene& outScene, const std::string& fileNameNoExt);
 
 }

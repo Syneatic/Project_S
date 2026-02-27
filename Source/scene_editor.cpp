@@ -1,6 +1,7 @@
 
 //systems
 #include "renderer.hpp"
+#include "renderer2.hpp"
 #include "physics.hpp"
 #include "gameobject.hpp"
 #include "audio.hpp"
@@ -89,9 +90,6 @@ namespace
 		if (didCoInit && hrInit != RPC_E_CHANGED_MODE)
 			CoUninitialize();
 
-
-		CameraSystem::OnStart();
-
 		return out;
 	}
 
@@ -160,6 +158,7 @@ namespace
 					Physics::UnregisterRigidBody(rb);
 		}
 	}
+
 }
 
 void EditorScene::ReadInput()
@@ -178,6 +177,14 @@ void EditorScene::ReadInput()
 	if (AEInputCheckTriggered(AEVK_Q)) currentMode = GizmoMode::TRANSLATE;
 	if (AEInputCheckTriggered(AEVK_W)) currentMode = GizmoMode::ROTATE;
 	if (AEInputCheckTriggered(AEVK_E)) currentMode = GizmoMode::SCALE;
+}
+
+void EditorScene::RefreshScene()
+{
+	selectedGameObjectIndex = -1; //reset index selection
+	CameraSystem::OnStart();
+	RefreshRenderers();
+	RefreshRigidBodies();
 }
 
 void EditorScene::RefreshRenderers()
@@ -241,12 +248,9 @@ void EditorScene::BuildMenuBar()
 			if (!fileW.empty())
 			{
 				std::filesystem::path p(fileW);
-
-				//std::string fileNameNoExt = p.stem().string();
-				SceneIO::DeserializeSceneEditor(loadedScene, p.string());
-				selectedGameObjectIndex = -1; //reset index selection
-				RefreshRenderers();
-				RefreshRigidBodies();
+				std::string fileNameNoExt = p.stem().string();
+				SceneIO::DeserializeScene(loadedScene, fileNameNoExt);
+				RefreshScene();
 			}
 		}
 
@@ -537,8 +541,8 @@ void EditorScene::Gizmos() {
 	// 1. Draw the active gizmo
 	switch (currentMode) {
 	case GizmoMode::TRANSLATE: DrawTranslationGizmo(trans->position); break;
-	case GizmoMode::ROTATE:    DrawRotationGizmo(trans->position); break;
-	case GizmoMode::SCALE:     DrawScaleGizmo(trans->position); break;
+	//case GizmoMode::ROTATE:    DrawRotationGizmo(trans->position); break;
+	//case GizmoMode::SCALE:     DrawScaleGizmo(trans->position); break;
 	}
 
 	// 2. Handle Interaction
@@ -611,6 +615,8 @@ void EditorScene::OnUpdate()
 
 	//draw gizmos last
 	Gizmos();
+
+	Graphics::Execute();
 
 	//draw imgui after game render
 	if (imguiInitialized)

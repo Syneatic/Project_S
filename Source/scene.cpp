@@ -70,6 +70,7 @@ void Scene::OnEnter()
 
 	UISystem::init();
 	ParticleSystem::Initialize();
+	CameraSystem::OnStart(); //reset camera
 }
 
 void Scene::OnUpdate()
