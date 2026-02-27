@@ -1,7 +1,6 @@
 
 //systems
 #include "renderer.hpp"
-#include "renderer2.hpp"
 #include "physics.hpp"
 #include "gameobject.hpp"
 #include "audio.hpp"
@@ -93,28 +92,6 @@ namespace
 		return out;
 	}
 
-	void RegisterSceneRenderers(const Scene& scene)
-	{
-		for (auto& pgo : scene.gameObjectList())
-		{
-			auto* go = pgo.get();
-			for (auto& [type, comp] : go->componentMap())
-				if (auto* r = dynamic_cast<Renderer*>(comp.get()))
-					RenderSystem::RegisterRenderer(r);
-		}
-	}
-
-	void UnregisterSceneRenderers(const Scene& scene)
-	{
-		for (auto& pgo : scene.gameObjectList())
-		{
-			auto* go = pgo.get();
-			for (auto& [type, comp] : go->componentMap())
-				if (auto* r = dynamic_cast<Renderer*>(comp.get()))
-					RenderSystem::UnregisterRenderer(r);
-		}
-	}
-
 	void RegisterSceneColliders(const Scene& scene)
 	{
 		for (auto& pgo : scene.gameObjectList())
@@ -189,8 +166,7 @@ void EditorScene::RefreshScene()
 
 void EditorScene::RefreshRenderers()
 {
-	RenderSystem::FlushRenderers();                 // clear list
-	RegisterSceneRenderers(loadedScene); // rebuild from scene data
+	Graphics::Flush();// clear list
 }
 
 void EditorScene::RefreshColliders()
@@ -536,13 +512,23 @@ void EditorScene::Gizmos() {
 	if (!trans) return;
 
 	//draw selection outline
-	RenderSystem::DrawBox(trans->position, trans->scale, trans->rotation, Color(0xFFFC673A));
+	Graphics::RenderData outline;
+	outline.alignment = Graphics::Alignment::MC;
+	outline.blendMode = Graphics::BlendMode::AE_GFX_BM_NONE;
+	outline.drawMode = Graphics::DrawMode::AE_GFX_MDM_LINES;
+	outline.color = Color(0xFF'FC'67'3A);
+	outline.layer = (Graphics::RenderLayer)(Graphics::RenderLayer::GIZMOS + 25);
+	outline.pos = trans->position;
+	outline.scale = trans->scale;
+	outline.rot = trans->rotation;
+	Graphics::Submit(outline,Graphics::PrimitiveType::BOX);
+	//RenderSystem::DrawBox(trans->position, trans->scale, trans->rotation, Color(0xFFFC673A));
 
 	// 1. Draw the active gizmo
 	switch (currentMode) {
 	case GizmoMode::TRANSLATE: DrawTranslationGizmo(trans->position); break;
-	//case GizmoMode::ROTATE:    DrawRotationGizmo(trans->position); break;
-	//case GizmoMode::SCALE:     DrawScaleGizmo(trans->position); break;
+	case GizmoMode::ROTATE:    DrawRotationGizmo(trans->position); break;
+	case GizmoMode::SCALE:     DrawScaleGizmo(trans->position); break;
 	}
 
 	// 2. Handle Interaction
@@ -608,13 +594,23 @@ void EditorScene::OnUpdate()
 
 	AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 	//f32 dt = (f32)AEFrameRateControllerGetFrameTime();
-
-	RenderSystem::Draw();
-
 	//bool imguiFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
 
 	//draw gizmos last
-	Gizmos();
+	Gizmos(); //gizmos execution
+
+	//uniquely for editor only
+	for (auto& pgo : loadedScene.gameObjectList())
+	{
+		auto* go = pgo.get();
+		for (auto& [type, comp] : go->componentMap())
+		{
+			if (auto* c = dynamic_cast<Renderer*>(comp.get()))
+			{
+				c->OnUpdate();
+			}
+		}
+	}
 
 	Graphics::Execute();
 
@@ -638,7 +634,7 @@ void EditorScene::OnUpdate()
 void EditorScene::OnExit() 
 {
 	//unload everything
-	RenderSystem::FlushRenderers();
+	Graphics::Flush();
 	Physics::FlushColliders();
 	Physics::FlushRigidBody();
 	CameraSystem::OnExit();

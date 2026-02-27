@@ -21,11 +21,6 @@ void Scene::InitializeGameObjects()
 		auto go = pgo.get();
 		for (auto& [type, comp] : go->componentMap())
 		{
-
-			//register renderer
-			if (auto* r = dynamic_cast<Renderer*>(comp.get()))
-				RenderSystem::RegisterRenderer(r);
-
 			//register collider
 			if (auto* c = dynamic_cast<Collider*>(comp.get()))
 				Physics::RegisterCollider(c);
@@ -100,7 +95,7 @@ void Scene::OnUpdate()
 
 	ParticleSystem::Update();
 	EventHandler::CallQ();
-	RenderSystem::Draw();
+	Graphics::Execute();
 }
 
 void Scene::OnExit()
@@ -117,11 +112,11 @@ void Scene::OnExit()
 
 	//delete
 	EventHandler::Flush();
-	RenderSystem::FlushRenderers();
 	Physics::FlushColliders();
 	Physics::FlushRigidBody();
 	Audio::FlushEmitters();
 	ParticleSystem::Flush();
+	Graphics::Flush();
 }
 
 //===== SERIALIZATION =====

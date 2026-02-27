@@ -1,36 +1,16 @@
 #pragma once
 
-//#include "renderer.hpp"
-#include "renderer2.hpp"
+#include "renderer.hpp"
 #include "math.hpp"
 
 enum class GizmoAxis { NONE, X, Y, CENTER, ROTATION };
 enum class GizmoMode { TRANSLATE, ROTATE, SCALE };
 
+static Graphics::RenderLayer editorTransformLayer = (Graphics::RenderLayer)(Graphics::RenderLayer::GIZMOS+50);
 
 // ===== TRANSFORM GIZMOS =====
 inline void DrawTranslationGizmo(float2 pos, float scale = 0.65f) 
 {
-    ////spatial
-    //float2 pos;
-    //float2 scale;
-    //f32 rot;
-    //Alignment alignment{ Alignment::MC };
-    //bool isScreenSpace = false;
-
-    ////sorting
-    //RenderLayer layer{ DEFAULT };
-    //f32 sortOrder{ 0.f };
-
-    ////visuals
-    //Texture* texture = nullptr;
-    //Color color;
-
-    ////AE
-    //BlendMode blendMode{ AE_GFX_BM_BLEND };
-    //RenderMode renderMode{ AE_GFX_RM_COLOR };
-    //DrawMode drawMode{ AE_GFX_MDM_TRIANGLES };
-
     float handleLength = 65.0f * scale;
     float thickness = 25.0f * scale;
 
@@ -39,36 +19,33 @@ inline void DrawTranslationGizmo(float2 pos, float scale = 0.65f)
     xArrow.pos = pos;
     xArrow.rot = 0.0f;
     xArrow.scale = { handleLength, thickness };
-    xArrow.layer = Graphics::RenderLayer::GIZMOS;
+    xArrow.layer = editorTransformLayer;
     xArrow.color = { 1.0f, 0.0f, 0.0f, 1.0f }; // Red
     xArrow.blendMode = AE_GFX_BM_NONE;
     xArrow.drawMode = AE_GFX_MDM_TRIANGLES;
     Graphics::SubmitArrow(xArrow);
-    //RenderSystem::DrawArrow(xArrow);
 
     // --- Y Axis (Green) ---
     Graphics::RenderData yArrow;
     yArrow.pos = pos;
     yArrow.rot = 90.0f;
     yArrow.scale = { handleLength, thickness };
-    yArrow.layer = Graphics::RenderLayer::GIZMOS;
+    yArrow.layer = editorTransformLayer;
     yArrow.color = { 0.0f, 1.0f, 0.0f, 1.0f }; // Green
     yArrow.blendMode = AE_GFX_BM_NONE;
     yArrow.drawMode = AE_GFX_MDM_TRIANGLES;
     Graphics::SubmitArrow(yArrow);
-    //RenderSystem::DrawArrow(yArrow);
 
     // --- Center Handle (Yellow/White) ---
     Graphics::RenderData centerBox;
     centerBox.pos = pos;
     centerBox.scale = { thickness * 1.f, thickness * 1.f };
-    centerBox.layer = Graphics::RenderLayer::GIZMOS;
+    centerBox.layer = editorTransformLayer;
     centerBox.color = { 1.0f, 1.0f, 0.0f, 1.0f }; // Yellow
     centerBox.alignment = Graphics::Alignment::MC;
     centerBox.blendMode = AE_GFX_BM_NONE;
     centerBox.drawMode = AE_GFX_MDM_TRIANGLES;
     Graphics::Submit(centerBox,Graphics::PrimitiveType::QUAD);
-    //RenderSystem::DrawQuad(centerBox);
 }
 
 inline void DrawRotationGizmo(float2 pos, float scale = 0.5f) {
@@ -81,6 +58,7 @@ inline void DrawRotationGizmo(float2 pos, float scale = 0.5f) {
     ring.drawMode = AE_GFX_MDM_LINES_STRIP;
     ring.alignment = Graphics::Alignment::MC;
     ring.blendMode = AE_GFX_BM_NONE;
+    ring.layer = editorTransformLayer;
     Graphics::Submit(ring, Graphics::PrimitiveType::CIRCLE);
     //RenderSystem::DrawCircle(ring);
 }
@@ -97,9 +75,8 @@ inline void DrawScaleGizmo(float2 pos, float scale = 0.65f) {
     xBar.color = { 1.0f, 0.0f, 0.0f, 1.0f };
     xBar.alignment = Graphics::Alignment::ML;
     xBar.blendMode = AE_GFX_BM_NONE;
-    xBar.layer = Graphics::RenderLayer::GIZMOS;
+    xBar.layer = editorTransformLayer;
     Graphics::Submit(xBar,Graphics::PrimitiveType::QUAD);
-    //RenderSystem::DrawQuad(xBar);
 
     Graphics::RenderData xBox;
     xBox.pos = { pos.x + handleLength, pos.y };
@@ -107,9 +84,8 @@ inline void DrawScaleGizmo(float2 pos, float scale = 0.65f) {
     xBox.color = { 1.0f, 0.0f, 0.0f, 1.0f };
     xBox.alignment = Graphics::Alignment::MC;
     xBox.blendMode = AE_GFX_BM_NONE;
-    xBox.layer = Graphics::RenderLayer::GIZMOS;
+    xBox.layer = editorTransformLayer;
     Graphics::Submit(xBox,Graphics::PrimitiveType::QUAD);
-    //RenderSystem::DrawQuad(xBox);
 
     // Y Scale (Green with Box end)
     Graphics::RenderData yBar;
@@ -119,9 +95,8 @@ inline void DrawScaleGizmo(float2 pos, float scale = 0.65f) {
     yBar.color = { 0.0f, 1.0f, 0.0f, 1.0f };
     yBar.alignment = Graphics::Alignment::ML;
     yBar.blendMode = AE_GFX_BM_NONE;
-    yBar.layer = Graphics::RenderLayer::GIZMOS;
+    yBar.layer = editorTransformLayer;
     Graphics::Submit(yBar,Graphics::PrimitiveType::QUAD);
-    //RenderSystem::DrawQuad(yBar);
 
     Graphics::RenderData yBox;
     yBox.pos = { pos.x, pos.y + handleLength };
@@ -129,9 +104,8 @@ inline void DrawScaleGizmo(float2 pos, float scale = 0.65f) {
     yBox.color = { 0.0f, 1.0f, 0.0f, 1.0f };
     yBox.alignment = Graphics::Alignment::MC;
     yBox.blendMode = AE_GFX_BM_NONE;
-    yBox.layer = Graphics::RenderLayer::GIZMOS;
+    yBox.layer = editorTransformLayer;
     Graphics::Submit(yBox,Graphics::PrimitiveType::QUAD);
-    //RenderSystem::DrawQuad(yBox);
 
     Graphics::RenderData centerBox;
     centerBox.pos = pos;
@@ -140,9 +114,8 @@ inline void DrawScaleGizmo(float2 pos, float scale = 0.65f) {
     centerBox.color = { 1, 1, 0, 1 };
     centerBox.alignment = Graphics::Alignment::MC;
     centerBox.blendMode = AE_GFX_BM_NONE;
-    centerBox.layer = Graphics::RenderLayer::GIZMOS;
+    centerBox.layer = editorTransformLayer;
     Graphics::Submit(centerBox,Graphics::PrimitiveType::QUAD);
-    //RenderSystem::DrawQuad(centerBox);
 }
 
 // Helper for AABB collision

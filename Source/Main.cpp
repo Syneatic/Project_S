@@ -1,6 +1,5 @@
 #include "gameobject.hpp"
 #include "renderer.hpp"
-#include "renderer2.hpp"
 #include "scene.hpp"
 #include "scene_editor.hpp"
 #include "scene_parser.hpp"
@@ -83,8 +82,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #endif
 
 	// Initialize render system
-	RenderSystem::RendererInitialize();
 	Graphics::Initialize();
+
 	// ===== END INITIALIZE SYSTEMS =====
 	
 	// Game Loop
@@ -122,7 +121,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	ShutdownImGUI(m_ImGUIInitialized);
-	RenderSystem::RendererExit();
+	Graphics::Exit();
 	// free the system
 	AESysExit();
 }

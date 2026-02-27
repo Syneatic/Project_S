@@ -1,59 +1,71 @@
 #pragma once
 
-#include "color.hpp"
-
-struct Renderer;
-
-enum RenderLayer
+namespace Graphics
 {
-	BACKGROUND = 0,
-	DEFAULT = 500,
-	UI = 999
-};
+	using RenderMode = AEGfxRenderMode;
+	using BlendMode = AEGfxBlendMode;
+	using DrawMode = AEGfxMeshDrawMode;
+	using MTX = AEMtx33;
+	using VertexBuffer = AEGfxVertexList;
+	using Texture = AEGfxTexture;
+	using Font = s8;
 
-typedef enum Alignment {
-	TL, TC, TR,
-	ML, MC, MR,
-	BL, BC, BR
-}DrawMode;
+    enum RenderLayer
+    {
+        BACKGROUND = 0,
+        DEFAULT = 250,
+        UI = 500,
+        GIZMOS = 750,
+    };
 
-struct RenderData //pass in this data to Draw functions
-{
-	Transform transform{};
-	RenderLayer renderLayer{};
+    enum class PrimitiveType
+    {
+        QUAD,
+        TRIANGLE,
+        CIRCLE,
+        BOX, // Gizmo
+        TEXT,
+    };
 
-	//modes
-	AEGfxBlendMode blendMode{AE_GFX_BM_ADD};
-	AEGfxRenderMode renderMode{AE_GFX_RM_COLOR};
-	AEGfxMeshDrawMode meshMode{AE_GFX_MDM_TRIANGLES};
-	Alignment alignment{};
-
-	Color color{};
-	AEGfxTexture* texture = nullptr;
-};
-
-void AddVertex(float2 p, Color c, float2 uv);
-
-namespace RenderSystem {
-	void RendererInitialize();
-	
-	//exposed api for registering renderer when loading levels
-	void RegisterRenderer(Renderer* r);
-	void UnregisterRenderer(Renderer* r);
-	void FlushRenderers();
-	void Draw();
-
-	//exposed api for drawing primitives
-	void DrawQuad(RenderData data);
-	void DrawTri(RenderData data);
-	void DrawCircle(RenderData data);
-	void DrawPoint(float2 pos, Color objColor);
-	void DrawMyText(const char* text, RenderData data);
-	void DrawArrow(RenderData data);
-	void DrawBox(float2 p, float2 scl, f32 rot, Color c);
+    enum class Alignment
+    {
+        TL, TC, TR,
+        ML, MC, MR,
+        BL, BC, BR
+    };
 
 
-	AEGfxVertexList* GetQuadMesh();
+    struct RenderData
+    {
+        //spatial
+        float2 pos{};
+        float2 scale{};
+        f32 rot{};
+        Alignment alignment{ Alignment::MC };
+        bool isScreenSpace = false;
 
-	void RendererExit();
+        //sorting
+        RenderLayer layer{ DEFAULT };
+        f32 sortOrder{ 0.f };
+
+        //visuals
+        Texture* texture = nullptr;
+        Color color{};
+
+        //AE
+        BlendMode blendMode{ AE_GFX_BM_BLEND };
+        RenderMode renderMode{ AE_GFX_RM_COLOR };
+        DrawMode drawMode{ AE_GFX_MDM_TRIANGLES };
+    };
+
+	struct RenderCommand;
+
+	void Initialize();
+    void Flush();//flushes all commands
+	void Exit();
+
+	void Submit(const RenderData& data, PrimitiveType type, const char* text = nullptr);
+    void SubmitArrow(const RenderData& data); //workaround
+
+	void Execute();
 }

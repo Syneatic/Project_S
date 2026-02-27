@@ -61,10 +61,10 @@ void Renderer::DrawInInspector()
     {
         for (int i = 0; i < 9; ++i)
         {
-            bool selected = (i == alignment);
+            bool selected = (i == static_cast<int>(alignment));
             if (ImGui::Selectable(_alignmentNames[i], selected))
             {
-                alignment = (Alignment)i;
+                alignment = (Graphics::Alignment)i;
             }
             if (selected) ImGui::SetItemDefaultFocus();
         }
@@ -88,7 +88,7 @@ void Renderer::Serialize(Json::Value& outComp) const
     outComp["rendermode"] = renderMode;
     outComp["meshdrawmode"] = meshDrawMode;
     outComp["renderlayer"] = renderLayer;
-    outComp["alignment"] = alignment;
+    outComp["alignment"] = static_cast<int>(alignment);
     outComp["color"] = WriteColor(color);
 
 
@@ -108,10 +108,10 @@ void Renderer::Deserialize(const Json::Value& compObj)
         meshDrawMode = static_cast<AEGfxMeshDrawMode>(compObj["meshdrawmode"].asInt());
 
     if (compObj.isMember("renderlayer") && compObj["renderlayer"].isInt())
-        renderLayer = static_cast<RenderLayer>(compObj["renderlayer"].asInt());
+        renderLayer = static_cast<Graphics::RenderLayer>(compObj["renderlayer"].asInt());
 
     if (compObj.isMember("alignment") && compObj["alignment"].isInt())
-        alignment = static_cast<Alignment>(compObj["alignment"].asInt());
+        alignment = static_cast<Graphics::Alignment>(compObj["alignment"].asInt());
 
     if (compObj.isMember("color"))
         ReadColor(compObj["color"],color);
@@ -130,17 +130,25 @@ void Renderer::Draw()
 
 void SpriteRenderer::Draw()
 {
-    GameObject& owner = *_owner;
-    RenderData data{};
-    data.transform = *owner.GetComponent<Transform>();
+    Transform& t = *_owner->GetComponent<Transform>();
+    Graphics::RenderData data{};
+    //transform
+    data.pos = t.position;
+    data.scale = t.scale;
+    data.rot = t.rotation;
+    data.isScreenSpace = isScreenSpace;
+    //states
     data.blendMode = blendMode;
     data.renderMode = renderMode;
-    data.meshMode = meshDrawMode;
-    data.renderLayer = renderLayer;
+    data.drawMode = meshDrawMode;
+    data.alignment = alignment;
+    data.layer = renderLayer;
+    data.sortOrder = sortOrder;
+
     data.color = color;
     data.texture = texture;
-    data.alignment = alignment;
-    RenderSystem::DrawQuad(data);
+    
+    Graphics::Submit(data,Graphics::PrimitiveType::QUAD);
 }
 
 
@@ -178,10 +186,10 @@ void TextRenderer::DrawInInspector()
     {
         for (int i = 0; i < 9; ++i)
         {
-            bool selected = (i == alignment);
+            bool selected = (i == static_cast<int>(alignment));
             if (ImGui::Selectable(_alignmentNames[i], selected))
             {
-                alignment = (Alignment)i;
+                alignment = (Graphics::Alignment)i;
             }
             if (selected) ImGui::SetItemDefaultFocus();
         }
@@ -201,19 +209,26 @@ void TextRenderer::DrawInInspector()
 
 void TextRenderer::Draw()
 {
-    GameObject& owner = *_owner;
-    RenderData data{};
-    data.transform = *owner.GetComponent<Transform>();
-    data.renderLayer = renderLayer;
-    data.color = color;
+    Transform& t= *_owner->GetComponent<Transform>();
+    Graphics::RenderData data{};
+    data.pos = t.position;
+    data.scale = t.scale;
+    data.rot = t.rotation;
+    data.isScreenSpace = isScreenSpace;
+
     data.alignment = alignment;
-    RenderSystem::DrawMyText(myText.c_str(), data);
+    data.layer = renderLayer;
+    data.sortOrder = sortOrder;
+
+    data.color = color;
+
+    Graphics::Submit(data,Graphics::PrimitiveType::TEXT);
 }
 
 void TextRenderer::Serialize(Json::Value& outComp) const
 {
     outComp["renderlayer"] = renderLayer;
-    outComp["alignment"] = alignment;
+    outComp["alignment"] = static_cast<int>(alignment);
     outComp["color"] = WriteColor(color);
     outComp["text"] = myText;
 
@@ -224,10 +239,10 @@ void TextRenderer::Serialize(Json::Value& outComp) const
 void TextRenderer::Deserialize(const Json::Value& compObj)
 {
     if (compObj.isMember("renderlayer") && compObj["renderlayer"].isInt())
-        renderLayer = static_cast<RenderLayer>(compObj["renderlayer"].asInt());
+        renderLayer = static_cast<Graphics::RenderLayer>(compObj["renderlayer"].asInt());
 
     if (compObj.isMember("alignment") && compObj["alignment"].isInt())
-        alignment = static_cast<Alignment>(compObj["alignment"].asInt());
+        alignment = static_cast<Graphics::Alignment>(compObj["alignment"].asInt());
 
     if (compObj.isMember("color"))
         ReadColor(compObj["color"], color);
