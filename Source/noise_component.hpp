@@ -3,12 +3,13 @@
 #include "eventhandler.hpp"
 #include "color.hpp"
 
-struct AudioEmitter;
+class AudioEmitter;
 
 //controls audio and particle
 //more specialized particle effect
-struct NoiseSource : Behaviour
+class NoiseSource : public Component
 {
+public:
 	//particle properties
 	int numParticles{128};
 	float speed{400.f}; //keep standard to this speed

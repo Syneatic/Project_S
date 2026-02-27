@@ -5,7 +5,7 @@
 
 void ParticleEmitter::OnStart() 
 {
-	transform = _owner->GetComponent<Transform>();
+
 }
 
 void ParticleEmitter::OnUpdate() 
@@ -26,8 +26,8 @@ void ParticleEmitter::OnUpdate()
 	//spawn particles
 	while (timer >= interval)
 	{
-		float2 pos = transform->position;
-		float rot = transform->rotation;
+		float2 pos = _transform.position;
+		float rot = _transform.rotation;
 
 		//rotate to get direction
 		float baseAngle = rot * (PI / 180.0f);
@@ -48,7 +48,7 @@ void ParticleEmitter::OnDestroy() {};
 
 void ParticleEmitter::Burst()
 {
-	float2 origin = _owner->GetComponent<Transform>()->position;
+	float2 origin = _transform.position;
 	int burstCount = static_cast<int>(spawnRate);
 	float angleStep = (2.0f * PI) / burstCount;
 

@@ -84,10 +84,7 @@ float GetLifetime(float noise)
 void NoiseSource::OnStart() 
 {
 	//get references
-	transform = _owner->GetComponent<Transform>();
-	if (!transform) throw std::runtime_error("NoiseSource requires Transform component");
-
-	audioEmitter = _owner->GetComponent<AudioEmitter>();
+	audioEmitter = _owner.GetComponent<AudioEmitter>();
 	if (!audioEmitter) throw std::runtime_error("NoiseSource requires AudioEmitter component");
 	
 	//calculate lifetime
@@ -95,7 +92,7 @@ void NoiseSource::OnStart()
 
 	auto collisionhandle = EventHandler::SubscribeFilter<OnCollisionEvent,GameObject*>(
 		&OnCollisionEvent::self, 
-		_owner,                
+		&_owner,                
 		[this](const OnCollisionEvent& e)
 		{
 			this->HandleHit(e);
@@ -114,7 +111,7 @@ void NoiseSource::OnUpdate()
 
 	if (repeatTimer >= repeatInterval)
 	{
-		EventHandler::RaiseEvent<PingEvent>(_owner->id);
+		EventHandler::RaiseEvent<PingEvent>(_owner.id);
 		repeatTimer = 0.0f;
 	}
 }

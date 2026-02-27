@@ -5,7 +5,6 @@
 #include "particle_components.hpp"
 #include "physics_components.hpp"
 #include "render_components.hpp"
-#include "transform_component.hpp"
 #include "ui_components.hpp"
 
 //game components

@@ -1,11 +1,13 @@
 #pragma once
 
 #include "components.hpp"
-
+#include "physics.hpp"
+#include "audio.hpp"
 //cant be in cpp cause of template function
 
-struct GameObject
+class GameObject
 {
+public:
 	using ComponentMap = std::unordered_map<std::type_index, std::unique_ptr<Component>>;
 
 	inline static size_t nextId{ 0 };
@@ -14,12 +16,31 @@ private:
 	bool _active{ true };
 	std::string _name{};
 	ComponentMap _componentMap{}; //only 1 of each type of component can be attached
-	std::vector<std::unique_ptr<GameObject>> _children{};
-	 
+	std::vector<std::unique_ptr<GameObject>> _children{}; //unused for now
+
+	Transform _transform{};
+
 public:
 	void Start()
 	{
-		
+		for (auto& [type, comp] : _componentMap)
+		{
+			comp.get()->OnStart();
+
+			//register collider
+			if (auto* c = dynamic_cast<Collider*>(comp.get()))
+				Physics::RegisterCollider(c);
+
+			//Register RigidBody
+			if (auto* rb = dynamic_cast<RigidBody*>(comp.get()))
+				Physics::RegisterRigidBody(rb);
+
+			if (auto* a = dynamic_cast<AudioEmitter*>(comp.get()))
+				Audio::RegisterEmitter(a);
+
+			/*if (auto* pc = dynamic_cast<PlayerController*>(comp.get()))
+				pc->rockObject = FindGameObjectByName("Rock");*/
+		}
 	}
 
 	template<typename T>
@@ -46,31 +67,14 @@ public:
 		return static_cast<const T*>(it->second.get());
 	}
 
-	template<class T, class... Args>
-	T& AddComponent(Args&&... args)
+	template<class T>
+	T& AddComponent()
 	{
 		//tells the compiler to check if T derives from Component
 		static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
 
-		//certain components require dependencies
-		if constexpr (std::is_base_of<Renderer, T>::value)
-		{
-			GetOrAddComponent<Transform>();
-		}
-
-		if constexpr (std::is_base_of<Collider, T>::value) 
-		{ 
-			GetOrAddComponent<Transform>(); 
-		}
-
-		if constexpr (std::is_base_of<ParticleEmitter, T>::value)
-		{
-			GetOrAddComponent<Transform>();
-		}
-
 		if constexpr (std::is_base_of<NoiseSource, T>::value)
 		{
-			GetOrAddComponent<Transform>();
 			GetOrAddComponent<AudioEmitter>();
 		}
 
@@ -83,9 +87,7 @@ public:
 			return *component;
 		}
 
-
-		auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
-		ptr->SetOwner(this);
+		auto ptr = std::make_unique<T>(*this);
 
 		T& ref = *ptr;
 		_componentMap.emplace(type, std::move(ptr));
@@ -133,6 +135,9 @@ public:
 
 	const bool active() const { return _active; }
 	bool active(bool state) { return _active = state; }
+
+	const Transform& transform() const { return _transform; }
+	Transform& transform() { return _transform; }
 
 	//constructor
 	GameObject(const char* name) : id(nextId++)

@@ -130,7 +130,7 @@ void Renderer::Draw()
 
 void SpriteRenderer::Draw()
 {
-    Transform& t = *_owner->GetComponent<Transform>();
+    Transform& t = _transform;
     Graphics::RenderData data{};
     //transform
     data.pos = t.position;
@@ -209,7 +209,7 @@ void TextRenderer::DrawInInspector()
 
 void TextRenderer::Draw()
 {
-    Transform& t= *_owner->GetComponent<Transform>();
+    Transform& t = _transform;
     Graphics::RenderData data{};
     data.pos = t.position;
     data.scale = t.scale;

@@ -2,8 +2,9 @@
 #include "renderer.hpp"
 
 //abstract
-struct Renderer : Behaviour
+class Renderer : public Component
 {
+public:
     Graphics::BlendMode blendMode{ AE_GFX_BM_BLEND };
     Graphics::RenderMode renderMode{ AE_GFX_RM_COLOR};
     Graphics::DrawMode meshDrawMode{ AE_GFX_MDM_TRIANGLES};
@@ -29,8 +30,9 @@ struct Renderer : Behaviour
     void OnDestroy() override {};
 };
 
-struct SpriteRenderer : Renderer
+class SpriteRenderer : public Renderer
 {
+public:
     void Draw() override;
 
     //no override since sprite is quite normal
@@ -38,8 +40,9 @@ struct SpriteRenderer : Renderer
     const std::string name() const override { return "SpriteRenderer"; }
 };
 
-struct MeshRenderer : Renderer
+class MeshRenderer : public Renderer
 {
+public:
     Graphics::VertexBuffer* mesh = nullptr;
 
     void Serialize(Json::Value& outComp) const override;
@@ -48,8 +51,9 @@ struct MeshRenderer : Renderer
     const std::string name() const override { return "MeshRenderer"; }
 };
 
-struct TextRenderer : Renderer
+class TextRenderer : public Renderer
 {
+public:
     std::string text{};
 
     void DrawInInspector() override;

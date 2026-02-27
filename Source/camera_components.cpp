@@ -3,11 +3,10 @@
 
 void MainCamera::OnStart()
 {
-	transform = _owner->GetComponent<Transform>();
 	CameraSystem::OnStart();
 };
 void MainCamera::OnUpdate() {
-	CameraSystem::MoveCamera(*transform);
+	CameraSystem::MoveCamera(_transform);
 };
 void MainCamera::OnDestroy() {
 	CameraSystem::OnExit();

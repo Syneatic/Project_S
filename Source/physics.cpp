@@ -362,9 +362,7 @@ namespace Physics
 			if (!(c->layerMask & layerMask))
 				continue;
 
-			auto* tr = c->gameObject().GetComponent<Transform>();
-			if (!tr) continue;
-
+			auto& tr = c->transform();
 
 			float tHit = 0.0f;
 			float2 nHit = float2::zero();
@@ -373,12 +371,12 @@ namespace Physics
 			if (c->name() == "CircleCollider")
 			{
 				auto* cc = dynamic_cast<CircleCollider*>(c);
-				if (cc) hit = RayToCircle(origin, dirN, bestT, *tr, *cc, tHit, nHit);
+				if (cc) hit = RayToCircle(origin, dirN, bestT, tr, *cc, tHit, nHit);
 			}
 			else if (c->name() == "BoxCollider")
 			{
 				auto* bc = dynamic_cast<BoxCollider*>(c);
-				if (bc) hit = RayToOBB(origin, dirN, bestT, *tr, *bc, tHit, nHit);
+				if (bc) hit = RayToOBB(origin, dirN, bestT, tr, *bc, tHit, nHit);
 			}
 
 			if (!hit) continue;
@@ -441,9 +439,8 @@ namespace Physics
 				if (!c1->ShouldCollide(*c2) && !c2->ShouldCollide(*c1))
 					continue;
 
-				auto* t1 = c1->gameObject().GetComponent<Transform>();
-				auto* t2 = c2->gameObject().GetComponent<Transform>();
-				if (!t1 || !t2) continue;
+				auto& t1 = c1->transform();
+				auto& t2 = c2->transform();
 
 				RigidBody* rb1 = c1->gameObject().GetComponent<RigidBody>();
 				RigidBody* rb2 = c2->gameObject().GetComponent<RigidBody>();
@@ -454,7 +451,7 @@ namespace Physics
 					auto* b1 = dynamic_cast<BoxCollider*>(c1);
 					auto* b2 = dynamic_cast<BoxCollider*>(c2);
 
-					CollisionInfo info = BoxVSBox(*b1, *b2, *t1, *t2);
+					CollisionInfo info = BoxVSBox(*b1, *b2, t1, t2);
 
 					if (info.collided)
 					{
@@ -480,10 +477,10 @@ namespace Physics
 						if (!rb1Static && !rb2Static)
 						{
 							// Both dynamic
-							t1->position.x -= separation.x * 0.5f;
-							t1->position.y -= separation.y * 0.5f;
-							t2->position.x += separation.x * 0.5f;
-							t2->position.y += separation.y * 0.5f;
+							t1.position.x -= separation.x * 0.5f;
+							t1.position.y -= separation.y * 0.5f;
+							t2.position.x += separation.x * 0.5f;
+							t2.position.y += separation.y * 0.5f;
 
 							float vel1 = dot(rb1->velocity, info.normal);
 							float vel2 = dot(rb2->velocity, info.normal);
@@ -493,8 +490,8 @@ namespace Physics
 						else if (!rb1Static)
 						{
 							// Only obj1 is dynamic (obj2 is static)
-							t1->position.x -= separation.x;
-							t1->position.y -= separation.y;
+							t1.position.x -= separation.x;
+							t1.position.y -= separation.y;
 
 							float vel = dot(rb1->velocity, info.normal);
 							if (vel < 0) rb1->velocity = rb1->velocity - (info.normal * vel);
@@ -519,8 +516,8 @@ namespace Physics
 						else
 						{
 							// Only obj2 is dynamic (obj1 is static)
-							t2->position.x += separation.x;
-							t2->position.y += separation.y;
+							t2.position.x += separation.x;
+							t2.position.y += separation.y;
 
 							float vel = dot(rb2->velocity, info.normal);
 							if (vel > 0) rb2->velocity = rb2->velocity - (info.normal * vel);
@@ -578,7 +575,7 @@ namespace Physics
 					auto* cc1 = dynamic_cast<CircleCollider*>(c1);
 					auto* cc2 = dynamic_cast<CircleCollider*>(c2);
 
-					if (CircleVSCircle(*cc1, *cc2, *t1, *t2))
+					if (CircleVSCircle(*cc1, *cc2, t1, t2))
 					{
 						// Add circle collision resolution if needed
 					}
@@ -622,22 +619,13 @@ namespace Physics
 			//ignore if velocity is too low
 			if (lengthsq(rb->velocity) <= 0.0005f) continue;
 
-			Transform* t = rb->gameObject().GetComponent<Transform>();
+			Transform& t = rb->transform();
 
-			if (!t) continue;
-
-			t->position += rb->velocity * dt;
+			t.position += rb->velocity * dt;
 
 		}
 
 		// Resolve ALL collisions
 		CheckAllTypeCollisions();
-	}
-
-	RigidBody* CreateRigidBody()
-	{
-		RigidBody* rb = new RigidBody();
-		RegisterRigidBody(rb);
-		return rb;
 	}
 }

@@ -318,6 +318,9 @@ void EditorScene::BuildInspectorWindow()
 		selectedObj.name(std::string(scnNameBuffer));
 	}
 
+	//draw transform
+
+
 	const auto& comps = selectedObj.componentMap();
 
 	for (auto it = comps.begin(); it != comps.end(); ++it)
@@ -355,11 +358,6 @@ void EditorScene::BuildInspectorWindow()
 
 	if (ImGui::BeginPopup("AddComponentMenu"))
 	{
-		if (ImGui::MenuItem("Transform"))
-		{
-			selectedObj.AddComponent<Transform>();
-		}
-
 		if (ImGui::BeginMenu("Collider"))
 		{
 			if (ImGui::MenuItem("Box Collider"))
@@ -508,8 +506,7 @@ void EditorScene::Gizmos() {
 	if (selectedGameObjectIndex < 0) return;
 
 	GameObject& selectedObj = *loadedScene.gameObjectList()[selectedGameObjectIndex];
-	Transform* trans = selectedObj.GetComponent<Transform>();
-	if (!trans) return;
+	Transform& trans = selectedObj.transform();
 
 	//draw selection outline
 	Graphics::RenderData outline;
@@ -518,55 +515,54 @@ void EditorScene::Gizmos() {
 	outline.drawMode = Graphics::DrawMode::AE_GFX_MDM_LINES;
 	outline.color = Color(0xFF'FC'67'3A);
 	outline.layer = (Graphics::RenderLayer)(Graphics::RenderLayer::GIZMOS + 25);
-	outline.pos = trans->position;
-	outline.scale = trans->scale;
-	outline.rot = trans->rotation;
+	outline.pos = trans.position;
+	outline.scale = trans.scale;
+	outline.rot = trans.rotation;
 	Graphics::Submit(outline,Graphics::PrimitiveType::BOX);
-	//RenderSystem::DrawBox(trans->position, trans->scale, trans->rotation, Color(0xFFFC673A));
 
 	// 1. Draw the active gizmo
 	switch (currentMode) {
-	case GizmoMode::TRANSLATE: DrawTranslationGizmo(trans->position); break;
-	case GizmoMode::ROTATE:    DrawRotationGizmo(trans->position); break;
-	case GizmoMode::SCALE:     DrawScaleGizmo(trans->position); break;
+	case GizmoMode::TRANSLATE: DrawTranslationGizmo(trans.position); break;
+	case GizmoMode::ROTATE:    DrawRotationGizmo(trans.position); break;
+	case GizmoMode::SCALE:     DrawScaleGizmo(trans.position); break;
 	}
 
 	// 2. Handle Interaction
 	if (isMousePressed) {
-		activeAxis = GetHitAxis(mouseWorld, trans->position);
+		activeAxis = GetHitAxis(mouseWorld, trans.position);
 
 		if (currentMode == GizmoMode::ROTATE && activeAxis == GizmoAxis::ROTATION) {
-			startMouseAngle = atan2f(mouseWorld.y - trans->position.y, mouseWorld.x - trans->position.x);
-			startObjectRotation = trans->rotation;
+			startMouseAngle = atan2f(mouseWorld.y - trans.position.y, mouseWorld.x - trans.position.x);
+			startObjectRotation = trans.rotation;
 		}
 		else if (currentMode == GizmoMode::SCALE) {
 			startMousePos = mouseWorld;
-			startObjectScale = trans->scale;
+			startObjectScale = trans.scale;
 		}
 		else {
-			dragOffset = trans->position - mouseWorld;
+			dragOffset = trans.position - mouseWorld;
 		}
 	}
 
 	if (isMouseDown && activeAxis != GizmoAxis::NONE) {
 		if (currentMode == GizmoMode::TRANSLATE) {
 			if (activeAxis == GizmoAxis::X || activeAxis == GizmoAxis::CENTER)
-				trans->position.x = mouseWorld.x + dragOffset.x;
+				trans.position.x = mouseWorld.x + dragOffset.x;
 			if (activeAxis == GizmoAxis::Y || activeAxis == GizmoAxis::CENTER)
-				trans->position.y = mouseWorld.y + dragOffset.y;
+				trans.position.y = mouseWorld.y + dragOffset.y;
 		}
 		else if (currentMode == GizmoMode::ROTATE) {
-			float currentAngle = atan2f(mouseWorld.y - trans->position.y, mouseWorld.x - trans->position.x);
-			trans->rotation = startObjectRotation + (currentAngle - startMouseAngle) * (180.0f / 3.14159f);
+			float currentAngle = atan2f(mouseWorld.y - trans.position.y, mouseWorld.x - trans.position.x);
+			trans.rotation = startObjectRotation + (currentAngle - startMouseAngle) * (180.0f / 3.14159f);
 		}
 		else if (currentMode == GizmoMode::SCALE) {
 			float2 delta = mouseWorld - startMousePos;
-			if (activeAxis == GizmoAxis::X) trans->scale.x = startObjectScale.x + delta.x;
-			if (activeAxis == GizmoAxis::Y) trans->scale.y = startObjectScale.y + delta.y;
+			if (activeAxis == GizmoAxis::X) trans.scale.x = startObjectScale.x + delta.x;
+			if (activeAxis == GizmoAxis::Y) trans.scale.y = startObjectScale.y + delta.y;
 			if (activeAxis == GizmoAxis::CENTER)
 			{
 				float factor = 1.0f + (delta.x / 100.0f);
-				trans->scale = startObjectScale * factor;
+				trans.scale = startObjectScale * factor;
 			}
 		}
 	}

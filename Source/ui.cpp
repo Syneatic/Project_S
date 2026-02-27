@@ -49,9 +49,9 @@ namespace UISystem
 
     void Hover_Logic(GameObject& button)
     {
-        Transform* t = button.GetComponent<Transform>();
+        Transform& t = button.transform();
         SpriteRenderer* r = button.GetComponent<SpriteRenderer>();
-        if (checkBounds(*t))
+        if (checkBounds(t))
         {
             // set button hover rgba.
             r->color.r = r->color.g = r->color.b = r->color.a * .75f;

@@ -14,33 +14,11 @@ float fixedDt = 1.f / 60.f;
 
 void Scene::InitializeGameObjects()
 {
-	std::cout << "=== InitializeGameObjects ===" << std::endl;
-	std::cout << "Total GameObjects: " << _gameObjectList.size() << std::endl;
+	Debug::Log("=== Initialize GameObjects ===");
+	Debug::Log("Total GameObjects", _gameObjectList.size());
 	for (auto& pgo : _gameObjectList)
 	{
-		auto go = pgo.get();
-		for (auto& [type, comp] : go->componentMap())
-		{
-			//register collider
-			if (auto* c = dynamic_cast<Collider*>(comp.get()))
-				Physics::RegisterCollider(c);
-			
-			//Register RigidBody
-			if (auto* rb = dynamic_cast<RigidBody*>(comp.get()))
-				Physics::RegisterRigidBody(rb);
-			
-			if (auto* a = dynamic_cast<AudioEmitter*>(comp.get()))
-				Audio::RegisterEmitter(a);
-
-			if (auto* pc = dynamic_cast<PlayerController*>(comp.get()))
-				pc->rockObject = FindGameObjectByName("Rock");
-
-			//OnStart behaviours
-			if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
-				b->OnStart();
-			
-			
-		}
+		pgo.get()->Start();
 	}
 }
 
@@ -79,8 +57,7 @@ void Scene::OnUpdate()
 		auto go = pgo.get();
 		for (auto& [type, comp] : go->componentMap())
 		{
-			if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
-				b->OnUpdate();
+			comp.get()->OnUpdate();
 		}
 	}
 
@@ -105,8 +82,7 @@ void Scene::OnExit()
 		auto go = pgo.get();
 		for (auto& [type, comp] : go->componentMap())
 		{
-			if (auto* b = dynamic_cast<Behaviour*>(comp.get()))
-				b->OnDestroy();
+			comp.get()->OnDestroy();
 		}
 	}
 

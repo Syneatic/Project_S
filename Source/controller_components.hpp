@@ -8,20 +8,20 @@ struct RigidBody;
 struct NoiseSource;
 
 //abstract
-struct Controller : Behaviour
+class Controller : public Component
 {
 
 };
 
-struct PlayerController : Controller
+class PlayerController : public Controller
 {
+public:
     f32 maxSpeed = 10.f;
     f32 jumpHeight = 500.f;
     f32 time = 1.f;
 
     f32 dt{};
 
-    Transform* trans = nullptr;
     RigidBody* rb = nullptr;
     GameObject* rockObject = nullptr;
 
@@ -36,20 +36,12 @@ struct PlayerController : Controller
     const std::string name() const override { return "PlayerController"; }
 };
 
-struct RockController : Controller
+class RockController : public Controller
 {
-    enum class RockState
-    {
-        Idle,
-        Thrown,
-        Impact
-    };
-    RockState state = RockState::Idle;
-
+public:
     f32 throwSpeed = 250.f;
     f32 throwAngle = 0.f; //degrees
 
-    Transform* trans = nullptr;
     RigidBody* rb = nullptr;
     NoiseSource* ns = nullptr;
 

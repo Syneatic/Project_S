@@ -1,33 +1,33 @@
 #pragma once
-struct GameObject;
 
-struct Component
+//fwd decl
+class GameObject;
+class Transform;
+
+//ALL COMPONENTS ARE NOW BEHAVIOURS
+class Component
 {
 protected:
-    GameObject* _owner = nullptr;
-    Component() = default;
-    explicit Component(GameObject* owner) : _owner(owner) {};
+    GameObject& _owner;
+    Transform& _transform;
 
 public:
+    GameObject& gameObject() { return _owner; }
+    const GameObject& gameObject() const { return _owner; }
+    friend class GameObject; //allow GameObject class to access private and protected
 
-    void SetOwner(GameObject* owner) { _owner = owner; }
-    GameObject& gameObject() { return *_owner; }
-    const GameObject& gameObject() const { return *_owner; }
-    friend struct GameObject; //allow GameObject class to access private and protected
+    Transform& transform() { return _transform; }
+    const Transform& transform() const { return _transform; }
 
 	virtual void DrawInInspector() {};
     virtual void Serialize(Json::Value& /*outComp*/) const {};
     virtual void Deserialize(const Json::Value& /*compObj*/) {};
 
+    virtual void OnStart() {};
+    virtual void OnUpdate() {};
+    virtual void OnDestroy() {};
+
 	virtual const std::string name() const = 0;
 	virtual ~Component() = default;
-};
-
-struct Behaviour : Component
-{
-    virtual void OnStart() = 0;
-    virtual void OnUpdate() = 0;
-    virtual void OnDestroy() = 0;
-
-    virtual ~Behaviour() = default;
+    Component(GameObject& owner);
 };

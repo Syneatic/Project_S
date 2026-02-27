@@ -2,8 +2,9 @@
 
 //use this more as a generic particle generator
 //for atmosphere, etc...
-struct ParticleEmitter : Behaviour
+class ParticleEmitter : public Component
 {
+public:
 	float spawnRate = 10.f; // particle/sec
 	float speed = 200.f;
 	float spread = 30.f;
@@ -12,8 +13,6 @@ struct ParticleEmitter : Behaviour
 
 	bool isBurst = false;
 	Color color{};
-
-	Transform* transform = nullptr;
 
 	void OnStart() override;
 	void OnUpdate() override;

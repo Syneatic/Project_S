@@ -23,8 +23,9 @@ enum class FunctionKey
 };
 
 // Display component to attach image or custom texture.
-struct Display : Behaviour
+class Display : public Component
 {
+public:
 	AEGfxTexture* texture{ nullptr };
 
 	void DrawInInspector() override;
@@ -42,8 +43,9 @@ static char const* _buttonNames[]
 };
 
 // Button Component to assign function callback.
-struct Button : Behaviour
+class Button : public Component
 {
+public:
 	FunctionKey fKey{};
 
 	void DrawInInspector() override;
@@ -62,39 +64,3 @@ namespace UISystem
 	void Hover_Logic(GameObject& button);
 	void exit();
 }
-
-// Text component to assign text on screen.
-//struct Text : Behaviour
-//{
-//	f32 fontSize{UISystem::defaultTextSize};
-//	std::string str;
-//	//static char cStr[128];
-//
-//	void DrawInInspector() override
-//	{
-//		char cStr[128]; strcpy_s(cStr, str.c_str());
-//		ImGui::InputText("Text##Text", cStr, IM_ARRAYSIZE(cStr));
-//		str = cStr;
-//	}
-//
-//	void Serialize(Json::Value& outComp) const override
-//	{
-//		outComp["string"] = str;
-//	}
-//
-//	void Deserialize(const Json::Value& compObj) override
-//	{
-//		if (compObj.isMember("string"))
-//			str = compObj["string"].asString();
-//	}
-//
-//	void OnStart() override {}
-//	void OnUpdate() override 
-//	{
-//		//char cStr[128]; strcpy_s(cStr, str.c_str());
-//		//RenderSystem::DrawMyText(cStr, gameObject().GetComponent<Transform>()->position, fontSize);
-//	}
-//	void OnDestroy() override {}
-//
-//	const std::string name() const override { return "Text"; }
-//};

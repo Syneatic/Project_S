@@ -14,8 +14,9 @@ enum class Layer : uint32_t
 const char* LayerToString(Layer layer);
 
 //abstract
-struct Collider : Component
+class Collider : public Component
 {
+public:
     uint32_t layerMask{ static_cast<uint32_t>(Layer::Nothing) };
     uint32_t collisionMask{ 0xFFFFFFFF };
 
@@ -32,14 +33,11 @@ struct Collider : Component
     bool CollidesWithLayer(Layer layer)const;
     bool ShouldCollide(const Collider& other)const;
     void DrawLayerInInspector();
-  
-protected:
-    //tag
-    //isTrigger
 };
 
-struct CircleCollider : Collider
+class CircleCollider : public Collider
 {
+public:
     f32 radius{ 1.f };
 
     void DrawInInspector() override;
@@ -47,12 +45,11 @@ struct CircleCollider : Collider
     void Deserialize(const Json::Value& compObj) override;
 
     const std::string name() const override { return "CircleCollider"; }
-
-    CircleCollider() {};
 };
 
-struct BoxCollider : Collider
+class BoxCollider : public Collider
 {
+public:
     float2 size{ 1.f,1.f };
 
 	void DrawInInspector() override;
@@ -62,7 +59,7 @@ struct BoxCollider : Collider
     const std::string name() const override { return "BoxCollider"; }
 };
 
-struct RigidBody : Component 
+class RigidBody : public Component
 { 
 public:
 	bool Affected_By_Gravity{ false };

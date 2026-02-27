@@ -2,10 +2,8 @@
 
 #include "camera.hpp"
 
-struct MainCamera : Behaviour
+struct MainCamera : Component
 {
-	Transform* transform;
-
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnDestroy() override;

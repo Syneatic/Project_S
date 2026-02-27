@@ -88,12 +88,6 @@ void AudioEmitter::SetLoop(bool l)
 
 void AudioEmitter::Initialize()
 {
-	transform = _owner->GetComponent<Transform>();
-	if (!transform)
-	{
-		std::cout << "NO TRANSFORM FOUND IN " << _owner->name() << std::endl;
-	}
-
 	auto& sound = *soundPtr.get();
 	sound.setVolume(volume);
 	sound.setPitch(pitch);
@@ -177,23 +171,14 @@ void AudioEmitter::Deserialize(const Json::Value& compObj)
 
 void AudioListener::OnStart()
 {
-	transform = _owner->GetComponent<Transform>();
-	if (!transform)
-	{
-		std::cout << "NO TRANSFORM FOUND IN " << _owner->name() << std::endl;
-	}
-
 	sf::Listener::setUpVector(sf::Vector3f(0.f, 1.f, 0.f));
 	sf::Listener::setDirection(sf::Vector3f(0.f, 0.f, -1.f));
 }
 
 void AudioListener::OnUpdate()
 {
-	if (transform)
-	{
-		sf::Vector3f pos(transform->position.x, transform->position.y, 10.f);
-		sf::Listener::setPosition(pos);
-	}
+	sf::Vector3f pos(_transform.position.x, _transform.position.y, 10.f);
+	sf::Listener::setPosition(pos);
 }
 
 void AudioListener::DrawInInspector()

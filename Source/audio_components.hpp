@@ -1,16 +1,14 @@
 #pragma once
 #include "gameobject.hpp"
-#include "transform_component.hpp"
 
-//requires transform
-struct AudioEmitter : Component
+class AudioEmitter : public Component
 {
+public:
 	//sf::Sound _sound;
 	std::string fileName{};
 
 	std::unique_ptr<sf::Sound> soundPtr{nullptr};
 
-	Transform* transform{nullptr};
 	f32 volume{1};		//  0    to 1
 	f32 pitch{1};		//  0.5  to 2
 	bool loop{false};
@@ -31,10 +29,9 @@ struct AudioEmitter : Component
 	const std::string name() const override { return "AudioEmitter"; }
 };
 
-struct AudioListener : Behaviour
+class AudioListener : public Component
 {
-	Transform* transform;
-
+public:
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnDestroy() override {};
