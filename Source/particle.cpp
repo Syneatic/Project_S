@@ -94,7 +94,7 @@ namespace ParticleSystem
 
 			AEGfxSetTransform(finalMtx.m);
 			
-			//AEGfxMeshDraw(RenderSystem::GetQuadMesh(), AE_GFX_MDM_TRIANGLES);
+			AEGfxMeshDraw(Graphics::QuadMesh(), AE_GFX_MDM_TRIANGLES);
 		}
 	}
 

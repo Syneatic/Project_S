@@ -60,6 +60,8 @@ namespace Graphics
 
 	struct RenderCommand;
 
+    VertexBuffer* QuadMesh();
+
 	void Initialize();
     void Flush();//flushes all commands
 	void Exit();

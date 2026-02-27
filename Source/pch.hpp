@@ -46,4 +46,6 @@
 #include "debug.hpp"
 #include "json_parser_helper.hpp"
 #include "math.hpp"
+#include "renderer.hpp"
+#include "scene_manager.hpp"
 #include "transform.hpp"

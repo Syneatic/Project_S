@@ -17,7 +17,7 @@ namespace UISystem
     // Subscribe each button function as an event to event handler.
     void init()
     {
-        handlers.push_back(SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneSwitch("PrototypeLvl"); }));
+        handlers.push_back(SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneSwitch("TestScene"); }));
         handlers.push_back(SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent& /*e*/) { std::cout << "Pause\n"; }));
         handlers.push_back(SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneReload(); }));
         handlers.push_back(SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneSwitch("MainMenu"); }));

@@ -142,9 +142,15 @@ namespace SceneIO
         if (!obj.isMember("name") || !obj["name"].isString()) return nullptr;
 
         auto go = std::make_unique<GameObject>(obj["name"].asString());
-
+        auto& transform = go.get()->transform();
         if (obj.isMember("active") && obj["active"].isBool())
             go->active(obj["active"].asBool());
+
+        //deserialize transform
+        if (obj.isMember("position")) ReadFloat2(obj["position"], transform.position);
+        if (obj.isMember("scale"))    ReadFloat2(obj["scale"], transform.scale);
+        if (obj.isMember("rotation") && obj["rotation"].isNumeric())
+            transform.rotation = obj["rotation"].asFloat();
 
         if (obj.isMember("components") && obj["components"].isArray())
         {

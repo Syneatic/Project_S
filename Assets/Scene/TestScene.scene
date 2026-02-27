@@ -1,0 +1,882 @@
+{
+  "gameObjects" : 
+  [
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "type" : "Camera"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : true,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            0.3125,
+            0.75,
+            0.35110288858413696,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "jumpHeight" : 150.0,
+          "max_speed" : 250.0,
+          "time" : 1.0,
+          "type" : "PlayerController"
+        },
+        {
+          "type" : "AudioListener"
+        },
+        {
+          "collisionMask" : 4294967282,
+          "layerMask" : 1,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Player",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        20.0,
+        50.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "WALL_1",
+      "position" : 
+      [
+        -802.0,
+        36.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        100.0,
+        992.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "GROUND_1",
+      "position" : 
+      [
+        6.0,
+        -411.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1621.0,
+        100.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "CEILING",
+      "position" : 
+      [
+        0.0,
+        458.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1600.0,
+        100.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "WALL_2",
+      "position" : 
+      [
+        819.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        100.0,
+        1000.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "PLATFORM_1",
+      "position" : 
+      [
+        -4.0,
+        -41.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        400.0,
+        20.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "PLATFORM_2",
+      "position" : 
+      [
+        -387.0,
+        -109.0
+      ],
+      "rotation" : 20.123468399047852,
+      "scale" : 
+      [
+        400.0,
+        20.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "PLATFORM_3",
+      "position" : 
+      [
+        -150.0,
+        -177.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1008.0,
+        20.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "PLATFORM_4",
+      "position" : 
+      [
+        492.0,
+        -110.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        20.0,
+        289.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "PLATFORM_5",
+      "position" : 
+      [
+        452.0,
+        -247.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        100.0,
+        20.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "PLATFORM_6",
+      "position" : 
+      [
+        239.0,
+        -109.0
+      ],
+      "rotation" : -55.431415557861328,
+      "scale" : 
+      [
+        178.0,
+        18.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "PLATFORM_7",
+      "position" : 
+      [
+        701.0,
+        -252.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        178.39999389648438,
+        26.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "PLATFORM_8",
+      "position" : 
+      [
+        563.0,
+        -125.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        161.0,
+        22.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "PLATFORM_9",
+      "position" : 
+      [
+        695.0,
+        -22.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        188.0,
+        24.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967293,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "PLATFORM_10",
+      "position" : 
+      [
+        393.0,
+        23.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        217.94999694824219,
+        23.649999618530273
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "fileName" : "button_click.wav",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            0.30541136860847473,
+            0.62615901231765747,
+            0.7598038911819458,
+            1.0
+          ],
+          "lifetime" : 1.0,
+          "noiseLevel" : 10.0,
+          "numParticles" : 128,
+          "repeat" : true,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "NOISE_SOURCE_1",
+      "position" : 
+      [
+        -639.0,
+        -321.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            0.83823525905609131,
+            0.37802764773368835,
+            0.37802764773368835,
+            1.0
+          ],
+          "lifetime" : 1.0,
+          "noiseLevel" : 10.0,
+          "numParticles" : 128,
+          "repeat" : true,
+          "repeatInterval" : 2.0,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "NOISE_SOURCE_2",
+      "position" : 
+      [
+        412.0,
+        219.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "fileName" : "button_click.wav",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            0.7401961088180542,
+            0.71629124879837036,
+            0.63860058784484863,
+            1.0
+          ],
+          "lifetime" : 1.0,
+          "noiseLevel" : 10.0,
+          "numParticles" : 256,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            0.47549021244049072,
+            0.47549021244049072,
+            0.47549021244049072,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "throwAngle" : 0.0,
+          "throwSpeed" : 300.0,
+          "type" : "RockController"
+        },
+        {
+          "collisionMask" : 4294967286,
+          "layerMask" : 0,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Rock",
+      "position" : 
+      [
+        181.5,
+        66.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        15.0,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967282,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "ENEMY",
+      "position" : 
+      [
+        -119.0,
+        149.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        100.0,
+        100.0
+      ]
+    }
+  ],
+  "name" : "TestScene"
+}

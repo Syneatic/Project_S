@@ -1,7 +1,7 @@
 #include "camera.hpp"
 #include "gameobject.hpp"
-
 #include "controller_components.hpp"
+#include "scene.hpp"
 
 
 
@@ -44,7 +44,7 @@ void PlayerController::Deserialize(const Json::Value& compObj)
 void PlayerController::OnStart()
 {
     rb = _owner.GetComponent<RigidBody>();
-
+    rockObject = SceneManager::ActiveScene()->FindGameObjectByName("Rock");
     std::cout << "Rock assigned: " << rockObject << "\n";
 }
 

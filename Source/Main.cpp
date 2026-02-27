@@ -104,17 +104,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				SceneManager::RequestSceneSwitch("MainMenu");	
 		}
 #endif
-
-		
+	
 		SceneManager::OnUpdate();
 
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
-		////clear results at end of frame
-		//Debug::ClearTimerResults();
 
-		//std::cout << AEFrameRateControllerGetFrameRate() << std::endl;
+		Debug::Log(AEFrameRateControllerGetFrameRate());
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 		gGameRunning = 0;

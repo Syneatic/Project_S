@@ -309,7 +309,7 @@ void EditorScene::BuildInspectorWindow()
 	//iterate through each component and display its properties here
 	//name text box
 	GameObject& selectedObj = *loadedScene.gameObjectList()[selectedGameObjectIndex];
-
+	auto& transform = selectedObj.transform();
 	char scnNameBuffer[256];
 	strcpy_s(scnNameBuffer, selectedObj.name().c_str());
 	if (ImGui::InputText(" ", scnNameBuffer, sizeof(scnNameBuffer)))
@@ -319,10 +319,37 @@ void EditorScene::BuildInspectorWindow()
 	}
 
 	//draw transform
+	if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::TextUnformatted("Position");
+		ImGui::DragFloat2("##transform_position", &transform.position.x, 0.05f);
+		ImGui::SameLine();
+		if (ImGui::Button("Reset##Pos"))
+		{
+			transform.position.x = 0.0f;
+			transform.position.y = 0.0f;
+		}
 
+		ImGui::TextUnformatted("Scale");
+		ImGui::DragFloat2("##transform_scale", &transform.scale.x, 0.05f);
+		ImGui::SameLine();
+		if (ImGui::Button("Reset##Scale"))
+		{
+			transform.scale.x = 1.0f;
+			transform.scale.y = 1.0f;
+		}
+
+		ImGui::TextUnformatted("Rotation");
+		ImGui::DragFloat("##transform_rotation", &transform.rotation, 0.1f);
+		ImGui::SameLine();
+		if (ImGui::Button("Reset##Rot"))
+		{
+			transform.rotation = 0.0f;
+		}
+		ImGui::Separator();
+	}
 
 	const auto& comps = selectedObj.componentMap();
-
 	for (auto it = comps.begin(); it != comps.end(); ++it)
 	{
 		const std::type_index& type = it->first;

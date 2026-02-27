@@ -73,6 +73,7 @@ void Scene::OnUpdate()
 	ParticleSystem::Update();
 	EventHandler::CallQ();
 	Graphics::Execute();
+	ParticleSystem::Render();
 }
 
 void Scene::OnExit()

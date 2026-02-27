@@ -3,7 +3,7 @@
 #include "scene.hpp"
 #include "gizmos.hpp"
 
-struct EditorScene : Scene
+class EditorScene : public Scene
 {
 private:
 	Scene loadedScene{}; //current loaded scene data

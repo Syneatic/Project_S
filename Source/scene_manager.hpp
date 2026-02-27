@@ -1,5 +1,7 @@
 #pragma once
 
+class Scene;
+
 namespace SceneManager
 {
 	void Initialize(int* gameLoop);
@@ -8,4 +10,5 @@ namespace SceneManager
 	void RequestSceneReload();
 	void OnUpdate();
 	void QuitApplication();
+	Scene* ActiveScene();
 }

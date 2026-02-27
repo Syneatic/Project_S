@@ -19,7 +19,6 @@ public:
 	AudioEmitter* audioEmitter { nullptr };
 
 	//properties
-	Transform* transform { nullptr };
 	float noiseLevel{}; //determines how far the noise particles will spread from the source
 	bool repeat{};
 	float repeatInterval{ 1.f };

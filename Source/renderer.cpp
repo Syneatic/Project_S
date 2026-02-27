@@ -173,6 +173,8 @@ namespace Graphics //init mesh functions
 
         _lineMesh = MeshEnd();
     }
+
+    VertexBuffer* QuadMesh() { return _quadMesh; }
 }
 
 
@@ -325,8 +327,9 @@ namespace Graphics
             AEGfxPrint(_currentFont, text, aeX - offX, aeY - offY,
                 data.scale.x, data.color.r, data.color.g, data.color.b, data.color.a);
         }
-}
+    }
 
+   
 
     void Initialize()
     {
@@ -433,7 +436,6 @@ namespace Graphics
                 DrawMesh(_boxMesh, d.drawMode);
                 break;
             case PrimitiveType::TEXT:
-                Debug::Log("drawing text", cmd.text);
                 DrawTextMesh(cmd.text.c_str(), d);
                 break;
             }
