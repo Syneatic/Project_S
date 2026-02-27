@@ -433,6 +433,7 @@ namespace Graphics
                 DrawMesh(_boxMesh, d.drawMode);
                 break;
             case PrimitiveType::TEXT:
+                Debug::Log("drawing text", cmd.text);
                 DrawTextMesh(cmd.text.c_str(), d);
                 break;
             }

@@ -50,7 +50,7 @@ struct MeshRenderer : Renderer
 
 struct TextRenderer : Renderer
 {
-    std::string myText{};
+    std::string text{};
 
     void DrawInInspector() override;
     void Draw() override;

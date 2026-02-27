@@ -174,10 +174,10 @@ void TextRenderer::DrawInInspector()
     static const char* _alignmentNames[] = { "Top left", "Top", "Top right", "Left", "Center", "Right", "Bottom Left", "Bottom", "Bottom right" };
 
     char textBuffer[256];
-    strcpy_s(textBuffer, myText.c_str());
+    strcpy_s(textBuffer, text.c_str());
     if (ImGui::InputText("##textrenderer", textBuffer, sizeof(textBuffer)))
     {
-        myText = textBuffer;
+        text = textBuffer;
     }
 
     ImGui::Separator();
@@ -221,8 +221,8 @@ void TextRenderer::Draw()
     data.sortOrder = sortOrder;
 
     data.color = color;
-
-    Graphics::Submit(data,Graphics::PrimitiveType::TEXT);
+    
+    Graphics::Submit(data,Graphics::PrimitiveType::TEXT,text.c_str());
 }
 
 void TextRenderer::Serialize(Json::Value& outComp) const
@@ -230,7 +230,7 @@ void TextRenderer::Serialize(Json::Value& outComp) const
     outComp["renderlayer"] = renderLayer;
     outComp["alignment"] = static_cast<int>(alignment);
     outComp["color"] = WriteColor(color);
-    outComp["text"] = myText;
+    outComp["text"] = text;
 
     //texture is abit tricky for now
     //i think save it as a filename for now
@@ -248,7 +248,7 @@ void TextRenderer::Deserialize(const Json::Value& compObj)
         ReadColor(compObj["color"], color);
 
     if (compObj.isMember("text") || !compObj["text"].isString()) {
-        myText = compObj["text"].asString();
+        text = compObj["text"].asString();
     }
 
     //read texture from file here
