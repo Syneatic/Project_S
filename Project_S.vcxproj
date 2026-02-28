@@ -93,10 +93,12 @@
     </ClCompile>
     <ClCompile Include="Source\audio.cpp" />
     <ClCompile Include="Source\audio_components.cpp" />
+    <ClCompile Include="Source\base_components .cpp" />
     <ClCompile Include="Source\color.cpp" />
     <ClCompile Include="Source\camera.cpp" />
     <ClCompile Include="Source\camera_components.cpp" />
     <ClCompile Include="Source\controller_components.cpp" />
+    <ClCompile Include="Source\debug.cpp" />
     <ClCompile Include="Source\math.cpp" />
     <ClCompile Include="Source\noise_component.cpp" />
     <ClCompile Include="Source\particle_components.cpp" />
@@ -115,7 +117,6 @@
     <ClCompile Include="Source\scene_editor.cpp" />
     <ClCompile Include="Source\scene_manager.cpp" />
     <ClCompile Include="Source\scene_parser.cpp" />
-    <ClCompile Include="Source\transform_component.cpp" />
     <ClCompile Include="Source\ui.cpp" />
     <ClCompile Include="Source\ui_components.cpp" />
   </ItemGroup>
@@ -147,6 +148,7 @@
     <ClInclude Include="Source\color.hpp" />
     <ClInclude Include="Source\base_components.hpp" />
     <ClInclude Include="Source\components.hpp" />
+    <ClInclude Include="Source\debug.hpp" />
     <ClInclude Include="Source\noise_component.hpp" />
     <ClInclude Include="Source\particle_components.hpp" />
     <ClInclude Include="Source\enginectx.hpp" />
@@ -167,7 +169,7 @@
     <ClInclude Include="Source\scene_editor.hpp" />
     <ClInclude Include="Source\scene_manager.hpp" />
     <ClInclude Include="Source\scene_parser.hpp" />
-    <ClInclude Include="Source\transform_component.hpp" />
+    <ClInclude Include="Source\transform.hpp" />
     <ClInclude Include="Source\ui_components.hpp" />
   </ItemGroup>
   <ItemGroup>

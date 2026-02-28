@@ -11,7 +11,7 @@ inline Json::Value WriteFloat2(const float2& v)
     return arr;
 }
 
-inline void ReadFloat2(const Json::Value& arr, float2& const out)
+inline void ReadFloat2(const Json::Value& arr, float2& out)
 {
     if (!arr.isArray() || arr.size() != 2) return;
     if (!arr[0].isNumeric() || !arr[1].isNumeric()) return;

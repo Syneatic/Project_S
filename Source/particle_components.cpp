@@ -5,7 +5,7 @@
 
 void ParticleEmitter::OnStart() 
 {
-	transform = _owner->GetComponent<Transform>();
+
 }
 
 void ParticleEmitter::OnUpdate() 
@@ -20,14 +20,14 @@ void ParticleEmitter::OnUpdate()
 	}
 
 
-	timer += AEFrameRateControllerGetFrameTime();
+	timer += static_cast<float>(AEFrameRateControllerGetFrameTime());
 	float interval = 1.0f / spawnRate;
 
 	//spawn particles
 	while (timer >= interval)
 	{
-		float2 pos = transform->position;
-		float rot = transform->rotation;
+		float2 pos = _transform.position;
+		float rot = _transform.rotation;
 
 		//rotate to get direction
 		float baseAngle = rot * (PI / 180.0f);
@@ -39,7 +39,7 @@ void ParticleEmitter::OnUpdate()
 			sinf(finalAngle) * speed
 		};
 
-		ParticleSystem::Emit(pos, velocity,0.f, lifetime, color,true,spawnRate/2,nullptr);
+		ParticleSystem::Emit(pos, velocity,0.f, lifetime, color,true,static_cast<int>(spawnRate/2),nullptr);
 		timer -= interval;
 	}
 }
@@ -48,7 +48,7 @@ void ParticleEmitter::OnDestroy() {};
 
 void ParticleEmitter::Burst()
 {
-	float2 origin = _owner->GetComponent<Transform>()->position;
+	float2 origin = _transform.position;
 	int burstCount = static_cast<int>(spawnRate);
 	float angleStep = (2.0f * PI) / burstCount;
 

@@ -71,7 +71,6 @@ namespace Audio
 			}
 
 			e->soundPtr = std::make_unique<sf::Sound>(*buffer);
-			e->Initialize();
 		}
 	}
 
@@ -102,19 +101,16 @@ namespace Audio
 	{
 		for (auto* emitter : _audioEmitters)
 		{
-			auto& transform = emitter->transform;
+			auto& transform = emitter->transform();
 			auto& sound = *emitter->soundPtr.get();
 
 			sound.setVolume(100.f * emitter->volume * _sfxVolume * _masterVolume);
 			sound.setPitch(emitter->pitch);
 
 			//update position
-			if (transform)
-			{
-				sf::Vector3f pos(transform->position.x, transform->position.y, 0.f);
-				sound.setPosition(pos);
-				auto dir = sound.getPosition() - sf::Listener::getPosition();
-			}
+			sf::Vector3f pos(transform.position.x, transform.position.y, 0.f);
+			sound.setPosition(pos);
+			auto dir = sound.getPosition() - sf::Listener::getPosition();	
 		}
 	}
 

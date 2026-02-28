@@ -1,23 +1,21 @@
 #pragma once
 #include "gameobject.hpp"
-#include "transform_component.hpp"
 
-//requires transform
-struct AudioEmitter : Component
+class AudioEmitter : public Component
 {
+public:
 	//sf::Sound _sound;
 	std::string fileName{};
 
 	std::unique_ptr<sf::Sound> soundPtr{nullptr};
 
-	Transform* transform{nullptr};
 	f32 volume{1};		//  0    to 1
 	f32 pitch{1};		//  0.5  to 2
 	bool loop{false};
 	bool spatialize{ false };
 	bool relativeToListener{ false};
 
-	void Initialize();
+	void OnStart() override;
 	void SetVolume(f32 vol);
 	void SetPitch(f32 pitch);
 	void SetLoop(bool loop);
@@ -29,12 +27,14 @@ struct AudioEmitter : Component
 	void Deserialize(const Json::Value& compObj) override;
 
 	const std::string name() const override { return "AudioEmitter"; }
+
+	AudioEmitter(GameObject& go) : Component(go) {};
+
 };
 
-struct AudioListener : Behaviour
+class AudioListener : public Component
 {
-	Transform* transform;
-
+public:
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnDestroy() override {};
@@ -44,4 +44,6 @@ struct AudioListener : Behaviour
 	void Deserialize(const Json::Value& compObj) override;
 
 	const std::string name() const override { return "AudioListener"; }
+
+	AudioListener(GameObject& go) : Component(go) {};
 };

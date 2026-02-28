@@ -6,18 +6,10 @@
 #include "noise_component.hpp"
 #include "event.hpp"
 
-namespace
-{
-	enum PingEventID
-	{
-		AUDIO,
-		EMIT
-	};
-}
 
 void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit)
 {
-	float dt = AEFrameRateControllerGetFrameTime();
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	uint32_t mask = 1 << 1;
 	mask |= 1 << 2;
 	mask |= 1 << 3;
@@ -33,35 +25,11 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 			Physics::RaycastHit hit;
 
 			if (Physics::Raycast(pos, dir, dist, hit, mask))
-			{
-				//version1
-				/*
-				if (burstLimit > 16)
-				{
-					float centerAngle = atan2f(hit.normal.y, hit.normal.x);
-
-					float arcRange = PI;
-					float angleStep = arcRange / (burstLimit - 1);
-
-					float startAngle = centerAngle - (arcRange / 2.0f);
-					
-					for (int i = 0; i < burstLimit; i++)
-					{
-						float currentAngle = startAngle + (i * angleStep);
-						currentAngle += Random::RandFloat(-(angleStep / 4.0f), angleStep / 4.0f);
-						float2 b_velocity = { cosf(currentAngle) , sinf(currentAngle) };
-						b_velocity = normalize(b_velocity) * speed;
-						ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), b_velocity, lifetime * 0.6f, col, true, burstLimit/ 2, Collision);
-					}
-				}
-				*/
-				
+			{		
 				//get reflected vector
 				float2 refl = reflect(dir,hit.normal);
 				float2 b_velocity = (normalize(refl) + float2(Random::RandFloat(-0.005f, 0.005f),Random::RandFloat(-0.005f,0.005f))) * speed;
 				ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), b_velocity,0.f, lifetime * 0.85f, col, true, burstLimit / 2, Collision);
-
-
 
 				//reset lifetime when hit
 				time = 0.f;
@@ -92,54 +60,43 @@ float GetLifetime(float noise)
 void NoiseSource::OnStart() 
 {
 	//get references
-	transform = _owner->GetComponent<Transform>();
-	if (!transform) throw std::runtime_error("NoiseSource requires Transform component");
-
-	audioEmitter = _owner->GetComponent<AudioEmitter>();
+	audioEmitter = _owner.GetComponent<AudioEmitter>();
 	if (!audioEmitter) throw std::runtime_error("NoiseSource requires AudioEmitter component");
 	
 	//calculate lifetime
 	lifetime = GetLifetime(noiseLevel);
 
-	EventHandler::SubscribeFilter<PingEvent,size_t>(
-		&PingEvent::targetId, 
-		_owner->id,
-		[this](const PingEvent& e)
-		{
-			if(this->audioEmitter)
-				this->audioEmitter->Play();
-		}
-	);
-
-	EventHandler::SubscribeFilter<OnCollisionEvent,GameObject*>(
+	auto collisionhandle = EventHandler::SubscribeFilter<OnCollisionEvent,GameObject*>(
 		&OnCollisionEvent::self, 
-		_owner,                
+		&_owner,                
 		[this](const OnCollisionEvent& e)
 		{
 			this->HandleHit(e);
 		}
 	);
+
+	eventSubscriptionList.push_back(collisionhandle);
 }
 
 void NoiseSource::OnUpdate() 
 {
 	if (!repeat) return;
 
-	float dt = AEFrameRateControllerGetFrameTime();
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	repeatTimer += dt;
 
 	if (repeatTimer >= repeatInterval)
 	{
-		EventHandler::RaiseEvent<PingEvent>(_owner->id);
 		repeatTimer = 0.0f;
+		Emit();
 	}
 }
 
 void NoiseSource::OnDestroy() 
 {
-	for (auto& e : emitterSH)
+	for (auto& e : eventSubscriptionList)
 	{
-		EventHandler::Unsubscribe(e.value());
+		EventHandler::Unsubscribe(e);
 	}
 }
 
@@ -149,13 +106,13 @@ void NoiseSource::Emit()
 	for (int i = 0; i < numParticles; i++)
 	{
 		float currentAngle = i * angleStep;
-		currentAngle += Random::RandFloat(-(angleStep/1.5), angleStep/1.5);
+		currentAngle += Random::RandFloat(-(angleStep/1.5f), angleStep/1.5f);
 		float2 velocity = { cosf(currentAngle) , sinf(currentAngle) };
 		velocity = normalize(velocity) * speed;
-		ParticleSystem::Emit(transform->position, velocity,0.f, lifetime, color, true, numParticles/2,Collision);
+		ParticleSystem::Emit(_transform.position, velocity,0.f, lifetime, color, true, numParticles/2,Collision);
 	}
 
-	EventHandler::RaiseEvent<PingEvent>(_owner->id);
+	if (audioEmitter) audioEmitter->Play();
 }
 
 void NoiseSource::HandleHit(const OnCollisionEvent& e)
@@ -163,9 +120,6 @@ void NoiseSource::HandleHit(const OnCollisionEvent& e)
 	// Only emit noise if the impact was significant
 	if (e.impulse > 45.0f)
 	{
-		// Play sound if we have an emitter
-		if (audioEmitter) audioEmitter->Play();
-
 		this->Emit();
 	}
 }

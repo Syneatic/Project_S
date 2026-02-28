@@ -17,11 +17,11 @@ namespace UISystem
     // Subscribe each button function as an event to event handler.
     void init()
     {
-        handlers.push_back(SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent& e) { SceneManager::RequestSceneSwitch("PrototypeLvl"); }));
-        handlers.push_back(SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent& e) { std::cout << "Pause\n"; }));
-        handlers.push_back(SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent& e) { SceneManager::RequestSceneReload(); }));
-        handlers.push_back(SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent& e) { SceneManager::RequestSceneSwitch("MainMenu"); }));
-        handlers.push_back(SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent& e) { SceneManager::QuitApplication(); }));
+        handlers.push_back(SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneSwitch("TestScene"); }));
+        handlers.push_back(SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent& /*e*/) { std::cout << "Pause\n"; }));
+        handlers.push_back(SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneReload(); }));
+        handlers.push_back(SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneSwitch("MainMenu"); }));
+        handlers.push_back(SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent& /*e*/) { SceneManager::QuitApplication(); }));
     }
 
     float2 ScreenToWorld(s32 x, s32 y)
@@ -49,9 +49,9 @@ namespace UISystem
 
     void Hover_Logic(GameObject& button)
     {
-        Transform* t = button.GetComponent<Transform>();
+        Transform& t = button.transform();
         SpriteRenderer* r = button.GetComponent<SpriteRenderer>();
-        if (checkBounds(*t))
+        if (checkBounds(t))
         {
             // set button hover rgba.
             r->color.r = r->color.g = r->color.b = r->color.a * .75f;

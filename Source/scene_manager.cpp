@@ -150,4 +150,9 @@ namespace SceneManager
 	{
 		*originLoop = 0;
 	}
+
+	Scene* ActiveScene()
+	{
+		return _current.get();
+	}
 }

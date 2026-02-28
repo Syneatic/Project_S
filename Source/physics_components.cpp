@@ -1,6 +1,6 @@
 #include "physics_components.hpp"
 #include "base_components.hpp"
-#include "math.hpp"
+#include "physics.hpp"
 
 const char* LayerToString(Layer layer)
 {
@@ -16,6 +16,11 @@ const char* LayerToString(Layer layer)
 }
 
 // ===== COLLIDER DEFINITIONS =====
+void Collider::OnStart()
+{
+    Physics::RegisterCollider(this);
+}
+
 void Collider::OnCollision(const Collision& data)
 {
     for (const auto& callback : onCollisionListeners) 
@@ -214,6 +219,11 @@ void RigidBody::Deserialize(const Json::Value& compObj)
 		gravity = compObj["Gravity"].asFloat();
 	if (compObj.isMember("Velocity") && compObj["Velocity"].isNumeric())
 		velocity.x = compObj["Velocity"].asFloat();
+}
+
+void RigidBody::OnStart()
+{
+    Physics::RegisterRigidBody(this);
 }
 
 void RigidBody::Clear_Forces()

@@ -2,10 +2,8 @@
 
 #include "camera.hpp"
 
-struct MainCamera : Behaviour
+struct MainCamera : Component
 {
-	Transform* transform;
-
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnDestroy() override;
@@ -15,4 +13,6 @@ struct MainCamera : Behaviour
 	void Deserialize(const Json::Value& compObj) override;
 
 	const std::string name() const override { return "Camera"; }
+
+	MainCamera(GameObject& go) : Component(go) {};
 };

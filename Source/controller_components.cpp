@@ -1,15 +1,7 @@
-#include <string>
-#include <iostream>
-#include <algorithm>
-
-#include "ImGUI/imgui.h"
-#include "json_parser_helper.hpp"
-#include "AEEngine.h"
-
 #include "camera.hpp"
 #include "gameobject.hpp"
-
 #include "controller_components.hpp"
+#include "scene.hpp"
 
 
 
@@ -51,19 +43,15 @@ void PlayerController::Deserialize(const Json::Value& compObj)
 
 void PlayerController::OnStart()
 {
-    if (!_owner) return;
-
-    trans = _owner->GetComponent<Transform>();
-    rb = _owner->GetComponent<RigidBody>();
-
+    rb = _owner.GetComponent<RigidBody>();
+    rockObject = SceneManager::ActiveScene()->FindGameObjectByName("Rock");
     std::cout << "Rock assigned: " << rockObject << "\n";
 }
 
 void PlayerController::OnUpdate()
 {
     dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
-    GameObject& owner = *_owner;
-    if (!trans || !rb) return;
+    if (!rb) return;
 
     float input = 0.f;
 
@@ -107,10 +95,9 @@ void PlayerController::OnUpdate()
         if (rockObject)
         {
             auto* rc = rockObject->GetComponent<RockController>();
-            Transform* playerT = trans;
 
-            if (rc && playerT)
-                rc->Throw(playerT->position);
+            if (rc)
+                rc->Throw(_transform.position);
         }
     }
 }
@@ -150,14 +137,11 @@ void RockController::Deserialize(const Json::Value& compObj)
 
 void RockController::OnStart()
 {
-    if (!_owner) return;
-
-    trans = _owner->GetComponent<Transform>();
-    rb = _owner->GetComponent<RigidBody>();
+    rb = _owner.GetComponent<RigidBody>();
 
     EventHandler::SubscribeFilter<OnCollisionEvent, GameObject*>(
         &OnCollisionEvent::self,
-        _owner,
+        &_owner,
         [this](const OnCollisionEvent& e)
         {
             this->OnImpact(e);
@@ -167,32 +151,7 @@ void RockController::OnStart()
 
 void RockController::OnUpdate()
 {
-    if (!trans || !rb) return;
-
-    float dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
-
-
-    //switch (state)
-    //{
-    //case RockState::Idle:
-    //    rb->velocity = float2::zero();
-    //    break;
-
-    //case RockState::Thrown:
-
-    //    // Detect impact (ground, wall, ceiling)
-    //    if (rb->HitEnvironment)
-    //    {
-    //        rb->HitEnvironment = false;
-    //        OnImpact();
-    //    }
-
-    //    break;
-
-    //case RockState::Impact:
-
-    //    break;
-    //}
+    if (!rb) return;
 }
 
 void RockController::OnDestroy()
@@ -204,14 +163,12 @@ void RockController::OnDestroy()
 //=========|Rock Mechanic Helper Function|==================
 void RockController::Throw(const float2& playerPos)
 {
-    if (!trans || !rb) return;
-
-    state = RockState::Thrown;
+    if (!rb) return;
 
     s32 mouseX, mouseY;
     AEInputGetCursorPosition(&mouseX, &mouseY);
 
-    float2 mouseWorld = CameraSystem::ScreenToWorld(float2(mouseX,mouseY));
+    float2 mouseWorld = CameraSystem::ScreenToWorld(float2(static_cast<f32>(mouseX), static_cast<f32>(mouseY)));
 
     float2 dir = mouseWorld - playerPos;
 
@@ -220,7 +177,7 @@ void RockController::Throw(const float2& playerPos)
 
     dir = normalize(dir);
 
-    trans->position = playerPos + dir * 10.f;
+    _transform.position = playerPos + dir * 10.f;
     rb->velocity = dir * throwSpeed;
     rb->Affected_By_Gravity = true;
 
@@ -230,13 +187,12 @@ void RockController::Throw(const float2& playerPos)
 
 void RockController::OnImpact(const OnCollisionEvent& e)
 {
-    state = RockState::Impact;
     float2 vel = normalize(rb->velocity) + (-e.normal);
     rb->velocity = vel * e.impulse * 0.6f;
 }
 
 void RockController::ResetRock()
 {
-    state = RockState::Idle;
+
 }
 

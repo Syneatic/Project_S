@@ -76,24 +76,19 @@ void AudioEmitter::SetVolume(f32 vol)
 	volume = std::clamp(vol, 0.0f, 1.0f);
 }
 
-void AudioEmitter::SetPitch(f32 pitch)
+void AudioEmitter::SetPitch(f32 p)
 {
-	pitch = std::clamp(pitch, 0.5f, 2.0f);
+	pitch = std::clamp(p, 0.5f, 2.0f);
 }
 
-void AudioEmitter::SetLoop(bool loop)
+void AudioEmitter::SetLoop(bool l)
 {
-	loop = loop;
+	loop = l;
 }
 
-void AudioEmitter::Initialize()
+void AudioEmitter::OnStart()
 {
-	transform = _owner->GetComponent<Transform>();
-	if (!transform)
-	{
-		std::cout << "NO TRANSFORM FOUND IN " << _owner->name() << std::endl;
-	}
-
+	Audio::RegisterEmitter(this);
 	auto& sound = *soundPtr.get();
 	sound.setVolume(volume);
 	sound.setPitch(pitch);
@@ -177,23 +172,14 @@ void AudioEmitter::Deserialize(const Json::Value& compObj)
 
 void AudioListener::OnStart()
 {
-	transform = _owner->GetComponent<Transform>();
-	if (!transform)
-	{
-		std::cout << "NO TRANSFORM FOUND IN " << _owner->name() << std::endl;
-	}
-
 	sf::Listener::setUpVector(sf::Vector3f(0.f, 1.f, 0.f));
 	sf::Listener::setDirection(sf::Vector3f(0.f, 0.f, -1.f));
 }
 
 void AudioListener::OnUpdate()
 {
-	if (transform)
-	{
-		sf::Vector3f pos(transform->position.x, transform->position.y, 10.f);
-		sf::Listener::setPosition(pos);
-	}
+	sf::Vector3f pos(_transform.position.x, _transform.position.y, 10.f);
+	sf::Listener::setPosition(pos);
 }
 
 void AudioListener::DrawInInspector()
@@ -201,12 +187,12 @@ void AudioListener::DrawInInspector()
 
 }
 
-void AudioListener::Serialize(Json::Value& outComp) const
+void AudioListener::Serialize(Json::Value& /*outComp*/) const
 {
 
 }
 
-void AudioListener::Deserialize(const Json::Value& compObj)
+void AudioListener::Deserialize(const Json::Value& /*compObj*/)
 {
 
 }

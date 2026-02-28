@@ -3,7 +3,7 @@
 //forward decl
 struct GameObject;
 
-struct Scene
+class Scene
 {
 protected:
 	std::vector<std::unique_ptr<GameObject>> _gameObjectList{};
@@ -15,6 +15,7 @@ public:
 	virtual void OnEnter();
 	virtual void OnUpdate();
 	virtual void OnExit();
+
 
 	//===== SERIALIZATION =====
 	const std::string& name() const;

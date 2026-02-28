@@ -14,10 +14,6 @@ namespace SceneIO
     {
         const std::string type = c.name();
 
-        //skip unknown components
-        //if (type != "Transform" && type != "CircleCollider" && type != "BoxCollider")
-        //    return false;
-
         outComp = Json::Value(Json::objectValue);
         outComp["type"] = type;
 
@@ -33,91 +29,70 @@ namespace SceneIO
 
         const std::string type = compObj["type"].asString();
 
-        if (type == "Transform")
+        if (type == "CircleCollider")
         {
-            Transform t{};
-            t.Deserialize(compObj);
-            go.AddComponent<Transform>(t);
-        }
-        else if (type == "CircleCollider")
-        {
-            CircleCollider c{};
-            c.Deserialize(compObj);
-            go.AddComponent<CircleCollider>(c);
+            auto& c = go.AddComponent<CircleCollider>();
+			c.Deserialize(compObj);
         }
         else if (type == "BoxCollider")
         {
-            BoxCollider b{};
-            b.Deserialize(compObj);
-            go.AddComponent<BoxCollider>(b);
+            auto& c = go.AddComponent<BoxCollider>();
+            c.Deserialize(compObj);
         }
         else if (type == "SpriteRenderer")
-        {
-            SpriteRenderer r{};
-            r.Deserialize(compObj);
-            go.AddComponent<SpriteRenderer>(r);
+        { 
+            auto& c = go.AddComponent<SpriteRenderer>();
+            c.Deserialize(compObj);
         }
         else if (type == "TextRenderer")
         {
-            TextRenderer r{};
-            r.Deserialize(compObj);
-            go.AddComponent<TextRenderer>(r);
+            auto& c = go.AddComponent<TextRenderer>();
+            c.Deserialize(compObj);
         }
         else if (type == "PlayerController")
-        {
-            PlayerController pc{};
-            pc.Deserialize(compObj);
-            go.AddComponent<PlayerController>(pc);
+        {  
+            auto& c = go.AddComponent<PlayerController>();
+            c.Deserialize(compObj);
         }
         else if (type == "RockController")
         {
-            RockController rc{};
-            rc.Deserialize(compObj);
-            go.AddComponent<RockController>(rc);
+            auto& c = go.AddComponent<RockController>();
+            c.Deserialize(compObj);
         }
-        /*else if (type == "Text")
-        {
-            Text str{};
-            str.Deserialize(compObj);
-            go.AddComponent<Text>(str);
-        }*/
         else if (type == "ParticleEmitter")
-        {
-            ParticleEmitter ept{};
-            ept.Deserialize(compObj);
-            go.AddComponent<ParticleEmitter>(ept);
+        { 
+            auto& c = go.AddComponent<ParticleEmitter>();
+            c.Deserialize(compObj);
         }
         else if (type == "Button")
-        {
-            Button b{};
-            b.Deserialize(compObj);
-            go.AddComponent<Button>(b);
+        {  
+            auto& c = go.AddComponent<Button>();
+            c.Deserialize(compObj);
         }
         else if (type == "RigidBody")
-        {
-            RigidBody rb{};
-            rb.Deserialize(compObj);
-            go.AddComponent<RigidBody>(rb);
+        {   
+            auto& c = go.AddComponent<RigidBody>();
+            c.Deserialize(compObj);
         }
         //AUDIO COMPONENTS
         else if (type == "AudioEmitter")
         {
-            AudioEmitter& ae = go.AddComponent<AudioEmitter>();
+            auto& ae = go.AddComponent<AudioEmitter>();
             ae.Deserialize(compObj);
         }
         else if (type == "AudioListener")
         {
-            AudioListener& al = go.AddComponent<AudioListener>();
+            auto& al = go.AddComponent<AudioListener>();
             al.Deserialize(compObj);
         }
         else if (type == "NoiseSource")
         {
-            NoiseSource& ns = go.AddComponent<NoiseSource>();
+            auto& ns = go.AddComponent<NoiseSource>();
             ns.Deserialize(compObj);
         }
         else if (type == "Camera")
         {
-            MainCamera& cm = go.AddComponent<MainCamera>();
+            auto& cm = go.AddComponent<MainCamera>();
             cm.Deserialize(compObj);
         }
     }
@@ -125,9 +100,15 @@ namespace SceneIO
     // ===== GameObject Serialization =====
     Json::Value SerializeGameObject(const GameObject& go)
     {
+		const Transform& transform = go.transform();
         Json::Value obj(Json::objectValue);
         obj["name"] = go.name();
         obj["active"] = go.active();
+
+        //serialize transform
+        obj["position"] = WriteFloat2(transform.position);
+        obj["scale"] = WriteFloat2(transform.scale);
+        obj["rotation"] = transform.rotation;
 
         // components
         Json::Value comps(Json::arrayValue);
@@ -161,9 +142,15 @@ namespace SceneIO
         if (!obj.isMember("name") || !obj["name"].isString()) return nullptr;
 
         auto go = std::make_unique<GameObject>(obj["name"].asString());
-
+        auto& transform = go.get()->transform();
         if (obj.isMember("active") && obj["active"].isBool())
             go->active(obj["active"].asBool());
+
+        //deserialize transform
+        if (obj.isMember("position")) ReadFloat2(obj["position"], transform.position);
+        if (obj.isMember("scale"))    ReadFloat2(obj["scale"], transform.scale);
+        if (obj.isMember("rotation") && obj["rotation"].isNumeric())
+            transform.rotation = obj["rotation"].asFloat();
 
         if (obj.isMember("components") && obj["components"].isArray())
         {
@@ -202,8 +189,27 @@ namespace SceneIO
         }
         root["gameObjects"] = gos;
 
-        //const std::string path = defaultPath + scene.name() + ".scene";
-        const std::string path = "../../Assets/Scene/" + scene.name() + ".scene";
+        Json::StreamWriterBuilder builder;
+        builder["indentation"] = "  ";
+        std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+
+#ifdef _DEBUG
+        //for debug
+        const std::string dpath = "../../Assets/Scene/" + scene.name() + ".scene";
+        std::ofstream dout(dpath, std::ios::binary);
+        if (!dout)
+        {
+            std::cout << "UNABLE TO CREATE FILE\n";
+            return false;
+        }
+
+        if (writer->write(root, &dout) != 0)
+        {
+            std::cout << "SCENE SERIALIZE FAILED\n";
+        }
+#endif
+
+        const std::string path = "Assets/Scene/" + scene.name() + ".scene";
         std::ofstream out(path, std::ios::binary);
         if (!out)
         {
@@ -211,47 +217,16 @@ namespace SceneIO
             return false;
         }
 
-        Json::StreamWriterBuilder builder;
-        builder["indentation"] = "  ";
-        std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
         return (writer->write(root, &out) == 0);
     }
 
     bool DeserializeScene(Scene& outScene, const std::string& fileNameNoExt)
     {
-        //const std::string path = defaultPath + fileNameNoExt + ".scene";
+#ifdef _DEBUG
+        const std::string path = "../../Assets/Scene/" + fileNameNoExt + ".scene";
+#else
         const std::string path = "Assets/Scene/" + fileNameNoExt + ".scene";
-        std::ifstream in(path, std::ios::binary);
-        if (!in) return false;
-
-        Json::CharReaderBuilder rbuilder;
-        std::string errs;
-        Json::Value root;
-
-        if (!parseFromStream(rbuilder, in, &root, &errs))
-            return false;
-
-        if (root.isMember("name") && root["name"].isString())
-            outScene.name(root["name"].asString());
-
-        auto& list = outScene.gameObjectList();
-        list.clear();
-
-        if (root.isMember("gameObjects") && root["gameObjects"].isArray())
-        {
-            for (const auto& g : root["gameObjects"])
-            {
-                auto go = DeserializeGameObject(g);
-                if (go) list.emplace_back(std::move(go));
-            }
-        }
-
-        return true;
-    }
-
-    bool DeserializeSceneEditor(Scene& outScene, const std::string& path)
-    {
-        //const std::string path = defaultPath + fileNameNoExt + ".scene";
+#endif
         std::ifstream in(path, std::ios::binary);
         if (!in) return false;
 

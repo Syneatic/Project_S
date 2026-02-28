@@ -3,12 +3,13 @@
 #include "eventhandler.hpp"
 #include "color.hpp"
 
-struct AudioEmitter;
+class AudioEmitter;
 
 //controls audio and particle
 //more specialized particle effect
-struct NoiseSource : Behaviour
+class NoiseSource : public Component
 {
+public:
 	//particle properties
 	int numParticles{128};
 	float speed{400.f}; //keep standard to this speed
@@ -18,7 +19,6 @@ struct NoiseSource : Behaviour
 	AudioEmitter* audioEmitter { nullptr };
 
 	//properties
-	Transform* transform { nullptr };
 	float noiseLevel{}; //determines how far the noise particles will spread from the source
 	bool repeat{};
 	float repeatInterval{ 1.f };
@@ -37,6 +37,7 @@ struct NoiseSource : Behaviour
 	void Serialize(Json::Value& outComp) const override;
 	void Deserialize(const Json::Value& compObj) override;
 
+	NoiseSource(GameObject& go) : Component(go) {};
 private:
-	std::vector<std::optional<EventHandler::SubscriptionHandle>> emitterSH;
+	std::vector<EventHandler::SubscriptionHandle> eventSubscriptionList;
 };

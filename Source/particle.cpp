@@ -28,7 +28,7 @@ namespace ParticleSystem
 
 	void Update()
 	{
-		f64 dt = AEFrameRateControllerGetFrameTime();
+		f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 		uint32_t mask = 1 << 1;
 		mask |= 1 << 2;
 		mask |= 1 << 3;
@@ -64,8 +64,6 @@ namespace ParticleSystem
 					g_pool.burstRemaining[i]
 					);
 		}
-
-		//std::cout << "Active Particles : " << activeParticles << ", FPS : " << AEFrameRateControllerGetFrameRate() << "\n";
 	}
 
 	void Render() //by pass our wrapper for performance's sake
@@ -96,11 +94,11 @@ namespace ParticleSystem
 
 			AEGfxSetTransform(finalMtx.m);
 			
-			AEGfxMeshDraw(RenderSystem::GetQuadMesh(), AE_GFX_MDM_TRIANGLES);
+			AEGfxMeshDraw(Graphics::QuadMesh(), AE_GFX_MDM_TRIANGLES);
 		}
 	}
 
-	void Emit(float2 pos,float2 vel,float time,float life,Color col, bool shouldCollide, int burstLimit, FN behaviour)
+	void Emit(float2 pos,float2 vel,float /*time*/, float life, Color col, bool shouldCollide, int burstLimit, FN behaviour)
 	{
 		if (g_pool.freeStackTop < 0) return; // Pool is full
 

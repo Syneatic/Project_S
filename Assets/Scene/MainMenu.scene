@@ -7,20 +7,6 @@
       "components" : 
       [
         {
-          "position" : 
-          [
-            0.0,
-            676.0999755859375
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "Transform"
-        },
-        {
           "alignment" : 4,
           "color" : 
           [
@@ -34,27 +20,24 @@
           "type" : "TextRenderer"
         }
       ],
-      "name" : "Title"
+      "name" : "Title",
+      "position" : 
+      [
+        0.0,
+        316.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.5,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            0.0,
-            160.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            250.0,
-            80.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "blendmode" : 1,
@@ -75,27 +58,24 @@
           "type" : "Button"
         }
       ],
-      "name" : "PlayButton"
+      "name" : "PlayButton",
+      "position" : 
+      [
+        0.0,
+        135.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        400.0,
+        100.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            0.0,
-            325.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "color" : 
@@ -110,27 +90,24 @@
           "type" : "TextRenderer"
         }
       ],
-      "name" : "PlayText"
+      "name" : "PlayText",
+      "position" : 
+      [
+        0.0,
+        135.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            0.0,
-            20.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            250.0,
-            80.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "blendmode" : 1,
@@ -151,27 +128,24 @@
           "type" : "Button"
         }
       ],
-      "name" : "SettingsButton"
+      "name" : "SettingsButton",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        400.0,
+        100.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            0.0,
-            50.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            0.69999998807907104,
-            1.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "color" : 
@@ -186,27 +160,24 @@
           "type" : "TextRenderer"
         }
       ],
-      "name" : "SettingsText"
+      "name" : "SettingsText",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            0.0,
-            -120.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            250.0,
-            80.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "blendmode" : 1,
@@ -227,27 +198,24 @@
           "type" : "Button"
         }
       ],
-      "name" : "CreditsButton"
+      "name" : "CreditsButton",
+      "position" : 
+      [
+        0.0,
+        -133.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        400.0,
+        100.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            0.0,
-            -225.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            0.80000001192092896,
-            1.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "color" : 
@@ -262,27 +230,24 @@
           "type" : "TextRenderer"
         }
       ],
-      "name" : "CreditsText"
+      "name" : "CreditsText",
+      "position" : 
+      [
+        0.0,
+        -131.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            0.0,
-            -260.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            250.0,
-            80.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "blendmode" : 1,
@@ -303,27 +268,24 @@
           "type" : "Button"
         }
       ],
-      "name" : "QuitButton"
+      "name" : "QuitButton",
+      "position" : 
+      [
+        0.0,
+        -273.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        400.0,
+        100.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            0.0,
-            -500.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "color" : 
@@ -338,7 +300,18 @@
           "type" : "TextRenderer"
         }
       ],
-      "name" : "QuitText"
+      "name" : "QuitText",
+      "position" : 
+      [
+        0.0,
+        -265.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        0.0
+      ]
     }
   ],
   "name" : "MainMenu"
