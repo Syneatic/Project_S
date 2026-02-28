@@ -4,8 +4,6 @@
 #include "scene.hpp"
 
 
-
-
 //===================|Player Controller|===================
 void PlayerController::DrawInInspector()
 {
@@ -45,7 +43,6 @@ void PlayerController::OnStart()
 {
     rb = _owner.GetComponent<RigidBody>();
     rockObject = SceneManager::ActiveScene()->FindGameObjectByName("Rock");
-    std::cout << "Rock assigned: " << rockObject << "\n";
 }
 
 void PlayerController::OnUpdate()
@@ -91,7 +88,6 @@ void PlayerController::OnUpdate()
     //===================|Throw Mechanic|=====================
     if (AEInputCheckTriggered(AEVK_R))
     {
-        std::cout << "R is pressed\n";
         if (rockObject)
         {
             auto* rc = rockObject->GetComponent<RockController>();

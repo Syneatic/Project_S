@@ -63,10 +63,10 @@ namespace Audio
 			else
 				//get existing buffer
 				buffer = _soundBufferMap[e->fileName].get();
-			
+
 			if (!buffer)
 			{
-				std::cout << "AUDIO BUFFER IS NULL!" << std::endl;
+				Debug::Log(__LINE__,__FILE__,"AUDIO BUFFER IS NULL");
 				return;
 			}
 

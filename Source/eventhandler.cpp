@@ -11,7 +11,6 @@ namespace EventHandler
 			auto type = event.getType(); // Get the std::type_index of the IEvent.
 			auto it = subscribers.find(type); // Find the iterator to event inner map element in subscriber outer map.
 
-			//std::cout << "Queue size: " << eQueue.size() << '\n';
 
 			// Check iterator is valid.
 			if (it != subscribers.end())
@@ -25,8 +24,6 @@ namespace EventHandler
 						callback(&event); 
 				}
 			}
-
-			//tmp = tmp2 = 0;
 
 			eQueue.pop();
 		}

@@ -275,7 +275,6 @@ void EditorScene::BuildSceneHierarchyWindow()
 		if (ImGui::MenuItem("Create GameObject"))
 		{
 			int index = (int)loadedScene.gameObjectList().size();
-			std::cout << "Create GameObject_" << index << std::endl;
 			std::string name = "GameObject_" + std::to_string(index);
 			loadedScene.gameObjectList().push_back(std::make_unique<GameObject>(name));
 			selectedGameObjectIndex = index;
