@@ -70,6 +70,12 @@
     <Filter Include="Header Files\datatypes">
       <UniqueIdentifier>{ae1d6f29-798c-4b3d-a301-e7c4076cf66d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\editor">
+      <UniqueIdentifier>{5a93acbb-8cbe-46b3-aeb3-98e66b3703a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\editor">
+      <UniqueIdentifier>{1d83b65b-a17f-46a6-9fdd-d969d920e145}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -115,9 +121,6 @@
       <Filter>Source Files\scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\scene.cpp">
-      <Filter>Source Files\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\scene_editor.cpp">
       <Filter>Source Files\scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\renderer.cpp">
@@ -176,6 +179,15 @@
     </ClCompile>
     <ClCompile Include="Source\camera_components.cpp">
       <Filter>Source Files\components\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\scene_editor.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\editor_imgui.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui_helper.cpp">
+      <Filter>Source Files\editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -246,9 +258,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\scene.hpp">
-      <Filter>Header Files\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\scene_editor.hpp">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\scene_manager.hpp">
@@ -328,6 +337,15 @@
     </ClInclude>
     <ClInclude Include="Source\camera_components.hpp">
       <Filter>Header Files\components\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\scene_editor.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\editor_imgui.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui_helper.hpp">
+      <Filter>Header Files\editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

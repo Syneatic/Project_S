@@ -10,10 +10,6 @@ private:
 
 	// ===== GAMEOBJECT =====
 	int selectedGameObjectIndex = -1; // -1 for no selection
-	// For UI selection
-	int _uiIndex{};
-	const char* _uiTypes[2] = { "Display", "Button" };
-	const char* _previewType = _uiTypes[_uiIndex];
 
 	GizmoAxis activeAxis = GizmoAxis::NONE;
 	GizmoMode currentMode = GizmoMode::TRANSLATE;

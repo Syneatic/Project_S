@@ -140,8 +140,9 @@ public:
 	std::vector<std::unique_ptr<GameObject>>& children() { return _children; }
 	const std::vector<std::unique_ptr<GameObject>>& children() const { return _children; }
 
-	const std::string name() const { return _name.empty() ? " " : _name; }
-	std::string name(std::string name) { return _name = std::move(name); }
+	std::string& name() { return _name; }
+	const std::string& cname() const { return _name; }
+	std::string& name(std::string name) { return _name = std::move(name); }
 
 	const bool active() const { return _active; }
 	bool active(bool state) { return _active = state; }

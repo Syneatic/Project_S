@@ -97,7 +97,8 @@ void Scene::OnExit()
 }
 
 //===== SERIALIZATION =====
-const std::string& Scene::name() const { return _name; }
+std::string& Scene::name()  { return _name; }
+const std::string& Scene::cname() const { return _name; }
 const std::string& Scene::name(std::string name) { return _name = std::move(name); }
 std::vector<std::unique_ptr<GameObject>>& Scene::gameObjectList() { return _gameObjectList; }
 const std::vector<std::unique_ptr<GameObject>>& Scene::gameObjectList() const { return _gameObjectList; }
