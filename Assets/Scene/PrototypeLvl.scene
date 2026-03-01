@@ -15,20 +15,6 @@
           "type" : "RigidBody"
         },
         {
-          "position" : 
-          [
-            237.55000305175781,
-            -268.35000610351562
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            400.0,
-            300.0
-          ],
-          "type" : "Transform"
-        },
-        {
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -54,27 +40,24 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "WallBig"
+      "name" : "WallBig",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            -375.0,
-            -420.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            850.0,
-            25.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "blendmode" : 1,
@@ -101,27 +84,24 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "FloorLeft"
+      "name" : "FloorLeft",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            503.0,
-            -430.85000610351562
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            600.0,
-            25.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "blendmode" : 1,
@@ -148,27 +128,24 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "FloorRight"
+      "name" : "FloorRight",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            -480.44000244140625,
-            -27.899999618530273
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            200.0,
-            200.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "blendmode" : 1,
@@ -195,27 +172,24 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "Wall1"
+      "name" : "Wall1",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            604.1500244140625,
-            -150.75
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            200.0,
-            200.0
-          ],
-          "type" : "Transform"
-        },
         {
           "collisionMask" : 4294967295,
           "layerMask" : 4,
@@ -242,27 +216,24 @@
           "type" : "SpriteRenderer"
         }
       ],
-      "name" : "Wall2"
+      "name" : "Wall2",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            -197.14999389648438,
-            -333.29998779296875
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            300.0,
-            10.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 2,
           "blendmode" : 1,
@@ -289,27 +260,24 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "Platform1"
+      "name" : "Platform1",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            -197.25,
-            -241.33299255371094
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            150.0,
-            10.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 2,
           "blendmode" : 1,
@@ -336,27 +304,24 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "Platform2"
+      "name" : "Platform2",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            -281.45001220703125,
-            -23.899999618530273
-          ],
-          "rotation" : -10.699999809265137,
-          "scale" : 
-          [
-            200.0,
-            10.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "blendmode" : 1,
@@ -383,27 +348,24 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "Platform3"
+      "name" : "Platform3",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            503.79998779296875,
-            -52.099998474121094
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            250.0,
-            10.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 2,
           "blendmode" : 1,
@@ -430,27 +392,24 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "Platform4"
+      "name" : "Platform4",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            -439.5,
-            -213.05000305175781
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            25.0,
-            50.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "blendmode" : 1,
@@ -476,27 +435,24 @@
           "volume" : 1.0
         }
       ],
-      "name" : "WaterEffectPlaceholder"
+      "name" : "WaterEffectPlaceholder",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            0.0,
-            330.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            2000.0,
-            200.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "blendmode" : 1,
@@ -523,7 +479,18 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "Ceiling"
+      "name" : "Ceiling",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
@@ -531,29 +498,10 @@
       "components" : 
       [
         {
-          "type" : "AudioListener"
-        },
-        {
-          "position" : 
-          [
-            100.0,
-            -93.350006103515625
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            20.0,
-            50.0
-          ],
-          "type" : "Transform"
-        },
-        {
-          "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : true,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
+          "jumpHeight" : 150.0,
+          "max_speed" : 250.0,
+          "time" : 1.0,
+          "type" : "PlayerController"
         },
         {
           "alignment" : 4,
@@ -571,10 +519,15 @@
           "type" : "SpriteRenderer"
         },
         {
-          "jumpHeight" : 150.0,
-          "max_speed" : 250.0,
-          "time" : 1.0,
-          "type" : "PlayerController"
+          "type" : "AudioListener"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : true,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "collisionMask" : 4294967282,
@@ -590,27 +543,24 @@
           "type" : "Camera"
         }
       ],
-      "name" : "TestPlayer"
+      "name" : "TestPlayer",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            520.5999755859375,
-            -377.70001220703125
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            10.0,
-            10.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "blendmode" : 1,
@@ -627,6 +577,15 @@
           "type" : "SpriteRenderer"
         },
         {
+          "fileName" : "button_click.wav",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
           "color" : 
           [
             0.86764675378799438,
@@ -640,18 +599,20 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
-        },
-        {
-          "fileName" : "button_click.wav",
-          "loop" : false,
-          "pitch" : 1.0,
-          "relative" : false,
-          "spatialize" : true,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
         }
       ],
-      "name" : "Water2"
+      "name" : "Water2",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
@@ -661,20 +622,6 @@
         {
           "buttonFunctionId" : 11,
           "type" : "Button"
-        },
-        {
-          "position" : 
-          [
-            -600.0,
-            350.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            150.0,
-            60.0
-          ],
-          "type" : "Transform"
         },
         {
           "alignment" : 4,
@@ -692,27 +639,24 @@
           "type" : "SpriteRenderer"
         }
       ],
-      "name" : "QuitButton"
+      "name" : "QuitButton",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
-        {
-          "position" : 
-          [
-            -1200.0,
-            720.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            0.75,
-            1.0
-          ],
-          "type" : "Transform"
-        },
         {
           "alignment" : 4,
           "color" : 
@@ -727,13 +671,39 @@
           "type" : "TextRenderer"
         }
       ],
-      "name" : "QuitText"
+      "name" : "QuitText",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
       "children" : [],
       "components" : 
       [
+        {
+          "color" : 
+          [
+            0.4117647111415863,
+            0.82352942228317261,
+            0.43598619103431702,
+            1.0
+          ],
+          "lifetime" : 1.0,
+          "noiseLevel" : 10.0,
+          "numParticles" : 256,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        },
         {
           "Affected By Gravity" : true,
           "Gravity" : 800.0,
@@ -743,18 +713,9 @@
           "type" : "RigidBody"
         },
         {
-          "position" : 
-          [
-            -146.0,
-            183.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            15.0,
-            15.0
-          ],
-          "type" : "Transform"
+          "throwAngle" : 0.0,
+          "throwSpeed" : 300.0,
+          "type" : "RockController"
         },
         {
           "alignment" : 4,
@@ -782,26 +743,6 @@
           "type" : "BoxCollider"
         },
         {
-          "throwAngle" : 0.0,
-          "throwSpeed" : 300.0,
-          "type" : "RockController"
-        },
-        {
-          "color" : 
-          [
-            0.4117647111415863,
-            0.82352942228317261,
-            0.43598619103431702,
-            1.0
-          ],
-          "lifetime" : 1.0,
-          "noiseLevel" : 10.0,
-          "numParticles" : 256,
-          "repeat" : false,
-          "repeatInterval" : 1.0,
-          "type" : "NoiseSource"
-        },
-        {
           "fileName" : "button_click.wav",
           "loop" : false,
           "pitch" : 1.0,
@@ -811,7 +752,18 @@
           "volume" : 1.0
         }
       ],
-      "name" : "Rock"
+      "name" : "Rock",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     },
     {
       "active" : true,
@@ -819,18 +771,13 @@
       "components" : 
       [
         {
-          "position" : 
-          [
-            60.0,
-            27.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            0.0,
-            0.0
-          ],
-          "type" : "Transform"
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
         },
         {
           "color" : 
@@ -846,18 +793,20 @@
           "repeat" : false,
           "repeatInterval" : 3.0,
           "type" : "NoiseSource"
-        },
-        {
-          "fileName" : "ore.mp3",
-          "loop" : false,
-          "pitch" : 1.0,
-          "relative" : false,
-          "spatialize" : false,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
         }
       ],
-      "name" : "GameObject_16"
+      "name" : "GameObject_16",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
     }
   ],
   "name" : "PrototypeLvl"

@@ -1,0 +1,373 @@
+{
+  "gameObjects" : 
+  [
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "enemyType" : 2,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "Ground",
+      "position" : 
+      [
+        -74.0,
+        -121.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        500.0,
+        32.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "enemyType" : 2,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
+          "collisionMask" : 4294967267,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 9.8000001907348633,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "isNoiseActive" : false,
+          "lifetime" : 1.5,
+          "noiseLevel" : 15.0,
+          "numParticles" : 64,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "Enemy",
+      "position" : 
+      [
+        -59.0,
+        -85.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        50.0,
+        30.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967295,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "GameObject_2",
+      "position" : 
+      [
+        -182.0,
+        -67.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        20.0,
+        100.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "detectDistance" : 100.0,
+          "enemyType" : 1,
+          "type" : "EnemyController"
+        },
+        {
+          "collisionMask" : 4294967281,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "isNoiseActive" : true,
+          "lifetime" : 1.0,
+          "noiseLevel" : 10.0,
+          "numParticles" : 32,
+          "repeat" : false,
+          "repeatInterval" : 14.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Gravity" : 40.0,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        }
+      ],
+      "name" : "Drop Enemy",
+      "position" : 
+      [
+        -216.0,
+        -22.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        20.0,
+        20.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967287,
+          "layerMask" : 1,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 150.0,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        },
+        {
+          "jumpHeight" : 120.0,
+          "max_speed" : 100.0,
+          "time" : 0.44999998807907104,
+          "type" : "PlayerController"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.84155136346817017,
+            0.23039215803146362,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "player",
+      "position" : 
+      [
+        160.0,
+        -66.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        30.0,
+        40.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967265,
+          "layerMask" : 16,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Gravity" : 9.8000001907348633,
+          "Grounded" : false,
+          "Is Static" : true,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        }
+      ],
+      "name" : "CheckPoint",
+      "position" : 
+      [
+        114.0,
+        -25.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        10.0,
+        10.0
+      ]
+    }
+  ],
+  "name" : "Test"
+}

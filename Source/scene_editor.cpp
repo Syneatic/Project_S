@@ -434,6 +434,11 @@ void EditorScene::BuildInspectorWindow()
 				selectedObj.AddComponent<RockController>();
 			}
 
+			if (ImGui::MenuItem("EnemyController"))
+			{
+				selectedObj.AddComponent<EnemyController>();
+			}
+
 			ImGui::EndMenu();
 		}
 

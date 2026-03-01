@@ -39,5 +39,5 @@ namespace Physics
 	void FlushRigidBody();
 	void CheckAllTypeCollisions();
 	void Step(float dt);
-	RigidBody* CreateRigidBody();
+	/*RigidBody* CreateRigidBody();*/
 }

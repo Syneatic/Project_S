@@ -3,9 +3,9 @@
 #include "math.hpp"
 #include "eventhandler.hpp"
 
-struct GameObject;
-struct RigidBody;
-struct NoiseSource;
+class GameObject;
+class RigidBody;
+class NoiseSource;
 
 //abstract
 class Controller : public Component
@@ -17,11 +17,13 @@ public:
 class PlayerController : public Controller
 {
 public:
-    f32 maxSpeed = 10.f;
-    f32 jumpHeight = 500.f;
-    f32 time = 1.f;
+    f32 maxSpeed = 150.f;
+    f32 jumpHeight = 60.f;
+    f32 time = 0.7f;
 
     f32 dt{};
+
+    float2 spawnPoint {};
 
     RigidBody* rb = nullptr;
     GameObject* rockObject = nullptr;
@@ -33,6 +35,8 @@ public:
 
     void OnUpdate() override;
     void OnDestroy() override;
+
+    void Respawn();
 
     const std::string name() const override { return "PlayerController"; }
 
@@ -63,4 +67,55 @@ public:
 
     const std::string name() const override { return "RockController"; }
     RockController(GameObject& go) : Controller(go) {};
+};
+
+enum class EnemyType
+{
+    Static,
+    Drop,
+    Patrol,
+    Flying
+};
+
+class EnemyController : public Controller
+{
+public:
+    //Global Variable
+    f32 groundEmitTimer = 0.f;
+    f32 groundEmitInterval = 1.5f;
+
+    //Drop Variable
+    f32 detectDistance {50.f};
+    bool hasDropped = false;
+
+    //Patrol Variable
+    f32 moveSpeed = 100.f;
+    f32 patrolRange = 200.f;
+    float2 startPos{};
+    int patrolDir = 1; // 1 = right, -1 = left
+
+    //Flying Variable
+    f32 diveSpeed = 300.f;
+    f32 detectRadius = 200.f;
+
+    RigidBody* rb = nullptr;
+    NoiseSource* ns = nullptr;
+
+    EnemyType type = EnemyType::Static;
+
+    void DrawInInspector() override;
+    void Serialize(Json::Value& outComp) const override;
+    void Deserialize(const Json::Value& compObj) override;
+
+    //Scene Management Function
+    void OnStart() override;
+    void OnUpdate() override;
+    void OnDestroy() override;
+
+    //Helper Function
+    void UpdateDrop();
+    void UpdatePatrol();
+
+    const std::string name() const override { return "EnemyController"; }
+    EnemyController(GameObject& go) : Controller(go) {};
 };

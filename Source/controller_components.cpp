@@ -2,6 +2,7 @@
 #include "gameobject.hpp"
 #include "controller_components.hpp"
 #include "scene.hpp"
+#include "physics.hpp"
 
 
 //===================|Player Controller|===================
@@ -43,6 +44,7 @@ void PlayerController::OnStart()
 {
     rb = _owner.GetComponent<RigidBody>();
     rockObject = SceneManager::ActiveScene()->FindGameObjectByName("Rock");
+    spawnPoint = _transform.position;
 }
 
 void PlayerController::OnUpdate()
@@ -96,11 +98,24 @@ void PlayerController::OnUpdate()
                 rc->Throw(_transform.position);
         }
     }
+
+    //==================|Collision with Enemy|=======================
+    if (rb->HitEnemy) Respawn();
+    if (rb->HitCheckPoint) {
+        spawnPoint = _transform.position;
+        rb->HitCheckPoint = false;
+    }
 }
 
 void PlayerController::OnDestroy()
 {
 
+}
+
+void PlayerController::Respawn()
+{
+    _transform.position = spawnPoint;
+    rb->HitEnemy = false;
 }
 
 
@@ -192,3 +207,213 @@ void RockController::ResetRock()
 
 }
 
+
+//enum class EnemyType {
+//    Static = 0,
+//    Drop,
+//    Patrol,
+//    Flying
+//};
+
+//===================|Enemy Controller|===================
+void EnemyController::DrawInInspector()
+{
+    const char* types[] = { "Static", "Drop", "Patrol", "Flying" };
+
+    int current = static_cast<int>(type);
+
+    if (ImGui::Combo("Enemy Type", &current, types, IM_ARRAYSIZE(types)))
+        type = static_cast<EnemyType>(current);
+
+    ImGui::Separator();
+
+    switch (type)
+    {
+    case EnemyType::Static:
+        break;
+    case EnemyType::Drop:
+        ImGui::DragFloat("Detect Distance", &detectDistance, 10.f);
+        break;
+
+    case EnemyType::Patrol:
+        ImGui::DragFloat("Move Speed", &moveSpeed, 1.f);
+        ImGui::DragFloat("Patrol Range", &patrolRange, 10.f);
+        break;
+
+    case EnemyType::Flying:
+        ImGui::DragFloat("Dive Speed", &diveSpeed, 1.f);
+        ImGui::DragFloat("Detect Radius", &detectRadius, 10.f);
+        break;
+    }
+}
+
+void EnemyController::Serialize(Json::Value& outComp) const
+{
+    outComp["enemyType"] = static_cast<int>(type);
+
+    switch (type)
+    {
+    case EnemyType::Drop:
+        outComp["detectDistance"] = detectDistance;
+        break;
+
+    case EnemyType::Patrol:
+        outComp["moveSpeed"] = moveSpeed;
+        break;
+
+    case EnemyType::Flying:
+        outComp["diveSpeed"] = diveSpeed;
+        outComp["detectRadius"] = detectRadius;
+        break;
+    }
+}
+
+void EnemyController::Deserialize(const Json::Value& compObj)
+{
+    if (compObj.isMember("enemyType") && compObj["enemyType"].isInt())
+        type = static_cast<EnemyType>(compObj["enemyType"].asInt());
+
+    //Specific Enemy Types
+    switch (type)
+    {
+    case EnemyType::Drop:
+        if (compObj.isMember("detectDistance")) detectDistance = compObj["detectDistance"].asFloat();
+        break;
+
+    case EnemyType::Patrol:
+        if (compObj.isMember("moveSpeed")) moveSpeed = compObj["moveSpeed"].asFloat();
+        if (compObj.isMember("patrolRange")) patrolRange = compObj["patrolRange"].asFloat();
+        break;
+
+    case EnemyType::Flying:
+        if (compObj.isMember("diveSpeed")) diveSpeed = compObj["diveSpeed"].asFloat();
+        if (compObj.isMember("detectRadius")) detectRadius = compObj["detectRadius"].asFloat();
+        break;
+    }
+}
+
+void EnemyController::OnStart()
+{
+    rb = _owner.GetComponent<RigidBody>();
+    ns = _owner.GetComponent<NoiseSource>();
+
+    if (type == EnemyType::Drop)
+    {
+        if (rb)
+        {
+            rb->Affected_By_Gravity = false;
+            rb->velocity = float2::zero();
+        }
+    }
+    if (type == EnemyType::Patrol)
+    {
+        if (rb)
+        {
+            rb->Affected_By_Gravity = true;
+        }
+    }
+}
+
+void EnemyController::OnUpdate()
+{
+    f32 dt = (f32)AEFrameRateControllerGetFrameTime();
+    groundEmitTimer += dt;
+    //Transform* trans = _owner.GetComponent<Transform>();
+    if (!rb) return;
+
+    switch (type)
+    {
+    case EnemyType::Drop:
+        UpdateDrop();
+        break;
+
+    case EnemyType::Patrol:
+        UpdatePatrol();
+        break;
+
+    default:
+        break;
+    }
+}
+
+void EnemyController::OnDestroy()
+{
+
+}
+
+
+void EnemyController::UpdateDrop() {
+    if (!rb) return;
+
+    Physics::RaycastHit hit;
+
+    float2 origin = _transform.position;
+    float2 dir = float2(0, -1);
+
+    uint32_t groundLayer = static_cast<uint32_t>(Layer::Environment);
+    uint32_t playerLayer = static_cast<uint32_t>(Layer::Player);
+
+    if (Physics::Raycast(origin, dir, 500.f, hit, groundLayer)){
+        if (groundEmitTimer >= groundEmitInterval) {
+            groundEmitTimer = 0.f;
+
+            float2 emitPos = hit.point + hit.normal * 15.f;
+            std::cout << "Drop ping" << std::endl;
+
+            if (ns) ns->Emit(emitPos);
+        }
+    }
+
+    if (Physics::Raycast(origin, dir, detectDistance, hit, playerLayer)) {
+        rb->Affected_By_Gravity = true;
+        hasDropped = true;
+        std::cout << "player being collided" << std::endl;
+    }
+}
+
+void EnemyController::UpdatePatrol() {
+    if (!rb) return;
+
+    //Raycast
+    Physics::RaycastHit hit;
+
+    //Ground Raycast Variables
+    float2 origin = _transform.position + float2(patrolDir * 20.f, 0);
+    float2 dir = float2(0, -1);
+
+    //Side Raycast Variables
+    float2 sideOrigin = _transform.position;
+    float2 sideDir = float2((f32)patrolDir, 0);
+
+    uint32_t wallLayer = static_cast<uint32_t>(Layer::Environment);
+
+    //Once RayCast hits a wall it will flip velocity
+    if (Physics::Raycast(sideOrigin, sideDir, _transform.scale.x / 2 + 10.f, hit, wallLayer))
+    {
+        patrolDir *= -1;
+        return;
+    }
+
+    uint32_t groundLayer = static_cast<uint32_t>(Layer::Environment);
+
+    if (!Physics::Raycast(origin, dir, _transform.scale.y / 2 + 10.f, hit, groundLayer)) {
+        if (groundEmitTimer >= groundEmitInterval) {
+            groundEmitTimer = 0.f;
+
+            float2 emitPos{ _transform.position.x, _transform.position.y + _transform.scale.y / 2 };
+            std::cout << "Drop ping" << std::endl;
+
+            if (ns) ns->Emit(emitPos);
+        }
+
+        patrolDir *= -1;
+        return; //exit so it doesn't trigger movement before rotating
+    }
+
+    f32 distance = _transform.position.x - startPos.x;
+
+    if (distance > patrolRange) patrolDir = -1;
+    if (distance < -patrolRange) patrolDir = 1;
+
+    rb->velocity.x = patrolDir * moveSpeed;
+}

@@ -19,6 +19,7 @@ public:
 	AudioEmitter* audioEmitter { nullptr };
 
 	//properties
+	bool isNoiseActive{true};
 	float noiseLevel{}; //determines how far the noise particles will spread from the source
 	bool repeat{};
 	float repeatInterval{ 1.f };
@@ -29,6 +30,7 @@ public:
 	void OnDestroy() override;
 
 	void Emit();
+	void Emit(const float2& emitPos);
 	void HandleHit(const OnCollisionEvent& e);
 
 	const std::string name() const override { return "NoiseSource"; }

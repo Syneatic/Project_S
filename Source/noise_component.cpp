@@ -62,17 +62,19 @@ void NoiseSource::OnStart()
 	//get references
 	audioEmitter = _owner.GetComponent<AudioEmitter>();
 	if (!audioEmitter) throw std::runtime_error("NoiseSource requires AudioEmitter component");
-	
+
 	//calculate lifetime
 	lifetime = GetLifetime(noiseLevel);
 
-	_owner.Subscribe<OnCollisionEvent, GameObject*>(
-		&OnCollisionEvent::self,
-		&_owner, 
-		[this](const OnCollisionEvent& e)
-		{
-			this->HandleHit(e);
-		});
+	if (isNoiseActive) {
+		_owner.Subscribe<OnCollisionEvent, GameObject*>(
+			&OnCollisionEvent::self,
+			&_owner,
+			[this](const OnCollisionEvent& e)
+			{
+				this->HandleHit(e);
+			});
+	}
 }
 
 void NoiseSource::OnUpdate() 
@@ -109,6 +111,22 @@ void NoiseSource::Emit()
 	if (audioEmitter) audioEmitter->Play();
 }
 
+//Overload the Emit
+void NoiseSource::Emit(const float2& emitPos)
+{
+	float angleStep = (2.0f * PI) / numParticles;
+	for (int i = 0; i < numParticles; i++)
+	{
+		float currentAngle = i * angleStep;
+		currentAngle += Random::RandFloat(-(angleStep / 1.5f), angleStep / 1.5f);
+		float2 velocity = { cosf(currentAngle) , sinf(currentAngle) };
+		velocity = normalize(velocity) * speed;
+		ParticleSystem::Emit(emitPos, velocity, 0.f, lifetime, color, true, numParticles / 2, Collision);
+	}
+
+	if (audioEmitter) audioEmitter->Play();
+}
+
 void NoiseSource::HandleHit(const OnCollisionEvent& e)
 {
 	// Only emit noise if the impact was significant
@@ -133,8 +151,13 @@ void NoiseSource::DrawInInspector()
 	color = Color(c);
 
 	ImGui::SeparatorText("Noise Properties");
+
+	ImGui::TextUnformatted("Is Noise Active");
+	ImGui::Checkbox("##isNoiseActive", &isNoiseActive);
+
 	ImGui::TextUnformatted("Noise Level");
 	ImGui::DragFloat("##noise_level", &noiseLevel, 1, 0);
+
 	ImGui::TextUnformatted("Repeat?");
 	ImGui::Checkbox("##noise_repeat", &repeat);
 	if (repeat)
@@ -150,6 +173,7 @@ void NoiseSource::Serialize(Json::Value& outComp) const
 	outComp["lifetime"] = lifetime;
 	outComp["color"] = WriteColor(color);
 
+	outComp["isNoiseActive"] = isNoiseActive;
 	outComp["noiseLevel"] = noiseLevel;
 	outComp["repeat"] = repeat;
 	outComp["repeatInterval"] = repeatInterval;
@@ -167,6 +191,8 @@ void NoiseSource::Deserialize(const Json::Value& compObj)
 		ReadColor(compObj["color"], color);
 
 
+	if (compObj.isMember("isNoiseActive") && compObj["isNoiseActive"].isBool())
+		isNoiseActive = compObj["isNoiseActive"].asBool();
 
 	if (compObj.isMember("noiseLevel") && compObj["noiseLevel"].isNumeric())
 		noiseLevel = compObj["noiseLevel"].asFloat();
