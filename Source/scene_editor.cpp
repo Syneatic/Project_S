@@ -371,22 +371,48 @@ void EditorScene::BuildInspectorWindow()
 		ImGui::Separator();
 	}
 
-	const auto& comps = selectedObj.componentMap();
-	for (auto it = comps.begin(); it != comps.end(); ++it)
+	const auto& comps = selectedObj.componentMap(); 
+	auto& compOrder = selectedObj.componentOrder();
+	for (int i = 0; i < (int)compOrder.size(); i++)
 	{
-		const std::type_index& type = it->first;
+		const std::type_index& type = compOrder[i];
+		auto it = comps.find(type);
+		if (it == comps.end() || !it->second) continue;
+
 		const std::unique_ptr<Component>& compPtr = it->second;
 
-		if (!compPtr) continue;
+		bool open = ImGui::CollapsingHeader(compPtr->name().c_str(), ImGuiTreeNodeFlags_DefaultOpen);
 
-		bool open = ImGui::CollapsingHeader(compPtr.get()->name().c_str(), ImGuiTreeNodeFlags_DefaultOpen);
+		// drag source
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+		{
+			ImGui::SetDragDropPayload("COMP_REORDER", &i, sizeof(int));
+			ImGui::TextUnformatted(compPtr->name().c_str());
+			ImGui::EndDragDropSource();
+		}
 
+		// drop target
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("COMP_REORDER"))
+			{
+				int fromIndex = *(const int*)payload->Data;
+				if (fromIndex != i)
+				{
+					auto dragged = compOrder[fromIndex];
+					compOrder.erase(compOrder.begin() + fromIndex);
+					compOrder.insert(compOrder.begin() + i, dragged);
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+
+		// right click remove
 		if (ImGui::BeginPopupContextItem())
 		{
 			if (ImGui::MenuItem("Remove Component"))
 			{
 				selectedObj.RemoveComponent(type);
-				RefreshRenderers();
 				ImGui::EndPopup();
 				break;
 			}
@@ -395,10 +421,38 @@ void EditorScene::BuildInspectorWindow()
 
 		if (open)
 		{
-			compPtr.get()->DrawInInspector();
+			compPtr->DrawInInspector();
 			ImGui::Separator();
 		}
 	}
+
+	//for (auto it = comps.begin(); it != comps.end(); ++it)
+	//{
+	//	const std::type_index& type = it->first;
+	//	const std::unique_ptr<Component>& compPtr = it->second;
+
+	//	if (!compPtr) continue;
+
+	//	bool open = ImGui::CollapsingHeader(compPtr.get()->name().c_str(), ImGuiTreeNodeFlags_DefaultOpen);
+
+	//	if (ImGui::BeginPopupContextItem())
+	//	{
+	//		if (ImGui::MenuItem("Remove Component"))
+	//		{
+	//			selectedObj.RemoveComponent(type);
+	//			RefreshRenderers();
+	//			ImGui::EndPopup();
+	//			break;
+	//		}
+	//		ImGui::EndPopup();
+	//	}
+
+	//	if (open)
+	//	{
+	//		compPtr.get()->DrawInInspector();
+	//		ImGui::Separator();
+	//	}
+	//}
 
 	ImGui::Separator();
 
