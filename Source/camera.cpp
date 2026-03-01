@@ -52,9 +52,9 @@ namespace CameraSystem
 		if (AEInputCheckTriggered(AEVK_O)) { zoom = -1; };
 		if (zoom != 0) 
 		{
-			const float step = 1.5f; // 10% per notch
+			const float step = 1.5f; // 50% per notch
 			if (zoom > 0) CameraData::zoomMult *= step;
-			else           CameraData::zoomMult /= step;
+			else          CameraData::zoomMult /= step;
 		}
 
 		// Translate to origin, scale, translate back
