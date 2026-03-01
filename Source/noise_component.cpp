@@ -66,16 +66,13 @@ void NoiseSource::OnStart()
 	//calculate lifetime
 	lifetime = GetLifetime(noiseLevel);
 
-	auto collisionhandle = EventHandler::SubscribeFilter<OnCollisionEvent,GameObject*>(
-		&OnCollisionEvent::self, 
-		&_owner,                
+	_owner.Subscribe<OnCollisionEvent, GameObject*>(
+		&OnCollisionEvent::self,
+		&_owner, 
 		[this](const OnCollisionEvent& e)
 		{
 			this->HandleHit(e);
-		}
-	);
-
-	eventSubscriptionList.push_back(collisionhandle);
+		});
 }
 
 void NoiseSource::OnUpdate() 
@@ -94,10 +91,7 @@ void NoiseSource::OnUpdate()
 
 void NoiseSource::OnDestroy() 
 {
-	for (auto& e : eventSubscriptionList)
-	{
-		EventHandler::Unsubscribe(e);
-	}
+	//unsubscribe event here
 }
 
 void NoiseSource::Emit()

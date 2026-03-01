@@ -19,12 +19,13 @@ namespace CameraSystem
 	{
 		// check middle mouse held down, get first cursor pos
 		// and current cursor pos
-		if (AEInputCheckTriggered(AEVK_MBUTTON)) {
+		if (AEInputCheckTriggered(AEVK_MBUTTON)) 
+		{
 			AEInputGetCursorPosition(&fX, &fY);
 			scrollHeld = true;
-			std::cout << "AABB" << std::endl;
 		}
-		if (scrollHeld == true) {
+		if (scrollHeld == true) 
+		{
 			int lX, lY, dX, dY;
 			AEInputGetCursorPosition(&lX, &lY);
 			// get the difference between current cursor pos
@@ -49,8 +50,8 @@ namespace CameraSystem
 		zoom = 0;
 		if (AEInputCheckTriggered(AEVK_I)) { zoom = 1; };
 		if (AEInputCheckTriggered(AEVK_O)) { zoom = -1; };
-		if (zoom != 0) {
-			std::cout << "Works" << std::endl;
+		if (zoom != 0) 
+		{
 			const float step = 1.5f; // 10% per notch
 			if (zoom > 0) CameraData::zoomMult *= step;
 			else           CameraData::zoomMult /= step;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "components.hpp"
-//cant be in cpp cause of template function
+#include "eventhandler.hpp"
 
 class GameObject
 {
@@ -15,7 +15,7 @@ private:
 	std::string _name{};
 	ComponentMap _componentMap{}; //only 1 of each type of component can be attached
 	std::vector<std::unique_ptr<GameObject>> _children{}; //unused for now
-
+	std::vector<EventHandler::SubscriptionHandle> _eventList{};
 	Transform _transform{};
 
 public:
@@ -24,8 +24,6 @@ public:
 		for (auto& [type, comp] : _componentMap)
 		{
 			comp.get()->OnStart();
-			/*if (auto* pc = dynamic_cast<PlayerController*>(comp.get()))
-				pc->rockObject = FindGameObjectByName("Rock");*/
 		}
 	}
 
@@ -101,6 +99,32 @@ public:
 		_children.emplace_back(std::move(child));
 	}
 
+	template <typename T, typename M>	
+	void Subscribe(M T::* member, M matchValue, std::function<void(const T&)> func)
+	{
+		auto handle = EventHandler::SubscribeFilter<T, M>
+			(
+			member,
+			matchValue,
+			func
+		);
+
+		_eventList.push_back(handle);
+	}
+
+	void Unsubscribe(const EventHandler::SubscriptionHandle& handle)
+	{
+		EventHandler::Unsubscribe(handle);
+
+		_eventList.erase(
+			//find the handle
+			std::remove_if(_eventList.begin(), _eventList.end(),
+				[&](const EventHandler::SubscriptionHandle& h) {
+					return h.id == handle.id && h.type == handle.type;
+				}),
+			_eventList.end()
+		);
+	}
 
 	template <typename T>
 	bool HasComponent() const

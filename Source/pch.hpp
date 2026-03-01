@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <crtdbg.h>
+#include <deque>
 #include <functional>
 #include <filesystem>
 #include <fstream>
@@ -19,6 +20,7 @@
 #include <queue>
 #include <string>
 #include <shobjidl.h> 
+#include <sstream>
 #include <stdexcept>
 #include <string_view>
 #include <typeindex>

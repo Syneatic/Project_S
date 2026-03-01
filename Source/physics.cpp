@@ -611,18 +611,12 @@ namespace Physics
 			//ignore if velocity is too low
 			if (!rb || rb->Is_Static) continue;
 
-			//std::cout << rb->name()
-			//	<< " vel=" << rb->velocity.y
-			//	<< " grounded=" << rb->Is_Grounded
-			//	<< " static=" << rb->Is_Static << std::endl;
-
 			//ignore if velocity is too low
 			if (lengthsq(rb->velocity) <= 0.0005f) continue;
 
 			Transform& t = rb->transform();
 
 			t.position += rb->velocity * dt;
-
 		}
 
 		// Resolve ALL collisions

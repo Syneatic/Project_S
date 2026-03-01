@@ -80,7 +80,7 @@ namespace SceneManager
 
 		if (!fs::exists(sceneFolder, ec) || !fs::is_directory(sceneFolder, ec))
 		{
-			std::cout << "Scene folder not found!" << std::endl;
+			
 			return; //folder missing (or log an error)
 		}
 

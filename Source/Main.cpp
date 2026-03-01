@@ -111,7 +111,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 
-		Debug::Log(AEFrameRateControllerGetFrameRate());
+		//Debug::Log(AEFrameRateControllerGetFrameRate());
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 		gGameRunning = 0;
