@@ -21,7 +21,7 @@ namespace UISystem
         handlers.push_back(SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent& /*e*/) { std::cout << "Pause\n"; }));
         handlers.push_back(SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneReload(); }));
         handlers.push_back(SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneSwitch("MainMenu"); }));
-        handlers.push_back(SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent& /*e*/) { SceneManager::QuitApplication(); }));
+        handlers.push_back(SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent& /*e*/) { EngineCTX::applicationRunning = false; }));
     }
 
     float2 ScreenToWorld(s32 x, s32 y)

@@ -2,7 +2,12 @@
 
 #include "math.hpp"
 
-struct EngineCTX
+namespace EngineCTX
 {
-	f64 dt;
-};
+	//global storage of engine context, such as window size, delta time, etc
+	inline f64 dt{};
+	inline u32 frameCount{};
+	inline bool applicationRunning{ true };
+
+	inline float2 windowSize{};
+}

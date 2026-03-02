@@ -11,6 +11,7 @@ const char* LayerToString(Layer layer)
     case Layer::Enemy: return "Enemy";
     case Layer::Environment: return "Environment";
     case Layer::Projectile: return "Projectile";
+    case Layer::CheckPoint: return "CheckPoint";
     default: return "Untagged";
     }
 }
@@ -71,16 +72,16 @@ void Collider::DrawLayerInInspector()
     ImGui::Text("I am (Layer):");
 
     const char* layerNames[] = {
-    "Nothing", "Player", "Environment", "Enemy", "Projectile"
+    "Nothing", "Player", "Environment", "Enemy", "Projectile", "CheckPoint"
     };
 
     Layer layers[] = {
     Layer::Nothing, Layer::Player, Layer::Environment,
-    Layer::Enemy, Layer::Projectile
+    Layer::Enemy, Layer::Projectile, Layer::CheckPoint
     };
 
     int currentLayer = 0;
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 6; i++)
     {
         if (Has_Layer(layers[i]))
         {
@@ -89,7 +90,7 @@ void Collider::DrawLayerInInspector()
         }
     }
 
-    if (ImGui::Combo("##Layer", &currentLayer, layerNames, 5))
+    if (ImGui::Combo("##Layer", &currentLayer, layerNames, 6))
     {
         layerMask = static_cast<uint32_t>(layers[currentLayer]);
     }
@@ -103,6 +104,7 @@ void Collider::DrawLayerInInspector()
     bool collidesEnemy = CollidesWithLayer(Layer::Enemy);
     bool collidesEnvironment = CollidesWithLayer(Layer::Environment);
     bool collidesProjectile = CollidesWithLayer(Layer::Projectile);
+    bool collidesCheckPoint = CollidesWithLayer(Layer::CheckPoint);
 
 
     if (ImGui::Checkbox("PlayerMask", &collidesPlayer))
@@ -127,6 +129,12 @@ void Collider::DrawLayerInInspector()
     {
         if (collidesProjectile) Add_CollisionLayer(Layer::Projectile);
         else Remove_CollisionLayer(Layer::Projectile);
+    }
+
+    if (ImGui::Checkbox("CheckPointMask", &collidesCheckPoint))
+    {
+        if (collidesProjectile) Add_CollisionLayer(Layer::CheckPoint);
+        else Remove_CollisionLayer(Layer::CheckPoint);
     }
 }
 // ===== COLLIDER DEFINITIONS =====

@@ -14,6 +14,8 @@ private:
 	bool _active{ true };
 	std::string _name{};
 	ComponentMap _componentMap{}; //only 1 of each type of component can be attached
+	std::vector<std::type_index> _componentOrder{}; // tracks draw order
+
 	std::vector<std::unique_ptr<GameObject>> _children{}; //unused for now
 	std::vector<EventHandler::SubscriptionHandle> _eventList{};
 	Transform _transform{};
@@ -58,23 +60,19 @@ public:
 		static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
 
 		if constexpr (std::is_base_of<NoiseSource, T>::value)
-		{
 			GetOrAddComponent<AudioEmitter>();
-		}
 
 
-		std::type_index type{ typeid(T) };
 		//check if alrdy exists
+		std::type_index type{ typeid(T) };
 		if (_componentMap.find(type) != _componentMap.end())
-		{
-			T* component = dynamic_cast<T*>(_componentMap[type].get());
-			return *component;
-		}
+			return *dynamic_cast<T*>(_componentMap[type].get());
 
 		auto ptr = std::make_unique<T>(*this);
 
 		T& ref = *ptr;
 		_componentMap.emplace(type, std::move(ptr));
+		_componentOrder.push_back(type); // track order
 		return ref;
 	}
 
@@ -92,6 +90,10 @@ public:
 	void RemoveComponent(std::type_index type)
 	{
 		_componentMap.erase(type);
+		_componentOrder.erase(
+			std::remove(_componentOrder.begin(), _componentOrder.end(), type),
+			_componentOrder.end()
+		);
 	}
 
 	void AddChild(std::unique_ptr<GameObject> child)
@@ -136,12 +138,14 @@ public:
 	//getters / setters
 	ComponentMap& componentMap() { return _componentMap; }
 	const ComponentMap& componentMap() const { return _componentMap; }
+	std::vector<std::type_index>& componentOrder() { return _componentOrder; }
 
 	std::vector<std::unique_ptr<GameObject>>& children() { return _children; }
 	const std::vector<std::unique_ptr<GameObject>>& children() const { return _children; }
 
-	const std::string name() const { return _name.empty() ? " " : _name; }
-	std::string name(std::string name) { return _name = std::move(name); }
+	std::string& name() { return _name; }
+	const std::string& cname() const { return _name; }
+	std::string& name(std::string name) { return _name = std::move(name); }
 
 	const bool active() const { return _active; }
 	bool active(bool state) { return _active = state; }

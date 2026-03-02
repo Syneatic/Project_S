@@ -660,7 +660,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            0.9843137264251709
           ],
           "meshdrawmode" : 3,
           "renderlayer" : 250,
@@ -875,6 +875,62 @@
       [
         100.0,
         100.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "enemyType" : 0,
+          "type" : "EnemyController"
+        },
+        {
+          "collisionMask" : 4294967283,
+          "layerMask" : 1,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Gravity" : 9.8000001907348633,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
+        }
+      ],
+      "name" : "Enemy",
+      "position" : 
+      [
+        330.0,
+        68.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        47.200004577636719,
+        47.200004577636719
       ]
     }
   ],

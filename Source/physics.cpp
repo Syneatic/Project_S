@@ -455,6 +455,28 @@ namespace Physics
 
 					if (info.collided)
 					{
+
+						//Check Player vs (Enemy & CheckPoint)
+						bool isPlayer1 = (c1->layerMask & static_cast<uint32_t>(Layer::Player));
+						bool isEnemy2 = (c2->layerMask & static_cast<uint32_t>(Layer::Enemy));
+						bool isCheckPoint2 = (c2->layerMask & static_cast<uint32_t>(Layer::CheckPoint));
+
+						bool isPlayer2 = (c2->layerMask & (static_cast<uint32_t>(Layer::Player)));
+						bool isEnemy1 = (c1->layerMask & (static_cast<uint32_t>(Layer::Enemy)));
+						bool isCheckPoint1 = (c1->layerMask & static_cast<uint32_t>(Layer::CheckPoint));
+
+						if (isPlayer1 && isEnemy2)
+						{
+							rb1->HitEnemy = true, std::cout << "Player and Enemy" << std::endl;
+						}
+						if (isPlayer2 && isEnemy1)
+						{
+							rb2->HitEnemy = true, std::cout << "Player and Enemy" << std::endl;
+						}
+
+						if (isPlayer1 && isCheckPoint2) rb1->HitCheckPoint = true;
+						if (isPlayer2 && isCheckPoint1) rb2->HitCheckPoint = true;
+
 						bool rb1Static = (!rb1 || rb1->Is_Static);
 						bool rb2Static = (!rb2 || rb2->Is_Static);
 

@@ -9,6 +9,7 @@ enum class Layer : uint32_t
     Environment = 1 << 1,
     Enemy = 1 << 2,
     Projectile = 1 << 3, //not for raycast for other object projectiles
+    CheckPoint = 1 << 4 
 };
 
 const char* LayerToString(Layer layer);
@@ -73,6 +74,8 @@ public:
 	bool Is_Static{ false };
 	bool Is_Grounded{ false };
     bool HitEnvironment{ false };
+    bool HitEnemy{ false };
+    bool HitCheckPoint{ false };
 	float gravity{ 9.8f };
 	float terminalVelocity{ 12.0f };
 	float2 velocity{ 0.0f,0.0f };

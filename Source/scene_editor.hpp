@@ -10,10 +10,6 @@ private:
 
 	// ===== GAMEOBJECT =====
 	int selectedGameObjectIndex = -1; // -1 for no selection
-	// For UI selection
-	int _uiIndex{};
-	const char* _uiTypes[2] = { "Display", "Button" };
-	const char* _previewType = _uiTypes[_uiIndex];
 
 	GizmoAxis activeAxis = GizmoAxis::NONE;
 	GizmoMode currentMode = GizmoMode::TRANSLATE;
@@ -30,16 +26,10 @@ private:
 	bool isMousePressed{};
 
 	void ReadInput();
-
-	void RefreshScene();
-	void RefreshRenderers();
-	void RefreshColliders();
-	void RefreshRigidBodies();
 	
 	void BuildDockSpace();
 	void BuildMenuBar();
 	void BuildSceneHierarchyWindow();
-
 
 	void BuildInspectorWindow();
 	void DrawUI();
@@ -53,6 +43,8 @@ public:
 	void OnEnter() override;
 	void OnUpdate() override;
 	void OnExit() override;
+
+	void RefreshScene();
 
 	EditorScene() { _name = "Editor"; }
 };

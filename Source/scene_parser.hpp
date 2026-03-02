@@ -2,9 +2,9 @@
 // parse a scene object into a scene file
 // read it back from the scene file into object on load
 
-struct Scene;
-struct GameObject;
-struct Component;
+class Scene;
+class GameObject;
+class Component;
 
 namespace SceneIO
 {

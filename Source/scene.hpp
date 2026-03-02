@@ -1,7 +1,7 @@
 #pragma once
 
 //forward decl
-struct GameObject;
+class GameObject;
 
 class Scene
 {
@@ -18,7 +18,8 @@ public:
 
 
 	//===== SERIALIZATION =====
-	const std::string& name() const;
+	std::string& name();
+	const std::string& cname() const;
 	const std::string& name(std::string name);
 	std::vector<std::unique_ptr<GameObject>>& gameObjectList();
 	const std::vector<std::unique_ptr<GameObject>>& gameObjectList() const;
