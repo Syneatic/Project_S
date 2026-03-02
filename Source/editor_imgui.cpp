@@ -154,12 +154,12 @@ namespace //helpers
 	void BuildSceneHierarchyWindow(Scene& scene)
 	{
 		ImGui::SetNextWindowSizeConstraints(ImVec2(320.f, 100.f), ImVec2(FLT_MAX, FLT_MAX));
-
 		ImGui::Begin("Scene");
 
 		NameInputText(scene.name());
 
-		//iterate through scene objects and display them here
+		bool didDrag = false;
+
 		for (int i = 0; i < (int)scene.gameObjectList().size(); i++)
 		{
 			GameObject& gobj = *scene.gameObjectList()[i];
@@ -190,48 +190,90 @@ namespace //helpers
 				}
 				else
 				{
-					Editor::selectedIndices = { i };
+					bool alreadySelected = std::find(Editor::selectedIndices.begin(),
+						Editor::selectedIndices.end(), i) != Editor::selectedIndices.end();
+					if (!alreadySelected)
+						Editor::selectedIndices = { i };
 				}
 			}
 
+			// collapse selection to single on release (only if no drag occurred)
+			if (ImGui::IsItemDeactivated() && !ImGui::GetIO().KeyCtrl && !ImGui::GetIO().KeyShift)
+			{
+				bool alreadySelected = std::find(Editor::selectedIndices.begin(),
+					Editor::selectedIndices.end(), i) != Editor::selectedIndices.end();
+				if (alreadySelected && !ImGui::IsMouseDragging(0) && !didDrag)
+					Editor::selectedIndices = { i };
+			}
 
-
-			// drag and drop (unchanged)
+			// drag source
 			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 			{
+				didDrag = true;
+
+				bool partOfSelection = std::find(Editor::selectedIndices.begin(),
+					Editor::selectedIndices.end(), i) != Editor::selectedIndices.end();
+				if (!partOfSelection)
+					Editor::selectedIndices = { i };
+
 				ImGui::SetDragDropPayload("GO_REORDER", &i, sizeof(int));
-				ImGui::TextUnformatted(gobj.name().c_str());
+
+				if (Editor::selectedIndices.size() > 1)
+					ImGui::Text("%d objects", (int)Editor::selectedIndices.size());
+				else
+					ImGui::TextUnformatted(gobj.name().c_str());
+
 				ImGui::EndDragDropSource();
 			}
 
+			// drop indicator line
+			if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem) && ImGui::GetDragDropPayload() != nullptr)
+			{
+				float itemMinY = ImGui::GetItemRectMin().y;
+				float itemMaxY = ImGui::GetItemRectMax().y;
+				bool insertAfter = ImGui::GetMousePos().y > (itemMinY + itemMaxY) * 0.5f;
+
+				float lineY = insertAfter ? itemMaxY : itemMinY;
+				float lineXMin = ImGui::GetItemRectMin().x;
+				float lineXMax = ImGui::GetItemRectMax().x;
+
+				ImDrawList* fg = ImGui::GetForegroundDrawList();
+				fg->AddLine(
+					ImVec2(lineXMin, lineY),
+					ImVec2(lineXMax, lineY),
+					IM_COL32(255, 80, 0, 255), 2.0f
+				);
+			}
+
+			// drop target
 			if (ImGui::BeginDragDropTarget())
 			{
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GO_REORDER"))
 				{
 					int fromIndex = *(const int*)payload->Data;
-					if (fromIndex != i)
+
+					float itemMinY = ImGui::GetItemRectMin().y;
+					float itemMaxY = ImGui::GetItemRectMax().y;
+					bool insertAfter = ImGui::GetMousePos().y > (itemMinY + itemMaxY) * 0.5f;
+					int insertPos = insertAfter ? i + 1 : i;
+
+					if (fromIndex != insertPos && fromIndex != insertPos - 1)
 					{
-						// collect all selected objects in order
 						std::vector<int> sorted = Editor::selectedIndices;
 						std::sort(sorted.begin(), sorted.end());
 
-						// extract them
 						std::vector<std::unique_ptr<GameObject>> dragged;
 						for (int idx : sorted)
 							dragged.push_back(std::move(scene.gameObjectList()[idx]));
 
-						// erase in reverse to preserve indices
 						std::sort(sorted.begin(), sorted.end(), std::greater<int>());
 						for (int idx : sorted)
 							scene.gameObjectList().erase(scene.gameObjectList().begin() + idx);
 
-						// figure out adjusted insert position after removals
-						int insertPos = i;
 						for (int idx : sorted)
-							if (idx < i) insertPos--;
+							if (idx < insertPos) insertPos--;
 						insertPos = std::clamp(insertPos, 0, (int)scene.gameObjectList().size());
 
-						// insert all at new position and update selection
 						Editor::selectedIndices.clear();
 						for (int j = 0; j < (int)dragged.size(); j++)
 						{
@@ -243,7 +285,6 @@ namespace //helpers
 				ImGui::EndDragDropTarget();
 			}
 		}
-			
 
 		if (ImGui::BeginPopupContextWindow("SceneRightClickMenu"))
 		{
@@ -264,7 +305,7 @@ namespace //helpers
 					std::sort(sorted.begin(), sorted.end(), std::greater<int>());
 					for (int idx : sorted)
 						scene.gameObjectList().erase(scene.gameObjectList().begin() + idx);
-					Editor::selectedIndices.clear();	
+					Editor::selectedIndices.clear();
 				}
 			}
 			ImGui::EndPopup();

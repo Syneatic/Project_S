@@ -5,6 +5,7 @@
 #include "gameobject.hpp"
 #include "audio.hpp"
 #include "camera.hpp"
+#include "particle.hpp"
 
 //scene
 #include "scene_parser.hpp"
@@ -115,6 +116,8 @@ void EditorScene::Gizmos() {
 
 void EditorScene::OnEnter()
 {
+	RefreshScene();
+	ParticleSystem::Initialize();
 	CameraSystem::OnStart();
 }
 
@@ -139,10 +142,18 @@ void EditorScene::OnUpdate()
 			{
 				c->OnUpdate();
 			}
+
+			if (auto* c = dynamic_cast<ParticleEmitter*>(comp.get()))
+			{
+				c->OnUpdate();
+			}
 		}
 	}
+	ParticleSystem::Update();
 
 	Graphics::Execute();
+	//we shall simulate particles too
+	ParticleSystem::Render();
 
 	//draw imgui after game render
 	if (imguiInitialized)

@@ -165,9 +165,6 @@
     <ClCompile Include="Source\camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\math.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -188,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="Source\imgui_helper.cpp">
       <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\math.cpp">
+      <Filter>Source Files\datatypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

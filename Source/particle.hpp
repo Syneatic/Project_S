@@ -12,11 +12,16 @@ namespace ParticleSystem
 
 	struct Pool
 	{
-		float2 pos[MAX_PARTICLES]{};
-		float2 vel[MAX_PARTICLES]{};
+		float2 pos[MAX_PARTICLES]{}; //might change to separated x,y
+		float size[MAX_PARTICLES]{};
+		float rotation[MAX_PARTICLES]{};
+
+		float2 vel[MAX_PARTICLES]{}; //same here
+
 		float  time[MAX_PARTICLES]{};
 		float  lifetime[MAX_PARTICLES]{};
-		Color  color[MAX_PARTICLES]{};
+
+		Color  color[MAX_PARTICLES]{}; //maybe this too
 		bool   active[MAX_PARTICLES]{};
 
 		int burstRemaining[MAX_PARTICLES]{}; //keep track of how many generation of reflection remain
@@ -42,6 +47,8 @@ namespace ParticleSystem
 	void Initialize();
 	void Update();
 	void Render();
-	void Emit(float2 pos, float2 vel,float time, float life, Color col, bool shouldCollide, int burstLimit, FN behaviour);
+	void Emit(float2 pos, float2 vel, float time, float life,
+		Color col, bool shouldCollide, int burstLimit,
+		FN behaviour, float size = 5.0f, float rotation = 0.0f);
 	void Flush();
 }
