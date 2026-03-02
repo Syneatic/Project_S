@@ -158,128 +158,104 @@ namespace //helpers
 
 		NameInputText(scene.name());
 
-		bool didDrag = false;
 
-		for (int i = 0; i < (int)scene.gameObjectList().size(); i++)
+		auto& objects = scene.gameObjectList();
+		int hoveredIndex = -1;
+		bool insertAfter = false;
+
+		for (int i = 0; i < (int)objects.size(); i++)
 		{
-			GameObject& gobj = *scene.gameObjectList()[i];
-			bool isSelected = std::find(Editor::selectedIndices.begin(), Editor::selectedIndices.end(), i)
-				!= Editor::selectedIndices.end();
+			GameObject& gobj = *objects[i];
+			bool isSelected = std::find(Editor::selectedIndices.begin(),
+				Editor::selectedIndices.end(), i) != Editor::selectedIndices.end();
 
 			ImGui::Selectable(gobj.name().c_str(), isSelected);
 
 			// selection logic
-			if (ImGui::IsItemClicked())
+			if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
 			{
 				if (ImGui::GetIO().KeyCtrl)
 				{
 					auto it = std::find(Editor::selectedIndices.begin(), Editor::selectedIndices.end(), i);
-					if (it != Editor::selectedIndices.end())
-						Editor::selectedIndices.erase(it);
-					else
-						Editor::selectedIndices.push_back(i);
+					if (it != Editor::selectedIndices.end()) Editor::selectedIndices.erase(it);
+					else Editor::selectedIndices.push_back(i);
 				}
 				else if (ImGui::GetIO().KeyShift && !Editor::selectedIndices.empty())
 				{
-					int last = Editor::selectedIndices.back();
-					int from = std::min(last, i), to = std::max(last, i);
-					for (int j = from; j <= to; j++)
-						if (std::find(Editor::selectedIndices.begin(), Editor::selectedIndices.end(), j)
-							== Editor::selectedIndices.end())
+					int start = Editor::selectedIndices.back();
+					int end = i;
+					for (int j = std::min(start, end); j <= std::max(start, end); j++)
+					{
+						if (std::find(Editor::selectedIndices.begin(), Editor::selectedIndices.end(), j) == Editor::selectedIndices.end())
 							Editor::selectedIndices.push_back(j);
+					}
 				}
 				else
 				{
-					bool alreadySelected = std::find(Editor::selectedIndices.begin(),
-						Editor::selectedIndices.end(), i) != Editor::selectedIndices.end();
-					if (!alreadySelected)
-						Editor::selectedIndices = { i };
+					Editor::selectedIndices = { i };
 				}
 			}
 
-			// collapse selection to single on release (only if no drag occurred)
-			if (ImGui::IsItemDeactivated() && !ImGui::GetIO().KeyCtrl && !ImGui::GetIO().KeyShift)
-			{
-				bool alreadySelected = std::find(Editor::selectedIndices.begin(),
-					Editor::selectedIndices.end(), i) != Editor::selectedIndices.end();
-				if (alreadySelected && !ImGui::IsMouseDragging(0) && !didDrag)
-					Editor::selectedIndices = { i };
-			}
-
 			// drag source
-			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+			if (ImGui::BeginDragDropSource())
 			{
-				didDrag = true;
-
-				bool partOfSelection = std::find(Editor::selectedIndices.begin(),
-					Editor::selectedIndices.end(), i) != Editor::selectedIndices.end();
-				if (!partOfSelection)
+				// If dragging something not selected, switch selection to it
+				if (!isSelected) {
 					Editor::selectedIndices = { i };
+				}
 
-				ImGui::SetDragDropPayload("GO_REORDER", &i, sizeof(int));
-
-				if (Editor::selectedIndices.size() > 1)
-					ImGui::Text("%d objects", (int)Editor::selectedIndices.size());
-				else
-					ImGui::TextUnformatted(gobj.name().c_str());
-
+				ImGui::SetDragDropPayload("REORDER_OBJ", nullptr, 0); // Payload is just a trigger
+				ImGui::Text("Moving %d object(s)", (int)Editor::selectedIndices.size());
 				ImGui::EndDragDropSource();
 			}
 
 			// drop indicator line
-			if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem) && ImGui::GetDragDropPayload() != nullptr)
+			if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
 			{
-				float itemMinY = ImGui::GetItemRectMin().y;
-				float itemMaxY = ImGui::GetItemRectMax().y;
-				bool insertAfter = ImGui::GetMousePos().y > (itemMinY + itemMaxY) * 0.5f;
+				hoveredIndex = i;
+				insertAfter = ImGui::GetMousePos().y > (ImGui::GetItemRectMin().y + ImGui::GetItemRectMax().y) * 0.5f;
 
-				float lineY = insertAfter ? itemMaxY : itemMinY;
-				float lineXMin = ImGui::GetItemRectMin().x;
-				float lineXMax = ImGui::GetItemRectMax().x;
-
-				ImDrawList* fg = ImGui::GetForegroundDrawList();
-				fg->AddLine(
-					ImVec2(lineXMin, lineY),
-					ImVec2(lineXMax, lineY),
-					IM_COL32(255, 80, 0, 255), 2.0f
-				);
+				if (ImGui::GetDragDropPayload() != nullptr)
+				{
+					float lineY = insertAfter ? ImGui::GetItemRectMax().y : ImGui::GetItemRectMin().y;
+					ImGui::GetWindowDrawList()->AddLine(
+						ImVec2(ImGui::GetItemRectMin().x, lineY),
+						ImVec2(ImGui::GetItemRectMax().x, lineY),
+						IM_COL32(255, 150, 0, 255), 2.0f);
+				}
 			}
 
 			// drop target
 			if (ImGui::BeginDragDropTarget())
 			{
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GO_REORDER"))
+				if (ImGui::AcceptDragDropPayload("REORDER_OBJ"))
 				{
-					int fromIndex = *(const int*)payload->Data;
+					// Sort selected indices descending to remove them without affecting previous indices
+					std::vector<int> sortedIndices = Editor::selectedIndices;
+					std::sort(sortedIndices.begin(), sortedIndices.end(), std::greater<int>());
 
-					float itemMinY = ImGui::GetItemRectMin().y;
-					float itemMaxY = ImGui::GetItemRectMax().y;
-					bool insertAfter = ImGui::GetMousePos().y > (itemMinY + itemMaxY) * 0.5f;
-					int insertPos = insertAfter ? i + 1 : i;
+					// Extract objects
+					std::vector<std::unique_ptr<GameObject>> movingObjects;
+					int targetPos = insertAfter ? hoveredIndex + 1 : hoveredIndex;
 
-					if (fromIndex != insertPos && fromIndex != insertPos - 1)
+					for (int idx : sortedIndices)
 					{
-						std::vector<int> sorted = Editor::selectedIndices;
-						std::sort(sorted.begin(), sorted.end());
+						movingObjects.push_back(std::move(objects[idx]));
+						objects.erase(objects.begin() + idx);
+						// Adjust targetPos if we removed an item before it
+						if (idx < targetPos) targetPos--;
+					}
 
-						std::vector<std::unique_ptr<GameObject>> dragged;
-						for (int idx : sorted)
-							dragged.push_back(std::move(scene.gameObjectList()[idx]));
+					// Objects were extracted in reverse order due to descending sort; reverse back for insertion
+					std::reverse(movingObjects.begin(), movingObjects.end());
 
-						std::sort(sorted.begin(), sorted.end(), std::greater<int>());
-						for (int idx : sorted)
-							scene.gameObjectList().erase(scene.gameObjectList().begin() + idx);
-
-						for (int idx : sorted)
-							if (idx < insertPos) insertPos--;
-						insertPos = std::clamp(insertPos, 0, (int)scene.gameObjectList().size());
-
-						Editor::selectedIndices.clear();
-						for (int j = 0; j < (int)dragged.size(); j++)
-						{
-							scene.gameObjectList().insert(scene.gameObjectList().begin() + insertPos + j, std::move(dragged[j]));
-							Editor::selectedIndices.push_back(insertPos + j);
-						}
+					// Re-insert
+					Editor::selectedIndices.clear();
+					for (int j = 0; j < (int)movingObjects.size(); j++)
+					{
+						int finalIdx = targetPos + j;
+						objects.insert(objects.begin() + finalIdx, std::move(movingObjects[j]));
+						Editor::selectedIndices.push_back(finalIdx);
 					}
 				}
 				ImGui::EndDragDropTarget();
