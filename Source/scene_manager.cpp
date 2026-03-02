@@ -102,10 +102,10 @@ namespace SceneManager
 
 		//for now we sort by alphabetical order
 		std::sort(_sceneRegistry.begin(), _sceneRegistry.end());
-		std::cout << _sceneRegistry.size() << std::endl;
+		Debug::Log("Detected ",_sceneRegistry.size(), " Scenes :");
 		for (std::string s : _sceneRegistry)
 		{
-			std::cout << s << std::endl;
+			Debug::Log(s);
 		}
 	}
 

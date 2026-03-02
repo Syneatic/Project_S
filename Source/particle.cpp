@@ -60,6 +60,8 @@ namespace ParticleSystem
 					g_pool.burstRemaining[i]
 					);
 		}
+		Debug::Log("Active Particles : ", activeParticles," FPS : ", EngineCTX::frameRate);
+
 	}
 
 	void Render() //by pass our wrapper for performance's sake

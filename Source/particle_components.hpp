@@ -9,28 +9,23 @@ public:
 	SpawnShape spawnShape = SpawnShape::POINT;
 
 	//rect half-extent
-	float spawnRectW = 50.f;
-	float spawnRectH = 50.f;
+	float2 rect{ 50.f,50.f };
 
 	//circ
-	float spawnRadiusMin = 0.f; 
-	float spawnRadiusMax = 50.f;
+	float2 radius{ 0.f,50.f };
 
 	//line
 	float spawnLineLength = 100.f;
-
 
 	float spawnRate = 10.f; // particle/sec
 	float timer = 0.f;
 	bool isBurst = false; //one time emit
 
-	float speedMin = 150.f; float speedMax = 250.f;
-	float lifetimeMin = 1.f;   float lifetimeMax = 3.f;
-	float sizeMin = 3.f;   float sizeMax = 8.f;
-	float spreadMin = -15.f; float spreadMax = 15.f;
-
-
-	float rotationMin = 0.f;   float rotationMax = 0.f;
+	float2 speed{ 150.f,250.f };
+	float2 lifetime{ 1.f,3.f };
+	float2 size{ 3.f,8.f };
+	float2 spread{ -15.f,15.f };
+	float2 rotation{ 0.f,0.f };
 
 	Color colorA{};
 	Color colorB{};

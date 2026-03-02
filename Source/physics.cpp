@@ -467,11 +467,13 @@ namespace Physics
 
 						if (isPlayer1 && isEnemy2)
 						{
-							rb1->HitEnemy = true, std::cout << "Player and Enemy" << std::endl;
+							rb1->HitEnemy = true;
+							Debug::Log("Player and Enemy");
 						}
 						if (isPlayer2 && isEnemy1)
 						{
-							rb2->HitEnemy = true, std::cout << "Player and Enemy" << std::endl;
+							rb2->HitEnemy = true;
+							Debug::Log("Player and Enemy");
 						}
 
 						if (isPlayer1 && isCheckPoint2) rb1->HitCheckPoint = true;

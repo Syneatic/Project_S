@@ -16,19 +16,23 @@ private:
 	ComponentMap _componentMap{}; //only 1 of each type of component can be attached
 	std::vector<std::type_index> _componentOrder{}; // tracks draw order
 
+	GameObject* _parent{ nullptr };
 	std::vector<std::unique_ptr<GameObject>> _children{}; //unused for now
 	std::vector<EventHandler::SubscriptionHandle> _eventList{};
-	Transform _transform{};
+	Transform _transform{}; //this will always be local
+	Transform _worldTransform{};
 
 public:
 	void Start()
 	{
 		for (auto& [type, comp] : _componentMap)
-		{
 			comp.get()->OnStart();
-		}
+		
+		for (auto& child : _children)
+			child->Start();
 	}
 
+	// ===== COMPONENT =====
 	template<typename T>
 	T* GetComponent()
 	{
@@ -96,10 +100,73 @@ public:
 		);
 	}
 
+	template <typename T>
+	bool HasComponent() const
+	{
+		static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
+		return _componentMap.find(std::type_index(typeid(T))) != _componentMap.end();
+	}
+
+	// ===== COMPONENT =====
+
+	// ===== HIERARCHY =====
+
 	void AddChild(std::unique_ptr<GameObject> child)
 	{
+		child->_parent = this;
+		// convert child's world transform to local space relative to this parent
+		child->_transform.position.x = child->_worldTransform.position.x - _worldTransform.position.x;
+		child->_transform.position.y = child->_worldTransform.position.y - _worldTransform.position.y;
+		child->_transform.scale.x = _worldTransform.scale.x != 0.f ?
+			child->_worldTransform.scale.x / _worldTransform.scale.x : child->_worldTransform.scale.x;
+		child->_transform.scale.y = _worldTransform.scale.y != 0.f ?
+			child->_worldTransform.scale.y / _worldTransform.scale.y : child->_worldTransform.scale.y;
+		child->_transform.rotation = child->_worldTransform.rotation - _worldTransform.rotation;
+		//place child into list
 		_children.emplace_back(std::move(child));
 	}
+
+	//unparenting child
+	std::unique_ptr<GameObject> RemoveChild(GameObject* child)
+	{
+		//find child
+		auto it = std::find_if(_children.begin(), _children.end(),
+			[child](const std::unique_ptr<GameObject>& c) { return c.get() == child; });
+
+		if (it == _children.end()) return nullptr;
+
+		//move child out
+		std::unique_ptr<GameObject> owned = std::move(*it);
+		_children.erase(it);
+
+		// restore world transform as local so it stays in place after unparenting
+		owned->_transform = owned->_worldTransform;
+		owned->_parent = nullptr;
+		return owned;
+	}
+
+	bool IsDescendantOf(const GameObject* ancestor) const
+	{
+		const GameObject* current = _parent;
+		while (current)
+		{
+			if (current == ancestor) return true;
+			current = current->_parent;
+		}
+		return false;
+	}
+
+	void SetParent(GameObject* parent)
+	{
+		_parent = parent;
+	}
+
+	void Unparent()
+	{
+		_parent = nullptr;
+	}
+
+	// ===== HIERARCHY =====
 
 	template <typename T, typename M>	
 	void Subscribe(M T::* member, M matchValue, std::function<void(const T&)> func)
@@ -128,20 +195,42 @@ public:
 		);
 	}
 
-	template <typename T>
-	bool HasComponent() const
+	//call on root objects only
+	void UpdateWorldTransform(const Transform* parentWorld = nullptr)
 	{
-		static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
-		return _componentMap.find(std::type_index(typeid(T))) != _componentMap.end();
+		if (parentWorld)
+		{
+			// combine parent world with local
+			_worldTransform.position.x = parentWorld->position.x +
+				(_transform.position.x * parentWorld->scale.x);
+			_worldTransform.position.y = parentWorld->position.y +
+				(_transform.position.y * parentWorld->scale.y);
+
+			_worldTransform.scale.x = parentWorld->scale.x * _transform.scale.x;
+			_worldTransform.scale.y = parentWorld->scale.y * _transform.scale.y;
+
+			_worldTransform.rotation = parentWorld->rotation + _transform.rotation;
+		}
+		else
+		{
+			// root object - world == local
+			_worldTransform =_transform;
+		}
+
+		// propagate to children
+		for (auto& child : _children)
+			child->UpdateWorldTransform(&_worldTransform);
 	}
 
-	//getters / setters
-	ComponentMap& componentMap() { return _componentMap; }
-	const ComponentMap& componentMap() const { return _componentMap; }
-	std::vector<std::type_index>& componentOrder() { return _componentOrder; }
 
-	std::vector<std::unique_ptr<GameObject>>& children() { return _children; }
+	//getters / setters
+	ComponentMap&					componentMap() { return _componentMap; }
+	const ComponentMap&				componentMap() const { return _componentMap; }
+	std::vector<std::type_index>&	componentOrder() { return _componentOrder; }
+
+	std::vector<std::unique_ptr<GameObject>>&		children() { return _children; }
 	const std::vector<std::unique_ptr<GameObject>>& children() const { return _children; }
+	GameObject* parent() const { return _parent; }
 
 	std::string& name() { return _name; }
 	const std::string& cname() const { return _name; }
@@ -152,6 +241,9 @@ public:
 
 	const Transform& transform() const { return _transform; }
 	Transform& transform() { return _transform; }
+
+	const Transform& worldTransform() const { return _worldTransform; }
+	Transform& worldTransform() { return _worldTransform; }
 
 	//constructor
 	GameObject(const char* name) : id(nextId++)

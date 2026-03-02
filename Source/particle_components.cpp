@@ -2,6 +2,7 @@
 #include "physics.hpp"
 #include "particle_components.hpp"
 #include "particle.hpp"
+#include "imgui_helper.hpp"
 
 void ParticleEmitter::OnStart() 
 {
@@ -38,19 +39,19 @@ void ParticleEmitter::OnUpdate()
 			baseAngle = _transform.rotation * (PI / 180.0f);
 		}
 
-		float spread = Random::RandFloat(spreadMin, spreadMax) * (PI / 180.0f);
-		float angle = baseAngle + spread;
-		float spd = Random::RandFloat(speedMin, speedMax);
+		float sprd = Random::RandFloat(spread.x, spread.y) * (PI / 180.0f);
+		float angle = baseAngle + sprd;
+		float spd = Random::RandFloat(speed.x, speed.y);
 
 		float2 velocity = { cosf(angle) * spd, sinf(angle) * spd };
-		float  life = Random::RandFloat(lifetimeMin, lifetimeMax);
-		float  size = Random::RandFloat(sizeMin, sizeMax);
-		float  rotation = Random::RandFloat(rotationMin, rotationMax);
+		float  life = Random::RandFloat(lifetime.x, lifetime.y);
+		float  sz = Random::RandFloat(size.x, size.y);
+		float  rot = Random::RandFloat(rotation.x, rotation.y);
 		Color  col = RandColor(colorA,colorB);
 
 		ParticleSystem::Emit(spawnPos, velocity, 0.f, life, col,
 			true, static_cast<int>(spawnRate / 2),
-			nullptr, size, rotation);
+			nullptr, sz, rot);
 
 		timer -= interval;
 	}
@@ -67,37 +68,38 @@ void ParticleEmitter::Burst()
 	for (int i = 0; i < count; ++i)
 	{
 		float2 spawnPos = SampleSpawnPosition();
+
+
+
 		float  angle = i * angleStep;
-		float  spd = Random::RandFloat(speedMin, speedMax);
+		float  spd = Random::RandFloat(speed.x, speed.y);
 		float2 velocity = { cosf(angle) * spd, sinf(angle) * spd };
-		float  life = Random::RandFloat(lifetimeMin, lifetimeMax);
-		float  size = Random::RandFloat(sizeMin, sizeMax);
-		float  rotation = Random::RandFloat(rotationMin, rotationMax);
+		float  life = Random::RandFloat(lifetime.x, lifetime.y);
+		float  sz = Random::RandFloat(size.x, size.y);
+		float  rot = Random::RandFloat(rotation.x, rotation.y);
 		Color  col = RandColor(colorA,colorB);
 
 		ParticleSystem::Emit(spawnPos, velocity, 0.f, life, col,
 			true, count / 4,
-			nullptr, size, rotation);
+			nullptr, sz, rot);
 	}
 }
 
 void ParticleEmitter::Serialize(Json::Value& outComp) const
 {
 	outComp["spawnShape"] = static_cast<int>(spawnShape);
-	outComp["spawnRectW"] = spawnRectW;
-	outComp["spawnRectH"] = spawnRectH;
-	outComp["spawnRadiusMin"] = spawnRadiusMin;
-	outComp["spawnRadiusMax"] = spawnRadiusMax;
+	outComp["rect"] = WriteFloat2(rect);
+	outComp["radius"] = WriteFloat2(radius);
 	outComp["spawnLineLength"] = spawnLineLength;
 
 	outComp["spawnRate"] = spawnRate;
 	outComp["isBurst"] = isBurst;
 
-	outComp["speedMin"] = speedMin;    outComp["speedMax"] = speedMax;
-	outComp["lifetimeMin"] = lifetimeMin; outComp["lifetimeMax"] = lifetimeMax;
-	outComp["sizeMin"] = sizeMin;     outComp["sizeMax"] = sizeMax;
-	outComp["spreadMin"] = spreadMin;   outComp["spreadMax"] = spreadMax;
-	outComp["rotationMin"] = rotationMin; outComp["rotationMax"] = rotationMax;
+	outComp["speed"] = WriteFloat2(speed);
+	outComp["lifetime"] = WriteFloat2(lifetime);
+	outComp["size"] = WriteFloat2(size);
+	outComp["spread"] = WriteFloat2(spread);
+	outComp["rotation"] = WriteFloat2(rotation);
 
 	outComp["colorA"] = WriteColor(colorA);
 	outComp["colorB"] = WriteColor(colorB);
@@ -105,28 +107,28 @@ void ParticleEmitter::Serialize(Json::Value& outComp) const
 
 void ParticleEmitter::Deserialize(const Json::Value& o)
 {
-	auto readFloat = [&](const char* key, float& val) {
-		if (o.isMember(key) && o[key].isNumeric()) val = o[key].asFloat();
+	auto readfloat2 = [&](const char* key, float2& val) 
+		{
+			if (o.isMember(key)) 
+				ReadFloat2(o[key], val);
 		};
 
 	if (o.isMember("spawnShape") && o["spawnShape"].isInt())
 		spawnShape = static_cast<SpawnShape>(o["spawnShape"].asInt());
 
-	readFloat("spawnRectW", spawnRectW);
-	readFloat("spawnRectH", spawnRectH);
-	readFloat("spawnRadiusMin", spawnRadiusMin);
-	readFloat("spawnRadiusMax", spawnRadiusMax);
-	readFloat("spawnLineLength", spawnLineLength);
-	readFloat("spawnRate", spawnRate);
+	readfloat2("rect", rect);
+	readfloat2("radius", radius);
+	spawnLineLength = o["spawnLineLength"].asFloat();
+	spawnRate = o["spawnRate"].asFloat();
 
 	if (o.isMember("isBurst") && o["isBurst"].isBool())
 		isBurst = o["isBurst"].asBool();
 
-	readFloat("speedMin", speedMin);    readFloat("speedMax", speedMax);
-	readFloat("lifetimeMin", lifetimeMin); readFloat("lifetimeMax", lifetimeMax);
-	readFloat("sizeMin", sizeMin);     readFloat("sizeMax", sizeMax);
-	readFloat("spreadMin", spreadMin);   readFloat("spreadMax", spreadMax);
-	readFloat("rotationMin", rotationMin); readFloat("rotationMax", rotationMax);
+	readfloat2("speed", speed);    
+	readfloat2("lifetime", lifetime); 
+	readfloat2("size", size);     
+	readfloat2("spread", spread);   
+	readfloat2("rotation", rotation); 
 
 	if (o.isMember("colorA")) ReadColor(o["colorA"], colorA);
 	if (o.isMember("colorB")) ReadColor(o["colorB"], colorB);
@@ -143,45 +145,29 @@ void ParticleEmitter::DrawInInspector()
 	switch (spawnShape)
 	{
 	case SpawnShape::RECT:
-		ImGui::TextUnformatted("Half Width");  ImGui::DragFloat("##rectW", &spawnRectW, 1.f, 0, 2000);
-		ImGui::TextUnformatted("Half Height"); ImGui::DragFloat("##rectH", &spawnRectH, 1.f, 0, 2000);
+		Float2DragReset("Half Width", &rect.x, {50.f,50.f});
 		break;
 	case SpawnShape::CIRCLE:
-		ImGui::TextUnformatted("Inner Radius"); ImGui::DragFloat("##radMin", &spawnRadiusMin, 1.f, 0, 2000);
-		ImGui::TextUnformatted("Outer Radius"); ImGui::DragFloat("##radMax", &spawnRadiusMax, 1.f, 0, 2000);
+		Float2DragReset("Radius", &radius.x, { 0.f,50.f });
 		break;
 	case SpawnShape::LINE:
-		ImGui::TextUnformatted("Length"); ImGui::DragFloat("##lineLen", &spawnLineLength, 1.f, 0, 2000);
+		FloatDragReset("Length", &spawnLineLength, 100.f);
 		break;
 	default: break;
 	}
 
 	ImGui::SeparatorText("Emission");
-	ImGui::TextUnformatted("Spawn Rate"); ImGui::DragFloat("##spawnrate", &spawnRate, 0.1f, 0, 512);
+	FloatDrag("Spawn Rate", &spawnRate);
 	ImGui::TextUnformatted("Burst Mode"); ImGui::Checkbox("##burst", &isBurst);
 
 	ImGui::SeparatorText("Particle Properties");
 
-	ImGui::TextUnformatted("Speed (min / max)");
-	ImGui::DragFloat("##spdMin", &speedMin, 1.f, 0, 2000); ImGui::SameLine();
-	ImGui::DragFloat("##spdMax", &speedMax, 1.f, 0, 2000);
-
-	ImGui::TextUnformatted("Lifetime (min / max)");
-	ImGui::DragFloat("##ltMin", &lifetimeMin, 0.01f, 0, 60); ImGui::SameLine();
-	ImGui::DragFloat("##ltMax", &lifetimeMax, 0.01f, 0, 60);
-
-	ImGui::TextUnformatted("Size (min / max)");
-	ImGui::DragFloat("##szMin", &sizeMin, 0.1f, 0, 200); ImGui::SameLine();
-	ImGui::DragFloat("##szMax", &sizeMax, 0.1f, 0, 200);
-
-	ImGui::TextUnformatted("Spread degrees (min / max)");
-	ImGui::DragFloat("##spMin", &spreadMin, 0.1f, -360, 360); ImGui::SameLine();
-	ImGui::DragFloat("##spMax", &spreadMax, 0.1f, -360, 360);
-
-	ImGui::TextUnformatted("Initial Rotation rad (min / max)");
-	ImGui::DragFloat("##rotMin", &rotationMin, 0.01f, -PI, PI); ImGui::SameLine();
-	ImGui::DragFloat("##rotMax", &rotationMax, 0.01f, -PI, PI);
-
+	Float2DragReset("Speed [MIN | MAX]", &speed.x, { 150.f,250.f });
+	Float2DragReset("Lifetime [MIN | MAX]", &lifetime.x, { 1.f,3.f});
+	Float2DragReset("Size [MIN | MAX]", &size.x, { 3.f,8.f });
+	Float2DragReset("Spread [MIN | MAX]", &spread.x, { 0.f,0.f });
+	Float2DragReset("Rotation [MIN | MAX]", &rotation.x, { 0.f,0.f });
+;
 	ImGui::TextUnformatted("Color A");
 	float ca[4]{ colorA.r, colorA.g, colorA.b, colorA.a };
 	if (ImGui::ColorEdit4("##colorA", ca)) colorA = Color(ca);
@@ -208,8 +194,8 @@ float2 ParticleEmitter::SampleSpawnPosition() const
 	{
 	case SpawnShape::RECT:
 	{
-		float lx = Random::RandFloat(-spawnRectW, spawnRectW);
-		float ly = Random::RandFloat(-spawnRectH, spawnRectH);
+		float lx = Random::RandFloat(-rect.x, rect.y);
+		float ly = Random::RandFloat(-rect.x, rect.y);
 		return toWorld(lx, ly);
 	}
 	case SpawnShape::CIRCLE:
@@ -218,8 +204,8 @@ float2 ParticleEmitter::SampleSpawnPosition() const
 		float angle = Random::RandFloat(0.f, 2.f * PI);
 		// sqrt for uniform area distribution
 		float r = sqrtf(Random::RandFloat(
-			spawnRadiusMin * spawnRadiusMin,
-			spawnRadiusMax * spawnRadiusMax));
+			radius.x * radius.x,
+			radius.y * radius.y));
 		return toWorld(cosf(angle) * r, sinf(angle) * r);
 	}
 	case SpawnShape::LINE:

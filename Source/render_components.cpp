@@ -345,7 +345,7 @@ void SpriteRenderer::Draw()
     data.sortOrder = sortOrder;
     data.texture = Graphics::LoadTexture(fileName);
     data.color = color;
-    std::cout << fileName.c_str() << "\n";
+    // std::cout << fileName.c_str() << "\n";
     
     Graphics::Submit(data,Graphics::PrimitiveType::QUAD);
 }
