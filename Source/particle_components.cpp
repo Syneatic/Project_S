@@ -20,7 +20,7 @@ void ParticleEmitter::OnUpdate()
 	}
 
 
-	timer += static_cast<float>(AEFrameRateControllerGetFrameTime());
+	timer += static_cast<float>(EngineCTX::dt);
 	float interval = 1.0f / spawnRate;
 
 	//spawn particles

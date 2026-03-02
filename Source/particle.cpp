@@ -28,7 +28,6 @@ namespace ParticleSystem
 
 	void Update()
 	{
-		f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 		uint32_t mask = 1 << 1;
 		mask |= 1 << 2;
 		mask |= 1 << 3;
@@ -37,7 +36,7 @@ namespace ParticleSystem
 		for (int i = 0; i < MAX_PARTICLES; ++i) {
 			if (!g_pool.active[i]) continue; //skip inactive
 
-			g_pool.time[i] += dt; //inc time
+			g_pool.time[i] += EngineCTX::dt; //inc time
 
 			if (g_pool.time[i] >= g_pool.lifetime[i]) //cull dead particles
 			{
@@ -49,8 +48,8 @@ namespace ParticleSystem
 			activeParticles++;
 
 			//update pos
-			g_pool.pos[i].x += g_pool.vel[i].x * dt;
-			g_pool.pos[i].y += g_pool.vel[i].y * dt;
+			g_pool.pos[i].x += g_pool.vel[i].x * EngineCTX::dt;
+			g_pool.pos[i].y += g_pool.vel[i].y * EngineCTX::dt;
 
 			//execute behaviour
 			if (g_pool.behaviour[i]) 

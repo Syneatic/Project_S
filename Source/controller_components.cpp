@@ -49,7 +49,6 @@ void PlayerController::OnStart()
 
 void PlayerController::OnUpdate()
 {
-    dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
     if (!rb) return;
 
     float input = 0.f;
@@ -61,14 +60,14 @@ void PlayerController::OnUpdate()
 
     float acceleration = maxSpeed / time;
 
-    if (input != 0.f)   rb->velocity.x += input * acceleration * dt;
+    if (input != 0.f)   rb->velocity.x += input * acceleration * EngineCTX::dt;
     else {
         float friction = acceleration;
         //friction
         if (rb->velocity.x > 0.f)
-            rb->velocity.x = (std::max)(0.f, rb->velocity.x - friction * dt);
+            rb->velocity.x = std::max(0.f, rb->velocity.x - friction * static_cast<f32>(EngineCTX::dt));
         else if (rb->velocity.x < 0.f) {
-            rb->velocity.x = (std::min)(0.f, rb->velocity.x + friction * dt);
+            rb->velocity.x = std::min(0.f, rb->velocity.x + friction * static_cast<f32>(EngineCTX::dt));
         }
     }
     rb->velocity.x = std::clamp(rb->velocity.x, -maxSpeed, maxSpeed);
@@ -316,8 +315,7 @@ void EnemyController::OnStart()
 
 void EnemyController::OnUpdate()
 {
-    f32 dt = (f32)AEFrameRateControllerGetFrameTime();
-    groundEmitTimer += dt;
+    groundEmitTimer += EngineCTX::dt;
     //Transform* trans = _owner.GetComponent<Transform>();
     if (!rb) return;
 

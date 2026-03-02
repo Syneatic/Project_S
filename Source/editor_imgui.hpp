@@ -7,5 +7,6 @@
 
 namespace Editor
 {
-	void DrawUI(Scene& scene);
+	inline std::vector<int> selectedIndices{};
+	void DrawUI(EditorScene& escene,Scene& scene);
 }
