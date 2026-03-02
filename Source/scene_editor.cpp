@@ -13,6 +13,8 @@
 //comps
 #include "components.hpp"
 
+//test
+#include "imgui_helper.hpp"
 
 
 namespace
@@ -263,11 +265,36 @@ void EditorScene::BuildSceneHierarchyWindow()
 		GameObject& gobj = *loadedScene.gameObjectList()[i];
 		bool isSelected = (selectedGameObjectIndex == i);
 
-		if (ImGui::Selectable(gobj.name().c_str(), isSelected))
+		ImGui::Selectable(gobj.name().c_str(), isSelected);
+
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 		{
-			//set selected object index
-			selectedGameObjectIndex = i;
+			ImGui::SetDragDropPayload("GO_REORDER", &i, sizeof(int));
+			ImGui::TextUnformatted(gobj.name().c_str()); // tooltip while dragging
+			ImGui::EndDragDropSource();
 		}
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GO_REORDER"))
+			{
+				int fromIndex = *(const int*)payload->Data;
+				if (fromIndex != i)
+				{
+					// grab the object being dragged
+					auto dragged = std::move(loadedScene.gameObjectList()[fromIndex]);
+					loadedScene.gameObjectList().erase(loadedScene.gameObjectList().begin() + fromIndex);
+					loadedScene.gameObjectList().insert(loadedScene.gameObjectList().begin() + i, std::move(dragged));
+
+					// fix up selected index to follow the moved object
+					selectedGameObjectIndex = i;
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+
+		if (ImGui::IsItemClicked())
+			selectedGameObjectIndex = i;
 	}
 
 	if (ImGui::BeginPopupContextWindow("SceneRightClickMenu"))
@@ -309,13 +336,9 @@ void EditorScene::BuildInspectorWindow()
 	//name text box
 	GameObject& selectedObj = *loadedScene.gameObjectList()[selectedGameObjectIndex];
 	auto& transform = selectedObj.transform();
-	char scnNameBuffer[256];
-	strcpy_s(scnNameBuffer, selectedObj.name().c_str());
-	if (ImGui::InputText(" ", scnNameBuffer, sizeof(scnNameBuffer)))
-	{
-		//update name if changed
-		selectedObj.name(std::string(scnNameBuffer));
-	}
+
+	NameInputText(selectedObj.name());
+
 
 	//draw transform
 	if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
@@ -348,32 +371,88 @@ void EditorScene::BuildInspectorWindow()
 		ImGui::Separator();
 	}
 
-	const auto& comps = selectedObj.componentMap();
-	for (auto it = comps.begin(); it != comps.end(); ++it)
+	const auto& comps = selectedObj.componentMap(); 
+	auto& compOrder = selectedObj.componentOrder();
+	for (int i = 0; i < (int)compOrder.size(); i++)
 	{
-		const std::type_index& type = it->first;
+		const std::type_index& type = compOrder[i];
+		auto it = comps.find(type);
+		if (it == comps.end() || !it->second) continue;
+
 		const std::unique_ptr<Component>& compPtr = it->second;
 
-		if (!compPtr) continue;
+		bool open = ImGui::CollapsingHeader(compPtr->name().c_str(), ImGuiTreeNodeFlags_DefaultOpen);
 
-		if (ImGui::CollapsingHeader(compPtr.get()->name().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+		// drag source
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 		{
-			if (ImGui::BeginPopupContextItem())
+			ImGui::SetDragDropPayload("COMP_REORDER", &i, sizeof(int));
+			ImGui::TextUnformatted(compPtr->name().c_str());
+			ImGui::EndDragDropSource();
+		}
+
+		// drop target
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("COMP_REORDER"))
 			{
-				if (ImGui::MenuItem("Remove Component"))
+				int fromIndex = *(const int*)payload->Data;
+				if (fromIndex != i)
 				{
-					//remove component from game object
-					selectedObj.RemoveComponent(type);
-					RefreshRenderers();
-					ImGui::EndPopup();
-					break; //exit loop to avoid invalid iterator
+					auto dragged = compOrder[fromIndex];
+					compOrder.erase(compOrder.begin() + fromIndex);
+					compOrder.insert(compOrder.begin() + i, dragged);
 				}
-				ImGui::EndPopup();
 			}
-			compPtr.get()->DrawInInspector();
+			ImGui::EndDragDropTarget();
+		}
+
+		// right click remove
+		if (ImGui::BeginPopupContextItem())
+		{
+			if (ImGui::MenuItem("Remove Component"))
+			{
+				selectedObj.RemoveComponent(type);
+				ImGui::EndPopup();
+				break;
+			}
+			ImGui::EndPopup();
+		}
+
+		if (open)
+		{
+			compPtr->DrawInInspector();
 			ImGui::Separator();
 		}
 	}
+
+	//for (auto it = comps.begin(); it != comps.end(); ++it)
+	//{
+	//	const std::type_index& type = it->first;
+	//	const std::unique_ptr<Component>& compPtr = it->second;
+
+	//	if (!compPtr) continue;
+
+	//	bool open = ImGui::CollapsingHeader(compPtr.get()->name().c_str(), ImGuiTreeNodeFlags_DefaultOpen);
+
+	//	if (ImGui::BeginPopupContextItem())
+	//	{
+	//		if (ImGui::MenuItem("Remove Component"))
+	//		{
+	//			selectedObj.RemoveComponent(type);
+	//			RefreshRenderers();
+	//			ImGui::EndPopup();
+	//			break;
+	//		}
+	//		ImGui::EndPopup();
+	//	}
+
+	//	if (open)
+	//	{
+	//		compPtr.get()->DrawInInspector();
+	//		ImGui::Separator();
+	//	}
+	//}
 
 	ImGui::Separator();
 
@@ -384,72 +463,20 @@ void EditorScene::BuildInspectorWindow()
 
 	if (ImGui::BeginPopup("AddComponentMenu"))
 	{
-		if (ImGui::BeginMenu("Collider"))
-		{
-			if (ImGui::MenuItem("Box Collider"))
+		ComponentSubMenu("Physics", { "Box Collider","Circle Collider","Rigid Body" },
+			[&](int i)
 			{
-				selectedObj.AddComponent<BoxCollider>();
-			}
+				if (i == 0) selectedObj.AddComponent<BoxCollider>();
+				if (i == 1) selectedObj.AddComponent<CircleCollider>();
+				if (i == 2) selectedObj.AddComponent<RigidBody>();
+			});
 
-			if (ImGui::MenuItem("Circle Collider"))
+		ComponentSubMenu("Renderer", { "Sprite Renderer","Mesh Renderer" },
+			[&](int i)
 			{
-
-				selectedObj.AddComponent<CircleCollider>();
-			}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Renderer"))
-		{
-			if (ImGui::MenuItem("Sprite Renderer"))
-			{
-				selectedObj.AddComponent<SpriteRenderer>();
-				RefreshRenderers();
-			}
-
-			if (ImGui::MenuItem("Mesh Renderer"))
-			{
-				selectedObj.AddComponent<MeshRenderer>();
-				RefreshRenderers();
-			}
-
-			if (ImGui::MenuItem("Text Renderer"))
-			{
-				selectedObj.AddComponent<TextRenderer>();
-				RefreshRenderers();
-			}
-
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Controller"))
-		{
-			if (ImGui::MenuItem("PlayerController"))
-			{
-				selectedObj.AddComponent<PlayerController>();
-			}
-
-			if (ImGui::MenuItem("RockController"))
-			{
-				selectedObj.AddComponent<RockController>();
-			}
-
-			if (ImGui::MenuItem("EnemyController"))
-			{
-				selectedObj.AddComponent<EnemyController>();
-			}
-
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Physics"))
-		{
-			if (ImGui::MenuItem("Rigid Body"))
-			{
-				selectedObj.AddComponent<RigidBody>();
-			}
-			ImGui::EndMenu();
-		}
+				if (i == 0) selectedObj.AddComponent<SpriteRenderer>();
+				if (i == 1) selectedObj.AddComponent<MeshRenderer>();
+			});
 
 		if (ImGui::BeginMenu("Particle"))
 		{
@@ -461,65 +488,49 @@ void EditorScene::BuildInspectorWindow()
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Audio"))
+		ComponentSubMenu("Audio", { "Audio Emitter","Audio Listener" },
+			[&](int i)
+			{
+				if (i == 0) selectedObj.AddComponent<AudioEmitter>();
+				if (i == 1) selectedObj.AddComponent<AudioListener>();
+			});
+
+		ComponentSubMenu("UI", { "Display", "Button", "Text" },
+			[&](int i)
+			{
+				if (i == 0) selectedObj.AddComponent<Display>();
+				if (i == 1) selectedObj.AddComponent<Button>();
+				if (i == 2) selectedObj.AddComponent<TextRenderer>();
+			});
+
+
+		if (ImGui::MenuItem("Main Camera"))
 		{
-			if (ImGui::MenuItem("Audio Emitter"))
-			{
-				selectedObj.AddComponent<AudioEmitter>();
-			}
-
-			if (ImGui::MenuItem("Audio Listener"))
-			{
-				selectedObj.AddComponent<AudioListener>();
-			}
-
-			ImGui::EndMenu();
+			selectedObj.AddComponent<MainCamera>();
 		}
 
-
-		if (ImGui::BeginMenu("UI Type"))
-		{
-			for (int i = 0; i < IM_ARRAYSIZE(_uiTypes); i++)
+		ImGui::Separator();
+		ImGui::TextUnformatted("Custom");
+		ImGui::Separator();
+		//we put our own components here
+		ComponentSubMenu("Controller", { "Player Controller","Rock Controller","Enemy Controller" },
+			[&](int i)
 			{
-				if (ImGui::MenuItem(_uiTypes[i]))
-				{
-					switch (i)
-					{
-					case 0:
-						selectedObj.AddComponent<Display>();
-						break;
-						/*case 1:
-							selectedObj.AddComponent<Text>();
-							break;*/
-					case 1:
-						selectedObj.AddComponent<Button>();
-						break;
-					default:
-						break;
-					}
-				}
-			}
-
-			ImGui::EndMenu();
-		}
+				if (i == 0) selectedObj.AddComponent<PlayerController>();
+				if (i == 1) selectedObj.AddComponent<RockController>();
+				if (i == 2) selectedObj.AddComponent<EnemyController>();
+			});
 
 		if (ImGui::MenuItem("Noise Source"))
 		{
 			selectedObj.AddComponent<NoiseSource>();
 		}
-		
-		if (ImGui::BeginMenu("Camera"))
-		{
-			if (ImGui::MenuItem("Main Camera"))
-			{
-				selectedObj.AddComponent<MainCamera>();
-			}
 
-			ImGui::EndMenu();
-		}
 
 		ImGui::EndPopup();
 	}
+
+
 
 	ImGui::End();
 }

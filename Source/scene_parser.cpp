@@ -107,7 +107,7 @@ namespace SceneIO
     {
 		const Transform& transform = go.transform();
         Json::Value obj(Json::objectValue);
-        obj["name"] = go.name();
+        obj["name"] = go.cname();
         obj["active"] = go.active();
 
         //serialize transform
@@ -183,7 +183,7 @@ namespace SceneIO
         catch (...) {}
 
         Json::Value root(Json::objectValue);
-        root["name"] = scene.name();
+        root["name"] = scene.cname();
 
         Json::Value gos(Json::arrayValue);
         auto& list = scene.gameObjectList();
@@ -200,7 +200,7 @@ namespace SceneIO
 
 #ifdef _DEBUG
         //for debug
-        const std::string dpath = "../../Assets/Scene/" + scene.name() + ".scene";
+        const std::string dpath = "../../Assets/Scene/" + scene.cname() + ".scene";
         std::ofstream dout(dpath, std::ios::binary);
         if (!dout)
         {
@@ -214,7 +214,7 @@ namespace SceneIO
         }
 #endif
 
-        const std::string path = "Assets/Scene/" + scene.name() + ".scene";
+        const std::string path = "Assets/Scene/" + scene.cname() + ".scene";
         std::ofstream out(path, std::ios::binary);
         if (!out)
         {

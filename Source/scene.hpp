@@ -18,7 +18,8 @@ public:
 
 
 	//===== SERIALIZATION =====
-	const std::string& name() const;
+	std::string& name();
+	const std::string& cname() const;
 	const std::string& name(std::string name);
 	std::vector<std::unique_ptr<GameObject>>& gameObjectList();
 	const std::vector<std::unique_ptr<GameObject>>& gameObjectList() const;
