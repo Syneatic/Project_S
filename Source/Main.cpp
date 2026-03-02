@@ -101,7 +101,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		//update engine ctx
 		UpdateEngineCTX();
-		Debug::Log("FPS : ", EngineCTX::frameRate);
 
 #ifdef _DEBUG
 		ImGuiIO& io = ImGui::GetIO();

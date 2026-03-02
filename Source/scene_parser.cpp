@@ -204,13 +204,13 @@ namespace SceneIO
         std::ofstream dout(dpath, std::ios::binary);
         if (!dout)
         {
-            std::cout << "UNABLE TO CREATE FILE\n";
+            Debug::Log("Unable to create file!"); 
             return false;
         }
 
         if (writer->write(root, &dout) != 0)
         {
-            std::cout << "SCENE SERIALIZE FAILED\n";
+            Debug::Log("Failed to serialize scene!");
         }
 #endif
 
@@ -218,7 +218,7 @@ namespace SceneIO
         std::ofstream out(path, std::ios::binary);
         if (!out)
         {
-            std::cout << "UNABLE TO CREATE FILE\n";
+            Debug::Log(__FUNCTION__, "Unable to create file!");
             return false;
         }
 

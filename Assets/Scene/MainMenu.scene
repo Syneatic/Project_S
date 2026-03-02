@@ -325,36 +325,57 @@
         {
           "colorA" : 
           [
-            1.0,
-            0.024509787559509277,
-            0.024509787559509277,
+            0.0,
+            0.0,
+            0.0,
             1.0
           ],
           "colorB" : 
           [
-            0.95588237047195435,
-            0.9356236457824707,
-            0.26708480715751648,
+            0.0,
+            0.0,
+            0.0,
             1.0
           ],
           "isBurst" : false,
-          "lifetimeMax" : 30.0,
-          "lifetimeMin" : 10.0,
-          "rotationMax" : 180.0,
-          "rotationMin" : 0.0,
-          "sizeMax" : 100.0,
-          "sizeMin" : 10.0,
-          "spawnLineLength" : 100.0,
-          "spawnRadiusMax" : 50.0,
-          "spawnRadiusMin" : 0.0,
-          "spawnRate" : 800.0,
-          "spawnRectH" : 450.0,
-          "spawnRectW" : 50.0,
-          "spawnShape" : 1,
-          "speedMax" : 500.0,
-          "speedMin" : 300.0,
-          "spreadMax" : 0.0,
-          "spreadMin" : 0.0,
+          "lifetime" : 
+          [
+            10.0,
+            20.0
+          ],
+          "radius" : 
+          [
+            0.0,
+            50.0
+          ],
+          "rect" : 
+          [
+            50.0,
+            50.0
+          ],
+          "rotation" : 
+          [
+            0.0,
+            360.0
+          ],
+          "size" : 
+          [
+            10.0,
+            50.0
+          ],
+          "spawnLineLength" : 800.0,
+          "spawnRate" : 1300.0,
+          "spawnShape" : 3,
+          "speed" : 
+          [
+            150.0,
+            200.0
+          ],
+          "spread" : 
+          [
+            -15.0,
+            15.0
+          ],
           "type" : "ParticleEmitter"
         }
       ],
@@ -364,7 +385,7 @@
         800.0,
         0.0
       ],
-      "rotation" : 180.0,
+      "rotation" : 90.0,
       "scale" : 
       [
         100.0,

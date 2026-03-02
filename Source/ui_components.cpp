@@ -1,12 +1,6 @@
 #include "eventhandler.hpp"
 #include "ui_components.hpp"
 
-//void UIButtonRegister::bindFunction(FunctionKey key, CallbackF callF)
-//{
-//	_buttonReg[key] = callF;
-//	std::cout << "Binded\n";
-//}
-
 void Display::DrawInInspector()
 {
 	ImGui::TextUnformatted("Texture");

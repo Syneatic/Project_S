@@ -346,7 +346,6 @@ void SpriteRenderer::Draw()
 
     data.color = color;
     data.texture = AEGfxTextureLoad(fileName.c_str());
-    std::cout << fileName.c_str() << "\n";
     
     Graphics::Submit(data,Graphics::PrimitiveType::QUAD);
 }
