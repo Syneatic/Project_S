@@ -21,8 +21,6 @@ public:
     f32 jumpHeight = 60.f;
     f32 time = 0.7f;
 
-    f32 dt{};
-
     float2 spawnPoint {};
 
     RigidBody* rb = nullptr;

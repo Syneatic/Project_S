@@ -32,5 +32,7 @@ struct Color
 };
 
 Color operator+ (const Color& lhs, const Color& rhs);
-
 std::ostream& operator<< (std::ostream& o, const Color& c);
+
+Color Lerp(Color a, Color b, f32 t);
+Color RandColor(const Color a,const Color b);

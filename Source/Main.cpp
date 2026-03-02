@@ -54,6 +54,7 @@ void UpdateEngineCTX()
 {
 	EngineCTX::dt = AEFrameRateControllerGetFrameTime();
 	EngineCTX::frameCount = AEFrameRateControllerGetFrameCount();
+	EngineCTX::frameRate = AEFrameRateControllerGetFrameRate();
 	EngineCTX::windowSize.x = static_cast<f32>(AEGfxGetWindowWidth());
 	EngineCTX::windowSize.y = static_cast<f32>(AEGfxGetWindowHeight());
 }
@@ -100,6 +101,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		//update engine ctx
 		UpdateEngineCTX();
+		Debug::Log("FPS : ", EngineCTX::frameRate);
 
 #ifdef _DEBUG
 		ImGuiIO& io = ImGui::GetIO();

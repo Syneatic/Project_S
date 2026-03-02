@@ -41,10 +41,10 @@ std::ostream& operator<< (std::ostream& o,const float2& f)
 	return o;
 }
 
-float absf(f32 a) { return a < 0.f ? -a : a; }
-float dot(float2 a, float2 b) { return a.x * b.x + a.y * b.y; }
-float lengthsq(float2 a) { return a.x * a.x + a.y * a.y; }
-float length(float2 a) { return std::sqrt(lengthsq(a)); }
+f32 absf(f32 a) { return a < 0.f ? -a : a; }
+f32 dot(float2 a, float2 b) { return a.x * b.x + a.y * b.y; }
+f32 lengthsq(float2 a) { return a.x * a.x + a.y * a.y; }
+f32 length(float2 a) { return std::sqrt(lengthsq(a)); }
 
 float2 normalize(const float2& a)
 {
