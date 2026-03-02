@@ -353,17 +353,6 @@ void EnemyController::UpdateDrop() {
     uint32_t groundLayer = static_cast<uint32_t>(Layer::Environment);
     uint32_t playerLayer = static_cast<uint32_t>(Layer::Player);
 
-    if (Physics::Raycast(origin, dir, 500.f, hit, groundLayer)){
-        if (groundEmitTimer >= groundEmitInterval) {
-            groundEmitTimer = 0.f;
-
-            float2 emitPos = hit.point + hit.normal * 15.f;
-            Debug::Log("Drop ping\n");
-
-            if (ns) ns->Emit(emitPos);
-        }
-    }
-
     if (Physics::Raycast(origin, dir, detectDistance, hit, playerLayer)) {
         rb->Affected_By_Gravity = true;
         hasDropped = true;
@@ -396,6 +385,17 @@ void EnemyController::UpdatePatrol() {
 
     uint32_t groundLayer = static_cast<uint32_t>(Layer::Environment);
 
+    if (Physics::Raycast(origin, dir, 500.f, hit, groundLayer)) {
+        if (groundEmitTimer >= groundEmitInterval) {
+            groundEmitTimer = 0.f;
+
+            float2 emitPos = hit.point + hit.normal * 15.f;
+            Debug::Log("Drop ping\n");
+
+            if (ns) ns->Emit(emitPos);
+        }
+    }
+
     if (!Physics::Raycast(origin, dir, _transform.scale.y / 2 + 10.f, hit, groundLayer)) {
         if (groundEmitTimer >= groundEmitInterval) {
             groundEmitTimer = 0.f;
@@ -403,7 +403,7 @@ void EnemyController::UpdatePatrol() {
             float2 emitPos{ _transform.position.x, _transform.position.y + _transform.scale.y / 2 };
             Debug::Log("Drop ping\n");
 
-            if (ns) ns->Emit(emitPos);
+            if (ns) ns->Emit(_transform.position);
         }
 
         patrolDir *= -1;
