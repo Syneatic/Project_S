@@ -358,7 +358,7 @@ void EnemyController::UpdateDrop() {
             groundEmitTimer = 0.f;
 
             float2 emitPos = hit.point + hit.normal * 15.f;
-            std::cout << "Drop ping" << std::endl;
+            Debug::Log("Drop ping\n");
 
             if (ns) ns->Emit(emitPos);
         }
@@ -367,7 +367,7 @@ void EnemyController::UpdateDrop() {
     if (Physics::Raycast(origin, dir, detectDistance, hit, playerLayer)) {
         rb->Affected_By_Gravity = true;
         hasDropped = true;
-        std::cout << "player being collided" << std::endl;
+        Debug::Log("Player being collided\n");
     }
 }
 
@@ -401,7 +401,7 @@ void EnemyController::UpdatePatrol() {
             groundEmitTimer = 0.f;
 
             float2 emitPos{ _transform.position.x, _transform.position.y + _transform.scale.y / 2 };
-            std::cout << "Drop ping" << std::endl;
+            Debug::Log("Drop ping\n");
 
             if (ns) ns->Emit(emitPos);
         }
