@@ -7,6 +7,6 @@
 
 namespace Editor
 {
-	inline std::vector<int> selectedIndices{};
+	inline std::vector<GameObject*> selectedObjects{};
 	void DrawUI(EditorScene& escene,Scene& scene);
 }

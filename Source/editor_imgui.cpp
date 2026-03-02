@@ -13,7 +13,6 @@
 //comps
 #include "components.hpp"
 
-
 namespace //helpers
 {
 	std::wstring OpenFile()
@@ -91,6 +90,225 @@ namespace //helpers
 		return out;
 	}
 
+	enum class DropZone { None, Above, Into, Below };
+
+	DropZone GetDropZone()
+	{
+		float minY = ImGui::GetItemRectMin().y;
+		float maxY = ImGui::GetItemRectMax().y;
+		float height = maxY - minY;
+		float mouseY = ImGui::GetMousePos().y;
+		float relY = mouseY - minY;
+
+		if (relY < height * 0.25f)      return DropZone::Above;
+		else if (relY > height * 0.75f) return DropZone::Below;
+		else                            return DropZone::Into;
+	}
+
+	void DrawDropIndicator(DropZone zone)
+	{
+		float minX = ImGui::GetItemRectMin().x;
+		float maxX = ImGui::GetItemRectMax().x;
+		float minY = ImGui::GetItemRectMin().y;
+		float maxY = ImGui::GetItemRectMax().y;
+		ImDrawList* fg = ImGui::GetForegroundDrawList();
+
+		if (zone == DropZone::Above)
+		{
+			fg->AddLine(ImVec2(minX, minY), ImVec2(maxX, minY), IM_COL32(255, 80, 0, 255), 2.f);
+			fg->AddCircleFilled(ImVec2(minX, minY), 3.f, IM_COL32(255, 80, 0, 255));
+		}
+		else if (zone == DropZone::Below)
+		{
+			fg->AddLine(ImVec2(minX, maxY), ImVec2(maxX, maxY), IM_COL32(255, 80, 0, 255), 2.f);
+			fg->AddCircleFilled(ImVec2(minX, maxY), 3.f, IM_COL32(255, 80, 0, 255));
+		}
+		else if (zone == DropZone::Into)
+		{
+			// highlight the whole item in blue like Unity
+			fg->AddRect(ImVec2(minX, minY), ImVec2(maxX, maxY), IM_COL32(50, 150, 255, 255), 0.f, 0, 2.f);
+		}
+	}
+
+	std::unique_ptr<GameObject> ExtractFromScene(Scene& scene, GameObject* target)
+	{
+		// search root list first
+		auto& roots = scene.gameObjectList();
+		for (auto it = roots.begin(); it != roots.end(); ++it)
+		{
+			if (it->get() == target)
+			{
+				auto owned = std::move(*it);
+				roots.erase(it);
+				return owned;
+			}
+		}
+
+		// search recursively in children
+		std::function<std::unique_ptr<GameObject>(GameObject*)> searchChildren;
+		searchChildren = [&](GameObject* node) -> std::unique_ptr<GameObject>
+			{
+				for (auto& child : node->children())
+				{
+					if (child.get() == target)
+						return node->RemoveChild(target);
+
+					auto result = searchChildren(child.get());
+					if (result) return result;
+				}
+				return nullptr;
+			};
+
+		for (auto& root : roots)
+		{
+			auto result = searchChildren(root.get());
+			if (result) return result;
+		}
+
+		return nullptr;
+	}
+
+	void DrawGameObjectNode(GameObject* go, Scene& scene, int depth = 0)
+	{
+		if (!go) return; // guard against null
+
+		bool hasChildren = !go->children().empty();
+		bool isSelected = std::find(Editor::selectedObjects.begin(),
+			Editor::selectedObjects.end(), go) != Editor::selectedObjects.end();
+
+		ImGuiTreeNodeFlags flags =
+			ImGuiTreeNodeFlags_OpenOnArrow |
+			ImGuiTreeNodeFlags_SpanAvailWidth |
+			ImGuiTreeNodeFlags_FramePadding;
+
+		if (isSelected)   flags |= ImGuiTreeNodeFlags_Selected;
+		if (!hasChildren) flags |= ImGuiTreeNodeFlags_Leaf;
+
+		bool nodeOpen = ImGui::TreeNodeEx(go->name().c_str(), flags);
+
+		// selection
+		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+		{
+			if (ImGui::GetIO().KeyCtrl)
+			{
+				auto it = std::find(Editor::selectedObjects.begin(), Editor::selectedObjects.end(), go);
+				if (it != Editor::selectedObjects.end()) Editor::selectedObjects.erase(it);
+				else Editor::selectedObjects.push_back(go);
+			}
+			else if (ImGui::GetIO().KeyShift && !Editor::selectedObjects.empty())
+			{
+				Editor::selectedObjects.push_back(go);
+			}
+			else
+			{
+				bool alreadySelected = std::find(Editor::selectedObjects.begin(),
+					Editor::selectedObjects.end(), go) != Editor::selectedObjects.end();
+				if (!alreadySelected)
+					Editor::selectedObjects = { go };
+			}
+		}
+
+		// collapse to single on release without drag
+		if (ImGui::IsItemDeactivated() && !ImGui::GetIO().KeyCtrl && !ImGui::GetIO().KeyShift)
+		{
+			bool alreadySelected = std::find(Editor::selectedObjects.begin(),
+				Editor::selectedObjects.end(), go) != Editor::selectedObjects.end();
+			if (alreadySelected && !ImGui::IsMouseDragging(0))
+				Editor::selectedObjects = { go };
+		}
+
+		// drag source
+		if (ImGui::BeginDragDropSource())
+		{
+			if (!isSelected)
+				Editor::selectedObjects = { go };
+
+			ImGui::SetDragDropPayload("GO_DRAG", nullptr, 0);
+			if (Editor::selectedObjects.size() > 1)
+				ImGui::Text("Moving %d objects", (int)Editor::selectedObjects.size());
+			else
+				ImGui::TextUnformatted(go->name().c_str());
+			ImGui::EndDragDropSource();
+		}
+
+		// drop indicator
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem)
+			&& ImGui::GetDragDropPayload() != nullptr)
+		{
+			bool isDraggedObj = std::find(Editor::selectedObjects.begin(),
+				Editor::selectedObjects.end(), go) != Editor::selectedObjects.end();
+			if (!isDraggedObj)
+				DrawDropIndicator(GetDropZone());
+		}
+
+		// drop target
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (ImGui::AcceptDragDropPayload("GO_DRAG"))
+			{
+				DropZone zone = GetDropZone();
+
+				// snapshot selection before modifying anything
+				std::vector<GameObject*> toMove = Editor::selectedObjects;
+
+				for (GameObject* dragged : toMove)
+				{
+					if (go->IsDescendantOf(dragged) || go == dragged) continue;
+
+					auto owned = ExtractFromScene(scene, dragged);
+					if (!owned) continue;
+
+					if (zone == DropZone::Into)
+					{
+						go->AddChild(std::move(owned));
+					}
+					else
+					{
+						GameObject* targetParent = go->parent();
+						auto& targetList = targetParent ?
+							targetParent->children() : scene.gameObjectList();
+
+						auto it = std::find_if(targetList.begin(), targetList.end(),
+							[go](const std::unique_ptr<GameObject>& p) { return p.get() == go; });
+
+						if (it != targetList.end())
+						{
+							owned->SetParent(targetParent);
+							if (zone == DropZone::Below) ++it;
+							targetList.insert(it, std::move(owned));
+						}
+						else
+						{
+							scene.gameObjectList().push_back(std::move(owned));
+						}
+					}
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+
+		// recurse into children
+		if (nodeOpen)
+		{
+			if (hasChildren)
+			{
+				std::vector<GameObject*> childPtrs;
+				for (auto& child : go->children())
+				{
+					if (child) childPtrs.push_back(child.get()); // skip null children
+				}
+
+				for (GameObject* child : childPtrs)
+					DrawGameObjectNode(child, scene);
+			}
+			ImGui::TreePop(); // always call if nodeOpen is true
+		}
+	}
+}
+
+
+namespace //wrappers for drawing ui elements
+{
 	void BuildDockSpace()
 	{
 		ImGuiWindowFlags host_flags =
@@ -158,108 +376,10 @@ namespace //helpers
 
 		NameInputText(scene.name());
 
-
-		auto& objects = scene.gameObjectList();
-		int hoveredIndex = -1;
-		bool insertAfter = false;
-
-		for (int i = 0; i < (int)objects.size(); i++)
+		for (auto& go : scene.gameObjectList())
 		{
-			GameObject& gobj = *objects[i];
-			bool isSelected = std::find(Editor::selectedIndices.begin(),
-				Editor::selectedIndices.end(), i) != Editor::selectedIndices.end();
-
-			ImGui::Selectable(gobj.name().c_str(), isSelected);
-
-			// selection logic
-			if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
-			{
-				if (ImGui::GetIO().KeyCtrl)
-				{
-					auto it = std::find(Editor::selectedIndices.begin(), Editor::selectedIndices.end(), i);
-					if (it != Editor::selectedIndices.end()) Editor::selectedIndices.erase(it);
-					else Editor::selectedIndices.push_back(i);
-				}
-				else if (ImGui::GetIO().KeyShift && !Editor::selectedIndices.empty())
-				{
-					int start = Editor::selectedIndices.back();
-					int end = i;
-					for (int j = std::min(start, end); j <= std::max(start, end); j++)
-					{
-						if (std::find(Editor::selectedIndices.begin(), Editor::selectedIndices.end(), j) == Editor::selectedIndices.end())
-							Editor::selectedIndices.push_back(j);
-					}
-				}
-				else
-				{
-					Editor::selectedIndices = { i };
-				}
-			}
-
-			// drag source
-			if (ImGui::BeginDragDropSource())
-			{
-				// If dragging something not selected, switch selection to it
-				if (!isSelected) {
-					Editor::selectedIndices = { i };
-				}
-
-				ImGui::SetDragDropPayload("REORDER_OBJ", nullptr, 0); // Payload is just a trigger
-				ImGui::Text("Moving %d object(s)", (int)Editor::selectedIndices.size());
-				ImGui::EndDragDropSource();
-			}
-
-			// drop indicator line
-			if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
-			{
-				hoveredIndex = i;
-				insertAfter = ImGui::GetMousePos().y > (ImGui::GetItemRectMin().y + ImGui::GetItemRectMax().y) * 0.5f;
-
-				if (ImGui::GetDragDropPayload() != nullptr)
-				{
-					float lineY = insertAfter ? ImGui::GetItemRectMax().y : ImGui::GetItemRectMin().y;
-					ImGui::GetWindowDrawList()->AddLine(
-						ImVec2(ImGui::GetItemRectMin().x, lineY),
-						ImVec2(ImGui::GetItemRectMax().x, lineY),
-						IM_COL32(255, 150, 0, 255), 2.0f);
-				}
-			}
-
-			// drop target
-			if (ImGui::BeginDragDropTarget())
-			{
-				if (ImGui::AcceptDragDropPayload("REORDER_OBJ"))
-				{
-					// Sort selected indices descending to remove them without affecting previous indices
-					std::vector<int> sortedIndices = Editor::selectedIndices;
-					std::sort(sortedIndices.begin(), sortedIndices.end(), std::greater<int>());
-
-					// Extract objects
-					std::vector<std::unique_ptr<GameObject>> movingObjects;
-					int targetPos = insertAfter ? hoveredIndex + 1 : hoveredIndex;
-
-					for (int idx : sortedIndices)
-					{
-						movingObjects.push_back(std::move(objects[idx]));
-						objects.erase(objects.begin() + idx);
-						// Adjust targetPos if we removed an item before it
-						if (idx < targetPos) targetPos--;
-					}
-
-					// Objects were extracted in reverse order due to descending sort; reverse back for insertion
-					std::reverse(movingObjects.begin(), movingObjects.end());
-
-					// Re-insert
-					Editor::selectedIndices.clear();
-					for (int j = 0; j < (int)movingObjects.size(); j++)
-					{
-						int finalIdx = targetPos + j;
-						objects.insert(objects.begin() + finalIdx, std::move(movingObjects[j]));
-						Editor::selectedIndices.push_back(finalIdx);
-					}
-				}
-				ImGui::EndDragDropTarget();
-			}
+			if (!go) continue; // skip null entries
+			DrawGameObjectNode(go.get(), scene);
 		}
 
 		if (ImGui::BeginPopupContextWindow("SceneRightClickMenu"))
@@ -268,20 +388,28 @@ namespace //helpers
 			{
 				int index = (int)scene.gameObjectList().size();
 				std::string name = "GameObject_" + std::to_string(index);
-				scene.gameObjectList().push_back(std::make_unique<GameObject>(name));
-				Editor::selectedIndices.clear();
-				Editor::selectedIndices.push_back(index);
+				auto newGo = std::make_unique<GameObject>(name);
+				Editor::selectedObjects = { newGo.get() };
+				scene.gameObjectList().push_back(std::move(newGo));
 			}
 
-			if (!Editor::selectedIndices.empty())
+			if (!Editor::selectedObjects.empty())
 			{
 				if (ImGui::MenuItem("Delete GameObject"))
 				{
-					std::vector<int> sorted = Editor::selectedIndices;
-					std::sort(sorted.begin(), sorted.end(), std::greater<int>());
-					for (int idx : sorted)
-						scene.gameObjectList().erase(scene.gameObjectList().begin() + idx);
-					Editor::selectedIndices.clear();
+					for (GameObject* go : Editor::selectedObjects)
+						ExtractFromScene(scene, go); // unique_ptr falls out of scope = deleted
+					Editor::selectedObjects.clear();
+				}
+
+				if (ImGui::MenuItem("Unparent"))
+				{
+					for (GameObject* go : Editor::selectedObjects)
+					{
+						if (!go->parent()) continue;
+						auto owned = ExtractFromScene(scene, go);
+						if (owned) scene.gameObjectList().push_back(std::move(owned));
+					}
 				}
 			}
 			ImGui::EndPopup();
@@ -296,8 +424,8 @@ namespace //helpers
 		ImGui::Begin("Inspector");
 
 		//check if an object is selected
-		if (Editor::selectedIndices.empty()) { ImGui::End(); return; }
-		GameObject& selectedObj = *scene.gameObjectList()[Editor::selectedIndices[0]];
+		if (Editor::selectedObjects.empty()) { ImGui::End(); return; }
+		GameObject& selectedObj = *Editor::selectedObjects[0];
 
 		//display selected object's properties
 		//iterate through each component and display its properties here

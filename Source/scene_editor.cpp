@@ -41,14 +41,14 @@ void EditorScene::ReadInput()
 
 void EditorScene::RefreshScene()
 {
-	Editor::selectedIndices.clear(); //reset index selection
+	Editor::selectedObjects.clear(); //reset index selection
 	CameraSystem::OnStart();
 }
 
 void EditorScene::Gizmos() {
-	if (Editor::selectedIndices.empty()) return;
+	if (Editor::selectedObjects.empty()) return;
 
-	GameObject& selectedObj = *loadedScene.gameObjectList()[Editor::selectedIndices[0]];
+	GameObject& selectedObj = *Editor::selectedObjects[0];
 	Transform& trans = selectedObj.transform();
 
 	//draw selection outline
@@ -136,6 +136,8 @@ void EditorScene::OnUpdate()
 	for (auto& pgo : loadedScene.gameObjectList())
 	{
 		auto* go = pgo.get();
+		go->UpdateWorldTransform();
+
 		for (auto& [type, comp] : go->componentMap())
 		{
 			if (auto* c = dynamic_cast<Renderer*>(comp.get()))
