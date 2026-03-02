@@ -23,13 +23,33 @@ private:
 	Transform _worldTransform{};
 
 public:
-	void Start()
+	void OnStart()
 	{
 		for (auto& [type, comp] : _componentMap)
 			comp.get()->OnStart();
 		
 		for (auto& child : _children)
-			child->Start();
+			child->OnStart();
+	}
+
+	void OnUpdate()
+	{
+		UpdateWorldTransform();
+
+		for (auto& [type, comp] : _componentMap)
+			comp.get()->OnUpdate();
+
+		for (auto& child : _children)
+			child->OnUpdate();
+	}
+
+	void OnDestroy()
+	{
+		for (auto& [type, comp] : _componentMap)
+			comp.get()->OnDestroy();
+
+		for (auto& child : _children)
+			child->OnDestroy();
 	}
 
 	// ===== COMPONENT =====

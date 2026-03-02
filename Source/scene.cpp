@@ -18,7 +18,7 @@ void Scene::InitializeGameObjects()
 	Debug::Log("Total GameObjects", _gameObjectList.size());
 	for (auto& pgo : _gameObjectList)
 	{
-		pgo.get()->Start();
+		pgo.get()->OnStart();
 	}
 }
 
@@ -56,10 +56,7 @@ void Scene::OnUpdate()
 		auto go = pgo.get();
 		if (!go->active()) continue;
 
-		for (auto& [type, comp] : go->componentMap())
-		{
-			comp.get()->OnUpdate();
-		}
+		go->OnUpdate();
 	}
 
 	Audio::Update();
@@ -82,10 +79,7 @@ void Scene::OnExit()
 	for (auto& pgo : _gameObjectList)
 	{
 		auto go = pgo.get();
-		for (auto& [type, comp] : go->componentMap())
-		{
-			comp.get()->OnDestroy();
-		}
+		go->OnDestroy();
 	}
 
 	//delete
