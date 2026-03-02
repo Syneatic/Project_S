@@ -34,7 +34,6 @@ namespace Graphics
         BL, BC, BR
     };
 
-
     struct RenderData
     {
         //spatial
@@ -61,6 +60,8 @@ namespace Graphics
 	struct RenderCommand;
 
     VertexBuffer* QuadMesh();
+
+    Texture* LoadTexture(std::string fileName);
 
 	void Initialize();
     void Flush();//flushes all commands

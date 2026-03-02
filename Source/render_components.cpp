@@ -343,9 +343,8 @@ void SpriteRenderer::Draw()
     data.alignment = alignment;
     data.layer = renderLayer;
     data.sortOrder = sortOrder;
-
+    data.texture = Graphics::LoadTexture(fileName);
     data.color = color;
-    data.texture = AEGfxTextureLoad(fileName.c_str());
     std::cout << fileName.c_str() << "\n";
     
     Graphics::Submit(data,Graphics::PrimitiveType::QUAD);
@@ -354,7 +353,6 @@ void SpriteRenderer::Draw()
 void SpriteRenderer::OnDestroy()
 {
     Graphics::RenderData data{};
-    AEGfxTextureUnload(data.texture);
 }
 
 

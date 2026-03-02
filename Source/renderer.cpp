@@ -12,6 +12,8 @@ namespace Graphics
     //CANNOT BE DRAWN WITH MDM_TRI
     VertexBuffer* _boxMesh = 0;
     VertexBuffer* _lineMesh = 0;
+
+    std::unordered_map<std::string, Texture*> _textureBuffer{};
  
     struct RenderCommand 
     {
@@ -36,7 +38,7 @@ namespace Graphics
     };
 }
 
-namespace Graphics //init mesh functions
+namespace Graphics //init mesh functions and texture handlers
 {
     void MeshStart() { AEGfxMeshStart(); }
 
@@ -172,6 +174,23 @@ namespace Graphics //init mesh functions
         AddVertex({ 1.f,0.f }, { 0.f,0.f });
 
         _lineMesh = MeshEnd();
+    }
+
+    // Loads textures used
+    Texture* LoadTexture(std::string fileName)
+    {        
+        if (auto search = _textureBuffer.find(fileName); search != _textureBuffer.end()){
+            return search->second;
+        }
+        _textureBuffer.insert({ fileName, AEGfxTextureLoad(fileName.c_str()) });
+        return _textureBuffer.find(fileName)->second;
+    }
+
+    void UnloadTextures()
+    {
+        for (const auto& t : _textureBuffer) {
+            AEGfxTextureUnload(t.second);
+        }
     }
 
     VertexBuffer* QuadMesh() { return _quadMesh; }
@@ -341,7 +360,6 @@ namespace Graphics
         InitLineMesh();
 
         _currentFont = AEGfxCreateFont("./Assets/liberation-mono.ttf", 72);
-        //pTex = AEGfxTextureLoad("./Assets/PlanetTexture.png");
     }
 
     void Flush()
@@ -361,6 +379,8 @@ namespace Graphics
         AEGfxMeshFree(_boxMesh);
         AEGfxMeshFree(_lineMesh);
 
+        //unload textures
+        UnloadTextures();
         //unload font
         AEGfxDestroyFont(_currentFont);
     }
