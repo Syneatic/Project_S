@@ -6,6 +6,7 @@
 
 //scene
 #include "scene_parser.hpp"
+#include "scene_editor.hpp"
 #include "imgui_helper.hpp"
 #include "editor_imgui.hpp"
 
@@ -15,68 +16,69 @@
 
 namespace //helpers
 {
-	u32 selectedGameObjectIndex{};
+	s32 selectedGameObjectIndex{};
 
 
-	//void BuildDockSpace()
-	//{
-	//	ImGuiWindowFlags host_flags =
-	//		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
-	//		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
-	//		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
-	//		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground;
+	void BuildDockSpace()
+	{
+		ImGuiWindowFlags host_flags =
+			ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
+			ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground;
 
-	//	const ImGuiViewport* vp = ImGui::GetMainViewport();
-	//	ImGui::SetNextWindowPos(vp->WorkPos);
-	//	ImGui::SetNextWindowSize(vp->WorkSize);
-	//	ImGui::SetNextWindowViewport(vp->ID);
+		const ImGuiViewport* vp = ImGui::GetMainViewport();
+		ImGui::SetNextWindowPos(vp->WorkPos);
+		ImGui::SetNextWindowSize(vp->WorkSize);
+		ImGui::SetNextWindowViewport(vp->ID);
 
-	//	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-	//	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 
-	//	ImGui::Begin("DockHost", nullptr, host_flags);
-	//	ImGui::PopStyleVar(2);
+		ImGui::Begin("DockHost", nullptr, host_flags);
+		ImGui::PopStyleVar(2);
 
-	//	ImGuiID dockspace_id = ImGui::GetID("MainDockSpace");
-	//	ImGui::DockSpace(dockspace_id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
-	//	ImGui::End();
-	//}
+		ImGuiID dockspace_id = ImGui::GetID("MainDockSpace");
+		ImGui::DockSpace(dockspace_id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
+		ImGui::End();
+	}
 
-	//void BuildMenuBar()
-	//{
-	//	ImGui::BeginMainMenuBar();
+	void BuildMenuBar(EditorScene& escene, Scene& scene)
+	{
+		ImGui::BeginMainMenuBar();
 
-	//	if (ImGui::BeginMenu("File"))
-	//	{
-	//		if (ImGui::MenuItem("Save"))
-	//		{
-	//			SceneIO::SerializeScene(loadedScene);
-	//		}
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Save"))
+			{
+				SceneIO::SerializeScene(scene);
+			}
 
-	//		if (ImGui::MenuItem("Load"))
-	//		{
-	//			std::wstring fileW = OpenFile();
-	//			if (!fileW.empty())
-	//			{
-	//				std::filesystem::path p(fileW);
-	//				std::string fileNameNoExt = p.stem().string();
-	//				SceneIO::DeserializeScene(loadedScene, fileNameNoExt);
-	//				RefreshScene();
-	//			}
-	//		}
+			if (ImGui::MenuItem("Load"))
+			{
+				//std::wstring fileW = OpenFile();
+				/*if (!fileW.empty())
+				{
+					std::filesystem::path p(fileW);
+					std::string fileNameNoExt = p.stem().string();
+					SceneIO::DeserializeScene(scene, fileNameNoExt);
+				}*/
 
-	//		ImGui::Separator();
-	//		if (ImGui::MenuItem("Quit"))
-	//		{
-	//			//quit the application?
-	//			//or return
-	//		}
+				escene.RefreshScene();
+			}
 
-	//		ImGui::EndMenu();
-	//	}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Quit"))
+			{
+				//quit the application?
+				//or return
+			}
 
-	//	ImGui::EndMainMenuBar();
-	//}
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMainMenuBar();
+	}
 
 	void BuildSceneHierarchyWindow(Scene& scene)
 	{

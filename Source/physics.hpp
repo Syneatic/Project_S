@@ -2,11 +2,11 @@
 
 //forward declare
 struct float2;
-struct Collider;
 struct Transform;
-struct CircleCollider;
-struct BoxCollider;
-struct RigidBody;
+class Collider;
+class CircleCollider;
+class BoxCollider;
+class RigidBody;
 
 namespace Physics
 {

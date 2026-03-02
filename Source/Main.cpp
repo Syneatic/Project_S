@@ -50,6 +50,14 @@ void ShutdownImGUI(bool& initStatus)
 	initStatus = false;
 }
 
+void UpdateEngineCTX()
+{
+	EngineCTX::dt = AEFrameRateControllerGetFrameTime();
+	EngineCTX::frameCount = AEFrameRateControllerGetFrameCount();
+	EngineCTX::windowSize.x = static_cast<f32>(AEGfxGetWindowWidth());
+	EngineCTX::windowSize.y = static_cast<f32>(AEGfxGetWindowHeight());
+}
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -59,8 +67,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
-
-	int gGameRunning = 1;
 
 	//initialize the engine
 	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, true, ImGuiWNDCallBack);
@@ -73,7 +79,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	InitializeImGUI(m_ImGUIInitialized);
 
 	//grab all scene
-	SceneManager::Initialize(&gGameRunning);
+	SceneManager::Initialize();
 
 #ifdef _DEBUG
 	SceneManager::SwitchToEditor();
@@ -87,11 +93,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// ===== END INITIALIZE SYSTEMS =====
 	
 	// Game Loop
-	while (gGameRunning)
+	while (EngineCTX::applicationRunning)
 	{
 		// Informing the system about the loop's start
 		AESysFrameStart();
-		//f32 dt = (f32)AEFrameRateControllerGetFrameTime();
+
+		//update engine ctx
+		UpdateEngineCTX();
 
 #ifdef _DEBUG
 		ImGuiIO& io = ImGui::GetIO();
@@ -114,10 +122,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 
-		/*Debug::Log(AEFrameRateControllerGetFrameRate());*/
 		// check if forcing the application to quit
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-		gGameRunning = 0;
+			EngineCTX::applicationRunning = false;
 	}
 
 	ShutdownImGUI(m_ImGUIInitialized);

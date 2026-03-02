@@ -4,7 +4,7 @@
 #include "ui_components.hpp"
 
 //fwd decl
-struct GameObject;
+class GameObject;
 
 // Event interface
 struct IEvent

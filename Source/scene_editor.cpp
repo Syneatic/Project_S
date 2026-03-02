@@ -162,27 +162,7 @@ void EditorScene::RefreshScene()
 {
 	selectedGameObjectIndex = -1; //reset index selection
 	CameraSystem::OnStart();
-	RefreshRenderers();
-	RefreshRigidBodies();
 }
-
-void EditorScene::RefreshRenderers()
-{
-	Graphics::Flush();// clear list
-}
-
-void EditorScene::RefreshColliders()
-{
-	Physics::FlushColliders();
-	RegisterSceneColliders(loadedScene);
-}
-
-void EditorScene::RefreshRigidBodies()
-{
-	Physics::FlushRigidBody();
-	RegisterSceneRigidBodies(loadedScene);
-}
-
 
 // ===== IMGUI =====
 void EditorScene::BuildDockSpace()
@@ -305,7 +285,6 @@ void EditorScene::BuildSceneHierarchyWindow()
 			std::string name = "GameObject_" + std::to_string(index);
 			loadedScene.gameObjectList().push_back(std::make_unique<GameObject>(name));
 			selectedGameObjectIndex = index;
-			RefreshRenderers();
 		}
 
 		if (selectedGameObjectIndex >= 0)
@@ -314,7 +293,6 @@ void EditorScene::BuildSceneHierarchyWindow()
 			{
 				loadedScene.gameObjectList().erase(loadedScene.gameObjectList().begin() + selectedGameObjectIndex);
 				selectedGameObjectIndex = -1;
-				RefreshRenderers();
 			}
 		}
 		ImGui::EndPopup();
@@ -615,18 +593,11 @@ void EditorScene::Gizmos() {
 
 void EditorScene::OnEnter()
 {
-	RefreshRenderers();
-	RefreshColliders();
-	RefreshRigidBodies();
 	CameraSystem::OnStart();
 }
 
 void EditorScene::OnUpdate()
 {
-	//laze so im refreshing every frame
-	RefreshColliders();
-	RefreshRigidBodies();
-
 	ReadInput();
 	CameraSystem::OnUpdate(); // Check input and update camera matrix
 

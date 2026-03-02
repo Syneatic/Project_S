@@ -26,16 +26,10 @@ private:
 	bool isMousePressed{};
 
 	void ReadInput();
-
-	void RefreshScene();
-	void RefreshRenderers();
-	void RefreshColliders();
-	void RefreshRigidBodies();
 	
 	void BuildDockSpace();
 	void BuildMenuBar();
 	void BuildSceneHierarchyWindow();
-
 
 	void BuildInspectorWindow();
 	void DrawUI();
@@ -49,6 +43,8 @@ public:
 	void OnEnter() override;
 	void OnUpdate() override;
 	void OnExit() override;
+
+	void RefreshScene();
 
 	EditorScene() { _name = "Editor"; }
 };

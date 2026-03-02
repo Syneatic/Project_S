@@ -46,6 +46,7 @@
 //our
 #include "base_components.hpp"
 #include "debug.hpp"
+#include "enginectx.hpp"
 #include "json_parser_helper.hpp"
 #include "math.hpp"
 #include "renderer.hpp"

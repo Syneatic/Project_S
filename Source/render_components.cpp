@@ -354,7 +354,8 @@ void SpriteRenderer::Draw()
 void SpriteRenderer::OnDestroy()
 {
     Graphics::RenderData data{};
-    AEGfxTextureUnload(data.texture);
+    if(data.texture)
+        AEGfxTextureUnload(data.texture);
 }
 
 

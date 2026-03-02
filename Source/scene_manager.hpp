@@ -4,7 +4,7 @@ class Scene;
 
 namespace SceneManager
 {
-	void Initialize(int* gameLoop);
+	void Initialize();
 	void SwitchToEditor();
 	void RequestSceneSwitch(const std::string& sceneName);
 	void RequestSceneReload();

@@ -1,7 +1,7 @@
 #pragma once
 
 //forward decl
-struct GameObject;
+class GameObject;
 
 class Scene
 {
