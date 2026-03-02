@@ -2,7 +2,7 @@
 
 //fwd decl
 class GameObject;
-class Transform;
+struct Transform;
 
 //ALL COMPONENTS ARE NOW BEHAVIOURS
 class Component

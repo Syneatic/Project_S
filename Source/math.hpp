@@ -34,10 +34,10 @@ struct float2
 
 std::ostream& operator<< (std::ostream& o, const float2& f);
 
-float absf(f32 a);
-float dot(float2 a, float2 b);
-float lengthsq(float2 a);
-float length(float2 a);
+f32 absf(f32 a);
+f32 dot(float2 a, float2 b);
+f32 lengthsq(float2 a);
+f32 length(float2 a);
 
 float2 normalize(const float2& a);
 float2 reflect(const float2& v, const float2& n);

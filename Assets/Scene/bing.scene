@@ -1,0 +1,43 @@
+{
+  "gameObjects" : 
+  [
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "isBurst" : false,
+          "lifetime" : 2.0,
+          "spawnRate" : 10.0,
+          "speed" : 200.0,
+          "spread" : 30.0,
+          "type" : "ParticleEmitter"
+        },
+        {
+          "type" : "Camera"
+        }
+      ],
+      "name" : "GameObject_0",
+      "position" : 
+      [
+        4.6999998092651367,
+        -34.150001525878906
+      ],
+      "rotation" : 18.799999237060547,
+      "scale" : 
+      [
+        12.199999809265137,
+        14.050000190734863
+      ]
+    }
+  ],
+  "name" : "bing"
+}

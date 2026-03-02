@@ -9,7 +9,7 @@
 
 void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit)
 {
-	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
+	f32 dt = static_cast<f32>(EngineCTX::dt);
 	uint32_t mask = 1 << 1;
 	mask |= 1 << 2;
 	mask |= 1 << 3;
@@ -81,8 +81,7 @@ void NoiseSource::OnUpdate()
 {
 	if (!repeat) return;
 
-	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
-	repeatTimer += dt;
+	repeatTimer += EngineCTX::dt;
 
 	if (repeatTimer >= repeatInterval)
 	{

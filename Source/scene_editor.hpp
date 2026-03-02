@@ -8,9 +8,6 @@ class EditorScene : public Scene
 private:
 	Scene loadedScene{}; //current loaded scene data
 
-	// ===== GAMEOBJECT =====
-	int selectedGameObjectIndex = -1; // -1 for no selection
-
 	GizmoAxis activeAxis = GizmoAxis::NONE;
 	GizmoMode currentMode = GizmoMode::TRANSLATE;
 
@@ -26,13 +23,6 @@ private:
 	bool isMousePressed{};
 
 	void ReadInput();
-	
-	void BuildDockSpace();
-	void BuildMenuBar();
-	void BuildSceneHierarchyWindow();
-
-	void BuildInspectorWindow();
-	void DrawUI();
 
 	void Gizmos();
 

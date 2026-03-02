@@ -1,5 +1,9 @@
 #pragma once
 
+//disable macros
+#define NOMINMAX
+
+
 //std
 #include <algorithm>
 #include <cmath>

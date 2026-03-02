@@ -48,13 +48,14 @@ void Scene::OnEnter()
 
 void Scene::OnUpdate()
 {
-	f32 dt = (f32)AEFrameRateControllerGetFrameTime();
 	//test draw
 	AEGfxSetBackgroundColor(0.f,0.f,0.f);
 
 	for (auto& pgo : _gameObjectList)
 	{
 		auto go = pgo.get();
+		if (!go->active()) continue;
+
 		for (auto& [type, comp] : go->componentMap())
 		{
 			comp.get()->OnUpdate();
@@ -63,7 +64,7 @@ void Scene::OnUpdate()
 
 	Audio::Update();
 
-	accumulator += dt;
+	accumulator += EngineCTX::dt;
 	while (accumulator >= fixedDt)
 	{
 		Physics::Step(fixedDt);
