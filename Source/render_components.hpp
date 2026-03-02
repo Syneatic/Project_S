@@ -5,6 +5,7 @@
 class Renderer : public Component
 {
 public:
+    std::string fileName{};
     Graphics::BlendMode blendMode{ AE_GFX_BM_BLEND };
     Graphics::RenderMode renderMode{ AE_GFX_RM_COLOR};
     Graphics::DrawMode meshDrawMode{ AE_GFX_MDM_TRIANGLES};
@@ -35,9 +36,11 @@ public:
 class SpriteRenderer : public Renderer
 {
 public:
+    void DrawInInspector() override;
+    void Serialize(Json::Value& outComp) const override;
+    void Deserialize(const Json::Value& compObj) override;
     void Draw() override;
-
-    //no override since sprite is quite normal
+    void OnDestroy() override;
 
     const std::string name() const override { return "SpriteRenderer"; }
 

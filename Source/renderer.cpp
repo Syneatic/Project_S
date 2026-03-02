@@ -263,8 +263,9 @@ namespace Graphics
             AEMtx33Concat(&mtx, &translate, &mtx);
         }
     
-        void DrawMesh(VertexBuffer* mesh, DrawMode mode)
+        void DrawMesh(VertexBuffer* mesh, DrawMode mode, Texture* texture)
         {
+            AEGfxTextureSet(texture, 0, 0);
             AEGfxMeshDraw(mesh, mode);
         }
         
@@ -424,16 +425,16 @@ namespace Graphics
             switch (cmd.type) 
             {
             case PrimitiveType::QUAD:
-                DrawMesh(_quadMesh, d.drawMode);
+                DrawMesh(_quadMesh, d.drawMode, d.texture);
                 break;
             case PrimitiveType::TRIANGLE:
-                DrawMesh(_triangleMesh, d.drawMode);
+                DrawMesh(_triangleMesh, d.drawMode, d.texture);
                 break;
             case PrimitiveType::CIRCLE:
-                DrawMesh(_circleMesh, d.drawMode);
+                DrawMesh(_circleMesh, d.drawMode, d.texture);
                 break;
             case PrimitiveType::BOX:
-                DrawMesh(_boxMesh, d.drawMode);
+                DrawMesh(_boxMesh, d.drawMode, d.texture);
                 break;
             case PrimitiveType::TEXT:
                 DrawTextMesh(cmd.text.c_str(), d);
