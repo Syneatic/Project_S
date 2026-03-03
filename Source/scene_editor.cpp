@@ -127,6 +127,10 @@ void EditorScene::Gizmos() {
 
 void EditorScene::OnEnter()
 {
+	//start on prototype for testing
+	//SceneIO::DeserializeScene(loadedScene, "PrototypeLvl");
+
+
 	RefreshScene();
 	ParticleSystem::Initialize();
 	CameraSystem::OnStart();

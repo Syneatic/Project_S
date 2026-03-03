@@ -179,11 +179,13 @@ public:
 	void SetParent(GameObject* parent)
 	{
 		_parent = parent;
+		//need to set local position
 	}
 
 	void Unparent()
 	{
 		_parent = nullptr;
+		//reset local position to be world
 	}
 
 	// ===== HIERARCHY =====
