@@ -51,23 +51,33 @@ void EditorScene::Gizmos() {
 	GameObject& selectedObj = *Editor::selectedObjects[0];
 	Transform& trans = selectedObj.transform();
 
-	//draw selection outline
-	Graphics::RenderData outline;
-	outline.alignment = Graphics::Alignment::MC;
-	outline.blendMode = Graphics::BlendMode::AE_GFX_BM_NONE;
-	outline.drawMode = Graphics::DrawMode::AE_GFX_MDM_LINES;
-	outline.color = Color(0xFF'FC'67'3A);
-	outline.layer = (Graphics::RenderLayer)(Graphics::RenderLayer::GIZMOS + 25);
-	outline.pos = trans.position;
-	outline.scale = trans.scale;
-	outline.rot = trans.rotation;
-	Graphics::Submit(outline,Graphics::PrimitiveType::BOX);
+	//avg position
+	float2 position{};
+
+	//draw for each selected object
+	for (const auto& obj : Editor::selectedObjects)
+	{
+		//draw for children as well
+		Graphics::RenderData outline;
+		outline.alignment = Graphics::Alignment::MC;
+		outline.blendMode = Graphics::BlendMode::AE_GFX_BM_NONE;
+		outline.drawMode = Graphics::DrawMode::AE_GFX_MDM_LINES;
+		outline.color = Color(0xFF'FC'67'3A);
+		outline.layer = (Graphics::RenderLayer)(Graphics::RenderLayer::GIZMOS + 25);
+		outline.pos = obj->transform().position;
+		outline.scale = obj->transform().scale;
+		outline.rot = obj->transform().rotation;
+		position += obj->transform().position;
+		Graphics::Submit(outline, Graphics::PrimitiveType::BOX);
+	}
+
+	position /= Editor::selectedObjects.size();
 
 	// 1. Draw the active gizmo
 	switch (currentMode) {
-	case GizmoMode::TRANSLATE: DrawTranslationGizmo(trans.position); break;
-	case GizmoMode::ROTATE:    DrawRotationGizmo(trans.position); break;
-	case GizmoMode::SCALE:     DrawScaleGizmo(trans.position); break;
+	case GizmoMode::TRANSLATE: DrawTranslationGizmo(position); break;
+	case GizmoMode::ROTATE:    DrawRotationGizmo(position); break;
+	case GizmoMode::SCALE:     DrawScaleGizmo(position); break;
 	}
 
 	// 2. Handle Interaction
@@ -87,6 +97,7 @@ void EditorScene::Gizmos() {
 		}
 	}
 
+	//moving
 	if (isMouseDown && activeAxis != GizmoAxis::NONE) {
 		if (currentMode == GizmoMode::TRANSLATE) {
 			if (activeAxis == GizmoAxis::X || activeAxis == GizmoAxis::CENTER)
