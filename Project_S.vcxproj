@@ -101,6 +101,7 @@
     <ClCompile Include="Source\debug.cpp" />
     <ClCompile Include="Source\editor_imgui.cpp" />
     <ClCompile Include="Source\imgui_helper.cpp" />
+    <ClCompile Include="Source\level_transition.cpp" />
     <ClCompile Include="Source\math.cpp" />
     <ClCompile Include="Source\noise_component.cpp" />
     <ClCompile Include="Source\particle_components.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Source\debug.hpp" />
     <ClInclude Include="Source\editor_imgui.hpp" />
     <ClInclude Include="Source\imgui_helper.hpp" />
+    <ClInclude Include="Source\level_transition.hpp" />
     <ClInclude Include="Source\noise_component.hpp" />
     <ClInclude Include="Source\particle_components.hpp" />
     <ClInclude Include="Source\enginectx.hpp" />

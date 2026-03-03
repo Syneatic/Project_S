@@ -6,6 +6,7 @@
 
 #include "gameobject.hpp"
 #include "eventhandler.hpp"
+#include "level_transition.hpp"
 
 #include "components.hpp"
 
@@ -43,6 +44,7 @@ void Scene::OnEnter()
 
 	UISystem::init();
 	ParticleSystem::Initialize();
+	LevelTransition::Init();
 	CameraSystem::OnStart(); //reset camera
 }
 
@@ -68,6 +70,7 @@ void Scene::OnUpdate()
 		accumulator -= fixedDt;
 	}
 
+	LevelTransition::CheckState();
 	ParticleSystem::Update();
 	EventHandler::CallQ();
 	Graphics::Execute();
@@ -83,6 +86,7 @@ void Scene::OnExit()
 	}
 
 	//delete
+	LevelTransition::UnsubscribeTransitions();
 	EventHandler::Flush();
 	Physics::FlushColliders();
 	Physics::FlushRigidBody();

@@ -189,6 +189,9 @@
     <ClCompile Include="Source\math.cpp">
       <Filter>Source Files\datatypes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\level_transition.cpp">
+      <Filter>Source Files\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="Source\imgui_helper.hpp">
       <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\level_transition.hpp">
+      <Filter>Header Files\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

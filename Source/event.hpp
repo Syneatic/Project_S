@@ -2,6 +2,7 @@
 
 #include "math.hpp"
 #include "ui_components.hpp"
+#include "level_transition.hpp"
 
 //fwd decl
 class GameObject;
@@ -44,4 +45,12 @@ struct OnCollisionEvent : public Event<OnCollisionEvent>
 
 	OnCollisionEvent(GameObject* s, GameObject* o,float2 c, float2 n, float i)
 		: self(s), other(o),contactPoint(c), normal(n), impulse(i) { }
+};
+
+struct LevelTransitionEvent : public Event<LevelTransitionEvent>
+{
+	LevelTransition::TransitionState tState;
+
+	LevelTransitionEvent(LevelTransition::TransitionState tState)
+		: tState(tState) {}
 };

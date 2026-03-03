@@ -85,7 +85,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #ifdef _DEBUG
 	SceneManager::SwitchToEditor();
 #else
-	SceneManager::RequestSceneSwitch("MainMenu");
+	SceneManager::RequestSceneSwitch("Intro");
 #endif
 
 	// Initialize render system
@@ -110,7 +110,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				SceneManager::SwitchToEditor();
 
 			if (AEInputCheckTriggered(AEVK_2)) 
-				SceneManager::RequestSceneSwitch("MainMenu");	
+				SceneManager::RequestSceneSwitch("Intro");	
+
+			if (AEInputCheckTriggered(AEVK_3)) 
+				SceneManager::RequestSceneSwitch("TestScene");	
 		}
 #endif
 	
