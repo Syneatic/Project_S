@@ -9,47 +9,47 @@
 
 void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit)
 {
+	if (!shouldCollide) return;
+
 	f32 dt = static_cast<f32>(EngineCTX::dt);
-	uint32_t mask = 1 << 1;
-	mask |= 1 << 2;
-	mask |= 1 << 3;
+	uint32_t mask = (1 << 1) | (1 << 2) | (1 << 3);
 
-	if (shouldCollide)
+	float speed = length(vel);
+	if (speed < 0.001f) return;
+
+	float2 dir = normalize(vel);
+	float sweepDist = speed * dt;
+
+	//prevent large delta time from affecting sweep
+	constexpr float MAX_SWEEP = 1000.f;
+	sweepDist = std::min(sweepDist, MAX_SWEEP);
+
+	Physics::RaycastHit hit;
+	if (Physics::Raycast(pos, dir, sweepDist, hit, mask))
 	{
-		float2 velocity = vel * dt;
-		float speed = length(vel);
-		float dist = length(velocity);
-		if (dist > 0.001f) //if particle not moving, skip raycast
-		{
-			float2 dir = normalize(vel);
-			Physics::RaycastHit hit;
+		// Spawn reflected burst at hit point
+		float2 refl = reflect(dir, hit.normal);
+		float2 noise = float2(Random::RandFloat(-0.005f, 0.005f), Random::RandFloat(-0.005f, 0.005f));
+		float2 burstVel = normalize(refl + noise) * speed;
 
-			if (Physics::Raycast(pos, dir, dist, hit, mask))
-			{		
-				//get reflected vector
-				float2 refl = reflect(dir,hit.normal);
-				float2 b_velocity = (normalize(refl) + float2(Random::RandFloat(-0.005f, 0.005f),Random::RandFloat(-0.005f,0.005f))) * speed;
-				ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), b_velocity,0.f, lifetime * 0.85f, col, true, burstLimit / 2, Collision);
+		if (burstLimit > 0)
+			ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), burstVel, 0.f,
+				lifetime * 0.85f, col, true, burstLimit / 2, Collision);
 
-				//reset lifetime when hit
-				time = 0.f;
-				lifetime = 5.f;
-				
-				shouldCollide = false;
-				//hit environment
-				if (hit.layerHit == (1 << 1))
-					col = Color(1.0f, 1.0f, 1.0f);
+		// Place particle at hit point, kill it (Update() will add zero vel)
+		pos = hit.point;
+		vel = float2::zero();
+		shouldCollide = false;
 
-				//hit enemy
-				if (hit.layerHit == (1 << 2))
-					col = Color(1.0f, 0.0f, 0.0f);
-				
-				pos = hit.point;
-				//kill momentum
-				vel = float2::zero();
-			}
-		}
+		// Reset lifetime so it fades out slowly after hitting
+		time = 0.f;
+		lifetime = 5.f;
+
+		// Color based on layer hit
+		if (hit.layerHit == (1 << 1)) col = Color(1.f, 1.f, 1.f); // environment
+		if (hit.layerHit == (1 << 2)) col = Color(1.f, 0.f, 0.f); // enemy
 	}
+
 }
 
 float GetLifetime(float noise)

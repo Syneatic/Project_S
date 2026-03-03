@@ -29,10 +29,10 @@ namespace ParticleSystem
 	void Update()
 	{
 		int activeParticles{};
-
-		for (int i = 0; i < MAX_PARTICLES; ++i) {
+		
+		for (int i = 0; i < MAX_PARTICLES; ++i) 
+		{
 			if (!g_pool.active[i]) continue; //skip inactive
-
 			g_pool.time[i] += EngineCTX::dt; //inc time
 
 			if (g_pool.time[i] >= g_pool.lifetime[i]) //cull dead particles
@@ -44,9 +44,7 @@ namespace ParticleSystem
 
 			activeParticles++;
 
-			//update pos
-			g_pool.pos[i].x += g_pool.vel[i].x * EngineCTX::dt;
-			g_pool.pos[i].y += g_pool.vel[i].y * EngineCTX::dt;
+			if (g_pool.vel[i] == float2::zero()) continue; //skip stationary
 
 			//execute behaviour
 			if (g_pool.behaviour[i]) 
@@ -59,6 +57,11 @@ namespace ParticleSystem
 					g_pool.collide[i], 
 					g_pool.burstRemaining[i]
 					);
+
+			//update pos
+			g_pool.pos[i].x += g_pool.vel[i].x * EngineCTX::dt;
+			g_pool.pos[i].y += g_pool.vel[i].y * EngineCTX::dt;
+
 		}
 		Debug::Log("Active Particles : ", activeParticles," FPS : ", EngineCTX::frameRate);
 

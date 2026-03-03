@@ -33,6 +33,7 @@ struct float2
 };
 
 std::ostream& operator<< (std::ostream& o, const float2& f);
+bool operator== (const float2& a, const float2& b);
 
 f32 absf(f32 a);
 f32 dot(float2 a, float2 b);

@@ -41,6 +41,11 @@ std::ostream& operator<< (std::ostream& o,const float2& f)
 	return o;
 }
 
+bool operator== (const float2& a, const float2& b)
+{
+	return (a.x == b.x) && (a.y == b.y);
+}
+
 f32 absf(f32 a) { return a < 0.f ? -a : a; }
 f32 dot(float2 a, float2 b) { return a.x * b.x + a.y * b.y; }
 f32 lengthsq(float2 a) { return a.x * a.x + a.y * a.y; }
