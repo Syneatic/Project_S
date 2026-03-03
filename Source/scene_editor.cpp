@@ -64,25 +64,26 @@ void EditorScene::Gizmos() {
 		outline.drawMode = Graphics::DrawMode::AE_GFX_MDM_LINES;
 		outline.color = Color(0xFF'FC'67'3A);
 		outline.layer = (Graphics::RenderLayer)(Graphics::RenderLayer::GIZMOS + 25);
-		outline.pos = obj->transform().position;
-		outline.scale = obj->transform().scale;
-		outline.rot = obj->transform().rotation;
-		position += obj->transform().position;
+		outline.pos = obj->worldTransform().position;
+		outline.scale = obj->worldTransform().scale;
+		outline.rot = obj->worldTransform().rotation;
+		position += obj->worldTransform().position;
 		Graphics::Submit(outline, Graphics::PrimitiveType::BOX);
 	}
 
+	//set to average position
 	position /= Editor::selectedObjects.size();
 
-	// 1. Draw the active gizmo
+	//draw gizmo
 	switch (currentMode) {
 	case GizmoMode::TRANSLATE: DrawTranslationGizmo(position); break;
 	case GizmoMode::ROTATE:    DrawRotationGizmo(position); break;
 	case GizmoMode::SCALE:     DrawScaleGizmo(position); break;
 	}
 
-	// 2. Handle Interaction
+	//interaction
 	if (isMousePressed) {
-		activeAxis = GetHitAxis(mouseWorld, trans.position);
+		activeAxis = GetHitAxis(mouseWorld, position);
 
 		if (currentMode == GizmoMode::ROTATE && activeAxis == GizmoAxis::ROTATION) {
 			startMouseAngle = atan2f(mouseWorld.y - trans.position.y, mouseWorld.x - trans.position.x);

@@ -128,6 +128,8 @@ namespace //helpers
 				auto pivot = std::find(_visibleList.begin(), _visibleList.end(), pivotptr);
 				auto target = std::find(_visibleList.begin(), _visibleList.end(), go);
 
+				if (pivot == _visibleList.end() || target == _visibleList.end()) return;
+
 				auto [first, last] = std::minmax(pivot, target);
 				for (auto it = first; it <= last; ++it)
 				{
@@ -423,7 +425,7 @@ namespace //wrappers for drawing ui elements
 		//iterate through each component and display its properties here
 		//name text box
 		auto& transform = selectedObj.transform();
-
+		auto& worldTransform = selectedObj.worldTransform();
 		NameInputText(selectedObj.name());
 
 		//draw transform
@@ -432,6 +434,14 @@ namespace //wrappers for drawing ui elements
 			Float2DragReset("Position", &transform.position.x, {0.f,0.f}, 0.05f);
 			Float2DragReset("Scale", &transform.scale.x, { 1.f,1.f }, 0.05f);
 			FloatDragReset("Rotation", &transform.rotation, 0.f, 0.1f);
+			ImGui::Separator();
+		}
+
+		if (ImGui::CollapsingHeader("WorldTransform", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			Float2DragReset("Position", &worldTransform.position.x, { 0.f,0.f }, 0.05f);
+			Float2DragReset("Scale", &worldTransform.scale.x, { 1.f,1.f }, 0.05f);
+			FloatDragReset("Rotation", &worldTransform.rotation, 0.f, 0.1f);
 			ImGui::Separator();
 		}
 
