@@ -27,25 +27,27 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 	Physics::RaycastHit hit;
 	if (Physics::Raycast(pos, dir, sweepDist, hit, mask))
 	{
-		// Spawn reflected burst at hit point
+		//reflect particle
 		float2 refl = reflect(dir, hit.normal);
+		//add some variation
 		float2 noise = float2(Random::RandFloat(-0.005f, 0.005f), Random::RandFloat(-0.005f, 0.005f));
+
 		float2 burstVel = normalize(refl + noise) * speed;
 
 		if (burstLimit > 0)
 			ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), burstVel, 0.f,
 				lifetime * 0.85f, col, true, burstLimit / 2, Collision);
 
-		// Place particle at hit point, kill it (Update() will add zero vel)
+		//current particle becomes stationary
 		pos = hit.point;
 		vel = float2::zero();
 		shouldCollide = false;
 
-		// Reset lifetime so it fades out slowly after hitting
+		//reset the time so it remains to reveal the hit
 		time = 0.f;
 		lifetime = 5.f;
 
-		// Color based on layer hit
+		//change color based on what got hit
 		if (hit.layerHit == (1 << 1)) col = Color(1.f, 1.f, 1.f); // environment
 		if (hit.layerHit == (1 << 2)) col = Color(1.f, 0.f, 0.f); // enemy
 	}
