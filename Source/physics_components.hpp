@@ -76,6 +76,7 @@ public:
     bool HitEnvironment{ false };
     bool HitEnemy{ false };
     bool HitCheckPoint{ false };
+    bool HitProjectile{ false };
 	float gravity{ 9.8f };
 	float terminalVelocity{ 12.0f };
 	float2 velocity{ 0.0f,0.0f };

@@ -206,14 +206,6 @@ void RockController::ResetRock()
 
 }
 
-
-//enum class EnemyType {
-//    Static = 0,
-//    Drop,
-//    Patrol,
-//    Flying
-//};
-
 //===================|Enemy Controller|===================
 void EnemyController::DrawInInspector()
 {
@@ -232,16 +224,16 @@ void EnemyController::DrawInInspector()
         break;
     case EnemyType::Drop:
         ImGui::DragFloat("Detect Distance", &detectDistance, 10.f);
+        ImGui::DragFloat("Time Interval", &groundEmitInterval, 1.5f);
         break;
 
     case EnemyType::Patrol:
         ImGui::DragFloat("Move Speed", &moveSpeed, 1.f);
         ImGui::DragFloat("Patrol Range", &patrolRange, 10.f);
+        ImGui::DragFloat("Time Interval", &groundEmitInterval, 1.5f);
         break;
 
     case EnemyType::Flying:
-        ImGui::DragFloat("Dive Speed", &diveSpeed, 1.f);
-        ImGui::DragFloat("Detect Radius", &detectRadius, 10.f);
         break;
     }
 }
@@ -254,15 +246,15 @@ void EnemyController::Serialize(Json::Value& outComp) const
     {
     case EnemyType::Drop:
         outComp["detectDistance"] = detectDistance;
+        outComp["groundEmitInterval"] = groundEmitInterval;
         break;
 
     case EnemyType::Patrol:
         outComp["moveSpeed"] = moveSpeed;
+        outComp["groundEmitInterval"] = groundEmitInterval;
         break;
 
     case EnemyType::Flying:
-        outComp["diveSpeed"] = diveSpeed;
-        outComp["detectRadius"] = detectRadius;
         break;
     }
 }
@@ -271,6 +263,8 @@ void EnemyController::Deserialize(const Json::Value& compObj)
 {
     if (compObj.isMember("enemyType") && compObj["enemyType"].isInt())
         type = static_cast<EnemyType>(compObj["enemyType"].asInt());
+
+    if (compObj.isMember("groundEmitInterval")) groundEmitInterval = compObj["groundEmitInterval"].asFloat();
 
     //Specific Enemy Types
     switch (type)
@@ -285,8 +279,6 @@ void EnemyController::Deserialize(const Json::Value& compObj)
         break;
 
     case EnemyType::Flying:
-        if (compObj.isMember("diveSpeed")) diveSpeed = compObj["diveSpeed"].asFloat();
-        if (compObj.isMember("detectRadius")) detectRadius = compObj["detectRadius"].asFloat();
         break;
     }
 }
@@ -295,6 +287,9 @@ void EnemyController::OnStart()
 {
     rb = _owner.GetComponent<RigidBody>();
     ns = _owner.GetComponent<NoiseSource>();
+
+    rb = _owner.GetComponent<RigidBody>();
+    playerObject = SceneManager::ActiveScene()->FindGameObjectByName("Player");
 
     if (type == EnemyType::Drop)
     {
@@ -306,10 +301,11 @@ void EnemyController::OnStart()
     }
     if (type == EnemyType::Patrol)
     {
-        if (rb)
-        {
-            rb->Affected_By_Gravity = true;
-        }
+        rb->Affected_By_Gravity = true;
+        rb->velocity = float2::zero();
+
+        if (rb->Is_Grounded)
+            rb->Affected_By_Gravity = false;
     }
 }
 
@@ -344,17 +340,31 @@ void EnemyController::UpdateDrop() {
     if (!rb) return;
 
     Physics::RaycastHit hit;
+    bool hasLanded = false;
+    f32 xDist = absf(playerObject->transform().position.x - _transform.position.x);
+    f32 yDist = _transform.position.y - playerObject->transform().position.y;
 
+    if (xDist <= 50.f && yDist > 0 && yDist <= 100.f) {
+        rb->Affected_By_Gravity = true;
+        hasDropped = true;
+    }
     float2 origin = _transform.position;
     float2 dir = float2(0, -1);
 
     uint32_t groundLayer = static_cast<uint32_t>(Layer::Environment);
     uint32_t playerLayer = static_cast<uint32_t>(Layer::Player);
 
-    if (Physics::Raycast(origin, dir, detectDistance, hit, playerLayer)) {
-        rb->Affected_By_Gravity = true;
-        hasDropped = true;
-        Debug::Log("Player being collided\n");
+    if (hasDropped && rb->Is_Grounded) hasLanded = true;
+
+    if (Physics::Raycast(origin, dir, 500.f, hit, groundLayer) && !hasLanded) {
+        if (groundEmitTimer >= groundEmitInterval) {
+            groundEmitTimer = 0.f;
+
+            float2 emitPos = hit.point + hit.normal * 15.f;
+            Debug::Log("Drop ping\n");
+
+            if (ns) ns->Emit(emitPos);
+        }
     }
 }
 
@@ -365,7 +375,9 @@ void EnemyController::UpdatePatrol() {
     Physics::RaycastHit hit;
 
     //Ground Raycast Variables
-    float2 origin = _transform.position + float2(patrolDir * 20.f, 0);
+    bool hasLanded = false;
+    float halfWidth = _transform.scale.x / 2.f;
+    float2 origin = _transform.position + float2(patrolDir * halfWidth, 0);
     float2 dir = float2(0, -1);
 
     //Side Raycast Variables
@@ -375,7 +387,7 @@ void EnemyController::UpdatePatrol() {
     uint32_t wallLayer = static_cast<uint32_t>(Layer::Environment);
 
     //Once RayCast hits a wall it will flip velocity
-    if (Physics::Raycast(sideOrigin, sideDir, _transform.scale.x / 2 + 10.f, hit, wallLayer))
+    if (Physics::Raycast(sideOrigin, sideDir, halfWidth, hit, wallLayer))
     {
         patrolDir *= -1;
         return;
@@ -383,35 +395,30 @@ void EnemyController::UpdatePatrol() {
 
     uint32_t groundLayer = static_cast<uint32_t>(Layer::Environment);
 
-    if (Physics::Raycast(origin, dir, 500.f, hit, groundLayer)) {
-        if (groundEmitTimer >= groundEmitInterval) {
+    bool wasNearEdge = false;
+    bool groundAhead = Physics::Raycast(origin, dir, 40.f, hit, groundLayer);
+
+    if (!groundAhead)
+    {
+        if (!wasNearEdge && groundEmitTimer >= groundEmitInterval)
+        {
             groundEmitTimer = 0.f;
-
-            float2 emitPos = hit.point + hit.normal * 15.f;
-            Debug::Log("Drop ping\n");
-
-            if (ns) ns->Emit(emitPos);
-        }
-    }
-
-    if (!Physics::Raycast(origin, dir, _transform.scale.y / 2 + 10.f, hit, groundLayer)) {
-        if (groundEmitTimer >= groundEmitInterval) {
-            groundEmitTimer = 0.f;
-
-            float2 emitPos{ _transform.position.x, _transform.position.y + _transform.scale.y / 2 };
-            Debug::Log("Drop ping\n");
-
             if (ns) ns->Emit(_transform.position);
         }
 
+        wasNearEdge = true;
         patrolDir *= -1;
-        return; //exit so it doesn't trigger movement before rotating
+        return;
+    }
+    else
+    {
+        wasNearEdge = false;
     }
 
-    f32 distance = _transform.position.x - startPos.x;
+    //f32 distance = _transform.position.x - startPos.x;
 
-    if (distance > patrolRange) patrolDir = -1;
-    if (distance < -patrolRange) patrolDir = 1;
+    //if (distance > patrolRange) patrolDir = -1;
+    //if (distance < -patrolRange) patrolDir = 1;
 
     rb->velocity.x = patrolDir * moveSpeed;
 }
