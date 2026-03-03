@@ -189,16 +189,37 @@ namespace //helpers
 		// selection
 		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
 		{
+			//selecting multiple individually
 			if (ImGui::GetIO().KeyCtrl)
 			{
 				auto it = std::find(Editor::selectedObjects.begin(), Editor::selectedObjects.end(), go);
-				if (it != Editor::selectedObjects.end()) Editor::selectedObjects.erase(it);
-				else Editor::selectedObjects.push_back(go);
+				if (it != Editor::selectedObjects.end()) 
+					Editor::selectedObjects.erase(it);
+				else 
+					Editor::selectedObjects.push_back(go);
 			}
+			//selecting range
 			else if (ImGui::GetIO().KeyShift && !Editor::selectedObjects.empty())
 			{
-				Editor::selectedObjects.push_back(go);
+				auto start = std::find_if(scene.gameObjectList().begin(), scene.gameObjectList().end(),
+					[&](const std::unique_ptr<GameObject>& obj)
+					{
+						return obj.get() == Editor::selectedObjects.back();
+					});
+
+				auto end = std::find_if(scene.gameObjectList().begin(), scene.gameObjectList().end(),
+					[&](const std::unique_ptr<GameObject>& obj)
+					{
+						return obj.get() == go;
+					});
+				Editor::selectedObjects.clear();
+
+				for (auto j = std::min(start, end); j <= std::max(start, end); j++)
+				{
+					Editor::selectedObjects.push_back(j->get());
+				}
 			}
+			//selecting single
 			else
 			{
 				bool alreadySelected = std::find(Editor::selectedObjects.begin(),
@@ -209,7 +230,7 @@ namespace //helpers
 		}
 
 		// collapse to single on release without drag
-		if (ImGui::IsItemDeactivated() && !ImGui::GetIO().KeyCtrl && !ImGui::GetIO().KeyShift)
+		if (ImGui::IsItemDeactivated())
 		{
 			bool alreadySelected = std::find(Editor::selectedObjects.begin(),
 				Editor::selectedObjects.end(), go) != Editor::selectedObjects.end();
@@ -299,7 +320,7 @@ namespace //helpers
 				}
 
 				for (GameObject* child : childPtrs)
-					DrawGameObjectNode(child, scene);
+					DrawGameObjectNode(child, scene, depth + 1);
 			}
 			ImGui::TreePop(); // always call if nodeOpen is true
 		}
