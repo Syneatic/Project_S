@@ -216,6 +216,7 @@ namespace //helpers
 		flags |= ImGuiTreeNodeFlags_DrawLinesToNodes;
 		flags |= isSelected ? ImGuiTreeNodeFlags_Selected : 0;
 		flags |= hasChildren ? 0 : ImGuiTreeNodeFlags_Leaf;
+		if (go->cname().empty()) return;
 
 		bool nodeOpen = ImGui::TreeNodeEx(go->cname().c_str(), flags);
 
@@ -388,10 +389,11 @@ namespace //wrappers for drawing ui elements
 		{
 			if (ImGui::MenuItem("Create GameObject"))
 			{
-				std::unique_ptr<GameObject> newobj = std::make_unique<GameObject>("GameObject" + scene.gameObjectList().size());
+				std::string name = "GameObject" + std::to_string(GameObject::nextId);
+				std::unique_ptr<GameObject> newobj = std::make_unique<GameObject>(name);
+				Debug::Log("Created gameobject : ", newobj.get()->cname());
 				scene.gameObjectList().push_back(std::move(newobj));
 			}
-
 
 			if (!Editor::selectedObjects.empty())
 			{
