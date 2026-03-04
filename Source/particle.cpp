@@ -63,7 +63,7 @@ namespace ParticleSystem
 			g_pool.pos[i].y += g_pool.vel[i].y * EngineCTX::dt;
 
 		}
-		Debug::Log("Active Particles : ", activeParticles," FPS : ", EngineCTX::frameRate);
+		//Debug::Log("Active Particles : ", activeParticles," FPS : ", EngineCTX::frameRate);
 
 	}
 

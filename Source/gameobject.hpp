@@ -133,17 +133,37 @@ public:
 
 	void AddChild(std::unique_ptr<GameObject> child)
 	{
+		UpdateWorldTransform();           // refresh this object's world chain
+		child->UpdateWorldTransform();    // refresh child's world chain (still unparented, so world == local)
+
 		child->_parent = this;
-		// convert child's world transform to local space relative to this parent
-		child->_transform.position.x = child->_worldTransform.position.x - _worldTransform.position.x;
-		child->_transform.position.y = child->_worldTransform.position.y - _worldTransform.position.y;
-		child->_transform.scale.x = _worldTransform.scale.x != 0.f ?
-			child->_worldTransform.scale.x / _worldTransform.scale.x : child->_worldTransform.scale.x;
-		child->_transform.scale.y = _worldTransform.scale.y != 0.f ?
-			child->_worldTransform.scale.y / _worldTransform.scale.y : child->_worldTransform.scale.y;
+
+		// Convert child's current world position into local space of this parent.
+		// Position: subtract parent world pos, then un-apply parent scale.
+		child->_transform.position.x = _worldTransform.scale.x != 0.f
+			? (child->_worldTransform.position.x - _worldTransform.position.x) / _worldTransform.scale.x
+			: (child->_worldTransform.position.x - _worldTransform.position.x);
+
+		child->_transform.position.y = _worldTransform.scale.y != 0.f
+			? (child->_worldTransform.position.y - _worldTransform.position.y) / _worldTransform.scale.y
+			: (child->_worldTransform.position.y - _worldTransform.position.y);
+
+		// Scale: divide child world scale by parent world scale.
+		child->_transform.scale.x = _worldTransform.scale.x != 0.f
+			? child->_worldTransform.scale.x / _worldTransform.scale.x
+			: child->_worldTransform.scale.x;
+
+		child->_transform.scale.y = _worldTransform.scale.y != 0.f
+			? child->_worldTransform.scale.y / _worldTransform.scale.y
+			: child->_worldTransform.scale.y;
+
+		// Rotation: subtract parent world rotation.
 		child->_transform.rotation = child->_worldTransform.rotation - _worldTransform.rotation;
-		//place child into list
+
 		_children.emplace_back(std::move(child));
+
+		// Propagate so the child's _worldTransform is consistent immediately.
+		_children.back()->UpdateWorldTransform(&_worldTransform);
 	}
 
 	//unparenting child
@@ -159,9 +179,12 @@ public:
 		std::unique_ptr<GameObject> owned = std::move(*it);
 		_children.erase(it);
 
+		owned->UpdateWorldTransform(&_worldTransform);
+
 		// restore world transform as local so it stays in place after unparenting
 		owned->_transform = owned->_worldTransform;
 		owned->_parent = nullptr;
+		owned->UpdateWorldTransform();
 		return owned;
 	}
 
@@ -174,16 +197,6 @@ public:
 			current = current->_parent;
 		}
 		return false;
-	}
-
-	void SetParent(GameObject* parent)
-	{
-		_parent = parent;
-	}
-
-	void Unparent()
-	{
-		_parent = nullptr;
 	}
 
 	// ===== HIERARCHY =====

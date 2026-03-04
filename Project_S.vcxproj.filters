@@ -192,6 +192,9 @@
     <ClCompile Include="Source\level_transition.cpp">
       <Filter>Source Files\scene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\editor_gizmos.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -344,7 +347,7 @@
     <ClInclude Include="Source\scene_editor.hpp">
       <Filter>Header Files\editor</Filter>
     </ClInclude>
-    <ClInclude Include="Source\editor_imgui.hpp">
+    <ClInclude Include="Source\editor.hpp">
       <Filter>Header Files\editor</Filter>
     </ClInclude>
     <ClInclude Include="Source\imgui_helper.hpp">

@@ -75,9 +75,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AEInputShowCursor(1);
 
 	// ===== INITIALIZE SYSTEMS =====
-
-	bool m_ImGUIInitialized = false;
-	InitializeImGUI(m_ImGUIInitialized);
+	InitializeImGUI(EngineCTX::imguiInitialize);
 
 	//grab all scene
 	SceneManager::Initialize();
@@ -128,7 +126,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			EngineCTX::applicationRunning = false;
 	}
 
-	ShutdownImGUI(m_ImGUIInitialized);
+	ShutdownImGUI(EngineCTX::imguiInitialize);
 	Graphics::Exit();
 	// free the system
 	AESysExit();

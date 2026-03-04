@@ -8,7 +8,9 @@ namespace EngineCTX
 	inline f64 dt{};
 	inline f64 frameRate{};
 	inline u32 frameCount{};
-	inline bool applicationRunning{ true };
 
 	inline float2 windowSize{};
+
+	inline bool applicationRunning{ true };
+	inline bool imguiInitialize{ false };
 }
