@@ -39,6 +39,8 @@ public:
     const std::string name() const override { return "PlayerController"; }
 
     PlayerController(GameObject& go) : Controller(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
 class RockController : public Controller
@@ -65,6 +67,8 @@ public:
 
     const std::string name() const override { return "RockController"; }
     RockController(GameObject& go) : Controller(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
 enum class EnemyType
@@ -113,4 +117,6 @@ public:
 
     const std::string name() const override { return "EnemyController"; }
     EnemyController(GameObject& go) : Controller(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
 };

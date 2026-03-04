@@ -45,6 +45,8 @@ public:
     const std::string name() const override { return "SpriteRenderer"; }
 
     SpriteRenderer(GameObject& go) : Renderer(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
 class MeshRenderer : public Renderer
@@ -58,6 +60,8 @@ public:
     const std::string name() const override { return "MeshRenderer"; }
 
     MeshRenderer(GameObject& go) : Renderer(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
 class TextRenderer : public Renderer
@@ -73,4 +77,6 @@ public:
     const std::string name() const override { return "TextRenderer"; }
 
     TextRenderer(GameObject& go) : Renderer(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
 };

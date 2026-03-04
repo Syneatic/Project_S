@@ -217,6 +217,42 @@ void ParticleEmitter::DrawInInspector()
 	if (ImGui::ColorEdit4("##colorB", cb)) colorB = Color(cb);
 }
 
+void ParticleEmitter::CopyFrom(Component* src)
+{
+	auto s = dynamic_cast<ParticleEmitter*>(src);
+	if (!s) return;
+
+	spawnShape = s->spawnShape;
+
+	//rect half-extent
+	rect = s->rect;
+
+	//circ
+	radius = s->radius;
+
+	//line
+	spawnLineLength = s->spawnLineLength;
+
+	spawnRate = s->spawnRate; // particle/sec
+	isBurst = s->isBurst; //one time emit
+
+	time = s->time;
+	speed = s->speed;
+	lifetime = s->lifetime;
+	size = s->size;
+	spread = s->spread;
+	rotation = s->rotation;
+
+	colorA = s->colorA;
+	colorB = s->colorB;
+}
+
+std::unique_ptr<Component> ParticleEmitter::Clone(GameObject& go)
+{
+	auto n = std::make_unique<ParticleEmitter>(go);
+	n.get()->CopyFrom(this);
+	return n;
+}
 
 float2 ParticleEmitter::SampleSpawnPosition() const
 {

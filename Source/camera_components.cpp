@@ -15,3 +15,11 @@ void MainCamera::OnDestroy() {
 void MainCamera::DrawInInspector() {};
 void MainCamera::Serialize(Json::Value& /*outComp*/) const {};
 void MainCamera::Deserialize(const Json::Value& /*compObj*/) {};
+void MainCamera::CopyFrom(Component* /*src*/) {};
+
+std::unique_ptr<Component> MainCamera::Clone(GameObject& go)
+{
+	auto n = std::make_unique<MainCamera>(go);
+	n.get()->CopyFrom(this);
+	return n;
+}

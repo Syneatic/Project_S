@@ -36,6 +36,8 @@ public:
 	const std::string name() const override { return "Display"; }
 
 	Display(GameObject& go) : Component(go) {};
+	void CopyFrom(Component* src) override;
+	std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
 static char const* _buttonNames[]
@@ -60,6 +62,8 @@ public:
 	const std::string name() const override { return "Button"; }
 
 	Button(GameObject& go) : Component(go) {};
+	void CopyFrom(Component* src) override;
+	std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
 namespace UISystem

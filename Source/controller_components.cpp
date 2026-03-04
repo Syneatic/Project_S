@@ -124,6 +124,26 @@ void PlayerController::Respawn()
     rb->HitEnemy = false;
 }
 
+void PlayerController::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<PlayerController*>(src);
+    if (!s) return;
+
+    maxSpeed = s->maxSpeed;
+    jumpHeight = s->jumpHeight;
+    time = s->time;
+
+    spawnPoint = s->spawnPoint;
+}
+
+std::unique_ptr<Component> PlayerController::Clone(GameObject& go)
+{
+    auto n = std::make_unique<PlayerController>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
+
 
 
 //===================|Rock Controller|===================
@@ -177,6 +197,7 @@ void RockController::OnDestroy()
 }
 
 
+
 //=========|Rock Mechanic Helper Function|==================
 void RockController::Throw(const float2& playerPos)
 {
@@ -211,6 +232,24 @@ void RockController::ResetRock()
 {
 
 }
+
+void RockController::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<RockController*>(src);
+    if (!s) return;
+
+    throwSpeed = s->throwSpeed;
+    throwAngle = s->throwAngle;
+}
+
+std::unique_ptr<Component> RockController::Clone(GameObject& go)
+{
+    auto n = std::make_unique<RockController>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
+
 
 //===================|Enemy Controller|===================
 void EnemyController::DrawInInspector()
@@ -427,4 +466,33 @@ void EnemyController::UpdatePatrol() {
     //if (distance < -patrolRange) patrolDir = 1;
 
     rb->velocity.x = patrolDir * moveSpeed;
+}
+
+void EnemyController::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<EnemyController*>(src);
+    if (!s) return;
+
+    //Global Variable
+    groundEmitTimer = s->groundEmitTimer;
+    groundEmitInterval = s->groundEmitInterval;
+
+    //Drop Variable
+    detectDistance = s->detectDistance;
+    hasDropped = s->hasDropped;
+
+    //Patrol Variable
+    moveSpeed = s->moveSpeed;
+    patrolRange = s->patrolRange;
+    startPos = s->startPos;
+    patrolDir = s->patrolDir; // 1 = right, -1 = left
+
+    type = s->type;
+}
+
+std::unique_ptr<Component> EnemyController::Clone(GameObject& go)
+{
+    auto n = std::make_unique<EnemyController>(go);
+    n.get()->CopyFrom(this);
+    return n;
 }

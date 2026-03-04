@@ -355,6 +355,30 @@ void SpriteRenderer::OnDestroy()
     Graphics::RenderData data{};
 }
 
+void SpriteRenderer::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<SpriteRenderer*>(src);
+    if (!s) return;
+
+    fileName = s->fileName;
+    blendMode = s->blendMode;
+    renderMode = s->renderMode;
+    meshDrawMode = s->meshDrawMode;
+    renderLayer = s->renderLayer;
+    alignment = s->alignment;
+    color = s->color;
+    sortOrder = s->sortOrder;
+    isScreenSpace = s->isScreenSpace;
+}
+
+std::unique_ptr<Component> SpriteRenderer::Clone(GameObject& go)
+{
+    auto n = std::make_unique<SpriteRenderer>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
+
 
 void MeshRenderer::Serialize(Json::Value& outComp) const
 {
@@ -366,6 +390,29 @@ void MeshRenderer::Deserialize(const Json::Value& compObj)
 {
     Renderer::Deserialize(compObj);
     //load mesh here
+}
+
+void MeshRenderer::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<MeshRenderer*>(src);
+    if (!s) return;
+
+    fileName = s->fileName;
+    blendMode = s->blendMode;
+    renderMode = s->renderMode;
+    meshDrawMode = s->meshDrawMode;
+    renderLayer = s->renderLayer;
+    alignment = s->alignment;
+    color = s->color;
+    sortOrder = s->sortOrder;
+    isScreenSpace = s->isScreenSpace;
+}
+
+std::unique_ptr<Component> MeshRenderer::Clone(GameObject& go)
+{
+    auto n = std::make_unique<MeshRenderer>(go);
+    n.get()->CopyFrom(this);
+    return n;
 }
 
 
@@ -455,4 +502,29 @@ void TextRenderer::Deserialize(const Json::Value& compObj)
 
     //read texture from file here
 }
+
+void TextRenderer::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<TextRenderer*>(src);
+    if (!s) return;
+
+    fileName = s->fileName;
+    blendMode = s->blendMode;
+    renderMode = s->renderMode;
+    meshDrawMode = s->meshDrawMode;
+    renderLayer = s->renderLayer;
+    alignment = s->alignment;
+    color = s->color;
+    sortOrder = s->sortOrder;
+    isScreenSpace = s->isScreenSpace;
+    text = s->text;
+}
+
+std::unique_ptr<Component> TextRenderer::Clone(GameObject& go)
+{
+    auto n = std::make_unique<TextRenderer>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
 // ===== TEXT_RENDERER DEF =====

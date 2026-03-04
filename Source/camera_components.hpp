@@ -15,4 +15,6 @@ struct MainCamera : Component
 	const std::string name() const override { return "Camera"; }
 
 	MainCamera(GameObject& go) : Component(go) {};
+	void CopyFrom(Component* src) override;
+	std::unique_ptr<Component> Clone(GameObject& go) override;
 };

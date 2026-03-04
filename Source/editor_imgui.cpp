@@ -405,6 +405,17 @@ namespace //wrappers for drawing ui elements
 					}
 					Editor::selectedObjects.clear();
 				}
+
+				if (ImGui::MenuItem("Duplicate Selected"))
+				{
+					for (auto go : Editor::selectedObjects)
+					{
+						auto clone = GameObject::Clone(*go);
+						//attach to scene
+						scene.gameObjectList().push_back(std::move(clone));
+					}
+					Editor::selectedObjects.clear();
+				}
 			}
 	
 			ImGui::EndPopup();

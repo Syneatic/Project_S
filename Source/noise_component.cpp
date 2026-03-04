@@ -205,3 +205,28 @@ void NoiseSource::Deserialize(const Json::Value& compObj)
 		repeatInterval = compObj["repeatInterval"].asFloat();
 
 }
+
+void NoiseSource::CopyFrom(Component* src)
+{
+	auto s = dynamic_cast<NoiseSource*>(src);
+	if (!s) return;
+
+	numParticles = s->numParticles;
+	speed = s->speed;
+	lifetime = s->lifetime;
+	color = s->color;
+
+	//properties
+	isNoiseActive = s->isNoiseActive;
+	noiseLevel = s->noiseLevel;
+	repeat = s->repeat;
+	repeatInterval = s->repeatInterval;
+	repeatTimer = s->repeatTimer;
+}
+
+std::unique_ptr<Component> NoiseSource::Clone(GameObject& go)
+{
+	auto n = std::make_unique<NoiseSource>(go);
+	n.get()->CopyFrom(this);
+	return n;
+}

@@ -164,6 +164,23 @@ void CircleCollider::Deserialize(const Json::Value& compObj)
     if (compObj.isMember("layerMask")) layerMask = compObj["layerMask"].asUInt();
     if (compObj.isMember("collisionMask")) collisionMask = compObj["collisionMask"].asUInt();
 }
+
+void CircleCollider::CopyFrom(Component* src) 
+{
+    auto s = dynamic_cast<CircleCollider*>(src);
+    if (!s) return;
+    layerMask = s->layerMask;
+    collisionMask = s->collisionMask;
+    radius = s->radius;
+}
+
+std::unique_ptr<Component> CircleCollider::Clone(GameObject& go)
+{
+    auto n = std::make_unique<CircleCollider>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
 // ===== CIRCLE COLLIDER DEFINITIONS =====
 
 
@@ -191,6 +208,23 @@ void BoxCollider::Deserialize(const Json::Value& compObj)
     if (compObj.isMember("layerMask")) layerMask = compObj["layerMask"].asUInt();
     if (compObj.isMember("collisionMask")) collisionMask = compObj["collisionMask"].asUInt();
 }
+
+void BoxCollider::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<BoxCollider*>(src);
+    if (!s) return;
+    layerMask = s->layerMask;
+    collisionMask = s->collisionMask;
+    size = s->size;
+}
+
+std::unique_ptr<Component> BoxCollider::Clone(GameObject& go)
+{
+    auto n = std::make_unique<BoxCollider>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
 // ===== BOX COLLIDER DEFINITIONS =====
 
 
@@ -241,4 +275,28 @@ void RigidBody::Clear_Forces()
 		velocity = float2::zero(); 
 	} 
 } 
+
+void RigidBody::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<RigidBody*>(src);
+    if (!s) return;
+    Affected_By_Gravity = s->Affected_By_Gravity;
+    Is_Static = s->Is_Static;
+    Is_Grounded = s->Is_Grounded;
+    HitEnvironment = s->HitEnvironment;
+    HitEnemy = s->HitEnemy;
+    HitCheckPoint = s->HitCheckPoint;
+    HitProjectile = s->HitProjectile;
+    gravity = s->gravity;
+    terminalVelocity = s->terminalVelocity;
+    velocity = s->velocity;
+}
+
+std::unique_ptr<Component> RigidBody::Clone(GameObject& go)
+{
+    auto n = std::make_unique<RigidBody>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
 // ===== RIGIDBODY DEFINITIONS =====

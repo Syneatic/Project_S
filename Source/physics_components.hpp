@@ -51,6 +51,8 @@ public:
     const std::string name() const override { return "CircleCollider"; }
 
     CircleCollider(GameObject& go) : Collider(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
 class BoxCollider : public Collider
@@ -65,6 +67,8 @@ public:
     const std::string name() const override { return "BoxCollider"; }
 
     BoxCollider(GameObject& go) : Collider(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
 class RigidBody : public Component
@@ -92,4 +96,6 @@ public:
 	const std::string name() const override { return "RigidBody"; }
 
     RigidBody(GameObject& go) : Component(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
 };
