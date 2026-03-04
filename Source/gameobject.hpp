@@ -133,11 +133,13 @@ public:
 
 	void AddChild(std::unique_ptr<GameObject> child)
 	{
-		UpdateWorldTransform();
-		child->UpdateWorldTransform();
+		UpdateWorldTransform();           // refresh this object's world chain
+		child->UpdateWorldTransform();    // refresh child's world chain (still unparented, so world == local)
 
 		child->_parent = this;
 
+		// Convert child's current world position into local space of this parent.
+		// Position: subtract parent world pos, then un-apply parent scale.
 		child->_transform.position.x = _worldTransform.scale.x != 0.f
 			? (child->_worldTransform.position.x - _worldTransform.position.x) / _worldTransform.scale.x
 			: (child->_worldTransform.position.x - _worldTransform.position.x);
@@ -158,9 +160,9 @@ public:
 		// Rotation: subtract parent world rotation.
 		child->_transform.rotation = child->_worldTransform.rotation - _worldTransform.rotation;
 
-		//place child into list
 		_children.emplace_back(std::move(child));
 
+		// Propagate so the child's _worldTransform is consistent immediately.
 		_children.back()->UpdateWorldTransform(&_worldTransform);
 	}
 
@@ -182,7 +184,6 @@ public:
 		// restore world transform as local so it stays in place after unparenting
 		owned->_transform = owned->_worldTransform;
 		owned->_parent = nullptr;
-
 		owned->UpdateWorldTransform();
 		return owned;
 	}
