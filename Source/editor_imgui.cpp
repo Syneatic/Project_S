@@ -230,6 +230,7 @@ namespace //helpers
 
 				for (auto so : Editor::selectedObjects)
 				{
+					if (go == so) continue;
 					/*if child -> extract from parent
 					  if root -> just move around */
 					std::unique_ptr<GameObject> ptr = DetachGO(scene, so);
