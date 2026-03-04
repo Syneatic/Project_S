@@ -444,19 +444,35 @@ namespace //wrappers for drawing ui elements
 		//draw transform
 		if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
 		{
+			if (ImGui::BeginPopupContextItem())
+			{
+				if (ImGui::MenuItem("Copy Transform"))
+				{
+					Editor::copiedTransform = transform;
+				}
+
+				if (ImGui::MenuItem("Paste Transform"))
+				{
+					transform = Editor::copiedTransform;
+				}
+				
+				ImGui::EndPopup();
+			}
+
 			Float2DragReset("Position", &transform.position.x, {0.f,0.f}, 0.05f);
 			Float2DragReset("Scale", &transform.scale.x, { 1.f,1.f }, 0.05f);
 			FloatDragReset("Rotation", &transform.rotation, 0.f, 0.1f);
+
 			ImGui::Separator();
 		}
 
-		if (ImGui::CollapsingHeader("World Transform", ImGuiTreeNodeFlags_DefaultOpen))
+		/*if (ImGui::CollapsingHeader("World Transform", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			Float2DragReset("Position", &wtransform.position.x, { 0.f,0.f }, 0.05f);
 			Float2DragReset("Scale", &wtransform.scale.x, { 1.f,1.f }, 0.05f);
 			FloatDragReset("Rotation", &wtransform.rotation, 0.f, 0.1f);
 			ImGui::Separator();
-		}
+		}*/
 
 		//drawing of component elements
 		const auto& comps = selectedObj.componentMap();
@@ -498,12 +514,31 @@ namespace //wrappers for drawing ui elements
 			// right click remove
 			if (ImGui::BeginPopupContextItem())
 			{
+				if (ImGui::MenuItem("Copy Component"))
+				{
+					Editor::copiedComponent = compPtr.get();
+					//Editor::copiedComponentType = type;
+					ImGui::EndPopup();
+					break;
+				}
+
+				if (Editor::copiedComponent)
+				{
+					if (ImGui::MenuItem("Paste Component"))
+					{
+						compPtr->CopyFrom(Editor::copiedComponent);
+						ImGui::EndPopup();
+						break;
+					}
+				}
+
 				if (ImGui::MenuItem("Remove Component"))
 				{
 					selectedObj.RemoveComponent(type);
 					ImGui::EndPopup();
 					break;
 				}
+
 				ImGui::EndPopup();
 			}
 
