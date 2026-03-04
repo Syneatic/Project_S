@@ -16,7 +16,7 @@
             1.0,
             1.0
           ],
-          "fileName" : "Assets/DigiPen_BLACK.png",
+          "fileName" : "DigiPen_BLACK.png",
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 2,
@@ -95,6 +95,7 @@
             0.0,
             360.0
           ],
+          "time" : 0.0,
           "type" : "ParticleEmitter"
         }
       ],
@@ -170,6 +171,7 @@
             0.0,
             360.0
           ],
+          "time" : 0.0,
           "type" : "ParticleEmitter"
         }
       ],

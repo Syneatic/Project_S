@@ -45,7 +45,6 @@ void Scene::OnEnter()
 	InitializeGameObjects();
 
 	UISystem::init();
-	//ParticleSystem::Initialize();
 	LevelTransition::Init();
 	CameraSystem::OnStart(); //reset camera
 }
