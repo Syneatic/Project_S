@@ -101,14 +101,14 @@
       "name" : "Effect1",
       "position" : 
       [
-        -102.0,
-        185.0
+        -104.99992370605469,
+        187.99996948242188
       ],
       "rotation" : 0.0,
       "scale" : 
       [
-        1.0,
-        1.0
+        0.0,
+        0.0
       ]
     },
     {
@@ -120,8 +120,8 @@
           "colorA" : 
           [
             1.0,
-            1.0,
-            1.0,
+            0.0,
+            0.0,
             1.0
           ],
           "colorB" : 
@@ -176,8 +176,25 @@
       "name" : "Effect2",
       "position" : 
       [
-        178.0,
-        184.0
+        175.0,
+        191.99996948242188
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : [],
+      "name" : "EmitterHolder",
+      "position" : 
+      [
+        0.0,
+        0.0
       ],
       "rotation" : 0.0,
       "scale" : 

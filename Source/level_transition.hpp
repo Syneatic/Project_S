@@ -5,8 +5,8 @@ namespace LevelTransition
 	enum class TransitionState : char
 	{
 		TRANSITION_NULL,
-		TRANSITION_ON,
-		TRANSITION_OFF,
+		TRANSITION_FADEIN,
+		TRANSITION_FADEOUT,
 		TRANSITION_COUNT
 	};
 
