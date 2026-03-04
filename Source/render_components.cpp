@@ -211,10 +211,10 @@ void SpriteRenderer::DrawInInspector()
 
     ImGui::SameLine();
 
-    if (ImGui::Button("Select"))
+    if (ImGui::Button("Select##Texture"))
     {
         std::wstring path = OpenFilePng(); // file dialog
-        fileName = "Assets/" + std::filesystem::path(path).filename().string();
+        fileName = std::filesystem::path(path).filename().string();
     }
 
     ImGui::Separator();

@@ -179,11 +179,15 @@ namespace Graphics //init mesh functions and texture handlers
     // Loads textures used
     Texture* LoadTexture(std::string fileName)
     {        
-        if (auto search = _textureBuffer.find(fileName); search != _textureBuffer.end()){
+        if (fileName.empty()) {
+            return nullptr;
+        }
+        std::string filePath = "Assets/" + fileName;
+        if (auto search = _textureBuffer.find(filePath); search != _textureBuffer.end()){
             return search->second;
         }
-        _textureBuffer.insert({ fileName, AEGfxTextureLoad(fileName.c_str()) });
-        return _textureBuffer.find(fileName)->second;
+        _textureBuffer.insert({ filePath, AEGfxTextureLoad(filePath.c_str()) });
+        return _textureBuffer.find(filePath)->second;
     }
 
     void UnloadTextures()
