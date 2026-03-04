@@ -86,15 +86,22 @@ void PlayerController::OnUpdate()
         rb->Is_Grounded = false;
     }
 
+    if (rb->HitProjectile) {
+        rockObject->active(false);
+        rb->HitProjectile = false;
+        Debug::Log("Rock retrieve");
+    }
+
     //===================|Throw Mechanic|=====================
     if (AEInputCheckTriggered(AEVK_R))
     {
-        if (rockObject)
+        if (rockObject && rockObject->active() == false)
         {
             auto* rc = rockObject->GetComponent<RockController>();
 
             if (rc)
                 rc->Throw(_transform.position);
+            rockObject->active(true);
         }
     }
 
@@ -102,7 +109,7 @@ void PlayerController::OnUpdate()
     if (rb->HitEnemy) Respawn();
     if (rb->HitCheckPoint) {
         spawnPoint = _transform.position;
-        rb->HitCheckPoint = false;
+        rb->HitCheckPoint = true;
     }
 }
 
@@ -187,11 +194,10 @@ void RockController::Throw(const float2& playerPos)
 
     dir = normalize(dir);
 
-    _transform.position = playerPos + dir * 10.f;
+    _transform.position = playerPos + dir * 20.f;
     rb->velocity = dir * throwSpeed;
     rb->Affected_By_Gravity = true;
 
-    rb->HitEnvironment = false;
     rb->Is_Grounded = false;
 }
 

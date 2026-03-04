@@ -817,7 +817,7 @@
           "isNoiseActive" : true,
           "lifetime" : 1.0,
           "noiseLevel" : 10.0,
-          "numParticles" : 256,
+          "numParticles" : 32,
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
@@ -832,10 +832,10 @@
           "blendmode" : 1,
           "color" : 
           [
-            0.47549021244049072,
-            0.47549021244049072,
-            0.47549021244049072,
-            1.0
+            0.47450980544090271,
+            0.47450980544090271,
+            0.47450980544090271,
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -845,7 +845,7 @@
         },
         {
           "collisionMask" : 4294967266,
-          "layerMask" : 0,
+          "layerMask" : 8,
           "size" : 
           [
             1.0,
@@ -902,7 +902,7 @@
       "components" : 
       [
         {
-          "collisionMask" : 4294967291,
+          "collisionMask" : 4294967283,
           "layerMask" : 4,
           "size" : 
           [
@@ -943,8 +943,8 @@
             1.0
           ],
           "isNoiseActive" : false,
-          "lifetime" : 0.10000000149011612,
-          "noiseLevel" : 1.0,
+          "lifetime" : 1.5,
+          "noiseLevel" : 15.0,
           "numParticles" : 32,
           "repeat" : false,
           "repeatInterval" : 1.0,
@@ -965,6 +965,62 @@
           "renderlayer" : 250,
           "rendermode" : 1,
           "type" : "SpriteRenderer"
+        },
+        {
+          "colorA" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "colorB" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "isBurst" : false,
+          "lifetime" : 
+          [
+            1.0,
+            200.0
+          ],
+          "radius" : 
+          [
+            0.0,
+            50.0
+          ],
+          "rect" : 
+          [
+            50.0,
+            50.0
+          ],
+          "rotation" : 
+          [
+            0.0,
+            0.0
+          ],
+          "size" : 
+          [
+            3.0,
+            8.0
+          ],
+          "spawnLineLength" : 100.0,
+          "spawnRate" : 10.0,
+          "spawnShape" : 0,
+          "speed" : 
+          [
+            150.0,
+            250.0
+          ],
+          "spread" : 
+          [
+            -15.0,
+            15.0
+          ],
+          "type" : "ParticleEmitter"
         }
       ],
       "name" : "Enemy",
