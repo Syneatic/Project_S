@@ -18,7 +18,29 @@
 
 namespace
 {
+	void UpdateGO(GameObject& go)
+	{
+		for (auto& [type, comp] : go.componentMap())
+		{
+			if (auto* c = dynamic_cast<Renderer*>(comp.get()))
+			{
+				c->OnUpdate();
+			}
 
+			if (auto* c = dynamic_cast<ParticleEmitter*>(comp.get()))
+			{
+				c->OnUpdate();
+			}
+		}
+
+		if (!go.children().empty())
+		{
+			for (auto& child : go.children())
+			 {
+				 UpdateGO(*child);
+			}
+		}
+	}
 }
 
 void EditorScene::RefreshScene()
@@ -55,18 +77,7 @@ void EditorScene::OnUpdate()
 		auto* go = pgo.get();
 		go->UpdateWorldTransform();
 
-		for (auto& [type, comp] : go->componentMap())
-		{
-			if (auto* c = dynamic_cast<Renderer*>(comp.get()))
-			{
-				c->OnUpdate();
-			}
-
-			if (auto* c = dynamic_cast<ParticleEmitter*>(comp.get()))
-			{
-				c->OnUpdate();
-			}
-		}
+		UpdateGO(*go);
 	}
 	ParticleSystem::Update();
 
