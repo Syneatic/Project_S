@@ -18,15 +18,6 @@
           "type" : "RigidBody"
         },
         {
-          "type" : "AudioListener"
-        },
-        {
-          "jumpHeight" : 150.0,
-          "max_speed" : 250.0,
-          "time" : 1.0,
-          "type" : "PlayerController"
-        },
-        {
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -41,6 +32,15 @@
           "renderlayer" : 250,
           "rendermode" : 1,
           "type" : "SpriteRenderer"
+        },
+        {
+          "jumpHeight" : 150.0,
+          "max_speed" : 250.0,
+          "time" : 1.0,
+          "type" : "PlayerController"
+        },
+        {
+          "type" : "AudioListener"
         },
         {
           "collisionMask" : 4294967290,
@@ -799,14 +799,6 @@
           "volume" : 1.0
         },
         {
-          "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : false,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
-        },
-        {
           "color" : 
           [
             0.7401961088180542,
@@ -823,9 +815,12 @@
           "type" : "NoiseSource"
         },
         {
-          "throwAngle" : 0.0,
-          "throwSpeed" : 300.0,
-          "type" : "RockController"
+          "Affected By Gravity" : true,
+          "Gravity" : 800.0,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -842,6 +837,11 @@
           "renderlayer" : 250,
           "rendermode" : 1,
           "type" : "SpriteRenderer"
+        },
+        {
+          "throwAngle" : 0.0,
+          "throwSpeed" : 300.0,
+          "type" : "RockController"
         },
         {
           "collisionMask" : 4294967266,
@@ -902,6 +902,12 @@
       "components" : 
       [
         {
+          "enemyType" : 2,
+          "groundEmitInterval" : 1.5,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967283,
           "layerMask" : 4,
           "size" : 
@@ -912,12 +918,6 @@
           "type" : "BoxCollider"
         },
         {
-          "enemyType" : 2,
-          "groundEmitInterval" : 1.5,
-          "moveSpeed" : 100.0,
-          "type" : "EnemyController"
-        },
-        {
           "fileName" : "ore.mp3",
           "loop" : false,
           "pitch" : 1.0,
@@ -925,14 +925,6 @@
           "spatialize" : false,
           "type" : "AudioEmitter",
           "volume" : 1.0
-        },
-        {
-          "Affected By Gravity" : false,
-          "Gravity" : 15.0,
-          "Grounded" : false,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
         },
         {
           "color" : 
@@ -949,6 +941,14 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Gravity" : 15.0,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -1020,6 +1020,7 @@
             -15.0,
             15.0
           ],
+          "time" : 0.0,
           "type" : "ParticleEmitter"
         }
       ],
@@ -1042,6 +1043,12 @@
       "components" : 
       [
         {
+          "detectDistance" : 100.0,
+          "enemyType" : 1,
+          "groundEmitInterval" : 4.5,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967267,
           "layerMask" : 4,
           "size" : 
@@ -1052,12 +1059,6 @@
           "type" : "BoxCollider"
         },
         {
-          "detectDistance" : 100.0,
-          "enemyType" : 1,
-          "groundEmitInterval" : 4.5,
-          "type" : "EnemyController"
-        },
-        {
           "fileName" : "ore.mp3",
           "loop" : false,
           "pitch" : 1.0,
@@ -1065,14 +1066,6 @@
           "spatialize" : false,
           "type" : "AudioEmitter",
           "volume" : 1.0
-        },
-        {
-          "Affected By Gravity" : false,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
         },
         {
           "color" : 
@@ -1089,6 +1082,14 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Gravity" : 9.8000001907348633,
+          "Grounded" : false,
+          "Is Static" : false,
+          "Velocity" : 0.0,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -1118,6 +1119,229 @@
       [
         32.549999237060547,
         24.450000762939453
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "colorA" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "colorB" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "isBurst" : false,
+          "lifetime" : 
+          [
+            5.0,
+            5.0
+          ],
+          "radius" : 
+          [
+            0.0,
+            50.0
+          ],
+          "rect" : 
+          [
+            50.0,
+            50.0
+          ],
+          "rotation" : 
+          [
+            0.0,
+            360.0
+          ],
+          "size" : 
+          [
+            100.0,
+            150.0
+          ],
+          "spawnLineLength" : 900.0,
+          "spawnRate" : 1000.0,
+          "spawnShape" : 3,
+          "speed" : 
+          [
+            500.0,
+            500.0
+          ],
+          "spread" : 
+          [
+            0.0,
+            0.0
+          ],
+          "time" : 0.0,
+          "type" : "ParticleEmitter"
+        }
+      ],
+      "name" : "FadeIn",
+      "position" : 
+      [
+        -800.0,
+        0.0
+      ],
+      "rotation" : -90.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "colorA" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "colorB" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "isBurst" : false,
+          "lifetime" : 
+          [
+            5.0,
+            5.0
+          ],
+          "radius" : 
+          [
+            0.0,
+            50.0
+          ],
+          "rect" : 
+          [
+            50.0,
+            50.0
+          ],
+          "rotation" : 
+          [
+            0.0,
+            360.0
+          ],
+          "size" : 
+          [
+            100.0,
+            150.0
+          ],
+          "spawnLineLength" : 900.0,
+          "spawnRate" : 1000.0,
+          "spawnShape" : 3,
+          "speed" : 
+          [
+            500.0,
+            500.0
+          ],
+          "spread" : 
+          [
+            0.0,
+            0.0
+          ],
+          "time" : 5.0,
+          "type" : "ParticleEmitter"
+        }
+      ],
+      "name" : "FadeOut",
+      "position" : 
+      [
+        800.0,
+        0.0
+      ],
+      "rotation" : 90.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "buttonFunctionId" : 11,
+          "type" : "Button"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "GameObject43",
+      "position" : 
+      [
+        -673.00006103515625,
+        368.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        200.0,
+        75.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "renderlayer" : 250,
+          "text" : "Quit",
+          "type" : "TextRenderer"
+        }
+      ],
+      "name" : "GameObject81",
+      "position" : 
+      [
+        -671.0,
+        379.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        1.0
       ]
     }
   ],

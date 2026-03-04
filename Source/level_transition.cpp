@@ -14,7 +14,7 @@ namespace LevelTransition
 	// Float for transition timer.
 	f32 timerFin{}, timerFout{};
 	// Container for pointers to game objects with particle emitters used for transiton effect.
-	GameObject* emitterHolder;
+	GameObject *fadeIn{ nullptr }, *fadeOut{ nullptr };
 
 	// Function to subscribe to LevelTransitionEvent.
 	void SubscribeTransition(TransitionState state, std::function<void(const LevelTransitionEvent&)> func)
@@ -22,53 +22,74 @@ namespace LevelTransition
 		handlers.push_back(EventHandler::SubscribeFilter(&LevelTransitionEvent::tState, state, func));
 	}
 
+	// Helper function to determine the scene to load for level transition.
 	std::string SceneToSwitch()
 	{
 		return SceneManager::ActiveScene()->cname() == "MainMenu" ? "TestScene" : "MainMenu";
 	}
 
+	// Helper function to get pointer to particle emitter for level transition.
+	void FindEmitters()
+	{
+		fadeIn = SceneManager::ActiveScene()->FindGameObjectByName("FadeIn");
+		fadeOut = SceneManager::ActiveScene()->FindGameObjectByName("FadeOut");
+	}
+
 	void Init()
 	{
+		// The first frame of every scene should find emitter game objects.
+		FindEmitters();
+
 		// Subscribe a function that decrement the transition timer & change state if timer runs out.
 		SubscribeTransition(TransitionState::TRANSITION_FADEIN, [](const LevelTransitionEvent&) 
 			{
 				timerFin -= EngineCTX::dt;
 				if (timerFin <= 0.f)
 				{
-					// const std::string& sceneToSwitch{ SceneToSwitch() };
-					//emitterHolder->active(false);
+					const std::string& sceneToSwitch{ SceneToSwitch() };
+					timerFout = 0.f;
 					tState = TransitionState::TRANSITION_FADEOUT;
-					// SceneManager::RequestSceneSwitch(sceneToSwitch);
+					SceneManager::RequestSceneSwitch(sceneToSwitch);
 				}
 			});
 
 		// Subscribe a function that dissable particle effect & calls for the scene to change.
 		SubscribeTransition(TransitionState::TRANSITION_FADEOUT, [](const LevelTransitionEvent&) 
 			{
-				// timerFout -= EngineCTX::dt;
-				const std::string& sceneToSwitch{ SceneToSwitch() };
-				//emitterHolder->active(false);
-				tState = TransitionState::TRANSITION_NULL;
-				SceneManager::RequestSceneSwitch(sceneToSwitch); // Remove after particle warm up is implemented.
+				// Code runs at first frame of new scene.
+				if (timerFout == 0.f)
+				{
+					if (fadeIn)
+						fadeIn->active(false);
+					if (fadeOut)
+						fadeOut->active(false);
+					const auto* emitter = fadeOut->GetComponent<ParticleEmitter>();
+					timerFout = AEGfxGetWindowWidth() / emitter->speed.x;
+				}
+				
+				timerFout -= EngineCTX::dt;
+				if (timerFout <= 0.f)
+				{
+					inTransition = !inTransition;
+					tState = TransitionState::TRANSITION_NULL;
+				}
 			});
-
-		emitterHolder = SceneManager::ActiveScene()->FindGameObjectByName("EmitterHolder");
-		if (emitterHolder)
-			emitterHolder->active(false);
 
 		// Immediately request transition for intro scene.
 		if (SceneManager::ActiveScene()->cname() == "Intro")
-			RequestTransition(3.f);
+			RequestTransition();
 	}
 
 	// Call this function if you want to change scene with effect.
-	void RequestTransition(f32 tFin/*, f32 tFout*/)
+	void RequestTransition(f32 tFin)
 	{
 		if (tState == TransitionState::TRANSITION_NULL)
 		{
 			tState = TransitionState::TRANSITION_FADEIN;
-			timerFin = tFin; /*timerFout = tFout;*/
-			emitterHolder->active(true);
+			timerFin = tFin;
+			if (fadeIn) 
+				fadeIn->active(true);
+			inTransition = !inTransition;
 		}
 	}
 

@@ -19,10 +19,10 @@ namespace UISystem
     // Subscribe each button function as an event to event handler.
     void init()
     {
-        SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&) { LevelTransition::RequestTransition(7.f);/*SceneManager::RequestSceneSwitch("TestScene");*/ });
+        SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&) { LevelTransition::RequestTransition();/*SceneManager::RequestSceneSwitch("TestScene");*/ });
         SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent&) { std::cout << "Pause\n"; });
         SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent&) { SceneManager::RequestSceneReload(); });
-        SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent&) { SceneManager::RequestSceneSwitch("MainMenu"); });
+        SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent&) { LevelTransition::RequestTransition();/*SceneManager::RequestSceneSwitch("MainMenu");*/ });
         SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent&) { EngineCTX::applicationRunning = false; });
     }
 
