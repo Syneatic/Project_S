@@ -81,9 +81,10 @@ public:
     //Global Variable
     f32 groundEmitTimer = 0.f;
     f32 groundEmitInterval = 1.5f;
+    GameObject* playerObject = nullptr;
 
     //Drop Variable
-    f32 detectDistance {50.f};
+    f32 detectDistance = 50.f;
     bool hasDropped = false;
 
     //Patrol Variable
@@ -91,10 +92,6 @@ public:
     f32 patrolRange = 200.f;
     float2 startPos{};
     int patrolDir = 1; // 1 = right, -1 = left
-
-    //Flying Variable
-    f32 diveSpeed = 300.f;
-    f32 detectRadius = 200.f;
 
     RigidBody* rb = nullptr;
     NoiseSource* ns = nullptr;

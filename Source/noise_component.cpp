@@ -12,7 +12,7 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 	if (!shouldCollide) return;
 
 	f32 dt = static_cast<f32>(EngineCTX::dt);
-	uint32_t mask = (1 << 1) | (1 << 2) | (1 << 3);
+	uint32_t mask = (1 << 1) | (1 << 2);
 
 	float speed = length(vel);
 	if (speed < 0.001f) return;

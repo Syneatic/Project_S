@@ -435,6 +435,9 @@ namespace Physics
 				Collider* c2 = _colliders[j];
 				if (!c1 || !c2 || c1 == c2) continue;
 
+
+				if (c1->gameObject().active() == false || c2->gameObject().active() == false) continue;
+
 				// STEP 1: Layer/Mask filtering
 				if (!c1->ShouldCollide(*c2) && !c2->ShouldCollide(*c1))
 					continue;
@@ -460,10 +463,12 @@ namespace Physics
 						bool isPlayer1 = (c1->layerMask & static_cast<uint32_t>(Layer::Player));
 						bool isEnemy2 = (c2->layerMask & static_cast<uint32_t>(Layer::Enemy));
 						bool isCheckPoint2 = (c2->layerMask & static_cast<uint32_t>(Layer::CheckPoint));
+						bool isProjectile2 = (c2->layerMask & static_cast<uint32_t>(Layer::Projectile));
 
 						bool isPlayer2 = (c2->layerMask & (static_cast<uint32_t>(Layer::Player)));
 						bool isEnemy1 = (c1->layerMask & (static_cast<uint32_t>(Layer::Enemy)));
 						bool isCheckPoint1 = (c1->layerMask & static_cast<uint32_t>(Layer::CheckPoint));
+						bool isProjectile1 = (c1->layerMask & static_cast<uint32_t>(Layer::Projectile));
 
 						if (isPlayer1 && isEnemy2)
 						{
@@ -478,6 +483,9 @@ namespace Physics
 
 						if (isPlayer1 && isCheckPoint2) rb1->HitCheckPoint = true;
 						if (isPlayer2 && isCheckPoint1) rb2->HitCheckPoint = true;
+
+						if (isPlayer1 && isProjectile2) rb1->HitProjectile = true;
+						if (isPlayer2 && isProjectile1) rb2->HitProjectile = true;
 
 						bool rb1Static = (!rb1 || rb1->Is_Static);
 						bool rb2Static = (!rb2 || rb2->Is_Static);
