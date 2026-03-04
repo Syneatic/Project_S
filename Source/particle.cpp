@@ -5,9 +5,7 @@
 
 namespace
 {
-	
 		
-	
 }
 
 
@@ -61,7 +59,6 @@ namespace ParticleSystem
 			//update pos
 			g_pool.pos[i].x += g_pool.vel[i].x * EngineCTX::dt;
 			g_pool.pos[i].y += g_pool.vel[i].y * EngineCTX::dt;
-
 		}
 		//Debug::Log("Active Particles : ", activeParticles," FPS : ", EngineCTX::frameRate);
 
@@ -113,7 +110,7 @@ namespace ParticleSystem
 
 		g_pool.pos[index]      = pos;
 		g_pool.vel[index]      = vel;
-		g_pool.time[index]     = 0.0f;
+		g_pool.time[index]     = time;
 		g_pool.lifetime[index] = life;
 		g_pool.color[index]    = col;
 		g_pool.active[index]   = true;

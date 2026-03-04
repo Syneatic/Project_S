@@ -376,6 +376,7 @@
             -15.0,
             15.0
           ],
+          "time" : 8.0,
           "type" : "ParticleEmitter"
         }
       ],

@@ -6,6 +6,45 @@
 
 void ParticleEmitter::OnStart() 
 {
+	float interval = 1.0f / spawnRate;
+	float simulatedTime = time;
+
+	while (simulatedTime >= interval)
+	{
+		float2 spawnPos = SampleSpawnPosition();
+
+		float baseAngle;
+		if (spawnShape == SpawnShape::LINE)
+			baseAngle = (_transform.rotation + 90.f) * (PI / 180.0f);
+		else
+			baseAngle = _transform.rotation * (PI / 180.0f);
+
+		float sprd = Random::RandFloat(spread.x, spread.y) * (PI / 180.0f);
+		float angle = baseAngle + sprd;
+		float spd = Random::RandFloat(speed.x, speed.y);
+		float2 velocity = { cosf(angle) * spd, sinf(angle) * spd };
+		float  life = Random::RandFloat(lifetime.x, lifetime.y);
+		float  sz = Random::RandFloat(size.x, size.y);
+		float  rot = Random::RandFloat(rotation.x, rotation.y);
+		Color  col = RandColor(colorA, colorB);
+
+		float age = time - simulatedTime;
+
+		if (age < life)
+		{
+			float2 agedPos = {
+				spawnPos.x + velocity.x * age,
+				spawnPos.y + velocity.y * age
+			};
+
+			ParticleSystem::Emit(agedPos, velocity, age, life, col,
+				false, static_cast<int>(spawnRate / 2),
+				nullptr, sz, rot);
+		}
+
+
+		simulatedTime -= interval;
+	}
 
 }
 
@@ -20,7 +59,7 @@ void ParticleEmitter::OnUpdate()
 		return;
 	}
 
-
+	
 	timer += static_cast<float>(EngineCTX::dt);
 	float interval = 1.0f / spawnRate;
 
@@ -69,8 +108,6 @@ void ParticleEmitter::Burst()
 	{
 		float2 spawnPos = SampleSpawnPosition();
 
-
-
 		float  angle = i * angleStep;
 		float  spd = Random::RandFloat(speed.x, speed.y);
 		float2 velocity = { cosf(angle) * spd, sinf(angle) * spd };
@@ -79,8 +116,8 @@ void ParticleEmitter::Burst()
 		float  rot = Random::RandFloat(rotation.x, rotation.y);
 		Color  col = RandColor(colorA,colorB);
 
-		ParticleSystem::Emit(spawnPos, velocity, 0.f, life, col,
-			true, count / 4,
+		ParticleSystem::Emit(spawnPos, velocity, time, life, col,
+			false , count / 4,
 			nullptr, sz, rot);
 	}
 }
@@ -95,6 +132,7 @@ void ParticleEmitter::Serialize(Json::Value& outComp) const
 	outComp["spawnRate"] = spawnRate;
 	outComp["isBurst"] = isBurst;
 
+	outComp["time"] = time;
 	outComp["speed"] = WriteFloat2(speed);
 	outComp["lifetime"] = WriteFloat2(lifetime);
 	outComp["size"] = WriteFloat2(size);
@@ -124,6 +162,7 @@ void ParticleEmitter::Deserialize(const Json::Value& o)
 	if (o.isMember("isBurst") && o["isBurst"].isBool())
 		isBurst = o["isBurst"].asBool();
 
+	time = o["time"].asFloat();
 	readfloat2("speed", speed);    
 	readfloat2("lifetime", lifetime); 
 	readfloat2("size", size);     
@@ -159,6 +198,7 @@ void ParticleEmitter::DrawInInspector()
 	ImGui::SeparatorText("Emission");
 	FloatDrag("Spawn Rate", &spawnRate);
 	ImGui::TextUnformatted("Burst Mode"); ImGui::Checkbox("##burst", &isBurst);
+	FloatDragReset("Warm Up Time", &time,0.f);
 
 	ImGui::SeparatorText("Particle Properties");
 

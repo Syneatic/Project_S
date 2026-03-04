@@ -39,10 +39,11 @@ void Scene::OnEnter()
 	//initialize all gameobjects
 	if (_gameObjectList.empty()) return;
 
+	ParticleSystem::Initialize();
+	ParticleSystem::Flush();
 	InitializeGameObjects();
 
 	UISystem::init();
-	ParticleSystem::Initialize();
 	CameraSystem::OnStart(); //reset camera
 }
 
