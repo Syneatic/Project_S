@@ -1,0 +1,208 @@
+{
+  "gameObjects" : 
+  [
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "Assets/DigiPen_BLACK.png",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 2,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "IMG",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1600.0,
+        450.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "colorA" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "colorB" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "isBurst" : false,
+          "lifetime" : 
+          [
+            3.0,
+            3.0
+          ],
+          "radius" : 
+          [
+            0.0,
+            40.0
+          ],
+          "rect" : 
+          [
+            50.0,
+            50.0
+          ],
+          "rotation" : 
+          [
+            0.0,
+            360.0
+          ],
+          "size" : 
+          [
+            7.5,
+            10.0
+          ],
+          "spawnLineLength" : 50.0,
+          "spawnRate" : 100.0,
+          "spawnShape" : 2,
+          "speed" : 
+          [
+            500.0,
+            500.0
+          ],
+          "spread" : 
+          [
+            0.0,
+            360.0
+          ],
+          "type" : "ParticleEmitter"
+        }
+      ],
+      "name" : "Effect1",
+      "position" : 
+      [
+        -104.99992370605469,
+        187.99996948242188
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "colorA" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "colorB" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "isBurst" : false,
+          "lifetime" : 
+          [
+            3.0,
+            3.0
+          ],
+          "radius" : 
+          [
+            0.0,
+            40.0
+          ],
+          "rect" : 
+          [
+            50.0,
+            50.0
+          ],
+          "rotation" : 
+          [
+            0.0,
+            360.0
+          ],
+          "size" : 
+          [
+            7.5,
+            10.0
+          ],
+          "spawnLineLength" : 100.0,
+          "spawnRate" : 100.0,
+          "spawnShape" : 2,
+          "speed" : 
+          [
+            500.0,
+            500.0
+          ],
+          "spread" : 
+          [
+            0.0,
+            360.0
+          ],
+          "type" : "ParticleEmitter"
+        }
+      ],
+      "name" : "Effect2",
+      "position" : 
+      [
+        175.0,
+        191.99996948242188
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : [],
+      "name" : "EmitterHolder",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "name" : "Intro"
+}

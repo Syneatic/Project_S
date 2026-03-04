@@ -1,6 +1,8 @@
 #include "gameobject.hpp"
+#include "camera.hpp"
 #include "scene_manager.hpp"
 #include "eventhandler.hpp"
+#include "level_transition.hpp"
 #include "ui_components.hpp"
 #include "render_components.hpp"
 
@@ -9,38 +11,25 @@ namespace UISystem
     std::vector<EventHandler::SubscriptionHandle> handlers;
 
     // Wrapper for function.
-    EventHandler::SubscriptionHandle SubscribeButton(FunctionKey matchValue, std::function<void(const UIButtonEvent&)> func)
+    void SubscribeButton(FunctionKey matchValue, std::function<void(const UIButtonEvent&)> func)
     {
-        return EventHandler::SubscribeFilter(&UIButtonEvent::fKey, matchValue, func);
+        handlers.push_back(EventHandler::SubscribeFilter(&UIButtonEvent::fKey, matchValue, func));
     }
 
     // Subscribe each button function as an event to event handler.
     void init()
     {
-        handlers.push_back(SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneSwitch("TestScene"); }));
-        handlers.push_back(SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent& /*e*/) { std::cout << "Pause\n"; }));
-        handlers.push_back(SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneReload(); }));
-        handlers.push_back(SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent& /*e*/) { SceneManager::RequestSceneSwitch("MainMenu"); }));
-        handlers.push_back(SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent& /*e*/) { EngineCTX::applicationRunning = false; }));
-    }
-
-    float2 ScreenToWorld(s32 x, s32 y)
-    {
-        float2 screenToWorld
-        {
-            AEGfxGetWinMinX() + static_cast<f32>(x),
-            AEGfxGetWinMaxY() - static_cast<f32>(y)
-        };
-
-        // Add camera translate in future.
-
-        return screenToWorld;
+        SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&) { LevelTransition::RequestTransition(7.f);/*SceneManager::RequestSceneSwitch("TestScene");*/ });
+        SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent&) { std::cout << "Pause\n"; });
+        SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent&) { SceneManager::RequestSceneReload(); });
+        SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent&) { SceneManager::RequestSceneSwitch("MainMenu"); });
+        SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent&) { EngineCTX::applicationRunning = false; });
     }
 
     static bool checkBounds(Transform const& t)
     {
         s32 mX{}, mY{}; AEInputGetCursorPosition(&mX, &mY);
-        float2 mouseWorld{ScreenToWorld(mX, mY)};
+        float2 mouseWorld = CameraSystem::ScreenToWorld(float2(mX, mY));
         float2 buttonBounds{ t.position.x - t.scale.x / 2.f, t.position.y - t.scale.y / 2.f };
         bool checkX{ mouseWorld.x > buttonBounds.x && mouseWorld.x < buttonBounds.x + t.scale.x };
         bool checkY{ mouseWorld.y > buttonBounds.y && mouseWorld.y < buttonBounds.y + t.scale.y };
@@ -86,5 +75,6 @@ namespace UISystem
         {
             EventHandler::Unsubscribe(eh);
         }
+        handlers.clear();
     }
 }
