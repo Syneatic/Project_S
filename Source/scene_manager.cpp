@@ -116,7 +116,6 @@ namespace SceneManager
 		if (_current) _current->OnExit();
 
 		auto e = std::make_unique<EditorScene>();
-		e->imguiInitialized = true;
 		_current = std::move(e);
 
 		if (_current) _current->OnEnter();
