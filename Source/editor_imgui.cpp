@@ -336,6 +336,13 @@ namespace //wrappers for drawing ui elements
 
 		if (ImGui::BeginMenu("File##mainmenu"))
 		{
+			if (ImGui::MenuItem("New##mainmenu"))
+			{
+				escene.RefreshScene();
+				scene.name("NEW_SCENE");
+				scene.gameObjectList().clear();
+			}
+
 			if (ImGui::MenuItem("Save##mainmenu"))
 			{
 				SceneIO::SerializeScene(scene);
@@ -424,7 +431,7 @@ namespace //wrappers for drawing ui elements
 		ImGui::End();
 	}
 
-	void BuildInspectorWindow(Scene& scene)
+	void BuildInspectorWindow(Scene& /*scene*/)
 	{
 		ImGui::SetNextWindowSizeConstraints(ImVec2(320.f, 100.f), ImVec2(FLT_MAX, FLT_MAX));
 		ImGui::Begin("Inspector##window");
@@ -564,7 +571,7 @@ namespace //wrappers for drawing ui elements
 				[&](int i)
 				{
 					if (i == 0) selectedObj.AddComponent<BoxCollider>();
-					if (i == 2) selectedObj.AddComponent<RigidBody>();
+					if (i == 1) selectedObj.AddComponent<RigidBody>();
 				});
 
 			ComponentSubMenu("Renderer", { "Sprite Renderer" },

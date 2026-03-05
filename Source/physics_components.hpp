@@ -18,9 +18,11 @@ const char* LayerToString(Layer layer);
 class Collider : public Component
 {
 public:
-    uint32_t layerMask{ static_cast<uint32_t>(Layer::Nothing) };
-    uint32_t collisionMask{ 0xFFFFFFFF };
-    AABB aabb; //local?
+    bool isTrigger;
+    u32 layer{ static_cast<u32>(Layer::Nothing) }; //layer that it is on
+    u32 collisionMask{ 0xFFFFFFFF }; //layers to collide with
+    AABB aabb;
+    OBB obb;
 
     //events
     void OnStart() override;
@@ -30,8 +32,8 @@ public:
     void Remove_Layer(Layer layer);
     void Add_CollisionLayer(Layer layer);
     void Remove_CollisionLayer(Layer layer);
-    bool CollidesWithLayer(Layer layer)const;
-    bool ShouldCollide(const Collider& other)const;
+    bool CollidesWith(Layer layer)const;
+    bool CollidesWith(const Collider& other)const;
     void DrawLayerInInspector();
 
     Collider(GameObject& go) : Component(go) {};
@@ -56,7 +58,10 @@ public:
 class RigidBody : public Component
 { 
 public:
-	bool affectedByGravity{ false };
+	bool useGravity{ false };
+    bool isKinematic{ false };
+    bool detectCollisions{ false };
+
 	bool isStatic{ false };
 	bool isGrounded{ false };
 	float gravity{ 9.8f };

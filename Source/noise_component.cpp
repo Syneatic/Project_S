@@ -5,6 +5,7 @@
 #include "audio_components.hpp"
 #include "noise_component.hpp"
 #include "event.hpp"
+#include "physics_types.hpp"
 
 
 void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit)
@@ -24,7 +25,7 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 	constexpr float MAX_SWEEP = 1000.f;
 	sweepDist = std::min(sweepDist, MAX_SWEEP);
 
-	Physics::RaycastHit hit;
+	RaycastHit hit;
 	if (Physics::Raycast(pos, dir, sweepDist, hit, mask))
 	{
 		//reflect particle

@@ -3,6 +3,7 @@
 #include "controller_components.hpp"
 #include "scene.hpp"
 #include "physics.hpp"
+#include "physics_types.hpp"
 
 
 //===================|Player Controller|===================
@@ -217,7 +218,7 @@ void RockController::Throw(const float2& playerPos)
 
     _transform.position = playerPos + dir * 20.f;
     rb->velocity = dir * throwSpeed;
-    rb->affectedByGravity = true;
+    rb->useGravity = true;
 
     rb->isGrounded = false;
 }
@@ -340,17 +341,17 @@ void EnemyController::OnStart()
     {
         if (rb)
         {
-            rb->affectedByGravity = false;
+            rb->useGravity = false;
             rb->velocity = float2::zero();
         }
     }
     if (type == EnemyType::Patrol)
     {
-        rb->affectedByGravity = true;
+        rb->useGravity = true;
         rb->velocity = float2::zero();
 
         if (rb->isGrounded)
-            rb->affectedByGravity = false;
+            rb->useGravity = false;
     }
 }
 
@@ -384,13 +385,13 @@ void EnemyController::OnDestroy()
 void EnemyController::UpdateDrop() {
     if (!rb) return;
 
-    Physics::RaycastHit hit;
+    RaycastHit hit;
     bool hasLanded = false;
     f32 xDist = absf(playerObject->transform().position.x - _transform.position.x);
     f32 yDist = _transform.position.y - playerObject->transform().position.y;
 
     if (xDist <= 50.f && yDist > 0 && yDist <= 100.f) {
-        rb->affectedByGravity = true;
+        rb->useGravity = true;
         hasDropped = true;
     }
     float2 origin = _transform.position;
@@ -417,7 +418,7 @@ void EnemyController::UpdatePatrol() {
     if (!rb) return;
 
     //Raycast
-    Physics::RaycastHit hit;
+    RaycastHit hit;
 
     //Ground Raycast Variables
     bool hasLanded = false;

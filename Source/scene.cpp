@@ -15,7 +15,7 @@ float accumulator{ 0 };
 void Scene::InitializeGameObjects()
 {
 	Debug::Log("=== Initialize GameObjects ===");
-	Debug::Log("Total GameObjects", _gameObjectList.size());
+	Debug::Log("Total GameObjects : ", _gameObjectList.size());
 	for (auto& pgo : _gameObjectList)
 	{
 		pgo.get()->OnStart();
@@ -43,6 +43,8 @@ void Scene::OnEnter()
 	ParticleSystem::Flush();
 	InitializeGameObjects();
 
+	Physics::Initialize();
+
 	UISystem::init();
 	LevelTransition::Init();
 	CameraSystem::OnStart(); //reset camera
@@ -66,7 +68,7 @@ void Scene::OnUpdate()
 	accumulator += EngineCTX::dt;
 	while (accumulator >= EngineCTX::fixedDt)
 	{
-		Physics::Step(EngineCTX::fixedDt);
+		Physics::Step();
 		accumulator -= EngineCTX::fixedDt;
 	}
 
@@ -88,8 +90,7 @@ void Scene::OnExit()
 	//delete
 	LevelTransition::UnsubscribeTransitions();
 	EventHandler::Flush();
-	Physics::FlushColliders();
-	Physics::FlushRigidBody();
+	Physics::Flush();
 	Audio::FlushEmitters();
 	ParticleSystem::Flush();
 	Graphics::Flush();

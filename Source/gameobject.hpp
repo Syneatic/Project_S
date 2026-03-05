@@ -288,7 +288,7 @@ public:
 	{
 		_name = name;
 	}
-
+	
 //static func
 	static std::unique_ptr<GameObject> Clone(const GameObject& src)
 	{

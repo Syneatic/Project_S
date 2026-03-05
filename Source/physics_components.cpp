@@ -22,39 +22,39 @@ void Collider::OnStart()
     Physics::RegisterCollider(this);
 }
 
-bool Collider::Has_Layer(Layer layer) const
+bool Collider::Has_Layer(Layer l) const
 {
-    return (layerMask & static_cast<uint32_t>(layer)) != 0;
+    return (this->layer & static_cast<uint32_t>(l)) != 0;
 }
 
-void Collider::Add_Layer(Layer layer)
+void Collider::Add_Layer(Layer l)
 {
-    layerMask |= static_cast<uint32_t>(layer);
+    this->layer |= static_cast<uint32_t>(l);
 }
 
-void Collider::Remove_Layer(Layer layer)
+void Collider::Remove_Layer(Layer l)
 {
-    layerMask &= ~static_cast<uint32_t>(layer);
+    this->layer &= ~static_cast<uint32_t>(l);
 }
 
-void Collider::Add_CollisionLayer(Layer layer)
+void Collider::Add_CollisionLayer(Layer l)
 {
-    collisionMask |= static_cast<uint32_t>(layer);
+    collisionMask |= static_cast<uint32_t>(l);
 }
 
-void Collider::Remove_CollisionLayer(Layer layer)
+void Collider::Remove_CollisionLayer(Layer l)
 {
-    collisionMask &= ~static_cast<uint32_t>(layer);
+    collisionMask &= ~static_cast<uint32_t>(l);
 }
 
-bool Collider::CollidesWithLayer(Layer layer)const
+bool Collider::CollidesWith(Layer l)const
 {
-    return (collisionMask & static_cast<uint32_t>(layer));
+    return (collisionMask & static_cast<uint32_t>(l));
 }
 
-bool Collider::ShouldCollide(const Collider& other)const
+bool Collider::CollidesWith(const Collider& other)const
 {
-    return (collisionMask & other.layerMask);
+    return (collisionMask & other.layer);
 }
 
 void Collider::DrawLayerInInspector()
@@ -83,7 +83,7 @@ void Collider::DrawLayerInInspector()
 
     if (ImGui::Combo("##Layer", &currentLayer, layerNames, 6))
     {
-        layerMask = static_cast<uint32_t>(layers[currentLayer]);
+        layer = static_cast<uint32_t>(layers[currentLayer]);
     }
 
 
@@ -91,11 +91,11 @@ void Collider::DrawLayerInInspector()
 
     ImGui::Text("I collide with (Mask):");
 
-    bool collidesPlayer = CollidesWithLayer(Layer::Player);
-    bool collidesEnemy = CollidesWithLayer(Layer::Enemy);
-    bool collidesEnvironment = CollidesWithLayer(Layer::Environment);
-    bool collidesProjectile = CollidesWithLayer(Layer::Projectile);
-    bool collidesCheckPoint = CollidesWithLayer(Layer::CheckPoint);
+    bool collidesPlayer = CollidesWith(Layer::Player);
+    bool collidesEnemy = CollidesWith(Layer::Enemy);
+    bool collidesEnvironment = CollidesWith(Layer::Environment);
+    bool collidesProjectile = CollidesWith(Layer::Projectile);
+    bool collidesCheckPoint = CollidesWith(Layer::CheckPoint);
 
 
     if (ImGui::Checkbox("PlayerMask", &collidesPlayer))
@@ -147,14 +147,14 @@ void BoxCollider::DrawInInspector()
 void BoxCollider::Serialize(Json::Value& outComp) const
 {
     outComp["size"] = WriteFloat2(size);
-    outComp["layerMask"] = layerMask;
+    outComp["layerMask"] = layer;
     outComp["collisionMask"] = collisionMask;
 }
 
 void BoxCollider::Deserialize(const Json::Value& compObj)
 {
     if (compObj.isMember("size")) ReadFloat2(compObj["size"], size);
-    if (compObj.isMember("layerMask")) layerMask = compObj["layerMask"].asUInt();
+    if (compObj.isMember("layerMask")) layer = compObj["layerMask"].asUInt();
     if (compObj.isMember("collisionMask")) collisionMask = compObj["collisionMask"].asUInt();
 }
 
@@ -162,7 +162,7 @@ void BoxCollider::CopyFrom(Component* src)
 {
     auto s = dynamic_cast<BoxCollider*>(src);
     if (!s) return;
-    layerMask = s->layerMask;
+    layer = s->layer;
     collisionMask = s->collisionMask;
     size = s->size;
 }
@@ -183,7 +183,7 @@ std::unique_ptr<Component> BoxCollider::Clone(GameObject& go)
 void RigidBody::DrawInInspector()
 { 
 	ImGui::Checkbox("Is Static", &isStatic);
-	ImGui::Checkbox("Affected By Gravity", &affectedByGravity);
+	ImGui::Checkbox("Affected By Gravity", &useGravity);
 	ImGui::Checkbox("Grounded", &isGrounded);
 	ImGui::DragFloat("Gravity", &gravity, 0.1f);
 	ImGui::DragFloat2("Velocity", &velocity.x, 0.1f);
@@ -192,7 +192,7 @@ void RigidBody::DrawInInspector()
 void RigidBody::Serialize(Json::Value& outComp) const
 {
 	outComp["Is Static"] = isStatic;
-	outComp["Affected By Gravity"] = affectedByGravity;
+	outComp["Affected By Gravity"] = useGravity;
 	outComp["Grounded"] = isGrounded;
 	outComp["Gravity"] = gravity;
 	outComp["Velocity"] = velocity.x;
@@ -203,7 +203,7 @@ void RigidBody::Deserialize(const Json::Value& compObj)
 	if (compObj.isMember("Is Static") && compObj["Is Static"].isBool())
 		isStatic = compObj["Is Static"].asBool();
 	if (compObj.isMember("Affected By Gravity") && compObj["Affected By Gravity"].isBool())
-		affectedByGravity = compObj["Affected By Gravity"].asBool();
+		useGravity = compObj["Affected By Gravity"].asBool();
 	if (compObj.isMember("Grounded") && compObj["Grounded"].isBool())
 		isGrounded = compObj["Grounded"].asBool();
 	if (compObj.isMember("Gravity") && compObj["Gravity"].isNumeric())
@@ -229,7 +229,7 @@ void RigidBody::CopyFrom(Component* src)
 {
     auto s = dynamic_cast<RigidBody*>(src);
     if (!s) return;
-    affectedByGravity = s->affectedByGravity;
+    useGravity = s->useGravity;
     isStatic = s->isStatic;
     isGrounded = s->isGrounded;
     HitEnvironment = s->HitEnvironment;

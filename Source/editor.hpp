@@ -13,6 +13,7 @@ namespace Editor
 	inline Component* copiedComponent{ nullptr };
 	//inline std::type_index copiedComponentType;
 
+	void SaveScene(Scene& scene);
 	void DrawUI(EditorScene& escene,Scene& scene);
 	void DrawGizmos();
 }
