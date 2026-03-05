@@ -74,9 +74,6 @@ namespace ParticleSystem
 		AEGfxSetBlendColor(0, 0, 0, 0);
 		AEGfxSetTransparency(1.f);
 
-		AEMtx33 scaleMtx;
-		AEMtx33Scale(&scaleMtx, 5.0f, 5.0f);
-
 		for (int i = 0; i < MAX_PARTICLES; ++i) 
 		{
 			if (!g_pool.active[i]) continue;

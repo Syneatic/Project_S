@@ -64,42 +64,6 @@ namespace {
 		top = t.position.y + hy;
 	}
 
-	inline bool RayToCircle(
-		const float2& origin, const float2& dirN, float maxDist,
-		const Transform& t, const CircleCollider& c,
-		float& outT, float2& outNormal)
-	{
-		float2 center = t.position;
-		float r = c.radius * t.scale.x; //watch out for one side scale
-
-		float2 oc = origin - center;
-
-		float b = 2.0f * dot(oc, dirN);
-		float cc = dot(oc, oc) - r * r;
-
-		// a = 1 because dirN is normalized
-		float disc = b * b - 4.0f * cc;
-		if (disc < 0.0f) return false;
-
-		float sqrtDisc = std::sqrt(disc);
-
-		float t0 = (-b - sqrtDisc) * 0.5f;
-		float t1 = (-b + sqrtDisc) * 0.5f;
-
-		// choose nearest valid
-		float tHit = FLT_MAX;
-		if (t0 >= 0.0f) tHit = t0;
-		else if (t1 >= 0.0f) tHit = t1;
-		else return false;
-
-		if (tHit > maxDist) return false;
-
-		float2 p = origin + (dirN * tHit);
-		outNormal = normalize(p - center);
-		outT = tHit;
-		return true;
-	}
-
 	inline void ResolveBoxVsBox(
 		RigidBody& rb,
 		Transform& t,
@@ -128,7 +92,7 @@ namespace {
 				// Landing
 				t.position.y += overlapY;
 				rb.velocity.y = 0;
-				rb.Is_Grounded = true;
+				rb.isGrounded = true;
 			}
 			else
 			{
@@ -259,19 +223,6 @@ namespace Physics
 		_colliderSet.clear();
 	}
 
-	bool CircleVSCircle(const CircleCollider& a, const CircleCollider& b, const Transform& ta, const Transform& tb)
-	{
-		CollisionInfo info;
-		float dx = tb.position.x - ta.position.x;
-		float dy = tb.position.y - ta.position.y;
-
-		float distance_sq = dx * dx + dy * dy;
-
-		float rad_sum = (a.radius * ta.scale.x) + (b.radius * tb.scale.x);
-
-		return distance_sq < (rad_sum * rad_sum);
-	}
-
 	CollisionInfo BoxVSBox(const BoxCollider& a, const BoxCollider& b, const Transform& ta, const Transform& tb)
 	{
 		CollisionInfo info;
@@ -368,12 +319,7 @@ namespace Physics
 			float2 nHit = float2::zero();
 			bool hit = false;
 
-			if (c->name() == "CircleCollider")
-			{
-				auto* cc = dynamic_cast<CircleCollider*>(c);
-				if (cc) hit = RayToCircle(origin, dirN, bestT, tr, *cc, tHit, nHit);
-			}
-			else if (c->name() == "BoxCollider")
+			if (c->name() == "BoxCollider")
 			{
 				auto* bc = dynamic_cast<BoxCollider*>(c);
 				if (bc) hit = RayToOBB(origin, dirN, bestT, tr, *bc, tHit, nHit);
@@ -487,16 +433,16 @@ namespace Physics
 						if (isPlayer1 && isProjectile2) rb1->HitProjectile = true;
 						if (isPlayer2 && isProjectile1) rb2->HitProjectile = true;
 
-						bool rb1Static = (!rb1 || rb1->Is_Static);
-						bool rb2Static = (!rb2 || rb2->Is_Static);
+						bool rb1Static = (!rb1 || rb1->isStatic);
+						bool rb2Static = (!rb2 || rb2->isStatic);
 
-						if (rb1 && !rb1->Is_Static)
+						if (rb1 && !rb1->isStatic)
 						{
 							if (c2->layerMask & static_cast<uint32_t>(Layer::Environment))
 								rb1->HitEnvironment = true;
 						}
 
-						if (rb2 && !rb2->Is_Static)
+						if (rb2 && !rb2->isStatic)
 						{
 							if (c1->layerMask & static_cast<uint32_t>(Layer::Environment))
 								rb2->HitEnvironment = true;
@@ -531,7 +477,7 @@ namespace Physics
 							// Check if grounded
 							if (info.normal.y < -0.7f)
 							{
-								rb1->Is_Grounded = true;
+								rb1->isGrounded = true;
 								/*rb1->velocity.y = 0.f;*/
 
 								if (rb1->velocity.y < 0.f) rb1->velocity.y = 0.f;
@@ -557,7 +503,7 @@ namespace Physics
 							// Check if grounded
 							if (info.normal.y > 0.7f)
 							{
-								rb2->Is_Grounded = true;
+								rb2->isGrounded = true;
 								/*rb2->velocity.y = 0.f;*/
 
 								if (rb2->velocity.y < 0.f) rb2->velocity.y = 0.f;
@@ -600,18 +546,6 @@ namespace Physics
 						);
 					}
 				}
-
-				// CIRCLE VS CIRCLE
-				if (c1->name() == "CircleCollider" && c2->name() == "CircleCollider")
-				{
-					auto* cc1 = dynamic_cast<CircleCollider*>(c1);
-					auto* cc2 = dynamic_cast<CircleCollider*>(c2);
-
-					if (CircleVSCircle(*cc1, *cc2, t1, t2))
-					{
-						// Add circle collision resolution if needed
-					}
-				}
 			}
 		}
 	}
@@ -621,16 +555,16 @@ namespace Physics
 		// Reset grounded
 		for (auto* rb : _rigidbodies)
 			if (rb) {
-				rb->Is_Grounded = false;
+				rb->isGrounded = false;
 				rb->HitEnvironment = false;
 			}
 
 		//apply gravity
 		for (auto* rb : _rigidbodies)
 		{
-			if (!rb || rb->Is_Static) continue;
+			if (!rb || rb->isStatic) continue;
 
-			if (rb->Affected_By_Gravity)
+			if (rb->affectedByGravity)
 			{
 				rb->velocity.y -= rb->gravity * dt;
 
@@ -641,7 +575,7 @@ namespace Physics
 		for (auto* rb : _rigidbodies)
 		{
 			//ignore if velocity is too low
-			if (!rb || rb->Is_Static) continue;
+			if (!rb || rb->isStatic) continue;
 
 			//ignore if velocity is too low
 			if (lengthsq(rb->velocity) <= 0.0005f) continue;

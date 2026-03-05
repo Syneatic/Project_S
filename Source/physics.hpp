@@ -4,7 +4,6 @@
 struct float2;
 struct Transform;
 class Collider;
-class CircleCollider;
 class BoxCollider;
 class RigidBody;
 
@@ -31,7 +30,6 @@ namespace Physics
 	void RegisterCollider(Collider* c);
 	void UnregisterCollider(Collider* c);
 	void FlushColliders();
-	bool CircleVSCircle(const CircleCollider& a, const CircleCollider& b, const Transform& ta, const Transform& tb);
 	CollisionInfo BoxVSBox(const BoxCollider& a, const BoxCollider& b, const Transform& ta, const Transform& tb);
 	bool Raycast(const float2& origin, const float2& dir, float maxDist, RaycastHit& out, uint32_t layerMask = 0xFFFFFFFF);
 	void RegisterRigidBody(RigidBody* rb);

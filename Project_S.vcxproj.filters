@@ -195,6 +195,9 @@
     <ClCompile Include="Source\editor_gizmos.cpp">
       <Filter>Source Files\editor</Filter>
     </ClCompile>
+    <ClCompile Include="Source\physics2.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -355,6 +358,12 @@
     </ClInclude>
     <ClInclude Include="Source\level_transition.hpp">
       <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\physics2.hpp">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\physics_types.hpp">
+      <Filter>Header Files\datatypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

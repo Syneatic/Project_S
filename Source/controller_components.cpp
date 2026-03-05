@@ -77,13 +77,13 @@ void PlayerController::OnUpdate()
     float timerToReach = 2.f;
 
     //Once if space is pressed once
-    if (AEInputCheckTriggered(AEVK_SPACE) && rb->Is_Grounded)
+    if (AEInputCheckTriggered(AEVK_SPACE) && rb->isGrounded)
     {           
         //Set the space bar velocity to true
         //Check if the player reach the height (dt)
         float jumpSpeed = std::sqrt(timerToReach * rb->gravity * jumpHeight);
         rb->velocity.y = jumpSpeed;
-        rb->Is_Grounded = false;
+        rb->isGrounded = false;
     }
 
     if (rb->HitProjectile) {
@@ -217,9 +217,9 @@ void RockController::Throw(const float2& playerPos)
 
     _transform.position = playerPos + dir * 20.f;
     rb->velocity = dir * throwSpeed;
-    rb->Affected_By_Gravity = true;
+    rb->affectedByGravity = true;
 
-    rb->Is_Grounded = false;
+    rb->isGrounded = false;
 }
 
 void RockController::OnImpact(const OnCollisionEvent& e)
@@ -340,17 +340,17 @@ void EnemyController::OnStart()
     {
         if (rb)
         {
-            rb->Affected_By_Gravity = false;
+            rb->affectedByGravity = false;
             rb->velocity = float2::zero();
         }
     }
     if (type == EnemyType::Patrol)
     {
-        rb->Affected_By_Gravity = true;
+        rb->affectedByGravity = true;
         rb->velocity = float2::zero();
 
-        if (rb->Is_Grounded)
-            rb->Affected_By_Gravity = false;
+        if (rb->isGrounded)
+            rb->affectedByGravity = false;
     }
 }
 
@@ -390,7 +390,7 @@ void EnemyController::UpdateDrop() {
     f32 yDist = _transform.position.y - playerObject->transform().position.y;
 
     if (xDist <= 50.f && yDist > 0 && yDist <= 100.f) {
-        rb->Affected_By_Gravity = true;
+        rb->affectedByGravity = true;
         hasDropped = true;
     }
     float2 origin = _transform.position;
@@ -399,7 +399,7 @@ void EnemyController::UpdateDrop() {
     uint32_t groundLayer = static_cast<uint32_t>(Layer::Environment);
     uint32_t playerLayer = static_cast<uint32_t>(Layer::Player);
 
-    if (hasDropped && rb->Is_Grounded) hasLanded = true;
+    if (hasDropped && rb->isGrounded) hasLanded = true;
 
     if (Physics::Raycast(origin, dir, 500.f, hit, groundLayer) && !hasLanded) {
         if (groundEmitTimer >= groundEmitInterval) {

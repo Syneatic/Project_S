@@ -49,21 +49,6 @@ public:
     std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
-class MeshRenderer : public Renderer
-{
-public:
-    Graphics::VertexBuffer* mesh = nullptr;
-
-    void Serialize(Json::Value& outComp) const override;
-    void Deserialize(const Json::Value& compObj) override;
-
-    const std::string name() const override { return "MeshRenderer"; }
-
-    MeshRenderer(GameObject& go) : Renderer(go) {};
-    void CopyFrom(Component* src) override;
-    std::unique_ptr<Component> Clone(GameObject& go) override;
-};
-
 class TextRenderer : public Renderer
 {
 public:

@@ -1,6 +1,6 @@
+#include "physics.hpp"
 #include "physics_components.hpp"
 #include "base_components.hpp"
-#include "physics.hpp"
 
 const char* LayerToString(Layer layer)
 {
@@ -21,15 +21,6 @@ void Collider::OnStart()
 {
     Physics::RegisterCollider(this);
 }
-
-void Collider::OnCollision(const Collision& data)
-{
-    for (const auto& callback : onCollisionListeners) 
-    {
-        callback(data);
-    }
-}
-
 
 bool Collider::Has_Layer(Layer layer) const
 {
@@ -137,51 +128,9 @@ void Collider::DrawLayerInInspector()
         else Remove_CollisionLayer(Layer::CheckPoint);
     }
 }
+
 // ===== COLLIDER DEFINITIONS =====
 
-
-
-
-// ===== CIRCLE COLLIDER DEFINITIONS =====
-void CircleCollider::DrawInInspector()
-{
-    DrawLayerInInspector();
-    ImGui::Separator();
-    ImGui::TextUnformatted("Size");
-    ImGui::DragFloat("##circlecollider_radius", &radius, 0.1f);
-}
-
-void CircleCollider::Serialize(Json::Value& outComp) const
-{
-    outComp["radius"] = radius;
-    outComp["layerMask"] = layerMask;
-    outComp["collisionMask"] = collisionMask;
-}
-
-void CircleCollider::Deserialize(const Json::Value& compObj)
-{
-    if (compObj.isMember("radius") && compObj["radius"].isNumeric()) radius = compObj["radius"].asFloat();
-    if (compObj.isMember("layerMask")) layerMask = compObj["layerMask"].asUInt();
-    if (compObj.isMember("collisionMask")) collisionMask = compObj["collisionMask"].asUInt();
-}
-
-void CircleCollider::CopyFrom(Component* src) 
-{
-    auto s = dynamic_cast<CircleCollider*>(src);
-    if (!s) return;
-    layerMask = s->layerMask;
-    collisionMask = s->collisionMask;
-    radius = s->radius;
-}
-
-std::unique_ptr<Component> CircleCollider::Clone(GameObject& go)
-{
-    auto n = std::make_unique<CircleCollider>(go);
-    n.get()->CopyFrom(this);
-    return n;
-}
-
-// ===== CIRCLE COLLIDER DEFINITIONS =====
 
 
 
@@ -233,18 +182,18 @@ std::unique_ptr<Component> BoxCollider::Clone(GameObject& go)
 // ===== RIGIDBODY DEFINITIONS =====
 void RigidBody::DrawInInspector()
 { 
-	ImGui::Checkbox("Is Static", &Is_Static);
-	ImGui::Checkbox("Affected By Gravity", &Affected_By_Gravity);
-	ImGui::Checkbox("Grounded", &Is_Grounded);
+	ImGui::Checkbox("Is Static", &isStatic);
+	ImGui::Checkbox("Affected By Gravity", &affectedByGravity);
+	ImGui::Checkbox("Grounded", &isGrounded);
 	ImGui::DragFloat("Gravity", &gravity, 0.1f);
 	ImGui::DragFloat2("Velocity", &velocity.x, 0.1f);
 } 
 
 void RigidBody::Serialize(Json::Value& outComp) const
 {
-	outComp["Is Static"] = Is_Static;
-	outComp["Affected By Gravity"] = Affected_By_Gravity;
-	outComp["Grounded"] = Is_Grounded;
+	outComp["Is Static"] = isStatic;
+	outComp["Affected By Gravity"] = affectedByGravity;
+	outComp["Grounded"] = isGrounded;
 	outComp["Gravity"] = gravity;
 	outComp["Velocity"] = velocity.x;
 }
@@ -252,11 +201,11 @@ void RigidBody::Serialize(Json::Value& outComp) const
 void RigidBody::Deserialize(const Json::Value& compObj)
 {
 	if (compObj.isMember("Is Static") && compObj["Is Static"].isBool())
-		Is_Static = compObj["Is Static"].asBool();
+		isStatic = compObj["Is Static"].asBool();
 	if (compObj.isMember("Affected By Gravity") && compObj["Affected By Gravity"].isBool())
-		Affected_By_Gravity = compObj["Affected By Gravity"].asBool();
+		affectedByGravity = compObj["Affected By Gravity"].asBool();
 	if (compObj.isMember("Grounded") && compObj["Grounded"].isBool())
-		Is_Grounded = compObj["Grounded"].asBool();
+		isGrounded = compObj["Grounded"].asBool();
 	if (compObj.isMember("Gravity") && compObj["Gravity"].isNumeric())
 		gravity = compObj["Gravity"].asFloat();
 	if (compObj.isMember("Velocity") && compObj["Velocity"].isNumeric())
@@ -270,7 +219,7 @@ void RigidBody::OnStart()
 
 void RigidBody::Clear_Forces()
 { 
-	if (Is_Static) 
+	if (isStatic) 
 	{ 
 		velocity = float2::zero(); 
 	} 
@@ -280,9 +229,9 @@ void RigidBody::CopyFrom(Component* src)
 {
     auto s = dynamic_cast<RigidBody*>(src);
     if (!s) return;
-    Affected_By_Gravity = s->Affected_By_Gravity;
-    Is_Static = s->Is_Static;
-    Is_Grounded = s->Is_Grounded;
+    affectedByGravity = s->affectedByGravity;
+    isStatic = s->isStatic;
+    isGrounded = s->isGrounded;
     HitEnvironment = s->HitEnvironment;
     HitEnemy = s->HitEnemy;
     HitCheckPoint = s->HitCheckPoint;

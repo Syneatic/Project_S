@@ -437,7 +437,7 @@ namespace //wrappers for drawing ui elements
 		//iterate through each component and display its properties here
 		//name text box
 		auto& transform = selectedObj.transform();
-		auto& wtransform = selectedObj.worldTransform();
+		//auto& wtransform = selectedObj.worldTransform();
 
 		NameInputText(selectedObj.name());
 
@@ -560,19 +560,17 @@ namespace //wrappers for drawing ui elements
 
 		if (ImGui::BeginPopup("AddComponentMenu"))
 		{
-			ComponentSubMenu("Physics", { "Box Collider","Circle Collider","Rigid Body"},
+			ComponentSubMenu("Physics", { "Box Collider","Rigid Body"},
 				[&](int i)
 				{
 					if (i == 0) selectedObj.AddComponent<BoxCollider>();
-					if (i == 1) selectedObj.AddComponent<CircleCollider>();
 					if (i == 2) selectedObj.AddComponent<RigidBody>();
 				});
 
-			ComponentSubMenu("Renderer", { "Sprite Renderer","Mesh Renderer" },
+			ComponentSubMenu("Renderer", { "Sprite Renderer" },
 				[&](int i)
 				{
 					if (i == 0) selectedObj.AddComponent<SpriteRenderer>();
-					if (i == 1) selectedObj.AddComponent<MeshRenderer>();
 				});
 
 			if (ImGui::BeginMenu("Particle"))

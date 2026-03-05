@@ -380,43 +380,6 @@ std::unique_ptr<Component> SpriteRenderer::Clone(GameObject& go)
 
 
 
-void MeshRenderer::Serialize(Json::Value& outComp) const
-{
-    Renderer::Serialize(outComp);
-    //save mesh here somehow
-}
-
-void MeshRenderer::Deserialize(const Json::Value& compObj)
-{
-    Renderer::Deserialize(compObj);
-    //load mesh here
-}
-
-void MeshRenderer::CopyFrom(Component* src)
-{
-    auto s = dynamic_cast<MeshRenderer*>(src);
-    if (!s) return;
-
-    fileName = s->fileName;
-    blendMode = s->blendMode;
-    renderMode = s->renderMode;
-    meshDrawMode = s->meshDrawMode;
-    renderLayer = s->renderLayer;
-    alignment = s->alignment;
-    color = s->color;
-    sortOrder = s->sortOrder;
-    isScreenSpace = s->isScreenSpace;
-}
-
-std::unique_ptr<Component> MeshRenderer::Clone(GameObject& go)
-{
-    auto n = std::make_unique<MeshRenderer>(go);
-    n.get()->CopyFrom(this);
-    return n;
-}
-
-
-
 // ===== TEXT_RENDERER DEF =====
 void TextRenderer::DrawInInspector()
 {

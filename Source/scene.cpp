@@ -11,7 +11,6 @@
 #include "components.hpp"
 
 float accumulator{ 0 };
-float fixedDt = 1.f / 60.f;
 
 void Scene::InitializeGameObjects()
 {
@@ -65,10 +64,10 @@ void Scene::OnUpdate()
 	Audio::Update();
 
 	accumulator += EngineCTX::dt;
-	while (accumulator >= fixedDt)
+	while (accumulator >= EngineCTX::fixedDt)
 	{
-		Physics::Step(fixedDt);
-		accumulator -= fixedDt;
+		Physics::Step(EngineCTX::fixedDt);
+		accumulator -= EngineCTX::fixedDt;
 	}
 
 	LevelTransition::CheckState();
