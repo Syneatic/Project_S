@@ -11,6 +11,9 @@ namespace
 	std::vector<RigidBody*> _rigidbodies;
 	std::vector<BroadPhasePair> _broadphasePairs;
 	std::vector<ContactManifold> _manifolds;
+
+	std::vector<u32> _raycastStamp;
+	u32 _currentStamp = 0;
 }
 
 //spatial grid helpers
@@ -532,7 +535,10 @@ namespace Physics
 	{
 		if (!c) return;
 		if (std::find(_colliders.begin(), _colliders.end(), c) == _colliders.end())
+		{
 			_colliders.push_back(c);
+			_raycastStamp.push_back(0);
+		}
 	}
 
 	void Flush()
@@ -571,7 +577,7 @@ namespace Physics
 
 	void Step()
 	{
-		Debug::ScopedTimer timer("Physics");
+		//Debug::ScopedTimer timer("Physics");
 		f32 dt = EngineCTX::dt;
 
 		IntegrateMotion(dt);
@@ -604,46 +610,81 @@ namespace Physics
 
 	bool Raycast(float2 origin, float2 direction, f32 maxDistance, RaycastHit& outHit, u32 layerMask)
 	{
-		// Normalize direction defensively
 		f32 dirLen = length(direction);
 		if (dirLen < 1e-8f) return false;
 		float2 dir = direction * (1.f / dirLen);
 
+		// Bump stamp for this raycast — all previously visited slots are now stale
+		++_currentStamp;
+
 		f32       closestT = FLT_MAX;
 		Collider* closestCol = nullptr;
+		u32       closestIdx = 0;
 
-		for (auto col : _colliders)
+		// DDA setup — unchanged
+		CellCoord cell = WorldToCell(origin, _grid.cellSize);
+
+		s32 stepX = (dir.x >= 0.f) ? 1 : -1;
+		s32 stepY = (dir.y >= 0.f) ? 1 : -1;
+
+		f32 tDeltaX = (fabsf(dir.x) > 1e-8f) ? fabsf(_grid.cellSize / dir.x) : FLT_MAX;
+		f32 tDeltaY = (fabsf(dir.y) > 1e-8f) ? fabsf(_grid.cellSize / dir.y) : FLT_MAX;
+
+		f32 cellBoundX = (stepX > 0) ? (cell.x + 1) * _grid.cellSize : cell.x * _grid.cellSize;
+		f32 cellBoundY = (stepY > 0) ? (cell.y + 1) * _grid.cellSize : cell.y * _grid.cellSize;
+
+		f32 tMaxX = (fabsf(dir.x) > 1e-8f) ? fabsf((cellBoundX - origin.x) / dir.x) : FLT_MAX;
+		f32 tMaxY = (fabsf(dir.y) > 1e-8f) ? fabsf((cellBoundY - origin.y) / dir.y) : FLT_MAX;
+
+		f32 tCurrent = 0.f;
+
+		while (tCurrent <= maxDistance)
 		{
-			if (!col) continue;
-			if (!col->gameObject().active()) continue;
+			u32   bucketIdx = GetIndex(cell, _grid) % static_cast<u32>(_grid.bucketCount);
+			Cell& currentCell = _grid.bucket[bucketIdx];
 
-			// Layer mask filter — skip if this collider's layer isn't in the mask
-			if (!(col->layer & layerMask)) continue;
+			for (u32 idx : currentCell.items)
+			{
+				if (!_colliders[idx])                          continue;
+				if (!_colliders[idx]->gameObject().active())   continue;
+				if (!(_colliders[idx]->layer & layerMask))     continue;
+				if (_colliders[idx]->isTrigger)                continue;
 
-			// Skip triggers
-			if (col->isTrigger) continue;
+				// Stamp check — O(1), no allocation
+				if (_raycastStamp[idx] == _currentStamp)       continue; // already visited
+				_raycastStamp[idx] = _currentStamp;                      // mark visited
 
-			f32 t = 0.f;
-			if (!RayVsOBB(origin, dir, col->obb, t)) continue;
+				f32 t = 0.f;
+				if (!RayVsOBB(origin, dir, _colliders[idx]->obb, t)) continue;
+				if (t < 0.f || t > maxDistance)                      continue;
+				if (t >= closestT)                                    continue;
 
-			// Must be within ray range and closer than previous hits
-			if (t < 0.f || t > maxDistance) continue;
-			if (t >= closestT) continue;
+				closestT = t;
+				closestCol = _colliders[idx];
+			}
 
-			closestT = t;
-			closestCol = col;
+			if (closestCol && tCurrent > closestT) break;
+
+			if (tMaxX < tMaxY)
+			{
+				tCurrent = tMaxX;
+				tMaxX += tDeltaX;
+				cell.x += stepX;
+			}
+			else
+			{
+				tCurrent = tMaxY;
+				tMaxY += tDeltaY;
+				cell.y += stepY;
+			}
 		}
 
 		if (!closestCol) return false;
 
-		// Fill RaycastHit
+		// Fill RaycastHit — unchanged
 		float2 hitPoint = origin + dir * closestT;
-
-		// Compute hit normal: find which OBB face was hit
-		// by checking which axis the hit point is closest to on the surface
 		const OBB& obb = closestCol->obb;
 		float2 localHit = hitPoint - obb.center;
-
 		f32 projX = dot(localHit, obb.axisX);
 		f32 projY = dot(localHit, obb.axisY);
 
