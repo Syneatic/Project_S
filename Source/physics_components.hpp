@@ -18,7 +18,7 @@ const char* LayerToString(Layer layer);
 class Collider : public Component
 {
 public:
-    bool isTrigger;
+    bool isTrigger{false};
     u32 layer{ static_cast<u32>(Layer::Nothing) }; //layer that it is on
     u32 collisionMask{ 0xFFFFFFFF }; //layers to collide with
     AABB aabb;
