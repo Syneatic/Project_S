@@ -7,7 +7,7 @@
       "components" : 
       [
         {
-          "collisionMask" : 4294967295,
+          "collisionMask" : 31,
           "layerMask" : 2,
           "size" : 
           [
@@ -24,7 +24,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -53,7 +53,7 @@
       [
         {
           "collisionMask" : 4294967295,
-          "layerMask" : 0,
+          "layerMask" : 2,
           "size" : 
           [
             1.0,
@@ -69,7 +69,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -98,7 +98,7 @@
       [
         {
           "collisionMask" : 4294967295,
-          "layerMask" : 0,
+          "layerMask" : 4,
           "size" : 
           [
             1.0,
@@ -114,7 +114,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -232,8 +232,8 @@
       "name" : "box_2",
       "position" : 
       [
-        0.0,
-        0.0
+        96.000007629394531,
+        136.00001525878906
       ],
       "rotation" : 0.0,
       "scale" : 
@@ -285,8 +285,8 @@
       "name" : "box_3",
       "position" : 
       [
-        0.0,
-        0.0
+        63.999984741210938,
+        55.000011444091797
       ],
       "rotation" : 0.0,
       "scale" : 
@@ -338,10 +338,10 @@
       "name" : "box_4",
       "position" : 
       [
-        0.0,
-        0.0
+        256.00003051757812,
+        221.99995422363281
       ],
-      "rotation" : 0.0,
+      "rotation" : 64.480453491210938,
       "scale" : 
       [
         50.0,
@@ -391,10 +391,10 @@
       "name" : "box_5",
       "position" : 
       [
-        0.0,
-        0.0
+        17.000007629394531,
+        179.0
       ],
-      "rotation" : 0.0,
+      "rotation" : 1.5803070068359375,
       "scale" : 
       [
         50.0,
@@ -407,7 +407,7 @@
       "components" : 
       [
         {
-          "collisionMask" : 4294967267,
+          "collisionMask" : 4294967279,
           "layerMask" : 1,
           "size" : 
           [
@@ -444,10 +444,10 @@
       "name" : "box_6",
       "position" : 
       [
-        0.0,
-        0.0
+        -100.00004577636719,
+        47.0
       ],
-      "rotation" : 0.0,
+      "rotation" : 38.959827423095703,
       "scale" : 
       [
         50.0,
@@ -497,10 +497,10 @@
       "name" : "box_7",
       "position" : 
       [
-        0.0,
-        0.0
+        -55.999996185302734,
+        116.99996948242188
       ],
-      "rotation" : 0.0,
+      "rotation" : 314.137451171875,
       "scale" : 
       [
         50.0,
@@ -513,7 +513,7 @@
       "components" : 
       [
         {
-          "collisionMask" : 4294967267,
+          "collisionMask" : 4294967265,
           "layerMask" : 1,
           "size" : 
           [
@@ -558,6 +558,50 @@
       [
         50.0,
         50.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "fileName" : "button_click.wav",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            0.87745100259780884,
+            0.56776243448257446,
+            0.56776243448257446,
+            1.0
+          ],
+          "isNoiseActive" : true,
+          "lifetime" : 5.0,
+          "noiseLevel" : 50.0,
+          "numParticles" : 1024,
+          "repeat" : true,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "GameObject11",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
       ]
     }
   ],

@@ -466,9 +466,9 @@ namespace //wrappers for drawing ui elements
 				ImGui::EndPopup();
 			}
 
-			Float2DragReset("Position", &transform.position.x, {0.f,0.f}, 0.05f);
-			Float2DragReset("Scale", &transform.scale.x, { 1.f,1.f }, 0.05f);
-			FloatDragReset("Rotation", &transform.rotation, 0.f, 0.1f);
+			Float2DragReset("Position","transform", &transform.position.x, {0.f,0.f}, 0.05f);
+			Float2DragReset("Scale","transform", &transform.scale.x, { 1.f,1.f }, 0.05f);
+			FloatDragReset("Rotation","transform", &transform.rotation, 0.f, 0.1f);
 
 			ImGui::Separator();
 		}

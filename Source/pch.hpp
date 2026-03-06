@@ -6,6 +6,7 @@
 
 //std
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cfloat>
 #include <chrono>
@@ -17,6 +18,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <initializer_list>
 #include <list>
 #include <memory>
 #include <mutex>
@@ -53,6 +55,7 @@
 #include "enginectx.hpp"
 
 #include "base_components.hpp"
+#include "imgui_helper.hpp"
 #include "json_parser_helper.hpp"
 #include "debug.hpp"
 #include "renderer.hpp"

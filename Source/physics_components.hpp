@@ -27,14 +27,7 @@ public:
     //events
     void OnStart() override;
 
-    bool Has_Layer(Layer layer) const;
-    void Add_Layer(Layer layer);
-    void Remove_Layer(Layer layer);
-    void Add_CollisionLayer(Layer layer);
-    void Remove_CollisionLayer(Layer layer);
-    bool CollidesWith(Layer layer)const;
-    bool CollidesWith(const Collider& other)const;
-    void DrawLayerInInspector();
+    void DrawBaseInspector();
 
     Collider(GameObject& go) : Component(go) {};
 };
