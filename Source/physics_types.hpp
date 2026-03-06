@@ -12,14 +12,6 @@ struct RaycastHit
 	uint32_t layerHit{};
 };
 
-struct CollisionInfo
-{
-	bool collided{ false };
-	float2 normal{ 0,0 };
-	float penetration{ 0 };
-	float2 contactPoint{ 0,0 };
-};
-
 struct AABB
 {
 	float2 min{};

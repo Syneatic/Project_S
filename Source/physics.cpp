@@ -56,6 +56,7 @@ namespace
 		}
 	};
 
+	std::unordered_set<u64, PairHash> _activeTriggerPairs;
 
 	inline CellCoord WorldToCell(float2 p, float cellSize)
 	{
@@ -271,9 +272,6 @@ namespace //OBB
 
 namespace
 {
-
-	//std::unordered_set<>
-
 	//helpers
 	bool CheckMask(u32 mask, u32 layer)
 	{
@@ -290,7 +288,7 @@ namespace
 
 			if (rb->useGravity)
 			{
-				rb->accumulatedForce += {0,-rb->gravity * 100};
+				rb->accumulatedForce += {0,-rb->gravity };
 			}
 
 			auto& t = rb->transform();
@@ -412,9 +410,50 @@ namespace
 			auto& box2 = static_cast<BoxCollider&>(*c2);
 
 			ContactManifold manifold;
-			if (OBBvsOBB(box1, box2, manifold))
-				_manifolds.push_back(manifold);
+			if (!OBBvsOBB(box1, box2, manifold)) continue;
+
+			if (c1->isTrigger || c2->isTrigger)
+			{
+				u32 a = std::min(pair.first, pair.second);
+				u32 b = std::max(pair.first, pair.second);
+				u64 key = (static_cast<u64>(a) << 32) | static_cast<u64>(b);
+
+				if (_activeTriggerPairs.insert(key).second) // newly entered
+				{
+					EventHandler::RaiseEvent<OnTriggerEvent>(
+						&c1->gameObject(),
+						&c2->gameObject());
+
+					EventHandler::RaiseEvent<OnTriggerEvent>(
+						&c2->gameObject(),
+						&c1->gameObject());
+				}
+				continue; // no collision response
+			}
+
+
+			_manifolds.push_back(manifold);
+
+			float2 contactPoint = manifold.contactPointCount > 0
+				? manifold.contactPoints[0]
+				: manifold.c1->obb.center;
+
+			// Raise for c1 (self) hit by c2 (other)
+			EventHandler::RaiseEvent<OnCollisionEvent>(
+				&c1->gameObject(),
+				&c2->gameObject(),
+				contactPoint,
+				manifold.normal);
+
+			// Raise for c2 (self) hit by c1 (other), normal flipped
+			EventHandler::RaiseEvent<OnCollisionEvent>(
+				&c2->gameObject(),
+				&c1->gameObject(),
+				contactPoint,
+				-manifold.normal);
+
 		}
+	
 	}
 
 	void ResolveCollision()
@@ -519,7 +558,6 @@ namespace
 		}
 	}
 
-
 }
 
 namespace Physics
@@ -547,6 +585,7 @@ namespace Physics
 		_rigidbodies.clear();
 		_broadphasePairs.clear();
 		_manifolds.clear();
+		_activeTriggerPairs.clear();
 	}
 
 	//CALL THIS AFTER REGISTERING ALL COLLIDERS!

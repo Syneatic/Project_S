@@ -41,10 +41,19 @@ struct OnCollisionEvent : public Event<OnCollisionEvent>
 	GameObject* other;
 	float2 normal;
 	float2 contactPoint;
-	float impulse;
 
-	OnCollisionEvent(GameObject* s, GameObject* o,float2 c, float2 n, float i)
-		: self(s), other(o),contactPoint(c), normal(n), impulse(i) { }
+	OnCollisionEvent(GameObject* s, GameObject* o,float2 c, float2 n)
+		: self(s), other(o),contactPoint(c), normal(n) { }
+};
+
+struct OnTriggerEvent : public Event<OnTriggerEvent>
+{
+	GameObject* self;
+	GameObject* other;
+
+	OnTriggerEvent(GameObject* s, GameObject* o)
+		: self(s), other(o) {
+	}
 };
 
 struct LevelTransitionEvent : public Event<LevelTransitionEvent>

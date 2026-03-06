@@ -61,8 +61,10 @@ void PlayerController::OnUpdate()
 
     float acceleration = maxSpeed / time;
 
-    if (input != 0.f)   rb->velocity.x += input * acceleration * EngineCTX::dt;
-    else {
+    if (input != 0.f)   
+        rb->velocity.x += input * acceleration * EngineCTX::dt;
+    else 
+    {
         float friction = acceleration;
         //friction
         if (rb->velocity.x > 0.f)
@@ -226,7 +228,7 @@ void RockController::Throw(const float2& playerPos)
 void RockController::OnImpact(const OnCollisionEvent& e)
 {
     float2 vel = normalize(rb->velocity) + (-e.normal);
-    rb->velocity = vel * e.impulse * 0.6f;
+    rb->velocity = vel * 0.6f;
 }
 
 void RockController::ResetRock()

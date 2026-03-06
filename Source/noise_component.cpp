@@ -131,11 +131,15 @@ void NoiseSource::Emit(const float2& emitPos)
 
 void NoiseSource::HandleHit(const OnCollisionEvent& e)
 {
-	// Only emit noise if the impact was significant
-	if (e.impulse > 45.0f)
-	{
+	RigidBody* rb1 = e.self->GetComponent<RigidBody>();
+	RigidBody* rb2 = e.other->GetComponent<RigidBody>();
+	float2 vel1 = rb1 ? rb1->velocity : float2{};
+	float2 vel2 = rb2 ? rb2->velocity : float2{};
+	float relativeSpeed = length(vel1 - vel2);
+
+	//only emit if the collision is strong enough, prevents noise from small collisions
+	if (relativeSpeed > 45.0f)
 		this->Emit();
-	}
 }
 
 
