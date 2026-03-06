@@ -16,6 +16,9 @@ public:
 
 class PlayerController : public Controller
 {
+private:
+    bool _isGrounded = false;
+
 public:
     f32 maxSpeed = 150.f;
     f32 jumpHeight = 60.f;

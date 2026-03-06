@@ -11,20 +11,9 @@
         },
         {
           "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : true,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
-        },
-        {
-          "type" : "AudioListener"
-        },
-        {
-          "jumpHeight" : 150.0,
-          "max_speed" : 250.0,
-          "time" : 1.0,
-          "type" : "PlayerController"
         },
         {
           "alignment" : 4,
@@ -43,7 +32,17 @@
           "type" : "SpriteRenderer"
         },
         {
+          "jumpHeight" : 150.0,
+          "max_speed" : 250.0,
+          "time" : 1.0,
+          "type" : "PlayerController"
+        },
+        {
+          "type" : "AudioListener"
+        },
+        {
           "collisionMask" : 4294967290,
+          "isTrigger" : false,
           "layerMask" : 1,
           "size" : 
           [
@@ -89,6 +88,7 @@
         },
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -118,6 +118,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -163,6 +164,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -208,6 +210,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -269,6 +272,7 @@
         },
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -298,6 +302,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -359,6 +364,7 @@
         },
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -388,6 +394,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -433,6 +440,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -478,6 +486,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -523,6 +532,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -568,6 +578,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -613,6 +624,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -658,6 +670,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -799,14 +812,6 @@
           "volume" : 1.0
         },
         {
-          "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : false,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
-        },
-        {
           "color" : 
           [
             0.7401961088180542,
@@ -823,9 +828,10 @@
           "type" : "NoiseSource"
         },
         {
-          "throwAngle" : 0.0,
-          "throwSpeed" : 300.0,
-          "type" : "RockController"
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -835,7 +841,7 @@
             0.47450980544090271,
             0.47450980544090271,
             0.47450980544090271,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -844,7 +850,13 @@
           "type" : "SpriteRenderer"
         },
         {
+          "throwAngle" : 0.0,
+          "throwSpeed" : 300.0,
+          "type" : "RockController"
+        },
+        {
           "collisionMask" : 4294967266,
+          "isTrigger" : false,
           "layerMask" : 8,
           "size" : 
           [
@@ -874,6 +886,7 @@
       [
         {
           "collisionMask" : 4294967282,
+          "isTrigger" : false,
           "layerMask" : 4,
           "size" : 
           [
@@ -902,7 +915,14 @@
       "components" : 
       [
         {
+          "enemyType" : 2,
+          "groundEmitInterval" : 1.5,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967283,
+          "isTrigger" : false,
           "layerMask" : 4,
           "size" : 
           [
@@ -912,12 +932,6 @@
           "type" : "BoxCollider"
         },
         {
-          "enemyType" : 2,
-          "groundEmitInterval" : 1.5,
-          "moveSpeed" : 100.0,
-          "type" : "EnemyController"
-        },
-        {
           "fileName" : "ore.mp3",
           "loop" : false,
           "pitch" : 1.0,
@@ -925,14 +939,6 @@
           "spatialize" : false,
           "type" : "AudioEmitter",
           "volume" : 1.0
-        },
-        {
-          "Affected By Gravity" : false,
-          "Gravity" : 15.0,
-          "Grounded" : false,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
         },
         {
           "color" : 
@@ -949,6 +955,12 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -1020,6 +1032,7 @@
             -15.0,
             15.0
           ],
+          "time" : 0.0,
           "type" : "ParticleEmitter"
         }
       ],
@@ -1042,7 +1055,14 @@
       "components" : 
       [
         {
+          "detectDistance" : 100.0,
+          "enemyType" : 1,
+          "groundEmitInterval" : 4.5,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967267,
+          "isTrigger" : false,
           "layerMask" : 4,
           "size" : 
           [
@@ -1052,12 +1072,6 @@
           "type" : "BoxCollider"
         },
         {
-          "detectDistance" : 100.0,
-          "enemyType" : 1,
-          "groundEmitInterval" : 4.5,
-          "type" : "EnemyController"
-        },
-        {
           "fileName" : "ore.mp3",
           "loop" : false,
           "pitch" : 1.0,
@@ -1065,14 +1079,6 @@
           "spatialize" : false,
           "type" : "AudioEmitter",
           "volume" : 1.0
-        },
-        {
-          "Affected By Gravity" : false,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
-          "Is Static" : false,
-          "Velocity" : 0.0,
-          "type" : "RigidBody"
         },
         {
           "color" : 
@@ -1089,6 +1095,12 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
         },
         {
           "alignment" : 4,

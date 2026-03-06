@@ -52,6 +52,11 @@ void PlayerController::OnUpdate()
 {
     if (!rb) return;
 
+	//we use a ray cast downwards to check if the player is grounded
+    RaycastHit hit;
+    //or use whatever range u want
+    _isGrounded = Physics::Raycast(_transform.position, float2(0.f, -1.f), _transform.scale.y / 2.f + 10.f, hit, 1 << 1);
+
     float input = 0.f;
 
 
@@ -80,20 +85,19 @@ void PlayerController::OnUpdate()
     float timerToReach = 2.f;
 
     //Once if space is pressed once
-    if (AEInputCheckTriggered(AEVK_SPACE) && rb->isGrounded)
+    if (AEInputCheckTriggered(AEVK_SPACE) && _isGrounded)
     {           
         //Set the space bar velocity to true
         //Check if the player reach the height (dt)
-        float jumpSpeed = std::sqrt(timerToReach * rb->gravity * jumpHeight);
-        rb->velocity.y = jumpSpeed;
-        rb->isGrounded = false;
+        float jumpSpeed = std::sqrt(timerToReach * Physics::gravity * jumpHeight);
+        rb->AddForce({0.f,jumpSpeed * 75.f});
     }
 
-    if (rb->HitProjectile) {
-        rockObject->active(false);
-        rb->HitProjectile = false;
-        Debug::Log("Rock retrieve");
-    }
+    //if (rb->HitProjectile) {
+    //    rockObject->active(false);
+    //    rb->HitProjectile = false;
+    //    Debug::Log("Rock retrieve");
+    //}
 
     //===================|Throw Mechanic|=====================
     if (AEInputCheckTriggered(AEVK_R))
@@ -109,11 +113,11 @@ void PlayerController::OnUpdate()
     }
 
     //==================|Collision with Enemy|=======================
-    if (rb->HitEnemy) Respawn();
-    if (rb->HitCheckPoint) {
-        spawnPoint = _transform.position;
-        rb->HitCheckPoint = true;
-    }
+    //if (rb->HitEnemy) Respawn();
+    //if (rb->HitCheckPoint) {
+    //    spawnPoint = _transform.position;
+    //    rb->HitCheckPoint = true;
+    //}
 }
 
 void PlayerController::OnDestroy()
@@ -124,7 +128,7 @@ void PlayerController::OnDestroy()
 void PlayerController::Respawn()
 {
     _transform.position = spawnPoint;
-    rb->HitEnemy = false;
+    //rb->HitEnemy = false;
 }
 
 void PlayerController::CopyFrom(Component* src)
@@ -221,8 +225,6 @@ void RockController::Throw(const float2& playerPos)
     _transform.position = playerPos + dir * 20.f;
     rb->velocity = dir * throwSpeed;
     rb->useGravity = true;
-
-    rb->isGrounded = false;
 }
 
 void RockController::OnImpact(const OnCollisionEvent& e)
@@ -352,8 +354,8 @@ void EnemyController::OnStart()
         rb->useGravity = true;
         rb->velocity = float2::zero();
 
-        if (rb->isGrounded)
-            rb->useGravity = false;
+        //if (rb->isGrounded)
+            //rb->useGravity = false;
     }
 }
 
@@ -402,7 +404,7 @@ void EnemyController::UpdateDrop() {
     uint32_t groundLayer = static_cast<uint32_t>(Layer::Environment);
     uint32_t playerLayer = static_cast<uint32_t>(Layer::Player);
 
-    if (hasDropped && rb->isGrounded) hasLanded = true;
+    //if (hasDropped && rb->isGrounded) hasLanded = true;
 
     if (Physics::Raycast(origin, dir, 500.f, hit, groundLayer) && !hasLanded) {
         if (groundEmitTimer >= groundEmitInterval) {

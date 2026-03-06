@@ -9,6 +9,8 @@ class RigidBody;
 
 namespace Physics
 {
+	inline float gravity = 9.81f * 100.f;
+
 	//needs to be registered at start of scene
 	void RegisterCollider(Collider* c);
 	void RegisterRigidBody(RigidBody* rb);

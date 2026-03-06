@@ -1,7 +1,7 @@
 #include "gameobject.hpp"
 #include "physics_components.hpp"
 #include "physics_types.hpp"
-
+#include "physics.hpp"
 
 //collections
 namespace
@@ -288,7 +288,7 @@ namespace
 
 			if (rb->useGravity)
 			{
-				rb->accumulatedForce += {0,-rb->gravity };
+				rb->accumulatedForce += {0, -Physics::gravity };
 			}
 
 			auto& t = rb->transform();

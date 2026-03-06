@@ -76,7 +76,6 @@ void Collider::DrawBaseInspector()
     }
     ImGui::SeparatorText("Properties");
     ImGui::Checkbox("IsTrigger##collider", &isTrigger);
-
 }
 
 // ===== COLLIDER DEFINITIONS =====
@@ -134,34 +133,29 @@ std::unique_ptr<Component> BoxCollider::Clone(GameObject& go)
 // ===== RIGIDBODY DEFINITIONS =====
 void RigidBody::DrawInInspector()
 { 
-	ImGui::Checkbox("Is Static", &isStatic);
+	ImGui::Checkbox("IsStatic", &isStatic);
+    ImGui::Checkbox("isKinematic", &isKinematic);
 	ImGui::Checkbox("Affected By Gravity", &useGravity);
-	ImGui::Checkbox("Grounded", &isGrounded);
-	ImGui::DragFloat("Gravity", &gravity, 0.1f);
-	ImGui::DragFloat2("Velocity", &velocity.x, 0.1f);
+	//ImGui::DragFloat2("Velocity", &velocity.x, 0.1f);
 } 
 
 void RigidBody::Serialize(Json::Value& outComp) const
 {
 	outComp["Is Static"] = isStatic;
+	outComp["isKinematic"] = isKinematic;
 	outComp["Affected By Gravity"] = useGravity;
-	outComp["Grounded"] = isGrounded;
-	outComp["Gravity"] = gravity;
-	outComp["Velocity"] = velocity.x;
 }
 
 void RigidBody::Deserialize(const Json::Value& compObj)
 {
 	if (compObj.isMember("Is Static") && compObj["Is Static"].isBool())
 		isStatic = compObj["Is Static"].asBool();
+
+    if (compObj.isMember("isKinematic") && compObj["isKinematic"].isBool())
+        isKinematic = compObj["isKinematic"].asBool();
+
 	if (compObj.isMember("Affected By Gravity") && compObj["Affected By Gravity"].isBool())
 		useGravity = compObj["Affected By Gravity"].asBool();
-	if (compObj.isMember("Grounded") && compObj["Grounded"].isBool())
-		isGrounded = compObj["Grounded"].asBool();
-	if (compObj.isMember("Gravity") && compObj["Gravity"].isNumeric())
-		gravity = compObj["Gravity"].asFloat();
-	if (compObj.isMember("Velocity") && compObj["Velocity"].isNumeric())
-		velocity.x = compObj["Velocity"].asFloat();
 }
 
 void RigidBody::OnStart()
@@ -169,28 +163,13 @@ void RigidBody::OnStart()
     Physics::RegisterRigidBody(this);
 }
 
-void RigidBody::Clear_Forces()
-{ 
-	if (isStatic) 
-	{ 
-		velocity = float2::zero(); 
-	} 
-} 
-
 void RigidBody::CopyFrom(Component* src)
 {
     auto s = dynamic_cast<RigidBody*>(src);
     if (!s) return;
     useGravity = s->useGravity;
     isStatic = s->isStatic;
-    isGrounded = s->isGrounded;
-    HitEnvironment = s->HitEnvironment;
-    HitEnemy = s->HitEnemy;
-    HitCheckPoint = s->HitCheckPoint;
-    HitProjectile = s->HitProjectile;
-    gravity = s->gravity;
-    terminalVelocity = s->terminalVelocity;
-    velocity = s->velocity;
+	isKinematic = s->isKinematic;
 }
 
 std::unique_ptr<Component> RigidBody::Clone(GameObject& go)

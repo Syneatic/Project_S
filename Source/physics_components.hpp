@@ -51,33 +51,27 @@ public:
 class RigidBody : public Component
 { 
 public:
-	bool useGravity{ false };
-    bool isKinematic{ false };
-    bool detectCollisions{ false };
-
 	bool isStatic{ false };
-	bool isGrounded{ false };
-	float gravity{ 9.8f };
-	float terminalVelocity{ 12.0f };
+    bool isKinematic{ false };
+	bool useGravity{ false };
+
 	float2 velocity{ 0.0f,0.0f };
     float2 accumulatedForce{};
-
-    bool HitEnvironment{ false };
-    bool HitEnemy{ false };
-    bool HitCheckPoint{ false };
-    bool HitProjectile{ false };
 
 	void DrawInInspector()override;
 	void Serialize(Json::Value& outComp) const override;
     void Deserialize(const Json::Value& compObj) override;
 
-
     void OnStart() override;
-    void Clear_Forces();
 
 	const std::string name() const override { return "RigidBody"; }
 
     RigidBody(GameObject& go) : Component(go) {};
     void CopyFrom(Component* src) override;
     std::unique_ptr<Component> Clone(GameObject& go) override;
+
+    //rigidbody interfaces
+public:
+	void AddForce(const float2& force) { accumulatedForce += force; }
+
 };
