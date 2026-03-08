@@ -25,7 +25,11 @@ struct float2
 
 	float2& operator/=(const float rhs);
 
+	float2 operator/(const float rhs);
+
 	float2 operator* (const float rhs) const;
+
+	float2 operator* (const float2 rhs) const;
 
 	static float2 up()		{ return float2(0.f , 1.f); }
 	static float2 down()	{ return float2(0.f ,-1.f); }

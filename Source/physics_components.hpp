@@ -1,6 +1,6 @@
 #pragma once 
 
-struct Collision;
+#include "physics_types.hpp"
 
 enum class Layer : uint32_t
 {
@@ -18,39 +18,18 @@ const char* LayerToString(Layer layer);
 class Collider : public Component
 {
 public:
-    uint32_t layerMask{ static_cast<uint32_t>(Layer::Nothing) };
-    uint32_t collisionMask{ 0xFFFFFFFF };
+    bool isTrigger{false};
+    u32 layer{ static_cast<u32>(Layer::Nothing) }; //layer that it is on
+    u32 collisionMask{ 0xFFFFFFFF }; //layers to collide with
+    AABB aabb;
+    OBB obb;
 
-    using CollisionCallback = std::function<void(const Collision&)>;
-    std::vector<CollisionCallback> onCollisionListeners;
-
+    //events
     void OnStart() override;
-    void OnCollision(const Collision& data);
 
-    bool Has_Layer(Layer layer) const;
-    void Add_Layer(Layer layer);
-    void Remove_Layer(Layer layer);
-    void Add_CollisionLayer(Layer layer);
-    void Remove_CollisionLayer(Layer layer);
-    bool CollidesWithLayer(Layer layer)const;
-    bool ShouldCollide(const Collider& other)const;
-    void DrawLayerInInspector();
+    void DrawBaseInspector();
 
     Collider(GameObject& go) : Component(go) {};
-};
-
-class CircleCollider : public Collider
-{
-public:
-    f32 radius{ 1.f };
-
-    void DrawInInspector() override;
-    void Serialize(Json::Value& outComp) const override;
-    void Deserialize(const Json::Value& compObj) override;
-
-    const std::string name() const override { return "CircleCollider"; }
-
-    CircleCollider(GameObject& go) : Collider(go) {};
 };
 
 class BoxCollider : public Collider
@@ -65,31 +44,34 @@ public:
     const std::string name() const override { return "BoxCollider"; }
 
     BoxCollider(GameObject& go) : Collider(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
 class RigidBody : public Component
 { 
 public:
-	bool Affected_By_Gravity{ false };
-	bool Is_Static{ false };
-	bool Is_Grounded{ false };
-    bool HitEnvironment{ false };
-    bool HitEnemy{ false };
-    bool HitCheckPoint{ false };
-    bool HitProjectile{ false };
-	float gravity{ 9.8f };
-	float terminalVelocity{ 12.0f };
+	bool isStatic{ false };
+    bool isKinematic{ false };
+	bool useGravity{ false };
+
 	float2 velocity{ 0.0f,0.0f };
+    float2 accumulatedForce{};
 
 	void DrawInInspector()override;
 	void Serialize(Json::Value& outComp) const override;
     void Deserialize(const Json::Value& compObj) override;
 
-
     void OnStart() override;
-    void Clear_Forces();
 
 	const std::string name() const override { return "RigidBody"; }
 
     RigidBody(GameObject& go) : Component(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
+
+    //rigidbody interfaces
+public:
+	void AddForce(const float2& force) { accumulatedForce += force; }
+
 };

@@ -5,6 +5,7 @@
 #include "audio_components.hpp"
 #include "noise_component.hpp"
 #include "event.hpp"
+#include "physics_types.hpp"
 
 
 void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit)
@@ -24,7 +25,7 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 	constexpr float MAX_SWEEP = 1000.f;
 	sweepDist = std::min(sweepDist, MAX_SWEEP);
 
-	Physics::RaycastHit hit;
+	RaycastHit hit;
 	if (Physics::Raycast(pos, dir, sweepDist, hit, mask))
 	{
 		//reflect particle
@@ -130,11 +131,15 @@ void NoiseSource::Emit(const float2& emitPos)
 
 void NoiseSource::HandleHit(const OnCollisionEvent& e)
 {
-	// Only emit noise if the impact was significant
-	if (e.impulse > 45.0f)
-	{
+	RigidBody* rb1 = e.self->GetComponent<RigidBody>();
+	RigidBody* rb2 = e.other->GetComponent<RigidBody>();
+	float2 vel1 = rb1 ? rb1->velocity : float2{};
+	float2 vel2 = rb2 ? rb2->velocity : float2{};
+	float relativeSpeed = length(vel1 - vel2);
+
+	//only emit if the collision is strong enough, prevents noise from small collisions
+	if (relativeSpeed > 45.0f)
 		this->Emit();
-	}
 }
 
 
@@ -204,4 +209,29 @@ void NoiseSource::Deserialize(const Json::Value& compObj)
 	if (compObj.isMember("repeatInterval") && compObj["repeatInterval"].isNumeric())
 		repeatInterval = compObj["repeatInterval"].asFloat();
 
+}
+
+void NoiseSource::CopyFrom(Component* src)
+{
+	auto s = dynamic_cast<NoiseSource*>(src);
+	if (!s) return;
+
+	numParticles = s->numParticles;
+	speed = s->speed;
+	lifetime = s->lifetime;
+	color = s->color;
+
+	//properties
+	isNoiseActive = s->isNoiseActive;
+	noiseLevel = s->noiseLevel;
+	repeat = s->repeat;
+	repeatInterval = s->repeatInterval;
+	repeatTimer = s->repeatTimer;
+}
+
+std::unique_ptr<Component> NoiseSource::Clone(GameObject& go)
+{
+	auto n = std::make_unique<NoiseSource>(go);
+	n.get()->CopyFrom(this);
+	return n;
 }

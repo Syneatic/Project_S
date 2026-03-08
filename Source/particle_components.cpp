@@ -184,29 +184,29 @@ void ParticleEmitter::DrawInInspector()
 	switch (spawnShape)
 	{
 	case SpawnShape::RECT:
-		Float2DragReset("Half Width", &rect.x, {50.f,50.f});
+		Float2DragReset("Half Width", "particle", &rect.x, { 50.f,50.f });
 		break;
 	case SpawnShape::CIRCLE:
-		Float2DragReset("Radius", &radius.x, { 0.f,50.f });
+		Float2DragReset("Radius", "particle", &radius.x, { 0.f,50.f });
 		break;
 	case SpawnShape::LINE:
-		FloatDragReset("Length", &spawnLineLength, 100.f);
+		FloatDragReset("Length", "particle", &spawnLineLength, 100.f);
 		break;
 	default: break;
 	}
 
 	ImGui::SeparatorText("Emission");
-	FloatDrag("Spawn Rate", &spawnRate);
+	FloatDrag("Spawn Rate","particle", &spawnRate);
 	ImGui::TextUnformatted("Burst Mode"); ImGui::Checkbox("##burst", &isBurst);
-	FloatDragReset("Warm Up Time", &time,0.f);
+	FloatDragReset("Warm Up Time","particle", &time,0.f);
 
 	ImGui::SeparatorText("Particle Properties");
 
-	Float2DragReset("Speed [MIN | MAX]", &speed.x, { 150.f,250.f });
-	Float2DragReset("Lifetime [MIN | MAX]", &lifetime.x, { 1.f,3.f});
-	Float2DragReset("Size [MIN | MAX]", &size.x, { 3.f,8.f });
-	Float2DragReset("Spread [MIN | MAX]", &spread.x, { 0.f,0.f });
-	Float2DragReset("Rotation [MIN | MAX]", &rotation.x, { 0.f,0.f });
+	Float2DragReset("Speed [MIN | MAX]", "particle", &speed.x, { 150.f,250.f });
+	Float2DragReset("Lifetime [MIN | MAX]", "particle", &lifetime.x, { 1.f,3.f });
+	Float2DragReset("Size [MIN | MAX]", "particle", &size.x, { 3.f,8.f });
+	Float2DragReset("Spread [MIN | MAX]", "particle", &spread.x, { 0.f,0.f });
+	Float2DragReset("Rotation [MIN | MAX]", "particle", &rotation.x, { 0.f,0.f });
 ;
 	ImGui::TextUnformatted("Color A");
 	float ca[4]{ colorA.r, colorA.g, colorA.b, colorA.a };
@@ -217,6 +217,42 @@ void ParticleEmitter::DrawInInspector()
 	if (ImGui::ColorEdit4("##colorB", cb)) colorB = Color(cb);
 }
 
+void ParticleEmitter::CopyFrom(Component* src)
+{
+	auto s = dynamic_cast<ParticleEmitter*>(src);
+	if (!s) return;
+
+	spawnShape = s->spawnShape;
+
+	//rect half-extent
+	rect = s->rect;
+
+	//circ
+	radius = s->radius;
+
+	//line
+	spawnLineLength = s->spawnLineLength;
+
+	spawnRate = s->spawnRate; // particle/sec
+	isBurst = s->isBurst; //one time emit
+
+	time = s->time;
+	speed = s->speed;
+	lifetime = s->lifetime;
+	size = s->size;
+	spread = s->spread;
+	rotation = s->rotation;
+
+	colorA = s->colorA;
+	colorB = s->colorB;
+}
+
+std::unique_ptr<Component> ParticleEmitter::Clone(GameObject& go)
+{
+	auto n = std::make_unique<ParticleEmitter>(go);
+	n.get()->CopyFrom(this);
+	return n;
+}
 
 float2 ParticleEmitter::SampleSpawnPosition() const
 {

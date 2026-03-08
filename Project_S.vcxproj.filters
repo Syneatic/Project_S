@@ -356,6 +356,9 @@
     <ClInclude Include="Source\level_transition.hpp">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\physics_types.hpp">
+      <Filter>Header Files\datatypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Extern\jsoncpp\src\json_valueiterator.inl">

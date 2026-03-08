@@ -355,17 +355,27 @@ void SpriteRenderer::OnDestroy()
     Graphics::RenderData data{};
 }
 
-
-void MeshRenderer::Serialize(Json::Value& outComp) const
+void SpriteRenderer::CopyFrom(Component* src)
 {
-    Renderer::Serialize(outComp);
-    //save mesh here somehow
+    auto s = dynamic_cast<SpriteRenderer*>(src);
+    if (!s) return;
+
+    fileName = s->fileName;
+    blendMode = s->blendMode;
+    renderMode = s->renderMode;
+    meshDrawMode = s->meshDrawMode;
+    renderLayer = s->renderLayer;
+    alignment = s->alignment;
+    color = s->color;
+    sortOrder = s->sortOrder;
+    isScreenSpace = s->isScreenSpace;
 }
 
-void MeshRenderer::Deserialize(const Json::Value& compObj)
+std::unique_ptr<Component> SpriteRenderer::Clone(GameObject& go)
 {
-    Renderer::Deserialize(compObj);
-    //load mesh here
+    auto n = std::make_unique<SpriteRenderer>(go);
+    n.get()->CopyFrom(this);
+    return n;
 }
 
 
@@ -455,4 +465,29 @@ void TextRenderer::Deserialize(const Json::Value& compObj)
 
     //read texture from file here
 }
+
+void TextRenderer::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<TextRenderer*>(src);
+    if (!s) return;
+
+    fileName = s->fileName;
+    blendMode = s->blendMode;
+    renderMode = s->renderMode;
+    meshDrawMode = s->meshDrawMode;
+    renderLayer = s->renderLayer;
+    alignment = s->alignment;
+    color = s->color;
+    sortOrder = s->sortOrder;
+    isScreenSpace = s->isScreenSpace;
+    text = s->text;
+}
+
+std::unique_ptr<Component> TextRenderer::Clone(GameObject& go)
+{
+    auto n = std::make_unique<TextRenderer>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
 // ===== TEXT_RENDERER DEF =====

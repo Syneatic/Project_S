@@ -29,12 +29,8 @@ namespace SceneIO
 
         const std::string type = compObj["type"].asString();
 
-        if (type == "CircleCollider")
-        {
-            auto& c = go.AddComponent<CircleCollider>();
-			c.Deserialize(compObj);
-        }
-        else if (type == "BoxCollider")
+
+        if (type == "BoxCollider")
         {
             auto& c = go.AddComponent<BoxCollider>();
             c.Deserialize(compObj);

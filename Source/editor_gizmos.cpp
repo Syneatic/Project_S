@@ -29,7 +29,6 @@ namespace //helpers
 
 	float2 startMousePos{};
 	float  startMouseAngle{};
-	float2 pivot{};         // shared pivot (average world pos) at drag start
 
 	float2 mouseWorld{};
 	bool   isMouseDown{};

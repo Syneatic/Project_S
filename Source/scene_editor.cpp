@@ -18,6 +18,15 @@
 
 namespace
 {
+	void ReadInput(EditorScene& escene, Scene& scene)
+	{
+		if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckTriggered(AEVK_S))
+		{
+			Editor::SaveScene(scene);
+			Debug::Log("Scene saved!");
+		}
+	}
+
 	void UpdateGO(GameObject& go)
 	{
 		for (auto& [type, comp] : go.componentMap())
@@ -43,6 +52,15 @@ namespace
 	}
 }
 
+namespace Editor
+{
+	void SaveScene(Scene& scene)
+	{
+		SceneIO::SerializeScene(scene);
+	}
+}
+
+
 void EditorScene::RefreshScene()
 {
 	Editor::selectedObjects.clear(); //reset index selection
@@ -52,8 +70,7 @@ void EditorScene::RefreshScene()
 void EditorScene::OnEnter()
 {
 	//start on prototype for testing
-	SceneIO::DeserializeScene(loadedScene, "PrototypeLvl");
-
+	SceneIO::DeserializeScene(loadedScene, "physics_test");
 
 	RefreshScene();
 	ParticleSystem::Initialize();
@@ -62,6 +79,7 @@ void EditorScene::OnEnter()
 
 void EditorScene::OnUpdate()
 {
+	ReadInput(*this,loadedScene);
 	CameraSystem::OnUpdate(); // Check input and update camera matrix
 
 	AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
@@ -69,7 +87,6 @@ void EditorScene::OnUpdate()
 
 	//draw gizmos last
 	Editor::DrawGizmos();
-	//Gizmos(); //gizmos execution
 
 	//uniquely for editor only
 	for (auto& pgo : loadedScene.gameObjectList())
@@ -105,7 +122,6 @@ void EditorScene::OnExit()
 {
 	//unload everything
 	Graphics::Flush();
-	Physics::FlushColliders();
-	Physics::FlushRigidBody();
+	Physics::Flush();
 	CameraSystem::OnExit();
 }

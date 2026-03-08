@@ -1,6 +1,6 @@
+#include "physics.hpp"
 #include "physics_components.hpp"
 #include "base_components.hpp"
-#include "physics.hpp"
 
 const char* LayerToString(Layer layer)
 {
@@ -22,149 +22,64 @@ void Collider::OnStart()
     Physics::RegisterCollider(this);
 }
 
-void Collider::OnCollision(const Collision& data)
+void Collider::DrawBaseInspector()
 {
-    for (const auto& callback : onCollisionListeners) 
+    ImGui::SeparatorText("Collision Layer");
+    const std::array<const char*, 6> layerNames[] =
     {
-        callback(data);
-    }
-}
-
-
-bool Collider::Has_Layer(Layer layer) const
-{
-    return (layerMask & static_cast<uint32_t>(layer)) != 0;
-}
-
-void Collider::Add_Layer(Layer layer)
-{
-    layerMask |= static_cast<uint32_t>(layer);
-}
-
-void Collider::Remove_Layer(Layer layer)
-{
-    layerMask &= ~static_cast<uint32_t>(layer);
-}
-
-void Collider::Add_CollisionLayer(Layer layer)
-{
-    collisionMask |= static_cast<uint32_t>(layer);
-}
-
-void Collider::Remove_CollisionLayer(Layer layer)
-{
-    collisionMask &= ~static_cast<uint32_t>(layer);
-}
-
-bool Collider::CollidesWithLayer(Layer layer)const
-{
-    return (collisionMask & static_cast<uint32_t>(layer));
-}
-
-bool Collider::ShouldCollide(const Collider& other)const
-{
-    return (collisionMask & other.layerMask);
-}
-
-void Collider::DrawLayerInInspector()
-{
-    ImGui::Separator();
-    ImGui::Text("I am (Layer):");
-
-    const char* layerNames[] = {
-    "Nothing", "Player", "Environment", "Enemy", "Projectile", "CheckPoint"
-    };
-
-    Layer layers[] = {
-    Layer::Nothing, Layer::Player, Layer::Environment,
-    Layer::Enemy, Layer::Projectile, Layer::CheckPoint
+        "Nothing",
+        "Player",
+        "Environment",
+        "Enemy",
+        "Projectile",
+        "CheckPoint"
     };
 
     int currentLayer = 0;
-    for (int i = 0; i < 6; i++)
+    for (int i = 1; i < (int)layerNames->size(); i++)
     {
-        if (Has_Layer(layers[i]))
+        if (layer == (1u << (i - 1)))
         {
             currentLayer = i;
             break;
         }
     }
 
-    if (ImGui::Combo("##Layer", &currentLayer, layerNames, 6))
+    ImGui::TextUnformatted("Layer");
+    if (ImGui::Combo("##Layer", &currentLayer, layerNames->data(), layerNames->size()))
     {
-        layerMask = static_cast<uint32_t>(layers[currentLayer]);
+        layer = static_cast<u32>(currentLayer == 0 ? 0 : 1 << (currentLayer - 1));
     }
-
-
     ImGui::Separator();
 
-    ImGui::Text("I collide with (Mask):");
 
-    bool collidesPlayer = CollidesWithLayer(Layer::Player);
-    bool collidesEnemy = CollidesWithLayer(Layer::Enemy);
-    bool collidesEnvironment = CollidesWithLayer(Layer::Environment);
-    bool collidesProjectile = CollidesWithLayer(Layer::Projectile);
-    bool collidesCheckPoint = CollidesWithLayer(Layer::CheckPoint);
-
-
-    if (ImGui::Checkbox("PlayerMask", &collidesPlayer))
+    ImGui::TextUnformatted("Collision Mask");
+    if (ImGui::BeginCombo("##collisionmask", "Collision Mask"))
     {
-        if (collidesPlayer) Add_CollisionLayer(Layer::Player);
-        else Remove_CollisionLayer(Layer::Player);
-    }
+        for (int i = 0; i < layerNames->size(); i++)
+        {
+            u32 bit = (i == 0) ? 0u : (1u << (i - 1));
+            bool selected = (i == 0) ? (collisionMask == 0) : (collisionMask & bit) != 0;
 
-    if (ImGui::Checkbox("EnemyMask", &collidesEnemy))
-    {
-        if (collidesEnemy) Add_CollisionLayer(Layer::Enemy);
-        else Remove_CollisionLayer(Layer::Enemy);
-    }
+            if (ImGui::Selectable(layerNames->data()[i], selected,ImGuiSelectableFlags_NoAutoClosePopups))
+            {
+                if (i == 0)
+                    collisionMask = 0;
+                else
+                    collisionMask ^= bit;
+            }
 
-    if (ImGui::Checkbox("EnvironmentMask", &collidesEnvironment))
-    {
-        if (collidesEnvironment) Add_CollisionLayer(Layer::Environment);
-        else Remove_CollisionLayer(Layer::Environment);
+            if (selected)
+                ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
     }
-
-    if (ImGui::Checkbox("ProjectileMask", &collidesProjectile))
-    {
-        if (collidesProjectile) Add_CollisionLayer(Layer::Projectile);
-        else Remove_CollisionLayer(Layer::Projectile);
-    }
-
-    if (ImGui::Checkbox("CheckPointMask", &collidesCheckPoint))
-    {
-        if (collidesProjectile) Add_CollisionLayer(Layer::CheckPoint);
-        else Remove_CollisionLayer(Layer::CheckPoint);
-    }
+    ImGui::SeparatorText("Properties");
+    ImGui::Checkbox("IsTrigger##collider", &isTrigger);
 }
+
 // ===== COLLIDER DEFINITIONS =====
 
-
-
-
-// ===== CIRCLE COLLIDER DEFINITIONS =====
-void CircleCollider::DrawInInspector()
-{
-    DrawLayerInInspector();
-    ImGui::Separator();
-    ImGui::TextUnformatted("Size");
-    ImGui::DragFloat("##circlecollider_radius", &radius, 0.1f);
-}
-
-void CircleCollider::Serialize(Json::Value& outComp) const
-{
-    outComp["radius"] = radius;
-    outComp["layerMask"] = layerMask;
-    outComp["collisionMask"] = collisionMask;
-}
-
-void CircleCollider::Deserialize(const Json::Value& compObj)
-{
-    if (compObj.isMember("radius") && compObj["radius"].isNumeric()) radius = compObj["radius"].asFloat();
-    if (compObj.isMember("layerMask")) layerMask = compObj["layerMask"].asUInt();
-    if (compObj.isMember("collisionMask")) collisionMask = compObj["collisionMask"].asUInt();
-}
-// ===== CIRCLE COLLIDER DEFINITIONS =====
 
 
 
@@ -172,25 +87,44 @@ void CircleCollider::Deserialize(const Json::Value& compObj)
 // ===== BOX COLLIDER DEFINITIONS =====
 void BoxCollider::DrawInInspector()
 {
-    DrawLayerInInspector();
-    ImGui::Separator();
+    DrawBaseInspector();
     ImGui::TextUnformatted("Size");
     ImGui::DragFloat2("##boxcollider_size", &size.x, 0.1f);
 }
 
 void BoxCollider::Serialize(Json::Value& outComp) const
 {
+    outComp["isTrigger"] = isTrigger;
     outComp["size"] = WriteFloat2(size);
-    outComp["layerMask"] = layerMask;
+    outComp["layerMask"] = layer;
     outComp["collisionMask"] = collisionMask;
 }
 
 void BoxCollider::Deserialize(const Json::Value& compObj)
 {
+    isTrigger = compObj["isTrigger"].asBool();
     if (compObj.isMember("size")) ReadFloat2(compObj["size"], size);
-    if (compObj.isMember("layerMask")) layerMask = compObj["layerMask"].asUInt();
+    if (compObj.isMember("layerMask")) layer = compObj["layerMask"].asUInt();
     if (compObj.isMember("collisionMask")) collisionMask = compObj["collisionMask"].asUInt();
 }
+
+void BoxCollider::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<BoxCollider*>(src);
+    if (!s) return;
+    isTrigger = s->isTrigger;
+    layer = s->layer;
+    collisionMask = s->collisionMask;
+    size = s->size;
+}
+
+std::unique_ptr<Component> BoxCollider::Clone(GameObject& go)
+{
+    auto n = std::make_unique<BoxCollider>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
 // ===== BOX COLLIDER DEFINITIONS =====
 
 
@@ -199,34 +133,29 @@ void BoxCollider::Deserialize(const Json::Value& compObj)
 // ===== RIGIDBODY DEFINITIONS =====
 void RigidBody::DrawInInspector()
 { 
-	ImGui::Checkbox("Is Static", &Is_Static);
-	ImGui::Checkbox("Affected By Gravity", &Affected_By_Gravity);
-	ImGui::Checkbox("Grounded", &Is_Grounded);
-	ImGui::DragFloat("Gravity", &gravity, 0.1f);
-	ImGui::DragFloat2("Velocity", &velocity.x, 0.1f);
+	ImGui::Checkbox("IsStatic", &isStatic);
+    ImGui::Checkbox("isKinematic", &isKinematic);
+	ImGui::Checkbox("Affected By Gravity", &useGravity);
+	//ImGui::DragFloat2("Velocity", &velocity.x, 0.1f);
 } 
 
 void RigidBody::Serialize(Json::Value& outComp) const
 {
-	outComp["Is Static"] = Is_Static;
-	outComp["Affected By Gravity"] = Affected_By_Gravity;
-	outComp["Grounded"] = Is_Grounded;
-	outComp["Gravity"] = gravity;
-	outComp["Velocity"] = velocity.x;
+	outComp["Is Static"] = isStatic;
+	outComp["isKinematic"] = isKinematic;
+	outComp["Affected By Gravity"] = useGravity;
 }
 
 void RigidBody::Deserialize(const Json::Value& compObj)
 {
 	if (compObj.isMember("Is Static") && compObj["Is Static"].isBool())
-		Is_Static = compObj["Is Static"].asBool();
+		isStatic = compObj["Is Static"].asBool();
+
+    if (compObj.isMember("isKinematic") && compObj["isKinematic"].isBool())
+        isKinematic = compObj["isKinematic"].asBool();
+
 	if (compObj.isMember("Affected By Gravity") && compObj["Affected By Gravity"].isBool())
-		Affected_By_Gravity = compObj["Affected By Gravity"].asBool();
-	if (compObj.isMember("Grounded") && compObj["Grounded"].isBool())
-		Is_Grounded = compObj["Grounded"].asBool();
-	if (compObj.isMember("Gravity") && compObj["Gravity"].isNumeric())
-		gravity = compObj["Gravity"].asFloat();
-	if (compObj.isMember("Velocity") && compObj["Velocity"].isNumeric())
-		velocity.x = compObj["Velocity"].asFloat();
+		useGravity = compObj["Affected By Gravity"].asBool();
 }
 
 void RigidBody::OnStart()
@@ -234,11 +163,20 @@ void RigidBody::OnStart()
     Physics::RegisterRigidBody(this);
 }
 
-void RigidBody::Clear_Forces()
-{ 
-	if (Is_Static) 
-	{ 
-		velocity = float2::zero(); 
-	} 
-} 
+void RigidBody::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<RigidBody*>(src);
+    if (!s) return;
+    useGravity = s->useGravity;
+    isStatic = s->isStatic;
+	isKinematic = s->isKinematic;
+}
+
+std::unique_ptr<Component> RigidBody::Clone(GameObject& go)
+{
+    auto n = std::make_unique<RigidBody>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
 // ===== RIGIDBODY DEFINITIONS =====

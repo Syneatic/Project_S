@@ -336,6 +336,13 @@ namespace //wrappers for drawing ui elements
 
 		if (ImGui::BeginMenu("File##mainmenu"))
 		{
+			if (ImGui::MenuItem("New##mainmenu"))
+			{
+				escene.RefreshScene();
+				scene.name("NEW_SCENE");
+				scene.gameObjectList().clear();
+			}
+
 			if (ImGui::MenuItem("Save##mainmenu"))
 			{
 				SceneIO::SerializeScene(scene);
@@ -405,6 +412,17 @@ namespace //wrappers for drawing ui elements
 					}
 					Editor::selectedObjects.clear();
 				}
+
+				if (ImGui::MenuItem("Duplicate Selected"))
+				{
+					for (auto go : Editor::selectedObjects)
+					{
+						auto clone = GameObject::Clone(*go);
+						//attach to scene
+						scene.gameObjectList().push_back(std::move(clone));
+					}
+					Editor::selectedObjects.clear();
+				}
 			}
 	
 			ImGui::EndPopup();
@@ -413,7 +431,7 @@ namespace //wrappers for drawing ui elements
 		ImGui::End();
 	}
 
-	void BuildInspectorWindow(Scene& scene)
+	void BuildInspectorWindow(Scene& /*scene*/)
 	{
 		ImGui::SetNextWindowSizeConstraints(ImVec2(320.f, 100.f), ImVec2(FLT_MAX, FLT_MAX));
 		ImGui::Begin("Inspector##window");
@@ -426,26 +444,42 @@ namespace //wrappers for drawing ui elements
 		//iterate through each component and display its properties here
 		//name text box
 		auto& transform = selectedObj.transform();
-		auto& wtransform = selectedObj.worldTransform();
+		//auto& wtransform = selectedObj.worldTransform();
 
 		NameInputText(selectedObj.name());
 
 		//draw transform
 		if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			Float2DragReset("Position", &transform.position.x, {0.f,0.f}, 0.05f);
-			Float2DragReset("Scale", &transform.scale.x, { 1.f,1.f }, 0.05f);
-			FloatDragReset("Rotation", &transform.rotation, 0.f, 0.1f);
+			if (ImGui::BeginPopupContextItem())
+			{
+				if (ImGui::MenuItem("Copy Transform"))
+				{
+					Editor::copiedTransform = transform;
+				}
+
+				if (ImGui::MenuItem("Paste Transform"))
+				{
+					transform = Editor::copiedTransform;
+				}
+				
+				ImGui::EndPopup();
+			}
+
+			Float2DragReset("Position","transform", &transform.position.x, {0.f,0.f}, 0.05f);
+			Float2DragReset("Scale","transform", &transform.scale.x, { 1.f,1.f }, 0.05f);
+			FloatDragReset("Rotation","transform", &transform.rotation, 0.f, 0.1f);
+
 			ImGui::Separator();
 		}
 
-		if (ImGui::CollapsingHeader("World Transform", ImGuiTreeNodeFlags_DefaultOpen))
+		/*if (ImGui::CollapsingHeader("World Transform", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			Float2DragReset("Position", &wtransform.position.x, { 0.f,0.f }, 0.05f);
 			Float2DragReset("Scale", &wtransform.scale.x, { 1.f,1.f }, 0.05f);
 			FloatDragReset("Rotation", &wtransform.rotation, 0.f, 0.1f);
 			ImGui::Separator();
-		}
+		}*/
 
 		//drawing of component elements
 		const auto& comps = selectedObj.componentMap();
@@ -487,12 +521,31 @@ namespace //wrappers for drawing ui elements
 			// right click remove
 			if (ImGui::BeginPopupContextItem())
 			{
+				if (ImGui::MenuItem("Copy Component"))
+				{
+					Editor::copiedComponent = compPtr.get();
+					//Editor::copiedComponentType = type;
+					ImGui::EndPopup();
+					break;
+				}
+
+				if (Editor::copiedComponent)
+				{
+					if (ImGui::MenuItem("Paste Component"))
+					{
+						compPtr->CopyFrom(Editor::copiedComponent);
+						ImGui::EndPopup();
+						break;
+					}
+				}
+
 				if (ImGui::MenuItem("Remove Component"))
 				{
 					selectedObj.RemoveComponent(type);
 					ImGui::EndPopup();
 					break;
 				}
+
 				ImGui::EndPopup();
 			}
 
@@ -514,19 +567,17 @@ namespace //wrappers for drawing ui elements
 
 		if (ImGui::BeginPopup("AddComponentMenu"))
 		{
-			ComponentSubMenu("Physics", { "Box Collider","Circle Collider","Rigid Body"},
+			ComponentSubMenu("Physics", { "Box Collider","Rigid Body"},
 				[&](int i)
 				{
 					if (i == 0) selectedObj.AddComponent<BoxCollider>();
-					if (i == 1) selectedObj.AddComponent<CircleCollider>();
-					if (i == 2) selectedObj.AddComponent<RigidBody>();
+					if (i == 1) selectedObj.AddComponent<RigidBody>();
 				});
 
-			ComponentSubMenu("Renderer", { "Sprite Renderer","Mesh Renderer" },
+			ComponentSubMenu("Renderer", { "Sprite Renderer" },
 				[&](int i)
 				{
 					if (i == 0) selectedObj.AddComponent<SpriteRenderer>();
-					if (i == 1) selectedObj.AddComponent<MeshRenderer>();
 				});
 
 			if (ImGui::BeginMenu("Particle"))

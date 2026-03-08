@@ -1,43 +1,57 @@
-using namespace ImGui;
+#include "imgui_helper.hpp"
 
 namespace
 {
-	std::string FormatID(const std::string& label)
+	std::string tolowerandnspc(const std::string s)
 	{
-		std::string id = "##";
-		for (unsigned char c : label)
+		std::string out = "";
+		for (unsigned char c : s)
 			if (!std::isspace(c))
-				id += std::tolower(c);
-		return id;
-	}	
+				out += std::tolower(c);
+
+		return out;
+	}
 }
 
-void FloatDrag(std::string label, float* var, float2 minmax = {0,0}, float spd = 1.0f)
+
+using namespace ImGui;
+
+std::string FormatID(const std::string& label, const std::string& id)
 {
-	TextUnformatted(label.c_str());
-	DragFloat(FormatID(label).c_str(), var, spd, minmax.x, minmax.y);
+	std::string back = "##";
+	back += tolowerandnspc(label);
+	back += "_";
+	back += tolowerandnspc(label);
+	return back;
 }
 
-void FloatDragReset(const std::string& label, float* var, float resetVal, float speed = 1.0f, float min = 0.0f, float max = 0.0f)
+
+void FloatDrag(std::string label,std::string id, float* var, float2 minmax, float spd)
 {
 	TextUnformatted(label.c_str());
-	DragFloat(FormatID(label).c_str(), var, speed, min, max);
+	DragFloat(FormatID(label,id).c_str(), var, spd, minmax.x, minmax.y);
+}
+
+void FloatDragReset(const std::string& label, std::string id, float* var, float resetVal, float speed, float min, float max)
+{
+	TextUnformatted(label.c_str());
+	DragFloat(FormatID(label,id).c_str(), var, speed, min, max);
 	SameLine();
 	std::string btnLabel = "Reset##" + label;
 	if (Button(btnLabel.c_str()))
 		*var = resetVal;
 }
 
-void FloatSlider(const std::string& label, float* var, float min, float max)
+void FloatSlider(const std::string& label, std::string id, float* var, float min, float max)
 {
 	TextUnformatted(label.c_str());
-	SliderFloat(FormatID(label).c_str(), var, min, max);
+	SliderFloat(FormatID(label,id).c_str(), var, min, max);
 }
 
-void Float2DragReset(const std::string& label, float* var, float2 resetVal, float speed = 0.05f)
+void Float2DragReset(const std::string& label, std::string id, float* var, float2 resetVal, float speed)
 {
 	TextUnformatted(label.c_str());
-	DragFloat2(FormatID(label).c_str(), var, speed);
+	DragFloat2(FormatID(label,id).c_str(), var, speed);
 	SameLine();
 	std::string btnLabel = "Reset##" + label;
 	if (Button(btnLabel.c_str()))

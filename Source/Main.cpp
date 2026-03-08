@@ -52,9 +52,9 @@ void ShutdownImGUI(bool& initStatus)
 
 void UpdateEngineCTX()
 {
-	EngineCTX::dt = AEFrameRateControllerGetFrameTime();
+	EngineCTX::dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	EngineCTX::frameCount = AEFrameRateControllerGetFrameCount();
-	EngineCTX::frameRate = AEFrameRateControllerGetFrameRate();
+	EngineCTX::frameRate = static_cast<f32>(AEFrameRateControllerGetFrameRate());
 	EngineCTX::windowSize.x = static_cast<f32>(AEGfxGetWindowWidth());
 	EngineCTX::windowSize.y = static_cast<f32>(AEGfxGetWindowHeight());
 }
@@ -111,7 +111,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				SceneManager::RequestSceneSwitch("Intro");	
 
 			if (AEInputCheckTriggered(AEVK_3)) 
-				SceneManager::RequestSceneSwitch("TestScene");	
+				SceneManager::RequestSceneSwitch("physics_test");	
 		}
 #endif
 	

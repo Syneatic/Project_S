@@ -11,10 +11,8 @@
         },
         {
           "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : true,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         },
         {
@@ -44,6 +42,7 @@
         },
         {
           "collisionMask" : 4294967290,
+          "isTrigger" : false,
           "layerMask" : 1,
           "size" : 
           [
@@ -89,6 +88,7 @@
         },
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -118,6 +118,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -163,6 +164,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -208,6 +210,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -269,6 +272,7 @@
         },
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -298,6 +302,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -359,6 +364,7 @@
         },
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -388,6 +394,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -433,6 +440,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -478,6 +486,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -523,6 +532,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -568,6 +578,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -613,6 +624,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -658,6 +670,7 @@
       [
         {
           "collisionMask" : 4294967293,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -816,10 +829,8 @@
         },
         {
           "Affected By Gravity" : true,
-          "Gravity" : 800.0,
-          "Grounded" : false,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         },
         {
@@ -830,7 +841,7 @@
             0.47450980544090271,
             0.47450980544090271,
             0.47450980544090271,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -845,6 +856,7 @@
         },
         {
           "collisionMask" : 4294967266,
+          "isTrigger" : false,
           "layerMask" : 8,
           "size" : 
           [
@@ -874,6 +886,7 @@
       [
         {
           "collisionMask" : 4294967282,
+          "isTrigger" : false,
           "layerMask" : 4,
           "size" : 
           [
@@ -909,6 +922,7 @@
         },
         {
           "collisionMask" : 4294967283,
+          "isTrigger" : false,
           "layerMask" : 4,
           "size" : 
           [
@@ -944,10 +958,8 @@
         },
         {
           "Affected By Gravity" : false,
-          "Gravity" : 15.0,
-          "Grounded" : false,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         },
         {
@@ -1050,6 +1062,7 @@
         },
         {
           "collisionMask" : 4294967267,
+          "isTrigger" : false,
           "layerMask" : 4,
           "size" : 
           [
@@ -1085,10 +1098,8 @@
         },
         {
           "Affected By Gravity" : false,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         },
         {

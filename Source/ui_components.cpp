@@ -10,6 +10,20 @@ void Display::OnStart()  {}
 void Display::OnUpdate() {}
 void Display::OnDestroy(){}
 
+void Display::CopyFrom(Component* src)
+{
+	auto s = dynamic_cast<Display*>(src);
+	if (!s) return;
+}
+
+std::unique_ptr<Component> Display::Clone(GameObject& go)
+{
+	auto n = std::make_unique<Display>(go);
+	n.get()->CopyFrom(this);
+	return n;
+}
+
+
 void Button::DrawInInspector()
 {
 	if (ImGui::BeginCombo("ButtonMode", "SelectButton"))
@@ -45,4 +59,18 @@ void Button::OnUpdate()
 {
 	UISystem::Hover_Logic(gameObject());
 }
-void Button::OnDestroy(){}
+void Button::OnDestroy() {}
+
+void Button::CopyFrom(Component* src)
+{
+	auto s = dynamic_cast<Button*>(src);
+	if (!s) return;
+	fKey = s->fKey;
+}
+
+std::unique_ptr<Component> Button::Clone(GameObject& go)
+{
+	auto n = std::make_unique<Button>(go);
+	n.get()->CopyFrom(this);
+	return n;
+}

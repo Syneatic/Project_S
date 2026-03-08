@@ -30,4 +30,7 @@ public:
 	virtual const std::string name() const = 0;
 	virtual ~Component() = default;
     Component(GameObject& owner);
+
+    virtual void CopyFrom(Component* src) = 0;
+    virtual std::unique_ptr<Component> Clone(GameObject& go) = 0;
 };

@@ -3,6 +3,7 @@
 #include "controller_components.hpp"
 #include "scene.hpp"
 #include "physics.hpp"
+#include "physics_types.hpp"
 
 
 //===================|Player Controller|===================
@@ -51,6 +52,11 @@ void PlayerController::OnUpdate()
 {
     if (!rb) return;
 
+	//we use a ray cast downwards to check if the player is grounded
+    RaycastHit hit;
+    //or use whatever range u want
+    _isGrounded = Physics::Raycast(_transform.position, float2(0.f, -1.f), _transform.scale.y / 2.f + 10.f, hit, 1 << 1);
+
     float input = 0.f;
 
 
@@ -60,8 +66,10 @@ void PlayerController::OnUpdate()
 
     float acceleration = maxSpeed / time;
 
-    if (input != 0.f)   rb->velocity.x += input * acceleration * EngineCTX::dt;
-    else {
+    if (input != 0.f)   
+        rb->velocity.x += input * acceleration * EngineCTX::dt;
+    else 
+    {
         float friction = acceleration;
         //friction
         if (rb->velocity.x > 0.f)
@@ -77,20 +85,19 @@ void PlayerController::OnUpdate()
     float timerToReach = 2.f;
 
     //Once if space is pressed once
-    if (AEInputCheckTriggered(AEVK_SPACE) && rb->Is_Grounded)
+    if (AEInputCheckTriggered(AEVK_SPACE) && _isGrounded)
     {           
         //Set the space bar velocity to true
         //Check if the player reach the height (dt)
-        float jumpSpeed = std::sqrt(timerToReach * rb->gravity * jumpHeight);
-        rb->velocity.y = jumpSpeed;
-        rb->Is_Grounded = false;
+        float jumpSpeed = std::sqrt(timerToReach * Physics::gravity * jumpHeight);
+        rb->AddForce({0.f,jumpSpeed * 75.f});
     }
 
-    if (rb->HitProjectile) {
-        rockObject->active(false);
-        rb->HitProjectile = false;
-        Debug::Log("Rock retrieve");
-    }
+    //if (rb->HitProjectile) {
+    //    rockObject->active(false);
+    //    rb->HitProjectile = false;
+    //    Debug::Log("Rock retrieve");
+    //}
 
     //===================|Throw Mechanic|=====================
     if (AEInputCheckTriggered(AEVK_R))
@@ -106,11 +113,11 @@ void PlayerController::OnUpdate()
     }
 
     //==================|Collision with Enemy|=======================
-    if (rb->HitEnemy) Respawn();
-    if (rb->HitCheckPoint) {
-        spawnPoint = _transform.position;
-        rb->HitCheckPoint = true;
-    }
+    //if (rb->HitEnemy) Respawn();
+    //if (rb->HitCheckPoint) {
+    //    spawnPoint = _transform.position;
+    //    rb->HitCheckPoint = true;
+    //}
 }
 
 void PlayerController::OnDestroy()
@@ -121,8 +128,28 @@ void PlayerController::OnDestroy()
 void PlayerController::Respawn()
 {
     _transform.position = spawnPoint;
-    rb->HitEnemy = false;
+    //rb->HitEnemy = false;
 }
+
+void PlayerController::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<PlayerController*>(src);
+    if (!s) return;
+
+    maxSpeed = s->maxSpeed;
+    jumpHeight = s->jumpHeight;
+    time = s->time;
+
+    spawnPoint = s->spawnPoint;
+}
+
+std::unique_ptr<Component> PlayerController::Clone(GameObject& go)
+{
+    auto n = std::make_unique<PlayerController>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
 
 
 
@@ -177,6 +204,7 @@ void RockController::OnDestroy()
 }
 
 
+
 //=========|Rock Mechanic Helper Function|==================
 void RockController::Throw(const float2& playerPos)
 {
@@ -196,21 +224,37 @@ void RockController::Throw(const float2& playerPos)
 
     _transform.position = playerPos + dir * 20.f;
     rb->velocity = dir * throwSpeed;
-    rb->Affected_By_Gravity = true;
-
-    rb->Is_Grounded = false;
+    rb->useGravity = true;
 }
 
 void RockController::OnImpact(const OnCollisionEvent& e)
 {
     float2 vel = normalize(rb->velocity) + (-e.normal);
-    rb->velocity = vel * e.impulse * 0.6f;
+    rb->velocity = vel * 0.6f;
 }
 
 void RockController::ResetRock()
 {
 
 }
+
+void RockController::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<RockController*>(src);
+    if (!s) return;
+
+    throwSpeed = s->throwSpeed;
+    throwAngle = s->throwAngle;
+}
+
+std::unique_ptr<Component> RockController::Clone(GameObject& go)
+{
+    auto n = std::make_unique<RockController>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
+
 
 //===================|Enemy Controller|===================
 void EnemyController::DrawInInspector()
@@ -301,17 +345,17 @@ void EnemyController::OnStart()
     {
         if (rb)
         {
-            rb->Affected_By_Gravity = false;
+            rb->useGravity = false;
             rb->velocity = float2::zero();
         }
     }
     if (type == EnemyType::Patrol)
     {
-        rb->Affected_By_Gravity = true;
+        rb->useGravity = true;
         rb->velocity = float2::zero();
 
-        if (rb->Is_Grounded)
-            rb->Affected_By_Gravity = false;
+        //if (rb->isGrounded)
+            //rb->useGravity = false;
     }
 }
 
@@ -345,13 +389,13 @@ void EnemyController::OnDestroy()
 void EnemyController::UpdateDrop() {
     if (!rb) return;
 
-    Physics::RaycastHit hit;
+    RaycastHit hit;
     bool hasLanded = false;
     f32 xDist = absf(playerObject->transform().position.x - _transform.position.x);
     f32 yDist = _transform.position.y - playerObject->transform().position.y;
 
     if (xDist <= 50.f && yDist > 0 && yDist <= 100.f) {
-        rb->Affected_By_Gravity = true;
+        rb->useGravity = true;
         hasDropped = true;
     }
     float2 origin = _transform.position;
@@ -360,7 +404,7 @@ void EnemyController::UpdateDrop() {
     uint32_t groundLayer = static_cast<uint32_t>(Layer::Environment);
     uint32_t playerLayer = static_cast<uint32_t>(Layer::Player);
 
-    if (hasDropped && rb->Is_Grounded) hasLanded = true;
+    //if (hasDropped && rb->isGrounded) hasLanded = true;
 
     if (Physics::Raycast(origin, dir, 500.f, hit, groundLayer) && !hasLanded) {
         if (groundEmitTimer >= groundEmitInterval) {
@@ -378,7 +422,7 @@ void EnemyController::UpdatePatrol() {
     if (!rb) return;
 
     //Raycast
-    Physics::RaycastHit hit;
+    RaycastHit hit;
 
     //Ground Raycast Variables
     bool hasLanded = false;
@@ -427,4 +471,33 @@ void EnemyController::UpdatePatrol() {
     //if (distance < -patrolRange) patrolDir = 1;
 
     rb->velocity.x = patrolDir * moveSpeed;
+}
+
+void EnemyController::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<EnemyController*>(src);
+    if (!s) return;
+
+    //Global Variable
+    groundEmitTimer = s->groundEmitTimer;
+    groundEmitInterval = s->groundEmitInterval;
+
+    //Drop Variable
+    detectDistance = s->detectDistance;
+    hasDropped = s->hasDropped;
+
+    //Patrol Variable
+    moveSpeed = s->moveSpeed;
+    patrolRange = s->patrolRange;
+    startPos = s->startPos;
+    patrolDir = s->patrolDir; // 1 = right, -1 = left
+
+    type = s->type;
+}
+
+std::unique_ptr<Component> EnemyController::Clone(GameObject& go)
+{
+    auto n = std::make_unique<EnemyController>(go);
+    n.get()->CopyFrom(this);
+    return n;
 }

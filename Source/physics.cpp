@@ -1,657 +1,744 @@
-#include "math.hpp"
-#include "physics.hpp"
 #include "gameobject.hpp"
 #include "physics_components.hpp"
+#include "physics_types.hpp"
+#include "physics.hpp"
 
-namespace {
+//collections
+namespace
+{
+	using BroadPhasePair = std::pair<u32, u32>;
 	std::vector<Collider*> _colliders;
-	std::unordered_set<Collider*> _colliderSet;
 	std::vector<RigidBody*> _rigidbodies;
-	std::unordered_set<RigidBody*> _rigidbodySet;
+	std::vector<BroadPhasePair> _broadphasePairs;
+	std::vector<ContactManifold> _manifolds;
 
-	//helper
-	float2 rotatePoint(const float2& point, float angle)
+	std::vector<u32> _raycastStamp;
+	u32 _currentStamp = 0;
+}
+
+//spatial grid helpers
+namespace
+{
+	struct CellCoord
 	{
-		float rad = angle * (3.14159265359f / 180.0f);
-		float c = cosf(rad);
-		float s = sinf(rad);
+		s32 x, y;
+	};
 
-		return { point.x * c - point.y * s, point.x * s + point.y * c };
+	struct Cell
+	{
+		//keep the index of colliders in the spatial grid for broadphase collision check
+		std::vector<u32> items;
+	};
+
+	struct SpatialGrid
+	{
+		f32 cellSize{}; //avg size of colliders
+		int bucketCount = 256; //for now
+		std::vector<Cell> bucket;
+
+		SpatialGrid()
+		{
+			cellSize = { 1.f };
+			bucketCount = 256;
+			bucket.resize(bucketCount);
+		}
+	} _grid;
+
+	struct PairHash
+	{
+		size_t operator()(u64 key) const noexcept
+		{
+			// Mix the bits a bit to reduce clustering
+			key ^= key >> 33;
+			key *= 0xff51afd7ed558ccdULL;
+			key ^= key >> 33;
+			return static_cast<size_t>(key);
+		}
+	};
+
+	std::unordered_set<u64, PairHash> _activeTriggerPairs;
+
+	inline CellCoord WorldToCell(float2 p, float cellSize)
+	{
+		return {
+			static_cast<s32>(floor(p.x / cellSize)),
+			static_cast<s32>(floor(p.y / cellSize))
+		};
 	}
 
-	void getBoxCorner(const Transform& t, const float2& size, float2 out[4])
+	inline u32 Hash(u32 x, u32 y)
 	{
-		float2 half = { size.x * t.scale.x / 2.0f, size.y * t.scale.y / 2.0f };
-		float2 local[4] = {
-			 {-half.x, -half.y},
-			{ half.x, -half.y},
-			{ half.x,  half.y},
-			{-half.x,  half.y}
-		};
+		u32 h = x * 73856093u ^ y * 19349663u;
+		return h;
+	}
+
+	inline u32 GetIndex(float2 p, const SpatialGrid& grid)
+	{
+		CellCoord coord = WorldToCell(p, grid.cellSize);
+		return Hash(coord.x, coord.y) & grid.bucketCount - 1;
+	}
+
+	inline u32 GetIndex(CellCoord p, const SpatialGrid& grid)
+	{
+		return Hash(p.x, p.y) & grid.bucketCount - 1;
+	}
+
+	inline void ClearGrid(SpatialGrid& grid)
+	{
+		for (auto& cell : grid.bucket)
+			cell.items.clear();
+	}
+}
+
+namespace //OBB
+{
+	void UpdateOBBs()
+	{
+		for (auto col : _colliders)
+		{
+			if (!col) continue;
+			auto box = dynamic_cast<BoxCollider*>(col);
+			auto& t = box->transform();
+			auto& obb = col->obb;
+			f32 rad = t.rotation * (PI / 180.f); // degrees -> radians
+			float2 axisX = { cosf(rad),  sinf(rad) };
+			float2 axisY = { -sinf(rad), cosf(rad) };
+
+			obb.center = t.position;
+			obb.halfExtents = (box->size * t.scale) * 0.5f;
+			obb.axisX = axisX;
+			obb.axisY = axisY;
+		}
+	}
+
+	void ProjectOBB(const OBB& obb, float2 axis, f32& outMin, f32& outMax)
+	{
+		f32 c = dot(obb.center, axis);
+
+		// Project half extents onto axis (always positive contribution)
+		f32 r = fabsf(dot(obb.axisX * obb.halfExtents.x, axis))
+			+ fabsf(dot(obb.axisY * obb.halfExtents.y, axis));
+
+		outMin = c - r;
+		outMax = c + r;
+	}
+
+	f32 GetOverlap(const OBB& a, const OBB& b, float2 axis)
+	{
+		f32 aMin, aMax, bMin, bMax;
+		ProjectOBB(a, axis, aMin, aMax);
+		ProjectOBB(b, axis, bMin, bMax);
+
+		// Overlap = how much they intersect
+		return std::min(aMax, bMax) - std::max(aMin, bMin);
+	}
+
+	void GetOBBCorners(const OBB& obb, float2 out[4])
+	{
+		float2 ex = obb.axisX * obb.halfExtents.x;
+		float2 ey = obb.axisY * obb.halfExtents.y;
+
+		out[0] = obb.center + ex + ey;
+		out[1] = obb.center - ex + ey;
+		out[2] = obb.center - ex - ey;
+		out[3] = obb.center + ex - ey;
+	}
+
+	bool IsPointInsideOBB(float2 point, const OBB& obb)
+	{
+		float2 d = point - obb.center;
+		f32 px = fabsf(dot(d, obb.axisX));
+		f32 py = fabsf(dot(d, obb.axisY));
+		return px <= obb.halfExtents.x + 1e-4f
+			&& py <= obb.halfExtents.y + 1e-4f;
+	}
+
+	u32 FindContactPoints(const OBB& a, const OBB& b, float2 outPoints[4])
+	{
+		u32 count = 0;
+
+		float2 cornersA[4], cornersB[4];
+		GetOBBCorners(a, cornersA);
+		GetOBBCorners(b, cornersB);
+
+		for (int i = 0; i < 4 && count < 4; i++)
+			if (IsPointInsideOBB(cornersA[i], b))
+				outPoints[count++] = cornersA[i];
+
+		for (int i = 0; i < 4 && count < 4; i++)
+			if (IsPointInsideOBB(cornersB[i], a))
+				outPoints[count++] = cornersB[i];
+
+		return count;
+	}
+
+	bool OBBvsOBB(BoxCollider& boxA, BoxCollider& boxB, ContactManifold& manifold)
+	{
+		OBB a = boxA.obb;
+		OBB b = boxB.obb;
+
+		// 4 axes to test: 2 from A, 2 from B
+		float2 axes[4] = { a.axisX, a.axisY, b.axisX, b.axisY };
+
+		f32    minOverlap = FLT_MAX;
+		float2 minAxis = {};
 
 		for (int i = 0; i < 4; i++)
 		{
-			float2 rotated = rotatePoint(local[i], t.rotation);
-			out[i] = { rotated.x + t.position.x, rotated.y + t.position.y };
+			float2 axis = axes[i];
+
+			// Axis must be normalised - it already is since it comes from cos/sin
+			f32 overlap = GetOverlap(a, b, axis);
+
+			if (overlap <= 0.f)
+				return false; // Separating axis found - no collision
+
+			if (overlap < minOverlap)
+			{
+				minOverlap = overlap;
+				minAxis = axis;
+			}
 		}
-	}
 
-	float2 edgeNormal(const float2& a, const float2& b)
-	{
-		float2 edge = { b.x - a.x, b.y - a.y };
-		float2 normal = { -edge.y, edge.x };
-		float len = sqrtf(normal.x * normal.x + normal.y * normal.y);
+		// Make sure normal points from b -> a (pushes a out)
+		float2 d = a.center - b.center;
+		if (dot(d, minAxis) < 0.f)
+			minAxis = minAxis * -1.f;
 
-		if (len == 0) return { 0,0 };
-		normal.x /= len;
-		normal.y /= len;
+		// Fill manifold
+		manifold.c1 = &boxA;
+		manifold.c2 = &boxB;
+		manifold.normal = minAxis;
+		manifold.penetration = minOverlap;
 
-		return normal;
-	}
+		// Find contact points (cap at 2 for manifold)
+		float2 allPoints[4];
+		u32 count = FindContactPoints(a, b, allPoints);
 
-	inline void GetAABB(
-		const Transform& t,
-		const BoxCollider& b,
-		float& left, float& right,
-		float& bottom, float& top)
-	{
-		float hx = (b.size.x * t.scale.x) * 0.5f;
-		float hy = (b.size.y * t.scale.y) * 0.5f;
+		manifold.contactPointCount = std::min(count, 2u);
+		for (u32 i = 0; i < manifold.contactPointCount; i++)
+			manifold.contactPoints[i] = allPoints[i];
 
-		left = t.position.x - hx;
-		right = t.position.x + hx;
-		bottom = t.position.y - hy;
-		top = t.position.y + hy;
-	}
-
-	inline bool RayToCircle(
-		const float2& origin, const float2& dirN, float maxDist,
-		const Transform& t, const CircleCollider& c,
-		float& outT, float2& outNormal)
-	{
-		float2 center = t.position;
-		float r = c.radius * t.scale.x; //watch out for one side scale
-
-		float2 oc = origin - center;
-
-		float b = 2.0f * dot(oc, dirN);
-		float cc = dot(oc, oc) - r * r;
-
-		// a = 1 because dirN is normalized
-		float disc = b * b - 4.0f * cc;
-		if (disc < 0.0f) return false;
-
-		float sqrtDisc = std::sqrt(disc);
-
-		float t0 = (-b - sqrtDisc) * 0.5f;
-		float t1 = (-b + sqrtDisc) * 0.5f;
-
-		// choose nearest valid
-		float tHit = FLT_MAX;
-		if (t0 >= 0.0f) tHit = t0;
-		else if (t1 >= 0.0f) tHit = t1;
-		else return false;
-
-		if (tHit > maxDist) return false;
-
-		float2 p = origin + (dirN * tHit);
-		outNormal = normalize(p - center);
-		outT = tHit;
 		return true;
 	}
 
-	inline void ResolveBoxVsBox(
-		RigidBody& rb,
-		Transform& t,
-		const BoxCollider& a,
-		const Transform& ot,
-		const BoxCollider& b)
+	bool RayVsOBB(float2 rayOrigin, float2 rayDir, const OBB& obb, f32& outT)
 	{
-		float lA, rA, bA, tA;
-		float lB, rB, bB, tB;
+		// Transform ray into OBB local space by projecting onto its axes
+		float2 d = rayOrigin - obb.center;
 
-		GetAABB(t, a, lA, rA, bA, tA);
-		GetAABB(ot, b, lB, rB, bB, tB);
+		// Local origin and direction components along each OBB axis
+		f32 ox = dot(d, obb.axisX);
+		f32 oy = dot(d, obb.axisY);
+		f32 dx = dot(rayDir, obb.axisX);
+		f32 dy = dot(rayDir, obb.axisY);
 
-		float overlapX = (std::min)(rA, rB) - (std::max)(lA, lB);
-		float overlapY = (std::min)(tA, tB) - (std::max)(bA, bB);
+		f32 tMin = 0.f;        // start of ray
+		f32 tMax = FLT_MAX;    // end of ray
 
-		if (overlapX <= 0 || overlapY <= 0)
-			return;
-
-		// Resolve on smaller axis
-		if (overlapY < overlapX)
-		{
-			// Vertical collision
-			if (t.position.y > ot.position.y)
+		// Test each slab (axisX and axisY)
+		// A slab is the space between two parallel planes of the OBB
+		auto TestSlab = [&](f32 o, f32 d, f32 halfExtent) -> bool
 			{
-				// Landing
-				t.position.y += overlapY;
-				rb.velocity.y = 0;
-				rb.Is_Grounded = true;
-			}
-			else
-			{
-				// Hit from below
-				t.position.y -= overlapY;
-				rb.velocity.y = 0;
-			}
-		}
-		else
-		{
-			// Horizontal collision
-			if (t.position.x > ot.position.x)
-				t.position.x += overlapX;
-			else
-				t.position.x -= overlapX;
+				if (fabsf(d) < 1e-8f)
+				{
+					// Ray is parallel to slab — check if origin is inside
+					if (fabsf(o) > halfExtent) return false;
+				}
+				else
+				{
+					f32 invD = 1.f / d;
+					f32 t1 = (-halfExtent - o) * invD;
+					f32 t2 = (halfExtent - o) * invD;
 
-			rb.velocity.x = 0;
-		}
-	}
+					if (t1 > t2) std::swap(t1, t2);
 
-	inline bool RayToOBB(
-		const float2& origin, const float2& dirN, float maxDist,
-		const Transform& t, const BoxCollider& b,
-		float& outT, float2& outNormal)
-	{
-		// half extents in world (box local)
-		float hx = (b.size.x * t.scale.x) * 0.5f;
-		float hy = (b.size.y * t.scale.y) * 0.5f;
-		if (hx < kEps && hy < kEps) return false;
+					tMin = std::max(tMin, t1);
+					tMax = std::min(tMax, t2);
 
-		// Move into box space: rotate by -rotation
-		float2 oLocal = rotatePoint(origin - t.position, -t.rotation);
-		float2 dLocal = rotatePoint(dirN, -t.rotation);
+					if (tMin > tMax) return false; // missed
+				}
+				return true;
+			};
 
-		float tMin = -FLT_MAX;
-		float tMax = FLT_MAX;
+		if (!TestSlab(ox, dx, obb.halfExtents.x)) return false;
+		if (!TestSlab(oy, dy, obb.halfExtents.y)) return false;
 
-		// X slab
-		if (absf(dLocal.x) < kEps)
-		{
-			if (oLocal.x < -hx || oLocal.x > hx) return false;
-		}
-		else
-		{
-			float inv = 1.0f / dLocal.x;
-			float t1 = (-hx - oLocal.x) * inv;
-			float t2 = (hx - oLocal.x) * inv;
-			if (t1 > t2) std::swap(t1, t2);
-			tMin = (std::max)(tMin, t1);
-			tMax = (std::min)(tMax, t2);
-			if (tMax < tMin) return false;
-		}
-
-		// Y slab
-		if (absf(dLocal.y) < kEps)
-		{
-			if (oLocal.y < -hy || oLocal.y > hy) return false;
-		}
-		else
-		{
-			float inv = 1.0f / dLocal.y;
-			float t1 = (-hy - oLocal.y) * inv;
-			float t2 = (hy - oLocal.y) * inv;
-			if (t1 > t2) std::swap(t1, t2);
-			tMin = (std::max)(tMin, t1);
-			tMax = (std::min)(tMax, t2);
-			if (tMax < tMin) return false;
-		}
-
-		// If the ray starts inside the box, tMin can be negative; choose the first forward intersection.
-		float tHit = (tMin >= 0.0f) ? tMin : tMax;
-		if (tHit < 0.0f) return false;
-		if (tHit > maxDist) return false;
-
-		// Compute hit point in local to determine face normal
-		float2 pLocal = oLocal + (dLocal * tHit);
-
-		// Determine closest face
-		float dxPos = absf(pLocal.x - hx);
-		float dxNeg = absf(pLocal.x + hx);
-		float dyPos = absf(pLocal.y - hy);
-		float dyNeg = absf(pLocal.y + hy);
-
-		float2 nLocal = float2::zero();
-		float best = dxPos; nLocal = float2(1, 0);
-		if (dxNeg < best) { best = dxNeg; nLocal = float2(-1, 0); }
-		if (dyPos < best) { best = dyPos; nLocal = float2(0, 1); }
-		if (dyNeg < best) { nLocal = float2(0, -1); }
-
-		// Rotate normal back to world
-		outNormal = normalize(rotatePoint(nLocal, t.rotation));
-		outT = tHit;
+		outT = tMin; // closest hit distance along ray
 		return true;
 	}
+}
 
+
+namespace
+{
+	//helpers
+	bool CheckMask(u32 mask, u32 layer)
+	{
+		return mask & layer;
+	}
+
+	//wrapped function steps 
+	void IntegrateMotion(f32 dt)
+	{
+		for (auto rb : _rigidbodies)
+		{
+			//if is an unmoving but want to prevent phasing
+			if (!rb || rb->isStatic) continue;
+
+			if (rb->useGravity)
+			{
+				rb->accumulatedForce += {0, -Physics::gravity };
+			}
+
+			auto& t = rb->transform();
+
+			//integrate force
+			// [A = F/M]
+			rb->velocity += (rb->accumulatedForce / 1.f /*mass*/) * dt;
+			t.position += rb->velocity * dt;
+
+			//reset all force
+			rb->accumulatedForce = {};
+		}
+	}
+
+	void UpdateAABBs()
+	{
+		for (auto col : _colliders)
+		{
+			if (!col) continue;
+
+			auto& obb = col->obb;
+			auto& aabb = col->aabb;
+
+			// Project OBB onto world axes to get a tight AABB
+			float2 ex = obb.axisX * obb.halfExtents.x;
+			float2 ey = obb.axisY * obb.halfExtents.y;
+
+			// Half-extents of the enclosing AABB
+			float2 r = {
+				fabsf(ex.x) + fabsf(ey.x),
+				fabsf(ex.y) + fabsf(ey.y)
+			};
+
+			aabb.min = obb.center - r;
+			aabb.max = obb.center + r;
+		}
+	}
+
+	void BuildSpatialGrid()
+	{
+		//clear grid first
+		ClearGrid(_grid);
+
+		//loop through all colliders to find aabb positions
+
+		for (u32 i = 0; i < _colliders.size(); i++)
+		{
+			auto col = _colliders[i];
+			if (!col) continue;
+
+			auto& aabb = col->aabb;
+
+			CellCoord minCell = WorldToCell(aabb.min, _grid.cellSize);
+			CellCoord maxCell = WorldToCell(aabb.max, _grid.cellSize);
+
+			for (int y = minCell.y; y <= maxCell.y; y++)
+			{
+				for (int x = minCell.x; x <= maxCell.x; x++)
+				{
+					CellCoord coord = { x,y };
+					u32 j = GetIndex(coord, _grid);
+
+					_grid.bucket[j].items.push_back(i);
+				}
+			}
+		}
+	}
+
+	void GenerateBroadPhasePairs()
+	{
+		_broadphasePairs.clear();
+
+		std::unordered_set<u64, PairHash> seen; //only needs to exist in this scope
+		seen.reserve(1024);
+
+		for (Cell& cell : _grid.bucket)
+		{
+			auto& items = cell.items;
+
+			for (u64 i = 0; i < items.size(); i++)
+			{
+				for (u64 j = i + 1; j < items.size(); j++)
+				{
+					//check collision requirements
+					auto c1 = _colliders[items[i]];
+					auto c2 = _colliders[items[j]];
+
+					if (!c1->gameObject().active() || !c2->gameObject().active()) continue;
+
+					//check mask
+					if (!CheckMask(c1->collisionMask, c2->layer)) continue;
+
+					u32 a = std::min(items[i], items[j]);
+					u32 b = std::max(items[i], items[j]);
+
+					u64 key = (static_cast<u64>(a) << 32) | static_cast<u64>(b);
+
+					if (seen.insert(key).second) // .second == true means it was newly inserted
+						_broadphasePairs.push_back({ a, b });
+				}
+			}
+		}
+	}
+
+	void NarrowPhaseCollision()
+	{
+		_manifolds.clear();
+		//iterate through the pairs
+		//we do obb on each
+		for (auto& pair : _broadphasePairs)
+		{
+			auto* c1 = _colliders[pair.first];
+			auto* c2 = _colliders[pair.second];
+
+			if (!c1 || !c2) continue;
+
+			// Currently only BoxColliders are supported
+			auto& box1 = static_cast<BoxCollider&>(*c1);
+			auto& box2 = static_cast<BoxCollider&>(*c2);
+
+			ContactManifold manifold;
+			if (!OBBvsOBB(box1, box2, manifold)) continue;
+
+			if (c1->isTrigger || c2->isTrigger)
+			{
+				u32 a = std::min(pair.first, pair.second);
+				u32 b = std::max(pair.first, pair.second);
+				u64 key = (static_cast<u64>(a) << 32) | static_cast<u64>(b);
+
+				if (_activeTriggerPairs.insert(key).second) // newly entered
+				{
+					EventHandler::RaiseEvent<OnTriggerEvent>(
+						&c1->gameObject(),
+						&c2->gameObject());
+
+					EventHandler::RaiseEvent<OnTriggerEvent>(
+						&c2->gameObject(),
+						&c1->gameObject());
+				}
+				continue; // no collision response
+			}
+
+
+			_manifolds.push_back(manifold);
+
+			float2 contactPoint = manifold.contactPointCount > 0
+				? manifold.contactPoints[0]
+				: manifold.c1->obb.center;
+
+			// Raise for c1 (self) hit by c2 (other)
+			EventHandler::RaiseEvent<OnCollisionEvent>(
+				&c1->gameObject(),
+				&c2->gameObject(),
+				contactPoint,
+				manifold.normal);
+
+			// Raise for c2 (self) hit by c1 (other), normal flipped
+			EventHandler::RaiseEvent<OnCollisionEvent>(
+				&c2->gameObject(),
+				&c1->gameObject(),
+				contactPoint,
+				-manifold.normal);
+
+		}
+	
+	}
+
+	void ResolveCollision()
+	{
+		for (auto& manifold : _manifolds)
+		{
+			Collider* c1 = manifold.c1;
+			Collider* c2 = manifold.c2;
+
+			//get rigidbody
+			RigidBody* rb1 = c1->gameObject().GetComponent<RigidBody>();
+			RigidBody* rb2 = c2->gameObject().GetComponent<RigidBody>();
+
+			//skip if kinematic/static/null
+			bool rb1_solid = rb1 && !rb1->isStatic && !rb1->isKinematic;
+			bool rb2_solid = rb2 && !rb2->isStatic && !rb2->isKinematic;
+			if (!rb1_solid && !rb2_solid) continue;
+
+			//mass is 1.f for now
+			const f32 mass = 1.f;
+			f32 invMass1 = rb1_solid ? (1.f / mass) : 0.f;
+			f32 invMass2 = rb2_solid ? (1.f / mass) : 0.f;
+			f32 invMassSum = invMass1 + invMass2;
+			if (invMassSum == 0.f) continue; // both infinite mass
+
+			float2 vel1 = rb1 ? rb1->velocity : float2{};
+			float2 vel2 = rb2 ? rb2->velocity : float2{};
+
+			// normal points from c2 -> c1
+			float2 normal = manifold.normal;
+
+			//get impulse?
+			float2 relativeVel = vel1 - vel2;
+			f32 velAlongNormal = dot(relativeVel, normal);
+
+			// Don't resolve if objects are already separating
+			if (velAlongNormal > 0.f) goto positional_correction;
+
+			{
+				//bouciness - 0 = no bounce , 1 = full bounce
+				const f32 restitution = 0.2f;
+
+				f32 j = -(1.f + restitution) * velAlongNormal;
+				j /= invMassSum;
+
+				float2 impulse = normal * j;
+
+				if (rb1_solid) rb1->velocity = rb1->velocity + impulse * invMass1;
+				if (rb2_solid) rb2->velocity = rb2->velocity - impulse * invMass2;
+
+
+				//friction
+				vel1 = rb1 ? rb1->velocity : float2{};
+				vel2 = rb2 ? rb2->velocity : float2{};
+				relativeVel = vel1 - vel2;
+
+				// Tangent = relative velocity minus its normal component
+				float2 tangent = relativeVel - normal * dot(relativeVel, normal);
+				f32 tangentLen = length(tangent);
+
+				if (tangentLen > 1e-6f)
+				{
+					tangent = tangent * (1.f / tangentLen); // normalize
+
+					f32 jt = -dot(relativeVel, tangent);
+					jt /= invMassSum;
+
+					// Coulomb's law: friction cone clamp
+					// mu = coefficient of friction (tweak per material later)
+					const f32 mu = 0.4f;
+					float2 frictionImpulse;
+
+					if (fabsf(jt) < j * mu)
+						frictionImpulse = tangent * jt;         // static friction
+					else
+						frictionImpulse = tangent * (-j * mu);  // kinetic friction
+
+					if (rb1_solid) rb1->velocity = rb1->velocity + frictionImpulse * invMass1;
+					if (rb2_solid) rb2->velocity = rb2->velocity - frictionImpulse * invMass2;
+				}
+			}
+
+			// -------------------------------------------------------
+			// Positional correction (fixes sinking due to float error)
+			// -------------------------------------------------------
+		positional_correction:
+			{
+				// Only correct if penetration is meaningful
+				const f32 slop = 0.01f;  // penetration tolerance, avoids jitter
+				const f32 percentage = 0.4f;   // how aggressively to correct (0.2-0.8)
+
+				f32 correctionMag = std::max(manifold.penetration - slop, 0.f)
+					/ invMassSum * percentage;
+
+				float2 correction = normal * correctionMag;
+
+				if (rb1_solid)
+					c1->gameObject().transform().position = c1->gameObject().transform().position + correction * invMass1;
+				if (rb2_solid)
+					c2->gameObject().transform().position = c2->gameObject().transform().position - correction * invMass2;
+			}
+		}
+	}
 
 }
 
 namespace Physics
 {
-	//needs to be registered at start of scene
-	void RegisterCollider(Collider* c)
-	{
-		if (!c) return;
-
-		if (_colliderSet.insert(c).second)
-			_colliders.push_back(c);
-	}
-
-	void UnregisterCollider(Collider* c)
-	{
-		if (!c) return;
-		if (_colliderSet.erase(c) == 0) return;
-
-		//find the renderer
-		auto it = std::find(_colliders.begin(), _colliders.end(), c);
-		if (it != _colliders.end())
-		{
-			//push to back and pop
-			*it = _colliders.back();
-			_colliders.pop_back();
-		}
-	}
-
-	void FlushColliders()
-	{
-		_colliders.clear();
-		_colliderSet.clear();
-	}
-
-	bool CircleVSCircle(const CircleCollider& a, const CircleCollider& b, const Transform& ta, const Transform& tb)
-	{
-		CollisionInfo info;
-		float dx = tb.position.x - ta.position.x;
-		float dy = tb.position.y - ta.position.y;
-
-		float distance_sq = dx * dx + dy * dy;
-
-		float rad_sum = (a.radius * ta.scale.x) + (b.radius * tb.scale.x);
-
-		return distance_sq < (rad_sum * rad_sum);
-	}
-
-	CollisionInfo BoxVSBox(const BoxCollider& a, const BoxCollider& b, const Transform& ta, const Transform& tb)
-	{
-		CollisionInfo info;
-		/*float left_b1 = ta.position.x - (a.size.x * ta.scale.x) / 2.0f;
-		float right_b1 = ta.position.x + (a.size.x * ta.scale.x) / 2.0f;
-		float top_b1 = ta.position.y + (a.size.y * ta.scale.y) / 2.0f;
-		float bot_b1 = ta.position.y - (a.size.y * ta.scale.y) / 2.0f;
-
-		float left_b2 = tb.position.x - (b.size.x * tb.scale.x) / 2.0f;
-		float right_b2 = tb.position.x + (b.size.x * tb.scale.x) / 2.0f;
-		float top_b2 = tb.position.y + (b.size.y * tb.scale.y) / 2.0f;
-		float bot_b2 = tb.position.y - (b.size.y * tb.scale.y) / 2.0f;
-		*/
-
-		float2 aCorners[4], bCorners[4];
-		getBoxCorner(ta, a.size, aCorners);
-		getBoxCorner(tb, b.size, bCorners);
-
-		float2 axes[4] = {
-			edgeNormal(aCorners[0], aCorners[1]),
-			edgeNormal(aCorners[1], aCorners[2]),
-			edgeNormal(bCorners[0], bCorners[1]),
-			edgeNormal(bCorners[1], bCorners[2])
-		};
-		float minPenetration = FLT_MAX;
-		float2 collisionNormal = float2::zero();
-		for (int i = 0; i < 4; i++)
-		{
-			float minA = FLT_MAX, maxA = -FLT_MAX;
-			float minB = FLT_MAX, maxB = -FLT_MAX;
-
-			for (int j = 0; j < 4; j++)
-			{
-				float projA = dot(aCorners[j], axes[i]);
-				float projB = dot(bCorners[j], axes[i]);
-
-				minA = (std::min)(minA, projA);
-				maxA = (std::max)(maxA, projA);
-
-				minB = (std::min)(minB, projB);
-				maxB = (std::max)(maxB, projB);
-			}
-
-			if (maxA < minB || maxB < minA)
-			{
-				return info;
-			}
-
-			float penetration = (std::min)(maxA - minB, maxB - minA);
-
-			if (penetration < minPenetration)
-			{
-				minPenetration = penetration;
-				collisionNormal = axes[i];
-
-				float2 centerA = ta.position;
-				float2 centerB = tb.position;
-				float2 dir = centerB - centerA;
-				if (dot(dir, collisionNormal) < 0)
-				{
-					collisionNormal.x = -collisionNormal.x;
-					collisionNormal.y = -collisionNormal.y;
-				}
-			}
-		}
-		info.collided = true;
-		info.normal = collisionNormal;
-		info.penetration = minPenetration;
-		float2 posA = ta.position;
-		float2 posB = tb.position;
-		info.contactPoint = posA + (normalize(posB - posA) * (length(posB - posA) * 0.5f));
-		return info;
-	}
-
-	bool Raycast(const float2& origin, const float2& dir, float maxDist, RaycastHit& out, uint32_t layerMask)
-	{
-		float2 dirN = normalize(dir);
-		if (lengthsq(dirN) < kEps) return false;
-		if (maxDist <= 0.0f) return false;
-
-		bool hitAny = false;
-		float bestT = maxDist;
-
-		for (Collider* c : _colliders)
-		{
-			if (!c) continue;
-
-			if (!(c->layerMask & layerMask))
-				continue;
-
-			auto& tr = c->transform();
-
-			float tHit = 0.0f;
-			float2 nHit = float2::zero();
-			bool hit = false;
-
-			if (c->name() == "CircleCollider")
-			{
-				auto* cc = dynamic_cast<CircleCollider*>(c);
-				if (cc) hit = RayToCircle(origin, dirN, bestT, tr, *cc, tHit, nHit);
-			}
-			else if (c->name() == "BoxCollider")
-			{
-				auto* bc = dynamic_cast<BoxCollider*>(c);
-				if (bc) hit = RayToOBB(origin, dirN, bestT, tr, *bc, tHit, nHit);
-			}
-
-			if (!hit) continue;
-
-			// Keep closest
-			if (tHit < bestT)
-			{
-				bestT = tHit;
-				out.collider = c;
-				out.distance = tHit;
-				out.normal = nHit;
-				out.point = origin + (dirN * tHit);
-				out.layerHit = c->layerMask;
-				hitAny = true;
-			}
-		}
-
-		return hitAny;
-	}
-
 	void RegisterRigidBody(RigidBody* rb)
 	{
 		if (!rb) return;
-		if (_rigidbodySet.insert(rb).second)
+		if (std::find(_rigidbodies.begin(), _rigidbodies.end(), rb) == _rigidbodies.end())
 			_rigidbodies.push_back(rb);
 	}
 
-	void UnregisterRigidBody(RigidBody* rb)
+	void RegisterCollider(Collider* c)
 	{
-		if (!rb) return;
-		if (_rigidbodySet.erase(rb) == 0) return;
-
-		auto it = std::find(_rigidbodies.begin(), _rigidbodies.end(), rb);
-		if (it != _rigidbodies.end())
+		if (!c) return;
+		if (std::find(_colliders.begin(), _colliders.end(), c) == _colliders.end())
 		{
-			//push to back and pop
-			*it = _rigidbodies.back();
-			_rigidbodies.pop_back();
+			_colliders.push_back(c);
+			_raycastStamp.push_back(0);
 		}
-
 	}
 
-	void FlushRigidBody()
+	void Flush()
 	{
+		_colliders.clear();
 		_rigidbodies.clear();
-		_rigidbodySet.clear();
+		_broadphasePairs.clear();
+		_manifolds.clear();
+		_activeTriggerPairs.clear();
 	}
 
-	void CheckAllTypeCollisions()
+	//CALL THIS AFTER REGISTERING ALL COLLIDERS!
+	void Initialize()
 	{
-		for (size_t i = 0; i < _colliders.size(); i++)
+		//all colliders should be registered at this point, so we can calculate the average size for spatial grid
+		UpdateOBBs();  //get obb first
+		UpdateAABBs(); //derive aabb from obb
+
+		//find average size of colliders
+		f32 totalSize = 0.f;
+		u32 count = 0;
+		for (auto c : _colliders)
 		{
-			for (size_t j = i + 1; j < _colliders.size(); j++)
-			{
-				Collider* c1 = _colliders[i];
-				Collider* c2 = _colliders[j];
-				if (!c1 || !c2 || c1 == c2) continue;
-
-
-				if (c1->gameObject().active() == false || c2->gameObject().active() == false) continue;
-
-				// STEP 1: Layer/Mask filtering
-				if (!c1->ShouldCollide(*c2) && !c2->ShouldCollide(*c1))
-					continue;
-
-				auto& t1 = c1->transform();
-				auto& t2 = c2->transform();
-
-				RigidBody* rb1 = c1->gameObject().GetComponent<RigidBody>();
-				RigidBody* rb2 = c2->gameObject().GetComponent<RigidBody>();
-
-				// BOX VS BOX
-				if (c1->name() == "BoxCollider" && c2->name() == "BoxCollider")
-				{
-					auto* b1 = dynamic_cast<BoxCollider*>(c1);
-					auto* b2 = dynamic_cast<BoxCollider*>(c2);
-
-					CollisionInfo info = BoxVSBox(*b1, *b2, t1, t2);
-
-					if (info.collided)
-					{
-
-						//Check Player vs (Enemy & CheckPoint)
-						bool isPlayer1 = (c1->layerMask & static_cast<uint32_t>(Layer::Player));
-						bool isEnemy2 = (c2->layerMask & static_cast<uint32_t>(Layer::Enemy));
-						bool isCheckPoint2 = (c2->layerMask & static_cast<uint32_t>(Layer::CheckPoint));
-						bool isProjectile2 = (c2->layerMask & static_cast<uint32_t>(Layer::Projectile));
-
-						bool isPlayer2 = (c2->layerMask & (static_cast<uint32_t>(Layer::Player)));
-						bool isEnemy1 = (c1->layerMask & (static_cast<uint32_t>(Layer::Enemy)));
-						bool isCheckPoint1 = (c1->layerMask & static_cast<uint32_t>(Layer::CheckPoint));
-						bool isProjectile1 = (c1->layerMask & static_cast<uint32_t>(Layer::Projectile));
-
-						if (isPlayer1 && isEnemy2)
-						{
-							rb1->HitEnemy = true;
-							Debug::Log("Player and Enemy");
-						}
-						if (isPlayer2 && isEnemy1)
-						{
-							rb2->HitEnemy = true;
-							Debug::Log("Player and Enemy");
-						}
-
-						if (isPlayer1 && isCheckPoint2) rb1->HitCheckPoint = true;
-						if (isPlayer2 && isCheckPoint1) rb2->HitCheckPoint = true;
-
-						if (isPlayer1 && isProjectile2) rb1->HitProjectile = true;
-						if (isPlayer2 && isProjectile1) rb2->HitProjectile = true;
-
-						bool rb1Static = (!rb1 || rb1->Is_Static);
-						bool rb2Static = (!rb2 || rb2->Is_Static);
-
-						if (rb1 && !rb1->Is_Static)
-						{
-							if (c2->layerMask & static_cast<uint32_t>(Layer::Environment))
-								rb1->HitEnvironment = true;
-						}
-
-						if (rb2 && !rb2->Is_Static)
-						{
-							if (c1->layerMask & static_cast<uint32_t>(Layer::Environment))
-								rb2->HitEnvironment = true;
-						}
-
-						if (rb1Static && rb2Static) continue;
-
-						float2 separation = info.normal * info.penetration;
-
-						if (!rb1Static && !rb2Static)
-						{
-							// Both dynamic
-							t1.position.x -= separation.x * 0.5f;
-							t1.position.y -= separation.y * 0.5f;
-							t2.position.x += separation.x * 0.5f;
-							t2.position.y += separation.y * 0.5f;
-
-							float vel1 = dot(rb1->velocity, info.normal);
-							float vel2 = dot(rb2->velocity, info.normal);
-							if (vel1 < 0) rb1->velocity = rb1->velocity - (info.normal * vel1);
-							if (vel2 > 0) rb2->velocity = rb2->velocity - (info.normal * vel2);
-						}
-						else if (!rb1Static)
-						{
-							// Only obj1 is dynamic (obj2 is static)
-							t1.position.x -= separation.x;
-							t1.position.y -= separation.y;
-
-							float vel = dot(rb1->velocity, info.normal);
-							if (vel < 0) rb1->velocity = rb1->velocity - (info.normal * vel);
-
-							// Check if grounded
-							if (info.normal.y < -0.7f)
-							{
-								rb1->Is_Grounded = true;
-								/*rb1->velocity.y = 0.f;*/
-
-								if (rb1->velocity.y < 0.f) rb1->velocity.y = 0.f;
-							}
-							else if (info.normal.y > 0.7f)
-							{
-								if (rb1->velocity.y > 0.f) rb1->velocity.y = 0.f;
-							}
-							else
-							{
-								rb1->velocity.x = 0.f;
-							}
-						}
-						else
-						{
-							// Only obj2 is dynamic (obj1 is static)
-							t2.position.x += separation.x;
-							t2.position.y += separation.y;
-
-							float vel = dot(rb2->velocity, info.normal);
-							if (vel > 0) rb2->velocity = rb2->velocity - (info.normal * vel);
-
-							// Check if grounded
-							if (info.normal.y > 0.7f)
-							{
-								rb2->Is_Grounded = true;
-								/*rb2->velocity.y = 0.f;*/
-
-								if (rb2->velocity.y < 0.f) rb2->velocity.y = 0.f;
-							}
-							else if (info.normal.y < -0.7f)
-							{
-								if (rb2->velocity.y > 0.f) rb2->velocity.y = 0.f;
-							}
-							else
-							{
-								rb2->velocity.x = 0.f;
-							}
-						}
-
-						//find a new way to calculate impulse
-						float impulse = 0.0f;
-						if (rb1 || rb2) {
-							float2 v1 = rb1 ? rb1->velocity : float2{ 0,0 };
-							float2 v2 = rb2 ? rb2->velocity : float2{ 0,0 };
-							float2 relativeVel = v1 - v2;
-							//impulse = abs(dot(relativeVel, info.normal));
-							impulse = length(relativeVel);
-						}
-
-						EventHandler::RaiseEvent<OnCollisionEvent>(
-							&c1->gameObject(),
-							&c2->gameObject(),
-							info.contactPoint,
-							info.normal,
-							impulse
-						);
-
-						// Raise for Object B (Invert normal)
-						EventHandler::RaiseEvent<OnCollisionEvent>(
-							&c2->gameObject(),
-							&c1->gameObject(),
-							info.contactPoint,
-							-info.normal,
-							impulse
-						);
-					}
-				}
-
-				// CIRCLE VS CIRCLE
-				if (c1->name() == "CircleCollider" && c2->name() == "CircleCollider")
-				{
-					auto* cc1 = dynamic_cast<CircleCollider*>(c1);
-					auto* cc2 = dynamic_cast<CircleCollider*>(c2);
-
-					if (CircleVSCircle(*cc1, *cc2, t1, t2))
-					{
-						// Add circle collision resolution if needed
-					}
-				}
-			}
+			if (!c) continue;
+			auto& aabb = c->aabb;
+			f32 size = length(aabb.max - aabb.min);
+			totalSize += size;
+			count++;
 		}
+
+		_grid.cellSize = (count > 0) ? (totalSize / count) : 1.f;
+		_grid.bucket.clear();
+		_grid.bucket.resize(_grid.bucketCount); //set bucket size
+
+		_broadphasePairs.reserve(1024);
 	}
 
-	void Step(float dt)
+	void Step()
 	{
-		// Reset grounded
-		for (auto* rb : _rigidbodies)
-			if (rb) {
-				rb->Is_Grounded = false;
-				rb->HitEnvironment = false;
-			}
+		//Debug::ScopedTimer timer("Physics");
+		f32 dt = EngineCTX::dt;
 
-		//apply gravity
-		for (auto* rb : _rigidbodies)
+		IntegrateMotion(dt);
+		UpdateAABBs();
+		UpdateOBBs();
+
+		//reconstruct spatial grid
+		BuildSpatialGrid();
+
+		//broadphase collision
+		/*
+		* for each collider
+		* -> for each other collider
+		*  -> if (layerMask & collisionMask) continue;
+		*  -> spatial grid check
+		*/
+		GenerateBroadPhasePairs();
+
+		//narrowphase collision
+		/*
+		* use obb vs obb to determine collision and contact info
+		*/
+		NarrowPhaseCollision();
+
+		//resolve collision
+		//move objects out of collision and apply impulse
+		ResolveCollision();
+		//sleep objects that are at rest
+	}
+
+	bool Raycast(float2 origin, float2 direction, f32 maxDistance, RaycastHit& outHit, u32 layerMask)
+	{
+		f32 dirLen = length(direction);
+		if (dirLen < 1e-8f) return false;
+		float2 dir = direction * (1.f / dirLen);
+
+		// Bump stamp for this raycast — all previously visited slots are now stale
+		++_currentStamp;
+
+		f32       closestT = FLT_MAX;
+		Collider* closestCol = nullptr;
+		u32       closestIdx = 0;
+
+		// DDA setup — unchanged
+		CellCoord cell = WorldToCell(origin, _grid.cellSize);
+
+		s32 stepX = (dir.x >= 0.f) ? 1 : -1;
+		s32 stepY = (dir.y >= 0.f) ? 1 : -1;
+
+		f32 tDeltaX = (fabsf(dir.x) > 1e-8f) ? fabsf(_grid.cellSize / dir.x) : FLT_MAX;
+		f32 tDeltaY = (fabsf(dir.y) > 1e-8f) ? fabsf(_grid.cellSize / dir.y) : FLT_MAX;
+
+		f32 cellBoundX = (stepX > 0) ? (cell.x + 1) * _grid.cellSize : cell.x * _grid.cellSize;
+		f32 cellBoundY = (stepY > 0) ? (cell.y + 1) * _grid.cellSize : cell.y * _grid.cellSize;
+
+		f32 tMaxX = (fabsf(dir.x) > 1e-8f) ? fabsf((cellBoundX - origin.x) / dir.x) : FLT_MAX;
+		f32 tMaxY = (fabsf(dir.y) > 1e-8f) ? fabsf((cellBoundY - origin.y) / dir.y) : FLT_MAX;
+
+		f32 tCurrent = 0.f;
+
+		while (tCurrent <= maxDistance)
 		{
-			if (!rb || rb->Is_Static) continue;
+			u32   bucketIdx = GetIndex(cell, _grid) % static_cast<u32>(_grid.bucketCount);
+			Cell& currentCell = _grid.bucket[bucketIdx];
 
-			if (rb->Affected_By_Gravity)
+			for (u32 idx : currentCell.items)
 			{
-				rb->velocity.y -= rb->gravity * dt;
+				if (!_colliders[idx])                          continue;
+				if (!_colliders[idx]->gameObject().active())   continue;
+				if (!(_colliders[idx]->layer & layerMask))     continue;
+				if (_colliders[idx]->isTrigger)                continue;
 
+				// Stamp check — O(1), no allocation
+				if (_raycastStamp[idx] == _currentStamp)       continue; // already visited
+				_raycastStamp[idx] = _currentStamp;                      // mark visited
+
+				f32 t = 0.f;
+				if (!RayVsOBB(origin, dir, _colliders[idx]->obb, t)) continue;
+				if (t < 0.f || t > maxDistance)                      continue;
+				if (t >= closestT)                                    continue;
+
+				closestT = t;
+				closestCol = _colliders[idx];
+			}
+
+			if (closestCol && tCurrent > closestT) break;
+
+			if (tMaxX < tMaxY)
+			{
+				tCurrent = tMaxX;
+				tMaxX += tDeltaX;
+				cell.x += stepX;
+			}
+			else
+			{
+				tCurrent = tMaxY;
+				tMaxY += tDeltaY;
+				cell.y += stepY;
 			}
 		}
 
-		// Integrate motion
-		for (auto* rb : _rigidbodies)
-		{
-			//ignore if velocity is too low
-			if (!rb || rb->Is_Static) continue;
+		if (!closestCol) return false;
 
-			//ignore if velocity is too low
-			if (lengthsq(rb->velocity) <= 0.0005f) continue;
+		// Fill RaycastHit — unchanged
+		float2 hitPoint = origin + dir * closestT;
+		const OBB& obb = closestCol->obb;
+		float2 localHit = hitPoint - obb.center;
+		f32 projX = dot(localHit, obb.axisX);
+		f32 projY = dot(localHit, obb.axisY);
 
-			Transform& t = rb->transform();
+		float2 hitNormal;
+		if (fabsf(fabsf(projX) - obb.halfExtents.x) < fabsf(fabsf(projY) - obb.halfExtents.y))
+			hitNormal = obb.axisX * (projX > 0.f ? 1.f : -1.f);
+		else
+			hitNormal = obb.axisY * (projY > 0.f ? 1.f : -1.f);
 
-			t.position += rb->velocity * dt;
-		}
+		outHit.collider = closestCol;
+		outHit.point = hitPoint;
+		outHit.normal = hitNormal;
+		outHit.distance = closestT;
+		outHit.layerHit = closestCol->layer;
 
-		// Resolve ALL collisions
-		CheckAllTypeCollisions();
+		return true;
 	}
 }

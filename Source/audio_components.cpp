@@ -163,6 +163,25 @@ void AudioEmitter::Deserialize(const Json::Value& compObj)
 		relativeToListener = compObj["relative"].asBool();
 }
 
+void AudioEmitter::CopyFrom(Component* src)
+{
+	auto s = dynamic_cast<AudioEmitter*>(src);
+	if (!s) return;
+
+	volume = s->volume;
+	pitch = s->pitch;
+	loop = s->loop;
+	spatialize = s->spatialize;
+	relativeToListener = s->relativeToListener;
+	fileName = std::string(s->fileName);
+}
+
+std::unique_ptr<Component> AudioEmitter::Clone(GameObject& go)
+{
+	auto n = std::make_unique<AudioEmitter>(go);
+	n.get()->CopyFrom(this);
+	return n;
+}
 
 
 
@@ -195,4 +214,16 @@ void AudioListener::Serialize(Json::Value& /*outComp*/) const
 void AudioListener::Deserialize(const Json::Value& /*compObj*/)
 {
 
+}
+
+void AudioListener::CopyFrom(Component* /*src*/)
+{
+	
+}
+
+std::unique_ptr<Component> AudioListener::Clone(GameObject& go)
+{
+	auto n = std::make_unique<AudioListener>(go);
+	n.get()->CopyFrom(this);
+	return n;
 }

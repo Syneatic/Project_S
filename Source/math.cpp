@@ -34,12 +34,24 @@ float2 float2::operator* (const float rhs) const
 	return float2(x * rhs, y * rhs);
 }
 
+float2 float2::operator* (const float2 rhs) const
+{
+	return float2(x * rhs.x, y * rhs.y);
+}
+
+
 float2& float2::operator/=(const float rhs)
 {
 	x /= rhs;
 	y /= rhs;
 	return *this;
 }
+
+float2 float2::operator/(const float rhs)
+{
+	return { x / rhs,y / rhs };
+}
+
 
 
 std::ostream& operator<< (std::ostream& o,const float2& f)

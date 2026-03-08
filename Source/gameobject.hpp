@@ -288,6 +288,35 @@ public:
 	{
 		_name = name;
 	}
+	
+//static func
+	static std::unique_ptr<GameObject> Clone(const GameObject& src)
+	{
+		auto go = std::make_unique<GameObject>(src.cname() + "_clone");
+		
+		go->_transform = src._transform;
+		go->_active = src._active;
+
+		//copy components
+		for (const auto& type : src._componentOrder)
+		{
+			auto it = src._componentMap.find(type);
+			if (it == src._componentMap.end()) continue;
+
+			auto cloned = it->second->Clone(*go);          // virtual dispatch
+			go->_componentMap.emplace(type, std::move(cloned));
+			go->_componentOrder.push_back(type);           // preserve draw order
+		}
+
+		for (const auto& child : src._children)
+		{
+			auto clonedChild = Clone(*child);              // recurse
+			clonedChild->_parent = go.get();
+			go->_children.emplace_back(std::move(clonedChild));
+		}
+
+		return go;
+	}
 };
 
 //for now dont use

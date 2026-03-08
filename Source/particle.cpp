@@ -26,6 +26,8 @@ namespace ParticleSystem
 
 	void Update()
 	{
+		//Debug::ScopedTimer t("p_update");
+
 		int activeParticles{};
 		
 		for (int i = 0; i < MAX_PARTICLES; ++i) 
@@ -66,6 +68,8 @@ namespace ParticleSystem
 
 	void Render() //by pass our wrapper for performance's sake
 	{
+		//Debug::ScopedTimer t("p_render");
+		
 		//batch this render states
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
@@ -73,9 +77,6 @@ namespace ParticleSystem
 		AEGfxSetColorToAdd(0, 0, 0, 0);
 		AEGfxSetBlendColor(0, 0, 0, 0);
 		AEGfxSetTransparency(1.f);
-
-		AEMtx33 scaleMtx;
-		AEMtx33Scale(&scaleMtx, 5.0f, 5.0f);
 
 		for (int i = 0; i < MAX_PARTICLES; ++i) 
 		{

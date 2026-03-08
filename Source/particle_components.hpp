@@ -45,6 +45,8 @@ public:
 	const std::string name() const override { return "ParticleEmitter"; }
 
 	ParticleEmitter(GameObject& go) : Component(go) {};
+	void CopyFrom(Component* src) override;
+	std::unique_ptr<Component> Clone(GameObject& go) override;
 
 private:
 	float2 SampleSpawnPosition() const;

@@ -30,6 +30,8 @@ public:
 
 	AudioEmitter(GameObject& go) : Component(go) {};
 
+	void CopyFrom(Component* src) override;
+	std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
 class AudioListener : public Component
@@ -46,4 +48,7 @@ public:
 	const std::string name() const override { return "AudioListener"; }
 
 	AudioListener(GameObject& go) : Component(go) {};
+
+	void CopyFrom(Component* src) override;
+	std::unique_ptr<Component> Clone(GameObject& go) override;
 };

@@ -40,4 +40,6 @@ public:
 	void Deserialize(const Json::Value& compObj) override;
 
 	NoiseSource(GameObject& go) : Component(go) {};
+	void CopyFrom(Component* src) override;
+	std::unique_ptr<Component> Clone(GameObject& go) override;
 };
