@@ -1,0 +1,273 @@
+{
+  "gameObjects" : 
+  [
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor",
+      "position" : 
+      [
+        12.000060081481934,
+        -145.49995422363281
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        2000.0,
+        27.25
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
+          "collisionMask" : 4294967294,
+          "isTrigger" : false,
+          "layerMask" : 1,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "type" : "AudioListener"
+        },
+        {
+          "jumpHeight" : 60.0,
+          "max_speed" : 350.0,
+          "time" : 0.69999998807907104,
+          "type" : "PlayerController"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "type" : "Camera"
+        }
+      ],
+      "name" : "Player",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        50.0,
+        100.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            0.77450978755950928,
+            0.77450978755950928,
+            0.77450978755950928,
+            1.0
+          ],
+          "isNoiseActive" : true,
+          "lifetime" : 1.5,
+          "noiseLevel" : 15.0,
+          "numParticles" : 128,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
+          "collisionMask" : 3,
+          "isTrigger" : false,
+          "layerMask" : 8,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "throwAngle" : 0.0,
+          "throwSpeed" : 400.0,
+          "type" : "RockController"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            0.67647057771682739,
+            0.67647057771682739,
+            0.67647057771682739,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "Rock",
+      "position" : 
+      [
+        260.99993896484375,
+        -68.999946594238281
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        25.0,
+        25.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967271,
+          "isTrigger" : false,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "enemyType" : 0,
+          "type" : "EnemyController"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "isNoiseActive" : true,
+          "lifetime" : 1.5,
+          "noiseLevel" : 15.0,
+          "numParticles" : 128,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "Enemy",
+      "position" : 
+      [
+        -250.0,
+        -105.09999847412109
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        50.0,
+        50.0
+      ]
+    }
+  ],
+  "name" : "Movement Scene"
+}

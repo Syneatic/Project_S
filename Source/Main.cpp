@@ -111,7 +111,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				SceneManager::RequestSceneSwitch("Intro");	
 
 			if (AEInputCheckTriggered(AEVK_3)) 
-				SceneManager::RequestSceneSwitch("physics_test");	
+				SceneManager::RequestSceneSwitch("Movement Scene");	
 		}
 #endif
 	

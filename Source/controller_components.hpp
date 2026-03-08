@@ -24,7 +24,7 @@ public:
     f32 jumpHeight = 60.f;
     f32 time = 0.7f;
 
-    float2 spawnPoint {};
+    float2 spawnPoint {0.f, 0.f};
 
     RigidBody* rb = nullptr;
     GameObject* rockObject = nullptr;
@@ -37,6 +37,9 @@ public:
     void OnUpdate() override;
     void OnDestroy() override;
 
+    void HandleCollision(const OnCollisionEvent& e);
+    void HandleTrigger(const OnTriggerEvent& e);
+    void SaveSpawn(const float2& pos);
     void Respawn();
 
     const std::string name() const override { return "PlayerController"; }

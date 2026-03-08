@@ -43,9 +43,30 @@ void PlayerController::Deserialize(const Json::Value& compObj)
 
 void PlayerController::OnStart()
 {
+    spawnPoint = _transform.position;
+
     rb = _owner.GetComponent<RigidBody>();
     rockObject = SceneManager::ActiveScene()->FindGameObjectByName("Rock");
     spawnPoint = _transform.position;
+
+    _owner.Subscribe<OnCollisionEvent>(
+        &OnCollisionEvent::self,
+        &_owner,
+        [this](const OnCollisionEvent& e)
+        {
+                this->HandleCollision(e);
+                Debug::Log("Collision: Self=", e.self->cname().c_str() ,"Other = ",  e.other->cname().c_str());
+        }
+    );
+
+    _owner.Subscribe<OnTriggerEvent>(
+        &OnTriggerEvent::self,
+        &_owner,
+        [this](const OnTriggerEvent& e)
+        {
+            this->HandleTrigger(e);
+        }
+    );
 }
 
 void PlayerController::OnUpdate()
@@ -98,17 +119,19 @@ void PlayerController::OnUpdate()
     //    rb->HitProjectile = false;
     //    Debug::Log("Rock retrieve");
     //}
-
+    // 
     //===================|Throw Mechanic|=====================
     if (AEInputCheckTriggered(AEVK_R))
     {
-        if (rockObject && rockObject->active() == false)
-        {
-            auto* rc = rockObject->GetComponent<RockController>();
+        if (!rockObject) return;
 
-            if (rc)
+        if (!rockObject->active())
+        {
+            if (auto* rc = rockObject->GetComponent<RockController>())
+            {
+                rockObject->active(true);
                 rc->Throw(_transform.position);
-            rockObject->active(true);
+            }
         }
     }
 
@@ -129,6 +152,45 @@ void PlayerController::Respawn()
 {
     _transform.position = spawnPoint;
     //rb->HitEnemy = false;
+}
+
+void PlayerController::SaveSpawn(const float2& pos)
+{
+    spawnPoint = pos;
+    Debug::Log("Spawn saved at: %f, %f", pos.x, pos.y);
+}
+
+void PlayerController::HandleCollision(const OnCollisionEvent& e)
+{
+    auto* col = e.other->GetComponent<BoxCollider>();
+
+    if (col->layer == 1 << 2)
+    {
+        Debug::Log("Player hit enemy -> Respawn");
+        Respawn();
+    }
+
+    if (col->layer == 1 << 3)
+    {
+        Debug::Log("Rock picked up");
+
+        e.other->active(false);
+
+        if (auto* rc = e.other->GetComponent<RockController>())
+            rc->ResetRock();
+    }
+
+    Debug::Log("Collision: Self=%s Other=%s", e.self->cname().c_str(), e.other->cname().c_str());
+}
+
+void PlayerController::HandleTrigger(const OnTriggerEvent& e)
+{
+    auto* col = e.other->GetComponent<Collider>();
+    if (col->layer == 1 << 4)
+    {
+        Debug::Log("Checkpoint Reached");
+        SaveSpawn(e.other->transform().position);
+    }
 }
 
 void PlayerController::CopyFrom(Component* src)
