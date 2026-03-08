@@ -1,3 +1,4 @@
+#include "enginectx.hpp"
 #include "gameobject.hpp"
 #include "camera.hpp"
 #include "scene_manager.hpp"
@@ -20,7 +21,7 @@ namespace UISystem
     void init()
     {
         SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&) { LevelTransition::RequestTransition();/*SceneManager::RequestSceneSwitch("TestScene");*/ });
-        SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent&) { std::cout << "Pause\n"; });
+        SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent&) { EngineCTX::PauseTime(); });
         SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent&) { SceneManager::RequestSceneReload(); });
         SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent&) { LevelTransition::RequestTransition();/*SceneManager::RequestSceneSwitch("MainMenu");*/ });
         SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent&) { EngineCTX::applicationRunning = false; });

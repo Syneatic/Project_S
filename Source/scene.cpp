@@ -65,6 +65,9 @@ void Scene::OnUpdate()
 
 	Audio::Update();
 
+	if (AEInputCheckTriggered(AEVK_P))
+		EngineCTX::PauseTime();
+
 	accumulator += EngineCTX::dt;
 	while (accumulator >= EngineCTX::fixedDt)
 	{
