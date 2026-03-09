@@ -41,7 +41,7 @@
           "type" : "AudioListener"
         },
         {
-          "collisionMask" : 4294967290,
+          "collisionMask" : 4294967282,
           "isTrigger" : false,
           "layerMask" : 1,
           "size" : 
@@ -641,7 +641,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -687,7 +687,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.9843137264251709
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -699,8 +699,8 @@
       "name" : "PLATFORM_10",
       "position" : 
       [
-        393.0,
-        23.0
+        337.00006103515625,
+        29.999954223632812
       ],
       "rotation" : 0.0,
       "scale" : 
@@ -822,7 +822,7 @@
           "isNoiseActive" : true,
           "lifetime" : 1.0,
           "noiseLevel" : 10.0,
-          "numParticles" : 32,
+          "numParticles" : 256,
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
@@ -838,9 +838,9 @@
           "blendmode" : 1,
           "color" : 
           [
-            0.47450980544090271,
-            0.47450980544090271,
-            0.47450980544090271,
+            0.47549021244049072,
+            0.47549021244049072,
+            0.47549021244049072,
             1.0
           ],
           "fileName" : "",
@@ -855,9 +855,9 @@
           "type" : "RockController"
         },
         {
-          "collisionMask" : 4294967266,
+          "collisionMask" : 4294967286,
           "isTrigger" : false,
-          "layerMask" : 8,
+          "layerMask" : 0,
           "size" : 
           [
             1.0,
@@ -915,52 +915,19 @@
       "components" : 
       [
         {
-          "enemyType" : 2,
-          "groundEmitInterval" : 1.5,
-          "moveSpeed" : 100.0,
+          "enemyType" : 0,
           "type" : "EnemyController"
         },
         {
           "collisionMask" : 4294967283,
           "isTrigger" : false,
-          "layerMask" : 4,
+          "layerMask" : 1,
           "size" : 
           [
             1.0,
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "fileName" : "ore.mp3",
-          "loop" : false,
-          "pitch" : 1.0,
-          "relative" : false,
-          "spatialize" : false,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
-        },
-        {
-          "color" : 
-          [
-            1.0,
-            0.0,
-            0.0,
-            1.0
-          ],
-          "isNoiseActive" : false,
-          "lifetime" : 1.5,
-          "noiseLevel" : 15.0,
-          "numParticles" : 32,
-          "repeat" : false,
-          "repeatInterval" : 1.0,
-          "type" : "NoiseSource"
-        },
-        {
-          "Affected By Gravity" : false,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -970,7 +937,7 @@
             1.0,
             0.0,
             0.0,
-            0.98823529481887817
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -979,157 +946,23 @@
           "type" : "SpriteRenderer"
         },
         {
-          "colorA" : 
-          [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "colorB" : 
-          [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "isBurst" : false,
-          "lifetime" : 
-          [
-            1.0,
-            200.0
-          ],
-          "radius" : 
-          [
-            0.0,
-            50.0
-          ],
-          "rect" : 
-          [
-            50.0,
-            50.0
-          ],
-          "rotation" : 
-          [
-            0.0,
-            0.0
-          ],
-          "size" : 
-          [
-            3.0,
-            8.0
-          ],
-          "spawnLineLength" : 100.0,
-          "spawnRate" : 10.0,
-          "spawnShape" : 0,
-          "speed" : 
-          [
-            150.0,
-            250.0
-          ],
-          "spread" : 
-          [
-            -15.0,
-            15.0
-          ],
-          "time" : 0.0,
-          "type" : "ParticleEmitter"
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
         }
       ],
       "name" : "Enemy",
       "position" : 
       [
-        364.20001220703125,
-        64.600006103515625
+        330.0,
+        68.0
       ],
       "rotation" : 0.0,
       "scale" : 
       [
         47.200004577636719,
         47.200004577636719
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "detectDistance" : 100.0,
-          "enemyType" : 1,
-          "groundEmitInterval" : 4.5,
-          "type" : "EnemyController"
-        },
-        {
-          "collisionMask" : 4294967267,
-          "isTrigger" : false,
-          "layerMask" : 4,
-          "size" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "BoxCollider"
-        },
-        {
-          "fileName" : "ore.mp3",
-          "loop" : false,
-          "pitch" : 1.0,
-          "relative" : false,
-          "spatialize" : false,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
-        },
-        {
-          "color" : 
-          [
-            1.0,
-            0.0,
-            0.0,
-            1.0
-          ],
-          "isNoiseActive" : false,
-          "lifetime" : 1.5,
-          "noiseLevel" : 15.0,
-          "numParticles" : 64,
-          "repeat" : false,
-          "repeatInterval" : 1.0,
-          "type" : "NoiseSource"
-        },
-        {
-          "Affected By Gravity" : false,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
-        },
-        {
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
-          [
-            0.47058820724487305,
-            0.84429061412811279,
-            1.0,
-            0.0
-          ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 250,
-          "rendermode" : 1,
-          "type" : "SpriteRenderer"
-        }
-      ],
-      "name" : "Enemy2",
-      "position" : 
-      [
-        -74.0,
-        58.0
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        32.549999237060547,
-        24.450000762939453
       ]
     }
   ],

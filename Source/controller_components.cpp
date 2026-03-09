@@ -56,7 +56,7 @@ void PlayerController::OnStart()
         [this](const OnCollisionEvent& e)
         {
                 this->HandleCollision(e);
-                Debug::Log("Collision: Self=", e.self->cname().c_str() ,"Other = ",  e.other->cname().c_str());
+                //Debug::Log("Collision: Self=", e.self->cname().c_str() ,"Other = ",  e.other->cname().c_str());
         }
     );
 
@@ -90,16 +90,16 @@ void PlayerController::OnUpdate()
 
     if (input != 0.f)   
         rb->velocity.x += input * acceleration * EngineCTX::dt;
-    else 
-    {
-        float friction = acceleration;
-        //friction
-        if (rb->velocity.x > 0.f)
-            rb->velocity.x = std::max(0.f, rb->velocity.x - friction * static_cast<f32>(EngineCTX::dt));
-        else if (rb->velocity.x < 0.f) {
-            rb->velocity.x = std::min(0.f, rb->velocity.x + friction * static_cast<f32>(EngineCTX::dt));
-        }
-    }
+    //else 
+    //{
+    //    float friction = acceleration;
+    //    //friction
+    //    if (rb->velocity.x > 0.f)
+    //        rb->velocity.x = std::max(0.f, rb->velocity.x - friction * static_cast<f32>(EngineCTX::dt));
+    //    else if (rb->velocity.x < 0.f) {
+    //        rb->velocity.x = std::min(0.f, rb->velocity.x + friction * static_cast<f32>(EngineCTX::dt));
+    //    }
+    //}
     rb->velocity.x = std::clamp(rb->velocity.x, -maxSpeed, maxSpeed);
 
     //===================|Jump Mechanic|=====================
