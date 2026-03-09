@@ -268,7 +268,7 @@ namespace Graphics
             return align;
         }
     
-        void GetTransformMTX(float2 t, float2 s, f32 r, Alignment mode, MTX& mtx)
+        void GetTransformMTX(float2 t, float2 s, f32 r, Alignment mode, MTX& mtx, bool notScrnSpace)
         {
             AEMtx33Identity(&mtx);
             MTX align = GetAlignmentMatrix(mode);
@@ -284,6 +284,10 @@ namespace Graphics
             AEMtx33Concat(&mtx, &scale, &mtx);
             AEMtx33Concat(&mtx, &rotate, &mtx);
             AEMtx33Concat(&mtx, &translate, &mtx);
+
+            if (notScrnSpace) {
+                AEMtx33Concat(&mtx, &CameraData::camM, &mtx);
+            }
         }
     
         void DrawMesh(VertexBuffer* mesh, DrawMode mode, Texture* texture)
@@ -311,7 +315,7 @@ namespace Graphics
                 AEMtx33Trans(&worldMtx, data.pos.x, data.pos.y);
 
                 AEMtx33 viewPosMtx;
-                AEMtx33Concat(&viewPosMtx, &CameraData::camMatrix, &worldMtx);
+                AEMtx33Concat(&viewPosMtx, &CameraData::camM, &worldMtx);
 
                 screenPixelPos.x = viewPosMtx.m[0][2];
                 screenPixelPos.y = viewPosMtx.m[1][2];
@@ -440,9 +444,7 @@ namespace Graphics
 
             //set matrix
             MTX transform{};
-            GetTransformMTX(d.pos,d.scale,d.rot,d.alignment,transform);
-            if(!d.isScreenSpace)
-                AEMtx33Concat(&transform, &CameraData::camMatrix, &transform);
+            GetTransformMTX(d.pos,d.scale,d.rot,d.alignment,transform, !d.isScreenSpace);
             AEGfxSetTransform(transform.m);
 
             //draw based off primitive type

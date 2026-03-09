@@ -432,8 +432,8 @@ void TextRenderer::DrawInInspector()
         color.a = col[3];
     }
 
-    //ImGui::TextUnformatted("IsScreenSpace");
-    //ImGui::Checkbox("##isscreenspace", &isScreenSpace);
+    ImGui::TextUnformatted("IsScreenSpace");
+    ImGui::Checkbox("##isscreenspace", &isScreenSpace);
 }
 
 void TextRenderer::Draw()
@@ -460,6 +460,7 @@ void TextRenderer::Serialize(Json::Value& outComp) const
     outComp["alignment"] = static_cast<int>(alignment);
     outComp["color"] = WriteColor(color);
     outComp["text"] = text;
+    outComp["screenspace"] = isScreenSpace;
 
     //texture is abit tricky for now
     //i think save it as a filename for now
@@ -479,6 +480,9 @@ void TextRenderer::Deserialize(const Json::Value& compObj)
     if (compObj.isMember("text") || !compObj["text"].isString()) {
         text = compObj["text"].asString();
     }
+
+    if (compObj.isMember("screenspace") && compObj["screenspace"].isBool())
+        isScreenSpace = compObj["screenspace"].asBool();
 
     //read texture from file here
 }
