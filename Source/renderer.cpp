@@ -272,7 +272,7 @@ namespace Graphics
         {
             AEMtx33Identity(&mtx);
             MTX align = GetAlignmentMatrix(mode);
-            //AEMtx33Concat(&mtx, &align, &mtx);
+            AEMtx33Concat(&mtx, &align, &mtx);
 
             MTX scale{};
             AEMtx33Scale(&scale, s.x, s.y);

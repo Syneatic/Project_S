@@ -91,14 +91,12 @@ namespace CameraSystem
 	{
 		float2 worldPos;
 		float2 screen{(f32)AEGfxGetWindowWidth(),(f32)AEGfxGetWindowHeight()};
-		float2 camera{};
-		AEGfxGetCamPosition(&camera.x, &camera.y);
 
 		float ndcX = (pos.x / screen.x) - 0.5f;
 		float ndcY = 0.5f - (pos.y / screen.y);
 
-		worldPos.x = (ndcX * screen.x / CameraData::zoomMult) + camera.x;
-		worldPos.y = (ndcY * screen.y / CameraData::zoomMult) + camera.y;
+		worldPos.x = (ndcX * screen.x / CameraData::zoomMult) + CameraData::pos.x;
+		worldPos.y = (ndcY * screen.y / CameraData::zoomMult) + CameraData::pos.y;
 
 
 		return worldPos;
