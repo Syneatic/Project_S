@@ -52,7 +52,7 @@ void ShutdownImGUI(bool& initStatus)
 
 void UpdateEngineCTX()
 {
-	EngineCTX::dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
+	EngineCTX::dt = EngineCTX::timeScale * static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	EngineCTX::frameCount = AEFrameRateControllerGetFrameCount();
 	EngineCTX::frameRate = static_cast<f32>(AEFrameRateControllerGetFrameRate());
 	EngineCTX::windowSize.x = static_cast<f32>(AEGfxGetWindowWidth());
@@ -116,7 +116,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #endif
 	
 		SceneManager::OnUpdate();
-
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();

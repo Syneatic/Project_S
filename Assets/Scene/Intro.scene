@@ -44,83 +44,7 @@
         {
           "colorA" : 
           [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "colorB" : 
-          [
             0.0,
-            0.0,
-            0.0,
-            1.0
-          ],
-          "isBurst" : false,
-          "lifetime" : 
-          [
-            3.0,
-            3.0
-          ],
-          "radius" : 
-          [
-            0.0,
-            40.0
-          ],
-          "rect" : 
-          [
-            50.0,
-            50.0
-          ],
-          "rotation" : 
-          [
-            0.0,
-            360.0
-          ],
-          "size" : 
-          [
-            7.5,
-            10.0
-          ],
-          "spawnLineLength" : 50.0,
-          "spawnRate" : 100.0,
-          "spawnShape" : 2,
-          "speed" : 
-          [
-            500.0,
-            500.0
-          ],
-          "spread" : 
-          [
-            0.0,
-            360.0
-          ],
-          "time" : 0.0,
-          "type" : "ParticleEmitter"
-        }
-      ],
-      "name" : "Effect1",
-      "position" : 
-      [
-        -104.99992370605469,
-        187.99996948242188
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "colorA" : 
-          [
-            1.0,
             0.0,
             0.0,
             1.0
@@ -135,18 +59,18 @@
           "isBurst" : false,
           "lifetime" : 
           [
-            3.0,
-            3.0
+            5.0,
+            5.0
           ],
           "radius" : 
           [
             0.0,
-            40.0
+            50.0
           ],
           "rect" : 
           [
-            50.0,
-            50.0
+            0.0,
+            900.0
           ],
           "rotation" : 
           [
@@ -155,12 +79,12 @@
           ],
           "size" : 
           [
-            7.5,
-            10.0
+            100.0,
+            100.0
           ],
-          "spawnLineLength" : 100.0,
-          "spawnRate" : 100.0,
-          "spawnShape" : 2,
+          "spawnLineLength" : 900.0,
+          "spawnRate" : 1000.0,
+          "spawnShape" : 3,
           "speed" : 
           [
             500.0,
@@ -169,36 +93,19 @@
           "spread" : 
           [
             0.0,
-            360.0
+            0.0
           ],
           "time" : 0.0,
           "type" : "ParticleEmitter"
         }
       ],
-      "name" : "Effect2",
+      "name" : "FadeIn",
       "position" : 
       [
-        175.0,
-        191.99996948242188
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : [],
-      "name" : "EmitterHolder",
-      "position" : 
-      [
-        0.0,
+        -800.0,
         0.0
       ],
-      "rotation" : 0.0,
+      "rotation" : -90.0,
       "scale" : 
       [
         0.0,
