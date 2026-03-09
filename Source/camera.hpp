@@ -4,10 +4,14 @@ struct Camera;
 
 struct CameraData // Pass to renderer
 {
-	inline static AEMtx33 camScaleM;
-	inline static AEMtx33 camRotateM;
-	inline static AEMtx33 camTransM;
-	inline static float zoomMult{ 1 };
+	inline static AEMtx33 camM = [] {
+		AEMtx33 m{};
+		AEMtx33Identity(&m);
+		return m;
+		}();
+	inline static float2 pos{ 0.0f, 0.0f };
+	inline static float rotDeg{ 0.0f };
+	inline static float zoomMult{ 1.0f };
 };
 
 namespace CameraSystem {

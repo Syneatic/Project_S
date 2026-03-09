@@ -166,7 +166,8 @@ void PlayerController::OnUpdate()
             noiseSource->Emit(_transform.position);
     }
 
-    float2 currentPos = _owner.worldTransform().position;
+    float2 currentPos = _owner.worldTransform().position; printf("transform pos this frame: %.1f %.1f\n",
+        currentPos.x, currentPos.y);
     f32 speed = length(rb->velocity);
 
     if (speed >= echoDistanceThreshold)
