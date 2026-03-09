@@ -2,6 +2,7 @@
 
 #include "particle.hpp"
 #include "physics.hpp"
+#include "camera.hpp"
 
 namespace
 {
@@ -95,8 +96,10 @@ namespace ParticleSystem
 			AEMtx33Concat(&temp, &rotMtx, &scaleMtx);
 			AEMtx33Concat(&finalMtx, &transMtx, &temp);
 
+			// apply camera matrix
+			AEMtx33Concat(&finalMtx, &CameraData::camM, &finalMtx);
+
 			AEGfxSetTransform(finalMtx.m);
-			
 			AEGfxMeshDraw(Graphics::QuadMesh(), AE_GFX_MDM_TRIANGLES);
 		}
 	}
