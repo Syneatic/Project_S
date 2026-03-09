@@ -91,7 +91,6 @@ void Scene::OnExit()
 	}
 
 	//delete
-	LevelTransition::UnsubscribeTransitions();
 	EventHandler::Flush();
 	Physics::Flush();
 	Audio::FlushEmitters();

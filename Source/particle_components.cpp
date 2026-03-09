@@ -50,7 +50,7 @@ void ParticleEmitter::OnStart()
 
 void ParticleEmitter::OnUpdate() 
 {
-	Debug::Log("BANG FROM SOME WHERE");
+	//Debug::Log("BANG FROM SOME WHERE");
 
 	if (isBurst)
 	{

@@ -7,8 +7,6 @@
 
 namespace LevelTransition
 {
-	// Container for event subscribers.
-	std::vector<EventHandler::SubscriptionHandle> handlers;
 	// Global state for level transition.
 	TransitionState tState{}; 
 	// Float for transition timer.
@@ -16,13 +14,7 @@ namespace LevelTransition
 	// Container for pointers to game objects with particle emitters used for transiton effect.
 	GameObject *fadeIn{ nullptr }, *fadeOut{ nullptr };
 
-	bool timerActive = false;
-
-	// Function to subscribe to LevelTransitionEvent.
-	void SubscribeTransition(TransitionState state, std::function<void(const LevelTransitionEvent&)> func)
-	{
-		handlers.push_back(EventHandler::SubscribeFilter(&LevelTransitionEvent::tState, state, func));
-	}
+	//bool timerActive = false;
 
 	// Helper function to determine the scene to load for level transition.
 	std::string SceneToSwitch()
@@ -56,13 +48,12 @@ namespace LevelTransition
 			timerFin = tFin;
 			if (fadeIn) 
 				fadeIn->active(true);
-			inTransition = !inTransition;
-			timerActive = true;
+			inTransition = true;
+			//timerActive = true;
 		}
 	}
 
-
-	void Update()
+	void CheckFadeOut()
 	{
 		if (tState == TransitionState::TRANSITION_FADEOUT)
 		{
@@ -83,7 +74,10 @@ namespace LevelTransition
 				tState = TransitionState::TRANSITION_NULL;
 			}
 		}
+	}
 
+	void CheckFadeIn()
+	{
 		if (tState == TransitionState::TRANSITION_FADEIN)
 		{
 			timerFin -= EngineCTX::dt;
@@ -97,13 +91,9 @@ namespace LevelTransition
 		}
 	}
 
-	// Add unsub for when there is a scene restart here.
-	void UnsubscribeTransitions()
+	void Update()
 	{
-		for (auto& sh: handlers)
-		{
-			EventHandler::Unsubscribe(sh);
-		}
-		handlers.clear();
+		CheckFadeOut();
+		CheckFadeIn();
 	}
 }
