@@ -26,6 +26,7 @@ namespace CameraSystem
 	void OnStart() 
 	{
 		AEMtx33Identity(&CameraData::camM);
+		CameraData::zoomMult = 1;
 	}
 
 	void OnUpdate() 
@@ -80,10 +81,10 @@ namespace CameraSystem
 		CameraData::zoomMult = 1;
 	}
 
-	void MoveCamera(Transform parentTrans) 
+	void MoveCamera(Transform playerTrans) 
 	{
 		// fix dis
-		CameraData::pos = parentTrans.position;
+		CameraData::pos = playerTrans.position;
 		SetCamM();
 	}
 

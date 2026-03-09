@@ -18,7 +18,7 @@ namespace CameraSystem {
 	void OnStart();
 	void OnUpdate();
 	void OnExit();
-	void MoveCamera(Transform parentTrans);
+	void MoveCamera(Transform);
 
 	float2 ScreenToWorld(float2 screen);
 }
