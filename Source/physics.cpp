@@ -617,7 +617,7 @@ namespace Physics
 	void Step()
 	{
 		//Debug::ScopedTimer timer("Physics");
-		f32 dt = EngineCTX::dt;
+		f32 dt = EngineCTX::fixedDt;
 
 		IntegrateMotion(dt);
 		UpdateAABBs();
