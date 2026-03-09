@@ -43,9 +43,10 @@ void PlayerController::Deserialize(const Json::Value& compObj)
 
 void PlayerController::OnStart()
 {
-    spawnPoint = _transform.position;
+    spawnPoint = _transform.position, moveStartPos = _transform.position;;
 
     rb = _owner.GetComponent<RigidBody>();
+    noiseSource = _owner.GetComponent<NoiseSource>();
     rockObject = SceneManager::ActiveScene()->FindGameObjectByName("Rock");
     spawnPoint = _transform.position;
 
@@ -114,12 +115,6 @@ void PlayerController::OnUpdate()
         rb->AddForce({0.f,jumpSpeed * 75.f});
     }
 
-    //if (rb->HitProjectile) {
-    //    rockObject->active(false);
-    //    rb->HitProjectile = false;
-    //    Debug::Log("Rock retrieve");
-    //}
-    // 
     //===================|Throw Mechanic|=====================
     if (AEInputCheckTriggered(AEVK_R))
     {
@@ -133,14 +128,68 @@ void PlayerController::OnUpdate()
                 rc->Throw(_transform.position);
             }
         }
+
+        //Ignore's the projectile LayerMask
+        auto* col = _owner.GetComponent<BoxCollider>();
+        if (col)
+        {
+            ignoreProjectileCollision = true;
+            ignoreTimer = 0.f;
+
+            col->collisionMask &= ~(1 << 3);
+        }
     }
 
-    //==================|Collision with Enemy|=======================
-    //if (rb->HitEnemy) Respawn();
-    //if (rb->HitCheckPoint) {
-    //    spawnPoint = _transform.position;
-    //    rb->HitCheckPoint = true;
-    //}
+    //Turn projectile LayerMask back on after a timer
+    if (ignoreProjectileCollision)
+    {
+        ignoreTimer += EngineCTX::dt;
+
+        if (ignoreTimer >= ignoreDuration)
+        {
+            ignoreProjectileCollision = false;
+
+            auto* col = _owner.GetComponent<BoxCollider>();
+            if (col)
+            {
+                col->collisionMask |= (1 << 3);
+            }
+        }
+    }
+
+    //===================|Echo Mechanic|=====================
+    echoTimer += EngineCTX::dt;
+
+    if (AEInputCheckTriggered(AEVK_E)/* && echoTimer >= echoCooldown*/)
+    {
+        echoTimer = 0.f;
+
+        if (noiseSource)
+            noiseSource->Emit(_transform.position);
+    }
+
+    f32 speed = length(rb->velocity);
+
+    // Player started moving
+    if (speed > 0.1f && !wasMoving)
+    {
+        wasMoving = true;
+        moveStartPos = _transform.position;
+    }
+
+    // Player stopped moving
+    if (speed <= 0.1f && wasMoving)
+    {
+        wasMoving = false;
+
+        f32 distance = length(_transform.position - moveStartPos);
+
+        if (distance >= minEchoDistance)
+        {
+            if (noiseSource)
+                noiseSource->Emit(_transform.position);
+        }
+    }
 }
 
 void PlayerController::OnDestroy()
@@ -166,6 +215,7 @@ void PlayerController::HandleCollision(const OnCollisionEvent& e)
 
     if (col->layer == 1 << 2)
     {
+        //==================|Collision with Enemy|=======================
         Debug::Log("Player hit enemy -> Respawn");
         Respawn();
     }
@@ -185,7 +235,7 @@ void PlayerController::HandleCollision(const OnCollisionEvent& e)
 
 void PlayerController::HandleTrigger(const OnTriggerEvent& e)
 {
-    auto* col = e.other->GetComponent<Collider>();
+    auto* col = e.other->GetComponent<BoxCollider>();
     if (col->layer == 1 << 4)
     {
         Debug::Log("Checkpoint Reached");

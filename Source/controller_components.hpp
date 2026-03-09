@@ -24,10 +24,23 @@ public:
     f32 jumpHeight = 60.f;
     f32 time = 0.7f;
 
+    float2 lastEchoPos{};
+    bool wasMoving{ false };
+    f32 minEchoDistance{ 20.f };
+    f32 echoDistanceThreshold{ 150.f };
+    f32 echoCooldown{ 1.0f };
+    f32 echoTimer{ 0.0f };
+
     float2 spawnPoint {0.f, 0.f};
+    float2 moveStartPos{};
+
+    bool ignoreProjectileCollision{ false };
+    f32 ignoreTimer{ 0.f };
+    f32 ignoreDuration{ 0.5f };
 
     RigidBody* rb = nullptr;
     GameObject* rockObject = nullptr;
+    NoiseSource* noiseSource = nullptr;
 
     void DrawInInspector() override;
     void Serialize(Json::Value& outComp) const override;

@@ -53,10 +53,38 @@
       "components" : 
       [
         {
+          "type" : "Camera"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
           "Affected By Gravity" : true,
           "Is Static" : false,
           "isKinematic" : false,
           "type" : "RigidBody"
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.99215686321258545
+          ],
+          "isNoiseActive" : false,
+          "lifetime" : 2.5,
+          "noiseLevel" : 25.0,
+          "numParticles" : 64,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
         },
         {
           "collisionMask" : 4294967294,
@@ -93,9 +121,6 @@
           "renderlayer" : 250,
           "rendermode" : 1,
           "type" : "SpriteRenderer"
-        },
-        {
-          "type" : "Camera"
         }
       ],
       "name" : "Player",
@@ -160,7 +185,7 @@
         },
         {
           "throwAngle" : 0.0,
-          "throwSpeed" : 400.0,
+          "throwSpeed" : 800.0,
           "type" : "RockController"
         },
         {
