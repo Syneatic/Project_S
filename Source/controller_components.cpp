@@ -158,38 +158,30 @@ void PlayerController::OnUpdate()
     }
 
     //===================|Echo Mechanic|=====================
-    echoTimer += EngineCTX::dt;
 
     if (AEInputCheckTriggered(AEVK_E)/* && echoTimer >= echoCooldown*/)
     {
-        echoTimer = 0.f;
 
         if (noiseSource)
             noiseSource->Emit(_transform.position);
     }
 
+    float2 currentPos = _owner.worldTransform().position;
     f32 speed = length(rb->velocity);
 
-    // Player started moving
-    if (speed > 0.1f && !wasMoving)
+    if (speed >= echoDistanceThreshold)
     {
-        wasMoving = true;
-        moveStartPos = _transform.position;
-    }
+        distanceAccumulated += length(currentPos - lastEchoPos);
 
-    // Player stopped moving
-    if (speed <= 0.1f && wasMoving)
-    {
-        wasMoving = false;
-
-        f32 distance = length(_transform.position - moveStartPos);
-
-        if (distance >= minEchoDistance)
+        if (distanceAccumulated >= echoDistanceThreshold)
         {
-            if (noiseSource)
-                noiseSource->Emit(_transform.position);
+            distanceAccumulated = 0.f;
+
+            if (noiseSource) noiseSource->Emit(currentPos);
         }
     }
+
+    lastEchoPos = currentPos;
 }
 
 void PlayerController::OnDestroy()

@@ -26,10 +26,9 @@ public:
 
     float2 lastEchoPos{};
     bool wasMoving{ false };
-    f32 minEchoDistance{ 20.f };
-    f32 echoDistanceThreshold{ 150.f };
-    f32 echoCooldown{ 1.0f };
-    f32 echoTimer{ 0.0f };
+    f32 minEchoDistance{ 100.f };
+    f32 echoDistanceThreshold{ 120.f };
+    f32 distanceAccumulated{ 0.0f };
 
     float2 spawnPoint {0.f, 0.f};
     float2 moveStartPos{};
