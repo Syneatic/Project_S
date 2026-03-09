@@ -1,15 +1,12 @@
 #include "camera_components.hpp"
 #include "gameobject.hpp"
-#include "scene.hpp"
 
 void MainCamera::OnStart()
 {
 	CameraSystem::OnStart();
-	player = SceneManager::ActiveScene()->FindGameObjectByName("Player");
-
 };
 void MainCamera::OnUpdate() {
-	CameraSystem::MoveCamera(player->transform());
+	CameraSystem::MoveCamera(_owner.transform());
 };
 void MainCamera::OnDestroy() {
 	CameraSystem::OnExit();

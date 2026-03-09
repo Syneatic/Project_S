@@ -16,6 +16,9 @@
           "volume" : 1.0
         },
         {
+          "type" : "Camera"
+        },
+        {
           "color" : 
           [
             1.0,
@@ -51,7 +54,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
-          "screenspace" : false,
+          "screenspace" : true,
           "type" : "SpriteRenderer"
         },
         {
@@ -1295,7 +1298,6 @@
             1.0
           ],
           "renderlayer" : 250,
-          "screenspace" : true,
           "text" : "Quit",
           "type" : "TextRenderer"
         }
@@ -1311,28 +1313,6 @@
       [
         1.0,
         1.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "type" : "Camera"
-        }
-      ],
-      "name" : "Camera",
-      "position" : 
-      [
-        0.0,
-        0.0
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        0.0,
-        0.0
       ]
     }
   ],
