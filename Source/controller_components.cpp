@@ -506,7 +506,6 @@ void EnemyController::UpdateDrop() {
     float2 dir = float2(0, -1);
 
     uint32_t groundLayer = static_cast<uint32_t>(Layer::Environment);
-    uint32_t playerLayer = static_cast<uint32_t>(Layer::Player);
 
     //if (hasDropped && rb->isGrounded) hasLanded = true;
 
@@ -529,7 +528,6 @@ void EnemyController::UpdatePatrol() {
     RaycastHit hit;
 
     //Ground Raycast Variables
-    bool hasLanded = false;
     float halfWidth = _transform.scale.x / 2.f;
     float2 origin = _transform.position + float2(patrolDir * halfWidth, 0);
     float2 dir = float2(0, -1);
