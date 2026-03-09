@@ -195,6 +195,10 @@ void Renderer::Draw()
 // ===== RENDERER DEF =====
 
 
+//Graphics::RenderLayer renderLayer{ Graphics::RenderLayer::DEFAULT };
+//f32 sortOrder{ 0.f };
+//bool isScreenSpace{ false };
+
 void SpriteRenderer::DrawInInspector()
 {
     static const char* _blendNames[] = { "NONE", "BLEND", "ADD", "MULTIPLY" };
@@ -290,6 +294,12 @@ void SpriteRenderer::DrawInInspector()
         color.b = col[2];
         color.a = col[3];
     }
+
+    //renderlayer
+    //sort order
+
+    ImGui::TextUnformatted("IsScreenSpace");
+    ImGui::Checkbox("##isscreenspace", &isScreenSpace);
 }
 
 void SpriteRenderer::Serialize(Json::Value& outComp) const
@@ -301,6 +311,7 @@ void SpriteRenderer::Serialize(Json::Value& outComp) const
     outComp["renderlayer"] = renderLayer;
     outComp["alignment"] = static_cast<int>(alignment);
     outComp["color"] = WriteColor(color);
+    outComp["screenspace"] = isScreenSpace;
 }
 
 void SpriteRenderer::Deserialize(const Json::Value& compObj)
@@ -325,6 +336,9 @@ void SpriteRenderer::Deserialize(const Json::Value& compObj)
 
     if (compObj.isMember("color"))
         ReadColor(compObj["color"], color);
+
+    if (compObj.isMember("screenspace") && compObj["screenspace"].isBool())
+        isScreenSpace = compObj["screenspace"].asBool();
 }
 
 void SpriteRenderer::Draw()
@@ -417,6 +431,9 @@ void TextRenderer::DrawInInspector()
         color.b = col[2];
         color.a = col[3];
     }
+
+    //ImGui::TextUnformatted("IsScreenSpace");
+    //ImGui::Checkbox("##isscreenspace", &isScreenSpace);
 }
 
 void TextRenderer::Draw()
