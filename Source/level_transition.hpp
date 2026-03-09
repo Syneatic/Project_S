@@ -14,6 +14,6 @@ namespace LevelTransition
 
 	void Init();
 	void RequestTransition(f32 setTime = 4.f);
-	void CheckState();
+	void Update();
 	void UnsubscribeTransitions();
 }

@@ -16,6 +16,8 @@ namespace LevelTransition
 	// Container for pointers to game objects with particle emitters used for transiton effect.
 	GameObject *fadeIn{ nullptr }, *fadeOut{ nullptr };
 
+	bool timerActive = false;
+
 	// Function to subscribe to LevelTransitionEvent.
 	void SubscribeTransition(TransitionState state, std::function<void(const LevelTransitionEvent&)> func)
 	{
@@ -40,41 +42,6 @@ namespace LevelTransition
 		// The first frame of every scene should find emitter game objects.
 		FindEmitters();
 
-		// Subscribe a function that decrement the transition timer & change state if timer runs out.
-		SubscribeTransition(TransitionState::TRANSITION_FADEIN, [](const LevelTransitionEvent&) 
-			{
-				timerFin -= EngineCTX::dt;
-				if (timerFin <= 0.f)
-				{
-					const std::string& sceneToSwitch{ SceneToSwitch() };
-					timerFout = 0.f;
-					tState = TransitionState::TRANSITION_FADEOUT;
-					SceneManager::RequestSceneSwitch(sceneToSwitch);
-				}
-			});
-
-		// Subscribe a function that dissable particle effect & calls for the scene to change.
-		SubscribeTransition(TransitionState::TRANSITION_FADEOUT, [](const LevelTransitionEvent&) 
-			{
-				// Code runs at first frame of new scene.
-				if (timerFout == 0.f)
-				{
-					if (fadeIn)
-						fadeIn->active(false);
-					if (fadeOut)
-						fadeOut->active(false);
-					const auto* emitter = fadeOut->GetComponent<ParticleEmitter>();
-					timerFout = AEGfxGetWindowWidth() / emitter->speed.x;
-				}
-				
-				timerFout -= EngineCTX::dt;
-				if (timerFout <= 0.f)
-				{
-					inTransition = !inTransition;
-					tState = TransitionState::TRANSITION_NULL;
-				}
-			});
-
 		// Immediately request transition for intro scene.
 		if (SceneManager::ActiveScene()->cname() == "Intro")
 			RequestTransition();
@@ -90,14 +57,44 @@ namespace LevelTransition
 			if (fadeIn) 
 				fadeIn->active(true);
 			inTransition = !inTransition;
+			timerActive = true;
 		}
 	}
 
-	// Only raise event if state is either TRANSITION_ON || TRANSITION_OFF.
-	void CheckState()
+
+	void Update()
 	{
-		if (static_cast<bool>(tState))
-			EventHandler::RaiseEvent<LevelTransitionEvent>(tState);
+		if (tState == TransitionState::TRANSITION_FADEOUT)
+		{
+			if (timerFout == 0.f)
+			{
+				if (fadeIn)
+					fadeIn->active(false);
+				if (fadeOut)
+					fadeOut->active(false);
+				const auto* emitter = fadeOut->GetComponent<ParticleEmitter>();
+				timerFout = AEGfxGetWindowWidth() / emitter->speed.x;
+			}
+
+			timerFout -= EngineCTX::dt;
+			if (timerFout <= 0.f)
+			{
+				inTransition = !inTransition;
+				tState = TransitionState::TRANSITION_NULL;
+			}
+		}
+
+		if (tState == TransitionState::TRANSITION_FADEIN)
+		{
+			timerFin -= EngineCTX::dt;
+			if (timerFin <= 0.f)
+			{
+				const std::string& sceneToSwitch{ SceneToSwitch() };
+				timerFout = 0.f;
+				tState = TransitionState::TRANSITION_FADEOUT;
+				SceneManager::RequestSceneSwitch(sceneToSwitch);
+			}
+		}
 	}
 
 	// Add unsub for when there is a scene restart here.

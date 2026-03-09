@@ -54,6 +54,7 @@ void Scene::OnUpdate()
 {
 	//test draw
 	AEGfxSetBackgroundColor(0.f,0.f,0.f);
+	LevelTransition::Update();
 
 	for (auto& pgo : _gameObjectList)
 	{
@@ -75,7 +76,6 @@ void Scene::OnUpdate()
 		accumulator -= EngineCTX::fixedDt;
 	}
 
-	LevelTransition::CheckState();
 	ParticleSystem::Update();
 	EventHandler::CallQ();
 	Graphics::Execute();

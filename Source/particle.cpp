@@ -27,7 +27,6 @@ namespace ParticleSystem
 	void Update()
 	{
 		//Debug::ScopedTimer t("p_update");
-
 		int activeParticles{};
 		
 		for (int i = 0; i < MAX_PARTICLES; ++i) 
