@@ -7,7 +7,32 @@
       "components" : 
       [
         {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
           "type" : "Camera"
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "isNoiseActive" : true,
+          "lifetime" : 4.0,
+          "noiseLevel" : 40.0,
+          "numParticles" : 128,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
         },
         {
           "Affected By Gravity" : true,
@@ -29,6 +54,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : true,
           "type" : "SpriteRenderer"
         },
         {
@@ -84,6 +110,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -141,6 +168,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -187,6 +215,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -233,6 +262,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -262,12 +292,13 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            0.98823529481887817
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -325,6 +356,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -360,6 +392,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -417,6 +450,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -463,6 +497,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -509,6 +544,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -555,6 +591,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -601,6 +638,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -647,6 +685,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -693,6 +732,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -847,6 +887,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -943,6 +984,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -1032,6 +1074,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -1068,7 +1111,7 @@
             0.0,
             1.0
           ],
-          "isBurst" : false,
+          "isBurst" : true,
           "lifetime" : 
           [
             5.0,
@@ -1144,7 +1187,7 @@
             0.0,
             1.0
           ],
-          "isBurst" : false,
+          "isBurst" : true,
           "lifetime" : 
           [
             5.0,
@@ -1223,6 +1266,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : true,
           "type" : "SpriteRenderer"
         }
       ],
