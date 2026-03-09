@@ -6,7 +6,7 @@ void MainCamera::OnStart()
 	CameraSystem::OnStart();
 };
 void MainCamera::OnUpdate() {
-	CameraSystem::MoveCamera(_owner.worldTransform());
+	CameraSystem::MoveCamera(_owner.transform());
 };
 void MainCamera::OnDestroy() {
 	CameraSystem::OnExit();
