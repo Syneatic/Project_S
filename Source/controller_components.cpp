@@ -55,8 +55,7 @@ void PlayerController::OnStart()
         &_owner,
         [this](const OnCollisionEvent& e)
         {
-                this->HandleCollision(e);
-                //Debug::Log("Collision: Self=", e.self->cname().c_str() ,"Other = ",  e.other->cname().c_str());
+            this->HandleCollision(e);
         }
     );
 
@@ -166,8 +165,7 @@ void PlayerController::OnUpdate()
             noiseSource->Emit(_transform.position);
     }
 
-    float2 currentPos = _owner.worldTransform().position; printf("transform pos this frame: %.1f %.1f\n",
-        currentPos.x, currentPos.y);
+    float2 currentPos = _owner.worldTransform().position;
     f32 speed = length(rb->velocity);
 
     if (speed >= echoDistanceThreshold)
@@ -222,8 +220,6 @@ void PlayerController::HandleCollision(const OnCollisionEvent& e)
         if (auto* rc = e.other->GetComponent<RockController>())
             rc->ResetRock();
     }
-
-    Debug::Log("Collision: Self=%s Other=%s", e.self->cname().c_str(), e.other->cname().c_str());
 }
 
 void PlayerController::HandleTrigger(const OnTriggerEvent& e)
@@ -515,7 +511,6 @@ void EnemyController::UpdateDrop() {
             groundEmitTimer = 0.f;
 
             float2 emitPos = hit.point + hit.normal * 15.f;
-            Debug::Log("Drop ping\n");
 
             if (ns) ns->Emit(emitPos);
         }

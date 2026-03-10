@@ -50,8 +50,6 @@ void ParticleEmitter::OnStart()
 
 void ParticleEmitter::OnUpdate() 
 {
-	Debug::Log("BANG FROM SOME WHERE");
-
 	if (isBurst)
 	{
 		if (AEInputCheckTriggered(AEVK_G))

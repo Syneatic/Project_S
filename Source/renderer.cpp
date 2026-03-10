@@ -429,43 +429,49 @@ namespace Graphics
     void Execute() //executes this frame's commands
     {
         //sort the commands
-        std::sort(_commandBuffer.begin(), _commandBuffer.end());
+        {
+            Debug::ScopedTimer t("render:sort");
+            std::sort(_commandBuffer.begin(), _commandBuffer.end());
+        }
 
         //reset cache
         _currentTex = nullptr;
         _currentMode = (AEGfxRenderMode)-1;
 
         //dispatch commands
-        for (const auto& cmd : _commandBuffer) 
         {
-            const RenderData& d = cmd.data;
-            //apply states
-            ApplyStates(d);
+			Debug::ScopedTimer t("render:draw");
+            for (const auto& cmd : _commandBuffer) 
+            {
+                const RenderData& d = cmd.data;
+                //apply states
+                ApplyStates(d);
 
-            //set matrix
-            MTX transform{};
-            GetTransformMTX(d.pos,d.scale,d.rot,d.alignment,transform, !d.isScreenSpace);
-            AEGfxSetTransform(transform.m);
+                //set matrix
+                MTX transform{};
+                GetTransformMTX(d.pos,d.scale,d.rot,d.alignment,transform, !d.isScreenSpace);
+                AEGfxSetTransform(transform.m);
             
 
-            //draw based off primitive type
-            switch (cmd.type) 
-            {
-            case PrimitiveType::QUAD:
-                DrawMesh(_quadMesh, d.drawMode, d.texture);
-                break;
-            case PrimitiveType::TRIANGLE:
-                DrawMesh(_triangleMesh, d.drawMode, d.texture);
-                break;
-            case PrimitiveType::CIRCLE:
-                DrawMesh(_circleMesh, d.drawMode, d.texture);
-                break;
-            case PrimitiveType::BOX:
-                DrawMesh(_boxMesh, d.drawMode, d.texture);
-                break;
-            case PrimitiveType::TEXT:
-                DrawTextMesh(cmd.text.c_str(), d);
-                break;
+                //draw based off primitive type
+                switch (cmd.type) 
+                {
+                case PrimitiveType::QUAD:
+                    DrawMesh(_quadMesh, d.drawMode, d.texture);
+                    break;
+                case PrimitiveType::TRIANGLE:
+                    DrawMesh(_triangleMesh, d.drawMode, d.texture);
+                    break;
+                case PrimitiveType::CIRCLE:
+                    DrawMesh(_circleMesh, d.drawMode, d.texture);
+                    break;
+                case PrimitiveType::BOX:
+                    DrawMesh(_boxMesh, d.drawMode, d.texture);
+                    break;
+                case PrimitiveType::TEXT:
+                    DrawTextMesh(cmd.text.c_str(), d);
+                    break;
+                }
             }
         }
 
