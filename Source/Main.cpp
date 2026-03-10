@@ -52,7 +52,8 @@ void ShutdownImGUI(bool& initStatus)
 
 void UpdateEngineCTX()
 {
-	EngineCTX::dt = EngineCTX::timeScale * static_cast<f32>(AEFrameRateControllerGetFrameTime());
+	EngineCTX::unscaledDt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
+	EngineCTX::dt = EngineCTX::timeScale * EngineCTX::unscaledDt;
 	EngineCTX::frameCount = AEFrameRateControllerGetFrameCount();
 	EngineCTX::frameRate = static_cast<f32>(AEFrameRateControllerGetFrameRate());
 	EngineCTX::windowSize.x = static_cast<f32>(AEGfxGetWindowWidth());

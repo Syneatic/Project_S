@@ -50,8 +50,6 @@ void ParticleEmitter::OnStart()
 
 void ParticleEmitter::OnUpdate() 
 {
-	//Debug::Log("BANG FROM SOME WHERE");
-
 	if (isBurst)
 	{
 		if (AEInputCheckTriggered(AEVK_G))
@@ -61,7 +59,6 @@ void ParticleEmitter::OnUpdate()
 		return;
 	}
 
-	
 	timer += static_cast<float>(EngineCTX::dt);
 	float interval = 1.0f / spawnRate;
 
@@ -135,6 +132,7 @@ void ParticleEmitter::Serialize(Json::Value& outComp) const
 	outComp["isBurst"] = isBurst;
 
 	outComp["time"] = time;
+	outComp["timescale"] = timeScale;
 	outComp["speed"] = WriteFloat2(speed);
 	outComp["lifetime"] = WriteFloat2(lifetime);
 	outComp["size"] = WriteFloat2(size);
@@ -165,6 +163,7 @@ void ParticleEmitter::Deserialize(const Json::Value& o)
 		isBurst = o["isBurst"].asBool();
 
 	time = o["time"].asFloat();
+	timeScale = o["timescale"].asBool();
 	readfloat2("speed", speed);    
 	readfloat2("lifetime", lifetime); 
 	readfloat2("size", size);     
@@ -196,6 +195,9 @@ void ParticleEmitter::DrawInInspector()
 		break;
 	default: break;
 	}
+
+	ImGui::SeparatorText("EngineCTX");
+	ImGui::Checkbox("Timescale", &timeScale);
 
 	ImGui::SeparatorText("Emission");
 	FloatDrag("Spawn Rate","particle", &spawnRate);

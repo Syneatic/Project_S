@@ -14,8 +14,6 @@ namespace LevelTransition
 	// Container for pointers to game objects with particle emitters used for transiton effect.
 	GameObject *fadeIn{ nullptr }, *fadeOut{ nullptr };
 
-	//bool timerActive = false;
-
 	// Helper function to determine the scene to load for level transition.
 	std::string SceneToSwitch()
 	{
@@ -44,56 +42,55 @@ namespace LevelTransition
 	{
 		if (tState == TransitionState::TRANSITION_NULL)
 		{
-			tState = TransitionState::TRANSITION_FADEIN;
-			timerFin = tFin;
-			if (fadeIn) 
+			if (fadeIn)
 				fadeIn->active(true);
+			timerFin = tFin;
 			inTransition = true;
-			//timerActive = true;
+			EngineCTX::PauseTime();
+			tState = TransitionState::TRANSITION_FADEIN;
 		}
 	}
 
-	void CheckFadeOut()
+	// Run this function if tstate in TRANSITION_FADEOUT.
+	void FadeOutTimer()
 	{
-		if (tState == TransitionState::TRANSITION_FADEOUT)
+		if (timerFout == 0.f)
 		{
-			if (timerFout == 0.f)
-			{
-				if (fadeIn)
-					fadeIn->active(false);
-				if (fadeOut)
-					fadeOut->active(false);
-				const auto* emitter = fadeOut->GetComponent<ParticleEmitter>();
-				timerFout = AEGfxGetWindowWidth() / emitter->speed.x;
-			}
+			if (fadeIn)
+				fadeIn->active(false);
+			if (fadeOut)
+				fadeOut->active(false);
+			const auto* emitter = fadeOut->GetComponent<ParticleEmitter>();
+			timerFout = AEGfxGetWindowWidth() / emitter->speed.x;
+		}
 
-			timerFout -= EngineCTX::dt;
-			if (timerFout <= 0.f)
-			{
-				inTransition = !inTransition;
-				tState = TransitionState::TRANSITION_NULL;
-			}
+		timerFout -= EngineCTX::unscaledDt;
+		if (timerFout <= 0.f)
+		{
+			inTransition = false;
+			EngineCTX::PauseTime();
+			tState = TransitionState::TRANSITION_NULL;
 		}
 	}
 
-	void CheckFadeIn()
+	// Run this function if tstate in TRANSITION_FADEIN.
+	void FadeInTimer()
 	{
-		if (tState == TransitionState::TRANSITION_FADEIN)
+		timerFin -= EngineCTX::unscaledDt;
+		if (timerFin <= 0.f)
 		{
-			timerFin -= EngineCTX::dt;
-			if (timerFin <= 0.f)
-			{
-				const std::string& sceneToSwitch{ SceneToSwitch() };
-				timerFout = 0.f;
-				tState = TransitionState::TRANSITION_FADEOUT;
-				SceneManager::RequestSceneSwitch(sceneToSwitch);
-			}
+			timerFout = 0.f;
+			tState = TransitionState::TRANSITION_FADEOUT;
+			SceneManager::RequestSceneSwitch(SceneToSwitch());
 		}
 	}
 
 	void Update()
 	{
-		CheckFadeOut();
-		CheckFadeIn();
+		if (tState == TransitionState::TRANSITION_FADEOUT)
+			FadeOutTimer();
+		
+		if (tState == TransitionState::TRANSITION_FADEIN)
+			FadeInTimer();
 	}
 }

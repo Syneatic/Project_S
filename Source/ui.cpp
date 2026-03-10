@@ -39,6 +39,9 @@ namespace UISystem
 
     void Hover_Logic(GameObject& button)
     {
+        if (LevelTransition::inTransition)
+            return;
+
         Transform& t = button.transform();
         SpriteRenderer* r = button.GetComponent<SpriteRenderer>();
         if (checkBounds(t))
@@ -62,6 +65,7 @@ namespace UISystem
                 // Get Button component & use enum key to raise UIButtonEvent on EventHandler. 
                 Button* b = button.GetComponent<Button>();
                 EventHandler::RaiseEvent<UIButtonEvent>(b->fKey);
+                r->color.r = r->color.g = r->color.b = r->color.a;
             }
         }
         // set button rgba to default.

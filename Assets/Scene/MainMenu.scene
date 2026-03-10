@@ -52,6 +52,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 500,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -123,6 +124,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 500,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -194,6 +196,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 500,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -265,6 +268,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 500,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -340,8 +344,8 @@
           "isBurst" : false,
           "lifetime" : 
           [
-            5.0,
-            5.0
+            3.0,
+            3.0
           ],
           "radius" : 
           [
@@ -368,8 +372,8 @@
           "spawnShape" : 3,
           "speed" : 
           [
-            500.0,
-            500.0
+            1000.0,
+            1000.0
           ],
           "spread" : 
           [
@@ -377,6 +381,7 @@
             0.0
           ],
           "time" : 5.0,
+          "timescale" : false,
           "type" : "ParticleEmitter"
         }
       ],
@@ -416,8 +421,8 @@
           "isBurst" : false,
           "lifetime" : 
           [
-            5.0,
-            5.0
+            3.0,
+            3.0
           ],
           "radius" : 
           [
@@ -444,8 +449,8 @@
           "spawnShape" : 3,
           "speed" : 
           [
-            500.0,
-            500.0
+            1000.0,
+            1000.0
           ],
           "spread" : 
           [
@@ -453,6 +458,7 @@
             0.0
           ],
           "time" : 0.0,
+          "timescale" : false,
           "type" : "ParticleEmitter"
         }
       ],
