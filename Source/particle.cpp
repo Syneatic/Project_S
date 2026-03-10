@@ -90,12 +90,12 @@ namespace ParticleSystem
 				data.color = g_pool.color[i];
 				data.drawMode = AE_GFX_MDM_TRIANGLES;
 				data.isScreenSpace = false;
-				data.layer = Graphics::RenderLayer::DEFAULT;
+				data.layer = Graphics::RenderLayer::UI;
 				data.pos = g_pool.pos[i];
 				data.renderMode = AE_GFX_RM_COLOR;
 				data.rot = g_pool.rotation[i];
 				data.scale = { g_pool.size[i], g_pool.size[i] };
-				data.sortOrder = 0.f;
+				data.sortOrder = 1.f;
 
 				Graphics::Submit(data, Graphics::PrimitiveType::QUAD);
 				continue;

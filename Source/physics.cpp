@@ -523,7 +523,7 @@ namespace
 
 					// Coulomb's law: friction cone clamp
 					// mu = coefficient of friction (tweak per material later)
-					const f32 mu = 0.4f;
+					const f32 mu = 0.1f;
 					float2 frictionImpulse;
 
 					if (fabsf(jt) < j * mu)

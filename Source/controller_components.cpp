@@ -160,7 +160,6 @@ void PlayerController::OnUpdate()
 
     if (AEInputCheckTriggered(AEVK_E)/* && echoTimer >= echoCooldown*/)
     {
-
         if (noiseSource)
             noiseSource->Emit(_transform.position);
     }
@@ -170,7 +169,7 @@ void PlayerController::OnUpdate()
 
     if (speed >= echoDistanceThreshold)
     {
-        distanceAccumulated += length(currentPos - lastEchoPos);
+        distanceAccumulated += abs(currentPos.x - lastEchoPos.x);
 
         if (distanceAccumulated >= echoDistanceThreshold)
         {
