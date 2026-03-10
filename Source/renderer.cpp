@@ -446,6 +446,7 @@ namespace Graphics
             MTX transform{};
             GetTransformMTX(d.pos,d.scale,d.rot,d.alignment,transform, !d.isScreenSpace);
             AEGfxSetTransform(transform.m);
+            
 
             //draw based off primitive type
             switch (cmd.type) 

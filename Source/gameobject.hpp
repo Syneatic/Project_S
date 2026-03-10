@@ -37,7 +37,10 @@ public:
 		UpdateWorldTransform();
 
 		for (auto& [type, comp] : _componentMap)
-			comp.get()->OnUpdate();
+		{
+			if(comp.get()->active())
+				comp.get()->OnUpdate();
+		}
 
 		for (auto& child : _children)
 			child->OnUpdate();

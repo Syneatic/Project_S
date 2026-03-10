@@ -10,6 +10,7 @@ class Component
 protected:
     GameObject& _owner;
     Transform& _transform;
+    bool _active{ true };
 
 public:
     GameObject& gameObject() { return _owner; }
@@ -18,6 +19,10 @@ public:
 
     Transform& transform() { return _transform; }
     const Transform& transform() const { return _transform; }
+
+    bool& active() { return _active; }
+	bool active() const { return _active; }
+    bool active(bool state) { return _active = state; }
 
 	virtual void DrawInInspector() {};
     virtual void Serialize(Json::Value& /*outComp*/) const {};
