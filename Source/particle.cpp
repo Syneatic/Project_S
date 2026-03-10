@@ -69,59 +69,27 @@ namespace ParticleSystem
 	void Render() //by pass our wrapper for performance's sake
 	{
 		//Debug::ScopedTimer t("p_render");
-		//batch this render states
-		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-
-		AEGfxSetColorToAdd(0, 0, 0, 0);
-		AEGfxSetBlendColor(0, 0, 0, 0);
-		AEGfxSetTransparency(1.f);
 
 		for (int i = 0; i < MAX_PARTICLES; ++i) 
 		{
 			if (!g_pool.active[i]) continue;
 
-			{
-				g_pool.color[i].a = 1.0f - (g_pool.time[i] / g_pool.lifetime[i]);
+			g_pool.color[i].a = 1.0f - (g_pool.time[i] / g_pool.lifetime[i]);
 
-				Graphics::RenderData data{};
-				data.alignment = Graphics::Alignment::MC;
-				data.blendMode = AE_GFX_BM_BLEND;
-				data.color = g_pool.color[i];
-				data.drawMode = AE_GFX_MDM_TRIANGLES;
-				data.isScreenSpace = false;
-				data.layer = Graphics::RenderLayer::UI;
-				data.pos = g_pool.pos[i];
-				data.renderMode = AE_GFX_RM_COLOR;
-				data.rot = g_pool.rotation[i];
-				data.scale = { g_pool.size[i], g_pool.size[i] };
-				data.sortOrder = 1.f;
+			Graphics::RenderData data{};
+			data.alignment = Graphics::Alignment::MC;
+			data.blendMode = AE_GFX_BM_BLEND;
+			data.color = g_pool.color[i];
+			data.drawMode = AE_GFX_MDM_TRIANGLES;
+			data.isScreenSpace = false;
+			data.layer = Graphics::RenderLayer::UI;
+			data.pos = g_pool.pos[i];
+			data.renderMode = AE_GFX_RM_COLOR;
+			data.rot = g_pool.rotation[i];
+			data.scale = { g_pool.size[i], g_pool.size[i] };
+			data.sortOrder = 1.f;
 
-				Graphics::Submit(data, Graphics::PrimitiveType::QUAD);
-				continue;
-			}
-
-			//lower alpha of dying particles
-			float alpha = 1.0f - (g_pool.time[i] / g_pool.lifetime[i]);
-			AEGfxSetColorToMultiply(g_pool.color[i].r, g_pool.color[i].g, g_pool.color[i].b, alpha);
-
-			//construct matrix
-			AEMtx33 scaleMtx, rotMtx, transMtx, finalMtx, temp;
-			AEMtx33Scale(&scaleMtx, g_pool.size[i], g_pool.size[i]);
-			AEMtx33Rot(&rotMtx, g_pool.rotation[i]);
-			AEMtx33Trans(&transMtx, g_pool.pos[i].x, g_pool.pos[i].y);
-
-			AEMtx33Concat(&temp, &rotMtx, &scaleMtx);
-			AEMtx33Concat(&finalMtx, &transMtx, &temp);
-
-			// apply camera matrix
-			AEMtx33Concat(&finalMtx, &CameraData::camM, &finalMtx);
-
-			AEGfxSetTransform(finalMtx.m);
-
-
-
-			AEGfxMeshDraw(Graphics::QuadMesh(), AE_GFX_MDM_TRIANGLES);
+			Graphics::Submit(data, Graphics::PrimitiveType::QUAD);
 		}
 	}
 

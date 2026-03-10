@@ -8,7 +8,7 @@ namespace ParticleSystem
 {
 	using FN = void(*)(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit);
 
-	const int MAX_PARTICLES = 5096 * 8;
+	const int MAX_PARTICLES = 5096 * 4;
 
 	struct Pool
 	{
