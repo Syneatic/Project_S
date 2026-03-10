@@ -37,9 +37,15 @@ void ParticleEmitter::OnStart()
 				spawnPos.y + velocity.y * age
 			};
 
-			ParticleSystem::Emit(agedPos, velocity, age, life, col,
+			ParticleSystem::Emit(
+				{ 
+					agedPos, velocity, age, life, col,
+					false, static_cast<int>(spawnRate / 2),
+					nullptr, sz, rot, timeScale
+				});
+			/*ParticleSystem::Emit(agedPos, velocity, age, life, col,
 				false, static_cast<int>(spawnRate / 2),
-				nullptr, sz, rot, timeScale);
+				nullptr, sz, rot, timeScale);*/
 		}
 
 
@@ -59,7 +65,7 @@ void ParticleEmitter::OnUpdate()
 		return;
 	}
 
-	timer += static_cast<float>(timeScale ? EngineCTX::dt : EngineCTX::unscaledDt);//static_cast<float>(EngineCTX::dt);
+	timer += static_cast<float>(timeScale ? EngineCTX::dt : EngineCTX::unscaledDt);
 	float interval = 1.0f / spawnRate;
 
 	while (timer >= interval)
@@ -87,9 +93,15 @@ void ParticleEmitter::OnUpdate()
 		float  rot = Random::RandFloat(rotation.x, rotation.y);
 		Color  col = RandColor(colorA,colorB);
 
-		ParticleSystem::Emit(spawnPos, velocity, 0.f, life, col,
+		ParticleSystem::Emit(
+			{
+				spawnPos, velocity, 0.f, life, col,
+				true, static_cast<int>(spawnRate / 2),
+				nullptr, sz, rot, timeScale
+			});
+		/*ParticleSystem::Emit(spawnPos, velocity, 0.f, life, col,
 			true, static_cast<int>(spawnRate / 2),
-			nullptr, sz, rot, timeScale);
+			nullptr, sz, rot, timeScale);*/
 
 		timer -= interval;
 	}

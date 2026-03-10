@@ -33,16 +33,16 @@ namespace ParticleSystem
 		int freeStackTop = -1;
 	};
 
-	struct Emitter
+	struct PoolBuilder
 	{
-		float2 pos;
-		float2 dir; //direction to launch
-		float spread;
-		float spd;
-		float spawnRate;
-		float accumulator;
-		Color color;
-		float lifetime;
+		float2 pos, vel;
+		float time, life;
+		Color col;
+		bool shouldCollide;
+		int burstLimit;
+		FN behaviour{ nullptr };
+		float size{ 5.f }, rotation{ 0.f };
+		bool timescale{ true };
 	};
 
 	void Initialize();
@@ -52,5 +52,6 @@ namespace ParticleSystem
 		Color col, bool shouldCollide, int burstLimit,
 		FN behaviour, float size = 5.0f, float rotation = 0.0f,
 		bool timeScale = true);
+	void Emit(PoolBuilder const&);
 	void Flush();
 }

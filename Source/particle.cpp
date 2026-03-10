@@ -123,6 +123,28 @@ namespace ParticleSystem
 		g_pool.behaviour[index]      = behaviour;
 	}
 
+	// Overload to pass a builder object by reference to create a pool.
+	void Emit(PoolBuilder const& pb)
+	{
+		if (g_pool.freeStackTop < 0) return; // Pool is full
+
+		int index = g_pool.freeStack[g_pool.freeStackTop--];
+
+		g_pool.pos[index] = pb.pos;
+		g_pool.vel[index] = pb.vel;
+		g_pool.timeScale[index] = pb.timescale;
+		g_pool.time[index] = pb.time;
+		g_pool.lifetime[index] = pb.life;
+		g_pool.color[index] = pb.col;
+		g_pool.active[index] = true;
+		g_pool.size[index] = pb.size;
+		g_pool.rotation[index] = pb.rotation;
+
+		g_pool.burstRemaining[index] = pb.burstLimit;
+		g_pool.collide[index] = pb.shouldCollide;
+		g_pool.behaviour[index] = pb.behaviour;
+	}
+
 	void Flush()
 	{
 		g_pool.freeStackTop = MAX_PARTICLES - 1;
