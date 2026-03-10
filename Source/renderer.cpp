@@ -428,6 +428,8 @@ namespace Graphics
 
     void Execute() //executes this frame's commands
     {
+        Debug::ScopedTimer t("Render:Execute");
+
         //sort the commands
         {
             std::sort(_commandBuffer.begin(), _commandBuffer.end());
@@ -439,7 +441,7 @@ namespace Graphics
 
         //dispatch commands
         {
-			Debug::ScopedTimer t("render:draw");
+			//Debug::ScopedTimer t("render:draw");
             for (const auto& cmd : _commandBuffer) 
             {
                 const RenderData& d = cmd.data;
