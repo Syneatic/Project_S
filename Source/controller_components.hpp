@@ -106,7 +106,8 @@ public:
     GameObject* playerObject = nullptr;
 
     //Drop Variable
-    f32 detectDistance = 50.f;
+    f32 detectDistance = 300.f;
+    f32 rangeDistance = 100.f;
     bool hasDropped = false;
 
     //Patrol Variable
