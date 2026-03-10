@@ -430,7 +430,6 @@ namespace Graphics
     {
         //sort the commands
         {
-            Debug::ScopedTimer t("render:sort");
             std::sort(_commandBuffer.begin(), _commandBuffer.end());
         }
 
@@ -477,5 +476,9 @@ namespace Graphics
 
         //clears buffer for nxt frame
         _commandBuffer.clear();
+
+        FrameProfiler::CommitFrame();
+        if (FrameProfiler::IsReady())
+            FrameProfiler::FlushToFile("render_profile.txt");
     }
 }
