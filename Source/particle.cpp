@@ -58,8 +58,8 @@ namespace ParticleSystem
 					);
 
 			//update pos
-			g_pool.pos[i].x += g_pool.vel[i].x * EngineCTX::dt;
-			g_pool.pos[i].y += g_pool.vel[i].y * EngineCTX::dt;
+			g_pool.pos[i].x += g_pool.vel[i].x * (g_pool.timeScale[i] ? EngineCTX::dt : EngineCTX::unscaledDt);
+			g_pool.pos[i].y += g_pool.vel[i].y * (g_pool.timeScale[i] ? EngineCTX::dt : EngineCTX::unscaledDt);
 		}
 		//Debug::Log("Active Particles : ", activeParticles," FPS : ", EngineCTX::frameRate);
 
@@ -102,7 +102,7 @@ namespace ParticleSystem
 
 	void Emit(float2 pos, float2 vel, float time, float life,
 		Color col, bool shouldCollide, int burstLimit,
-		FN behaviour, float size, float rotation)
+		FN behaviour, float size, float rotation, bool timeScale)
 	{
 		if (g_pool.freeStackTop < 0) return; // Pool is full
 
@@ -110,6 +110,7 @@ namespace ParticleSystem
 
 		g_pool.pos[index]      = pos;
 		g_pool.vel[index]      = vel;
+		g_pool.timeScale[index]= timeScale;
 		g_pool.time[index]     = time;
 		g_pool.lifetime[index] = life;
 		g_pool.color[index]    = col;

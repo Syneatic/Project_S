@@ -18,6 +18,7 @@ namespace ParticleSystem
 
 		float2 vel[MAX_PARTICLES]{}; //same here
 
+		bool timeScale[MAX_PARTICLES]{};
 		float  time[MAX_PARTICLES]{};
 		float  lifetime[MAX_PARTICLES]{};
 
@@ -49,6 +50,7 @@ namespace ParticleSystem
 	void Render();
 	void Emit(float2 pos, float2 vel, float time, float life,
 		Color col, bool shouldCollide, int burstLimit,
-		FN behaviour, float size = 5.0f, float rotation = 0.0f);
+		FN behaviour, float size = 5.0f, float rotation = 0.0f,
+		bool timeScale = true);
 	void Flush();
 }
