@@ -8,6 +8,9 @@ public:
 	enum class SpawnShape { POINT,RECT,CIRCLE,LINE };
 	SpawnShape spawnShape = SpawnShape::POINT;
 
+	Graphics::RenderLayer renderLayer{Graphics::RenderLayer::DEFAULT};
+	float sortOrder{0.f};
+
 	//rect half-extent
 	float2 rect{ 50.f,50.f };
 

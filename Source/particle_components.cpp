@@ -2,7 +2,6 @@
 #include "physics.hpp"
 #include "particle_components.hpp"
 #include "particle.hpp"
-#include "imgui_helper.hpp"
 
 void ParticleEmitter::OnStart() 
 {
@@ -38,8 +37,7 @@ void ParticleEmitter::OnStart()
 			};
 
 			ParticleSystem::Emit(agedPos, velocity, age, life, col,
-				false, static_cast<int>(spawnRate / 2),
-				nullptr, sz, rot);
+				false, nullptr, sz, rot, renderLayer, sortOrder);
 		}
 
 
@@ -89,8 +87,7 @@ void ParticleEmitter::OnUpdate()
 		Color  col = RandColor(colorA,colorB);
 
 		ParticleSystem::Emit(spawnPos, velocity, 0.f, life, col,
-			true, static_cast<int>(spawnRate / 2),
-			nullptr, sz, rot);
+			true, nullptr, sz, rot,renderLayer, sortOrder);
 
 		timer -= interval;
 	}
@@ -117,14 +114,15 @@ void ParticleEmitter::Burst()
 		Color  col = RandColor(colorA,colorB);
 
 		ParticleSystem::Emit(spawnPos, velocity, time, life, col,
-			false , count / 4,
-			nullptr, sz, rot);
+			false, nullptr, sz, rot,renderLayer,sortOrder);
 	}
 }
 
 void ParticleEmitter::Serialize(Json::Value& outComp) const
 {
 	outComp["spawnShape"] = static_cast<int>(spawnShape);
+	outComp["renderLayer"] = static_cast<int>(renderLayer);
+	outComp["sortOrder"] = sortOrder;
 	outComp["rect"] = WriteFloat2(rect);
 	outComp["radius"] = WriteFloat2(radius);
 	outComp["spawnLineLength"] = spawnLineLength;
@@ -154,6 +152,9 @@ void ParticleEmitter::Deserialize(const Json::Value& o)
 	if (o.isMember("spawnShape") && o["spawnShape"].isInt())
 		spawnShape = static_cast<SpawnShape>(o["spawnShape"].asInt());
 
+	renderLayer = static_cast<Graphics::RenderLayer>(o["renderLayer"].asInt());
+	sortOrder = o["sortOrder"].asFloat();
+
 	readfloat2("rect", rect);
 	readfloat2("radius", radius);
 	spawnLineLength = o["spawnLineLength"].asFloat();
@@ -175,7 +176,9 @@ void ParticleEmitter::Deserialize(const Json::Value& o)
 
 void ParticleEmitter::DrawInInspector()
 {
+	RenderSort("particle",renderLayer,sortOrder);
 	ImGui::SeparatorText("Spawn Shape");
+
 	const char* shapeNames[] = { "Point", "Rectangle", "Circle", "Line" };
 	int shapeIdx = static_cast<int>(spawnShape);
 	if (ImGui::Combo("##spawnshape", &shapeIdx, shapeNames, 4))

@@ -6,7 +6,7 @@
 //SoA approach
 namespace ParticleSystem
 {
-	using FN = void(*)(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, int& burstLimit);
+	using FN = void(*)(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide);
 
 	const int MAX_PARTICLES = 5096 * 4;
 
@@ -24,9 +24,11 @@ namespace ParticleSystem
 		Color  color[MAX_PARTICLES]{}; //maybe this too
 		bool   active[MAX_PARTICLES]{};
 
-		int burstRemaining[MAX_PARTICLES]{}; //keep track of how many generation of reflection remain
 		bool collide[MAX_PARTICLES]{};
 		FN behaviour[MAX_PARTICLES]{nullptr};
+
+		Graphics::RenderLayer layer[MAX_PARTICLES]{};
+		float sortOrder[MAX_PARTICLES]{};
 
 		int freeStack[MAX_PARTICLES]{};
 		int freeStackTop = -1;
@@ -48,7 +50,8 @@ namespace ParticleSystem
 	void Update();
 	void Render();
 	void Emit(float2 pos, float2 vel, float time, float life,
-		Color col, bool shouldCollide, int burstLimit,
-		FN behaviour, float size = 5.0f, float rotation = 0.0f);
+		Color col, bool shouldCollide,
+		FN behaviour, float size = 5.0f, float rotation = 0.0f, 
+		Graphics::RenderLayer layer = Graphics::RenderLayer::DEFAULT,float sortOrder = 0.f);
 	void Flush();
 }

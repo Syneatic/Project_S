@@ -98,3 +98,16 @@ void SelectableList(const std::vector<std::string>& names, int& selectedIndex)
 			selectedIndex = i;
 	}
 }
+
+void RenderSort(std::string id,Graphics::RenderLayer& layer,float& sortOrder)
+{
+
+	const char* renderLayerNames[] = { "BACKGROUND", "DEFAULT", "UI", "GIZMOS" };
+	int rlIdx = static_cast<int>(layer);
+	std::string comboid = "##renderlayer_";
+	comboid += id;
+	if (ImGui::Combo(comboid.c_str(), &rlIdx, renderLayerNames, 4))
+		layer = static_cast<Graphics::RenderLayer>(rlIdx);
+
+	FloatDragReset("Sort Order", id, &sortOrder, 0.f);
+}

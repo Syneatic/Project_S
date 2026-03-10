@@ -54,8 +54,7 @@ namespace ParticleSystem
 					g_pool.time[i],
 					g_pool.lifetime[i], 
 					g_pool.color[i], 
-					g_pool.collide[i], 
-					g_pool.burstRemaining[i]
+					g_pool.collide[i]
 					);
 
 			//update pos
@@ -82,20 +81,20 @@ namespace ParticleSystem
 			data.color = g_pool.color[i];
 			data.drawMode = AE_GFX_MDM_TRIANGLES;
 			data.isScreenSpace = false;
-			data.layer = Graphics::RenderLayer::UI;
+			data.layer = g_pool.layer[i];
 			data.pos = g_pool.pos[i];
 			data.renderMode = AE_GFX_RM_COLOR;
 			data.rot = g_pool.rotation[i];
 			data.scale = { g_pool.size[i], g_pool.size[i] };
-			data.sortOrder = 1.f;
+			data.sortOrder = g_pool.sortOrder[i];
 
 			Graphics::Submit(data, Graphics::PrimitiveType::QUAD);
 		}
 	}
 
 	void Emit(float2 pos, float2 vel, float time, float life,
-		Color col, bool shouldCollide, int burstLimit,
-		FN behaviour, float size, float rotation)
+		Color col, bool shouldCollide,
+		FN behaviour, float size, float rotation, Graphics::RenderLayer layer, float sortOrder)
 	{
 		if (g_pool.freeStackTop < 0) return; // Pool is full
 
@@ -110,9 +109,11 @@ namespace ParticleSystem
 		g_pool.size[index]     = size;
 		g_pool.rotation[index] = rotation;
 
-		g_pool.burstRemaining[index] = burstLimit;
 		g_pool.collide[index]        = shouldCollide;
 		g_pool.behaviour[index]      = behaviour;
+
+		g_pool.layer[index] = layer;
+		g_pool.sortOrder[index] = sortOrder;
 	}
 
 	void Flush()
