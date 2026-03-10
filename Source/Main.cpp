@@ -101,6 +101,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		UpdateEngineCTX();
 
 #ifdef _DEBUG
+		if (AEInputCheckTriggered(AEVK_F5))
+			FrameProfiler::Start();
+
 		ImGuiIO& io = ImGui::GetIO();
 		if (!io.WantCaptureMouse && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
@@ -111,7 +114,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				SceneManager::RequestSceneSwitch("Intro");	
 
 			if (AEInputCheckTriggered(AEVK_3)) 
-				SceneManager::RequestSceneSwitch("Movement Scene");	
+				SceneManager::RequestSceneSwitch("physics_test");	
 		}
 #endif
 	
