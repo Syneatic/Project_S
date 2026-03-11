@@ -198,6 +198,9 @@
     <ClCompile Include="enginectx.cpp">
       <Filter>Source Files\datatypes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\scene_debugger.cpp">
+      <Filter>Source Files\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -361,6 +364,9 @@
     </ClInclude>
     <ClInclude Include="Source\physics_types.hpp">
       <Filter>Header Files\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\scene_debugger.hpp">
+      <Filter>Header Files\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

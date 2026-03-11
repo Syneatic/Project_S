@@ -125,6 +125,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 			if (AEInputCheckTriggered(AEVK_3)) 
 				SceneManager::RequestSceneSwitch("physics_test");	
+
+			if (AEInputCheckTriggered(AEVK_4))
+				SceneManager::SwitchToDebugger();
 		}
 #endif
 	
