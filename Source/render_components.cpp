@@ -74,6 +74,8 @@ namespace
 // ===== RENDERER DEF =====
 void Renderer::DrawInInspector()
 {
+    RenderSort("particle", renderLayer, sortOrder);
+
     static const char* _blendNames[] = { "NONE", "BLEND", "ADD", "MULTIPLY"};
     static const char* _renderNames[] = { "NONE", "COLOR", "TEXTURE"};
     static const char* _meshDrawNames[] = { "POINTS", "LINES", "LINES_STRIP", "TRIS"};
@@ -154,168 +156,24 @@ void Renderer::DrawInInspector()
 
 void Renderer::Serialize(Json::Value& outComp) const
 {
+    outComp["fileName"] = fileName;
     outComp["blendmode"] = blendMode;
     outComp["rendermode"] = renderMode;
     outComp["meshdrawmode"] = meshDrawMode;
     outComp["renderlayer"] = renderLayer;
+	outComp["sortOrder"] = sortOrder;
     outComp["alignment"] = static_cast<int>(alignment);
     outComp["color"] = WriteColor(color);
-
-
+    outComp["screenspace"] = isScreenSpace;
     //texture is abit tricky for now
     //i think save it as a filename for now
 }
 
 void Renderer::Deserialize(const Json::Value& compObj)
 {
-    if (compObj.isMember("blendmode") && compObj["blendmode"].isInt())
-        blendMode = static_cast<AEGfxBlendMode>(compObj["blendmode"].asInt());
-    
-    if (compObj.isMember("rendermode") && compObj["rendermode"].isInt())
-        renderMode = static_cast<AEGfxRenderMode>(compObj["rendermode"].asInt());
+    renderLayer = static_cast<Graphics::RenderLayer>(compObj["renderLayer"].asInt());
+    sortOrder = compObj["sortOrder"].asFloat();
 
-    if (compObj.isMember("meshdrawmode") && compObj["meshdrawmode"].isInt())
-        meshDrawMode = static_cast<AEGfxMeshDrawMode>(compObj["meshdrawmode"].asInt());
-
-    if (compObj.isMember("renderlayer") && compObj["renderlayer"].isInt())
-        renderLayer = static_cast<Graphics::RenderLayer>(compObj["renderlayer"].asInt());
-
-    if (compObj.isMember("alignment") && compObj["alignment"].isInt())
-        alignment = static_cast<Graphics::Alignment>(compObj["alignment"].asInt());
-
-    if (compObj.isMember("color"))
-        ReadColor(compObj["color"],color);
-
-    //read texture from file here
-}
-
-void Renderer::Draw()
-{
-}
-// ===== RENDERER DEF =====
-
-
-//Graphics::RenderLayer renderLayer{ Graphics::RenderLayer::DEFAULT };
-//f32 sortOrder{ 0.f };
-//bool isScreenSpace{ false };
-
-void SpriteRenderer::DrawInInspector()
-{
-    static const char* _blendNames[] = { "NONE", "BLEND", "ADD", "MULTIPLY" };
-    static const char* _renderNames[] = { "NONE", "COLOR", "TEXTURE" };
-    static const char* _meshDrawNames[] = { "POINTS", "LINES", "LINES_STRIP", "TRIS" };
-    static const char* _alignmentNames[] = { "Top left", "Top", "Top right", "Left", "Center", "Right", "Bottom Left", "Bottom", "Bottom right" };
-
-
-    ImGui::TextUnformatted("Texture");
-
-    ImGui::BeginDisabled();
-    ImGui::TextUnformatted(fileName.empty() ? "NO FILE SELECTED" : fileName.c_str());
-    ImGui::EndDisabled();
-
-    ImGui::SameLine();
-
-    if (ImGui::Button("Select##Texture"))
-    {
-        std::wstring path = OpenFilePng(); // file dialog
-        fileName = std::filesystem::path(path).filename().string();
-    }
-
-    ImGui::Separator();
-
-    if (ImGui::BeginCombo("Blend Mode", _blendNames[(int)blendMode]))
-    {
-        for (int i = 0; i < static_cast<int>(AE_GFX_BM_NUM); ++i)
-        {
-            bool selected = (i == blendMode);
-            if (ImGui::Selectable(_blendNames[i], selected))
-            {
-                blendMode = (AEGfxBlendMode)i;
-            }
-            if (selected) ImGui::SetItemDefaultFocus();
-        }
-        ImGui::EndCombo();
-    }
-
-    ImGui::Separator();
-
-    if (ImGui::BeginCombo("Render Mode", _renderNames[(int)renderMode]))
-    {
-        for (int i = 0; i < static_cast<int>(AE_GFX_RM_NUM); ++i)
-        {
-            bool selected = (i == renderMode);
-            if (ImGui::Selectable(_renderNames[i], selected))
-            {
-                renderMode = (AEGfxRenderMode)i;
-            }
-            if (selected) ImGui::SetItemDefaultFocus();
-        }
-        ImGui::EndCombo();
-    }
-
-    ImGui::Separator();
-
-    if (ImGui::BeginCombo("Mesh Draw Mode", _meshDrawNames[(int)meshDrawMode]))
-    {
-        for (int i = 0; i < static_cast<int>(AE_GFX_MDM_NUM); ++i)
-        {
-            bool selected = (i == meshDrawMode);
-            if (ImGui::Selectable(_meshDrawNames[i], selected))
-            {
-                meshDrawMode = (AEGfxMeshDrawMode)i;
-            }
-            if (selected) ImGui::SetItemDefaultFocus();
-        }
-        ImGui::EndCombo();
-    }
-
-    ImGui::Separator();
-
-    if (ImGui::BeginCombo("Alignment", _alignmentNames[(int)alignment]))
-    {
-        for (int i = 0; i < 9; ++i)
-        {
-            bool selected = (i == static_cast<int>(alignment));
-            if (ImGui::Selectable(_alignmentNames[i], selected))
-            {
-                alignment = (Graphics::Alignment)i;
-            }
-            if (selected) ImGui::SetItemDefaultFocus();
-        }
-        ImGui::EndCombo();
-    }
-
-    ImGui::TextUnformatted("Color");
-    float col[4] = { color.r, color.g, color.b, color.a };
-    if (ImGui::ColorEdit4("##renderer_color", col))
-    {
-        color.r = col[0];
-        color.g = col[1];
-        color.b = col[2];
-        color.a = col[3];
-    }
-
-    //renderlayer
-    //sort order
-
-    ImGui::TextUnformatted("IsScreenSpace");
-    ImGui::Checkbox("##isscreenspace", &isScreenSpace);
-}
-
-void SpriteRenderer::Serialize(Json::Value& outComp) const
-{
-    outComp["fileName"] = fileName;
-    outComp["blendmode"] = blendMode;
-    outComp["rendermode"] = renderMode;
-    outComp["meshdrawmode"] = meshDrawMode;
-    outComp["renderlayer"] = renderLayer;
-    outComp["alignment"] = static_cast<int>(alignment);
-    outComp["color"] = WriteColor(color);
-    outComp["screenspace"] = isScreenSpace;
-}
-
-void SpriteRenderer::Deserialize(const Json::Value& compObj)
-{
     if (compObj.isMember("fileName") && compObj["fileName"].isString())
         fileName = compObj["fileName"].asString();
 
@@ -339,6 +197,50 @@ void SpriteRenderer::Deserialize(const Json::Value& compObj)
 
     if (compObj.isMember("screenspace") && compObj["screenspace"].isBool())
         isScreenSpace = compObj["screenspace"].asBool();
+
+    //read texture from file here
+}
+
+void Renderer::Draw()
+{
+}
+// ===== RENDERER DEF =====
+
+
+//Graphics::RenderLayer renderLayer{ Graphics::RenderLayer::DEFAULT };
+//f32 sortOrder{ 0.f };
+//bool isScreenSpace{ false };
+
+void SpriteRenderer::DrawInInspector()
+{
+    Renderer::DrawInInspector();
+
+    ImGui::Separator();
+
+    ImGui::TextUnformatted("Texture");
+
+    ImGui::BeginDisabled();
+    ImGui::TextUnformatted(fileName.empty() ? "NO FILE SELECTED" : fileName.c_str());
+    ImGui::EndDisabled();
+    ImGui::SameLine();
+    if (ImGui::Button("Select##Texture"))
+    {
+        std::wstring path = OpenFilePng(); // file dialog
+        fileName = std::filesystem::path(path).filename().string();
+    }
+
+    ImGui::TextUnformatted("IsScreenSpace");
+    ImGui::Checkbox("##isscreenspace", &isScreenSpace);
+}
+
+void SpriteRenderer::Serialize(Json::Value& outComp) const
+{
+    Renderer::Serialize(outComp);
+}
+
+void SpriteRenderer::Deserialize(const Json::Value& compObj)
+{
+	Renderer::Deserialize(compObj);
 }
 
 void SpriteRenderer::Draw()
@@ -397,6 +299,7 @@ std::unique_ptr<Component> SpriteRenderer::Clone(GameObject& go)
 // ===== TEXT_RENDERER DEF =====
 void TextRenderer::DrawInInspector()
 {
+	RenderSort("text", renderLayer, sortOrder);
     static const char* _alignmentNames[] = { "Top left", "Top", "Top right", "Left", "Center", "Right", "Bottom Left", "Bottom", "Bottom right" };
 
     char textBuffer[256];
@@ -457,11 +360,11 @@ void TextRenderer::Draw()
 void TextRenderer::Serialize(Json::Value& outComp) const
 {
     outComp["renderlayer"] = renderLayer;
+	outComp["sortOrder"] = sortOrder;
     outComp["alignment"] = static_cast<int>(alignment);
     outComp["color"] = WriteColor(color);
     outComp["text"] = text;
     outComp["screenspace"] = isScreenSpace;
-
     //texture is abit tricky for now
     //i think save it as a filename for now
 }
@@ -470,6 +373,8 @@ void TextRenderer::Deserialize(const Json::Value& compObj)
 {
     if (compObj.isMember("renderlayer") && compObj["renderlayer"].isInt())
         renderLayer = static_cast<Graphics::RenderLayer>(compObj["renderlayer"].asInt());
+
+    sortOrder = compObj["sortOrder"].asFloat();
 
     if (compObj.isMember("alignment") && compObj["alignment"].isInt())
         alignment = static_cast<Graphics::Alignment>(compObj["alignment"].asInt());

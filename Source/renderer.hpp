@@ -55,6 +55,8 @@ namespace Graphics
         BlendMode blendMode{ AE_GFX_BM_BLEND };
         RenderMode renderMode{ AE_GFX_RM_COLOR };
         DrawMode drawMode{ AE_GFX_MDM_TRIANGLES };
+
+        u64 sortKey{ 0 };
     };
 
 	struct RenderCommand;

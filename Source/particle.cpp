@@ -73,8 +73,10 @@ namespace ParticleSystem
 		{
 			if (!g_pool.active[i]) continue;
 
-			g_pool.color[i].a = 1.0f - (g_pool.time[i] / g_pool.lifetime[i]);
+			float alpha = 1.0f - (g_pool.time[i] / g_pool.lifetime[i]);
+			if (alpha <= 0.f) continue;
 
+			g_pool.color[i].a = alpha;
 			Graphics::RenderData data{};
 			data.alignment = Graphics::Alignment::MC;
 			data.blendMode = AE_GFX_BM_BLEND;
@@ -113,7 +115,7 @@ namespace ParticleSystem
 		g_pool.behaviour[index]      = behaviour;
 
 		g_pool.layer[index] = layer;
-		g_pool.sortOrder[index] = sortOrder;
+		g_pool.sortOrder[index] = sortOrder + (static_cast<f32>(index) * 0.001f);
 	}
 
 	void Flush()

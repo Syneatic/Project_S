@@ -223,7 +223,7 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 250,
+          "renderlayer" : 1,
           "rendermode" : 1,
           "screenspace" : false,
           "type" : "SpriteRenderer"
@@ -276,7 +276,7 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 250,
+          "renderlayer" : 0,
           "rendermode" : 1,
           "screenspace" : false,
           "type" : "SpriteRenderer"
@@ -382,7 +382,7 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 250,
+          "renderlayer" : 1,
           "rendermode" : 1,
           "screenspace" : false,
           "type" : "SpriteRenderer"
@@ -435,7 +435,7 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 250,
+          "renderlayer" : 0,
           "rendermode" : 1,
           "screenspace" : false,
           "type" : "SpriteRenderer"
@@ -488,7 +488,7 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 250,
+          "renderlayer" : 0,
           "rendermode" : 1,
           "screenspace" : false,
           "type" : "SpriteRenderer"
@@ -541,7 +541,7 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 250,
+          "renderlayer" : 0,
           "rendermode" : 1,
           "screenspace" : false,
           "type" : "SpriteRenderer"
@@ -578,7 +578,7 @@
           "relative" : false,
           "spatialize" : false,
           "type" : "AudioEmitter",
-          "volume" : 0.0
+          "volume" : 1.0
         },
         {
           "color" : 

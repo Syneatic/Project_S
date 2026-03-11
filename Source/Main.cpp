@@ -6,14 +6,19 @@
 #include "scene_manager.hpp"
 #include "ui_components.hpp"
 
+static WNDPROC g_AEWndProc = nullptr;
+
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 LRESULT ImGuiWNDCallBack(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	// Give ImGui first chance to handle input messages.
-	// If it returns true, ImGui consumed it and you should not pass it on.
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wp, lp))
 		return 1;
+
+	// Forward everything else to AE's original WndProc
+	if (g_AEWndProc)
+		return CallWindowProc(g_AEWndProc, hWnd, msg, wp, lp);
 
 	return DefWindowProc(hWnd, msg, wp, lp);
 }
@@ -33,6 +38,10 @@ void InitializeImGUI(bool& initStatus)
 	ImGui::StyleColorsDark();
 	
 	HWND hwnd = AESysGetWindowHandle();
+	g_AEWndProc = reinterpret_cast<WNDPROC>(
+		SetWindowLongPtr(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(ImGuiWNDCallBack))
+		);
+
 	ImGui_ImplWin32_InitForOpenGL(hwnd);
 	ImGui_ImplOpenGL3_Init("#version 130");
 
@@ -68,9 +77,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
-
+	
 	//initialize the engine
-	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, true, ImGuiWNDCallBack);
+	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, true, nullptr);
 	AESysSetWindowTitle("Project S");
 	AEInputShowCursor(1);
 
@@ -119,7 +128,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #endif
 	
 		SceneManager::OnUpdate();
-
+		//std::cout << AEFrameRateControllerGetFrameRate() << "\n";
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 

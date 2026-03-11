@@ -60,10 +60,9 @@ namespace CameraSystem
 			}
 		}
 
-		//AEInputMouseWheelDelta(&zoom); // check scroll
-		zoom = 0;
-		if (AEInputCheckTriggered(AEVK_O)) { zoom = 1; };
-		if (AEInputCheckTriggered(AEVK_I)) { zoom = -1; };
+		//Debug::Log(AEInputMouseWheelDelta())
+		AEInputMouseWheelDelta(&zoom); // check scroll
+
 		if (zoom != 0) 
 		{
 			const float step = 1.5f; // 50% per notch

@@ -22,18 +22,23 @@ namespace Graphics
         std::string text; //if using text renderer
 
         //sorting operator
-        bool operator<(const RenderCommand& other) const 
+        //bool operator<(const RenderCommand& other) const 
+        //{
+        //    //primary layer sort
+        //    if (data.layer != other.data.layer)
+        //        return data.layer < other.data.layer;
+
+        //    //secondary sort with same layer
+        //    if (data.sortOrder != other.data.sortOrder)
+        //        return data.sortOrder < other.data.sortOrder;
+
+        //    //sort by texture, prevents additional texture set calls
+        //    return data.texture < other.data.texture;
+        //}
+
+        bool operator<(const RenderCommand& other) const
         {
-            //primary layer sort
-            if (data.layer != other.data.layer)
-                return data.layer < other.data.layer;
-
-            //secondary sort with same layer
-            if (data.sortOrder != other.data.sortOrder)
-                return data.sortOrder < other.data.sortOrder;
-
-            //sort by texture, prevents additional texture set calls
-            return data.texture < other.data.texture;
+            return data.sortKey < other.data.sortKey;
         }
     };
 }
@@ -206,11 +211,46 @@ namespace Graphics
     namespace
     {
         std::vector<RenderCommand> _commandBuffer;
+        std::vector<RenderCommand> _radixTemp;
 
         Texture* _currentTex = nullptr;
         RenderMode _currentMode = (RenderMode)-1;
         Font _currentFont;
         
+        void RadixSort(std::vector<RenderCommand>& buf) 
+        {
+            const size_t n = buf.size();
+            if (n < 2) return;
+
+            _radixTemp.resize(n);
+
+            // 8 passes over 8 bytes of the u64 key (LSB to MSB)
+            for (int pass = 0; pass < 8; ++pass)
+            {
+                const int shift = pass * 8;
+
+                // Count occurrences of each byte value
+                uint32_t count[256] = {};
+                for (size_t i = 0; i < n; ++i)
+                    ++count[(buf[i].data.sortKey >> shift) & 0xFF];
+
+                // Prefix sum -> starting output index per bucket
+                uint32_t prefix[256] = {};
+                for (int b = 1; b < 256; ++b)
+                    prefix[b] = prefix[b - 1] + count[b - 1];
+
+                // Scatter into temp buffer
+                for (size_t i = 0; i < n; ++i)
+                {
+                    uint8_t bucket = (buf[i].data.sortKey >> shift) & 0xFF;
+                    _radixTemp[prefix[bucket]++] = buf[i];
+                }
+
+                // Swap back
+                std::swap(buf, _radixTemp);
+            }
+            // After 8 (even) passes, result is always back in buf
+        }
 
         void ApplyStates(const RenderData& data)
         {
@@ -369,6 +409,27 @@ namespace Graphics
             AEGfxPrint(_currentFont, text, aeX - offX, aeY - offY,
                 data.scale.x, data.color.r, data.color.g, data.color.b, data.color.a);
         }
+    
+        u64 BuildSortKey(const RenderData& d)
+        {
+            // Layer: 16 bits (RenderLayer values fit easily)
+            u64 layerBits = (uint64_t)(uint16_t)d.layer;
+
+            // sortOrder: reinterpret float bits as u32.
+            // For non-negative floats, IEEE 754 bit order == numeric order.
+            // Negative floats are uncommon for sort order but handled by flipping sign bit.
+            u32 sortBits;
+            std::memcpy(&sortBits, &d.sortOrder, sizeof(float));
+            if (sortBits & 0x8000'0000u)          // negative: flip all bits
+                sortBits ^= 0xFFFF'FFFFu;
+            else                                   // positive: flip sign bit only
+                sortBits ^= 0x8000'0000u;
+
+            // Texture: hash pointer to 16 bits
+            u64 texBits = (u64)(uintptr_t)d.texture & 0xFFFFu;
+
+            return (layerBits << 48) | ((u64)sortBits << 16) | texBits;
+        }
     }
 
    
@@ -413,6 +474,7 @@ namespace Graphics
         RenderCommand cmd;
         cmd.data = data;
         cmd.type = type;
+        cmd.data.sortKey = BuildSortKey(data);
         if (text) cmd.text = text;
 
         //pushes into buffer
@@ -445,8 +507,12 @@ namespace Graphics
         //Debug::ScopedTimer t("Render:Execute");
 
         //sort the commands
-        {
-            std::sort(_commandBuffer.begin(), _commandBuffer.end());
+        //swaps algorithm based off buffer size
+        {      
+            if (_commandBuffer.size() < 1500)
+                std::sort(_commandBuffer.begin(), _commandBuffer.end());
+            else    
+                RadixSort(_commandBuffer);          
         }
 
         //reset cache
