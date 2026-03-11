@@ -125,17 +125,6 @@ namespace SceneManager
 		_requestReload = false;
 	}
 
-	void SwitchToDebugger()
-	{
-		_requestSwitch = false;
-		if (_current) _current->OnExit();
-		auto d = std::make_unique<DebuggerScene>();
-		_current = std::move(d);
-		if (_current) _current->OnEnter();
-		_nextSceneName.clear();
-		_requestReload = false;
-	}
-
 	void RequestSceneSwitch(const std::string& sceneName)
 	{
 		//check if exists

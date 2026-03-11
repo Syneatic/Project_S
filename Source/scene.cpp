@@ -3,7 +3,7 @@
 #include "physics.hpp"
 #include "audio.hpp"
 #include"particle.hpp"
-
+#include "scene_debugger.hpp"
 #include "gameobject.hpp"
 #include "eventhandler.hpp"
 #include "level_transition.hpp"
@@ -86,6 +86,10 @@ void Scene::OnUpdate()
 	EventHandler::CallQ();
 	Graphics::Execute();
 	ParticleSystem::Render();
+#ifdef _DEBUG
+	if (!IsEditorScene())
+		Debugger::Tick(*this);
+#endif
 }
 
 void Scene::OnExit()

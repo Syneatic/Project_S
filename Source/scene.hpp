@@ -15,6 +15,7 @@ public:
 	virtual void OnEnter();
 	virtual void OnUpdate();
 	virtual void OnExit();
+	virtual bool IsEditorScene() const { return false; }
 
 
 	//===== SERIALIZATION =====

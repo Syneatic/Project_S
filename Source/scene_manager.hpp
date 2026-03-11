@@ -6,7 +6,6 @@ namespace SceneManager
 {
 	void Initialize();
 	void SwitchToEditor();
-	void SwitchToDebugger();
 	void RequestSceneSwitch(const std::string& sceneName);
 	void RequestSceneReload();
 	void OnUpdate();
