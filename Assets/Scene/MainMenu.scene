@@ -16,6 +16,7 @@
             1.0
           ],
           "renderlayer" : 500,
+          "screenspace" : false,
           "text" : "Project_S",
           "type" : "TextRenderer"
         }
@@ -88,6 +89,7 @@
             1.0
           ],
           "renderlayer" : 500,
+          "screenspace" : false,
           "text" : "Play",
           "type" : "TextRenderer"
         }
@@ -160,6 +162,7 @@
             1.0
           ],
           "renderlayer" : 500,
+          "screenspace" : false,
           "text" : "Settings",
           "type" : "TextRenderer"
         }
@@ -232,6 +235,7 @@
             1.0
           ],
           "renderlayer" : 500,
+          "screenspace" : false,
           "text" : "Credits",
           "type" : "TextRenderer"
         }
@@ -304,6 +308,7 @@
             1.0
           ],
           "renderlayer" : 500,
+          "screenspace" : false,
           "text" : "Quit",
           "type" : "TextRenderer"
         }
