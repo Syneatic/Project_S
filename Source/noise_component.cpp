@@ -163,6 +163,39 @@ void NoiseSource::DrawInInspector()
 	ImGui::ColorEdit4("##emitter_color", c);
 	color = Color(c);
 
+	const std::array<const char*, 6> layerNames[] =
+	{
+		"Nothing",
+		"Player",
+		"Environment",
+		"Enemy",
+		"Projectile",
+		"CheckPoint"
+	};
+
+	ImGui::TextUnformatted("Collision Mask");
+	if (ImGui::BeginCombo("##collisionmask", "Collision Mask"))
+	{
+		for (int i = 0; i < layerNames->size(); i++)
+		{
+			u32 bit = (i == 0) ? 0u : (1u << (i - 1));
+			bool selected = (i == 0) ? (layerMask == 0) : (layerMask & bit) != 0;
+
+			if (ImGui::Selectable(layerNames->data()[i], selected, ImGuiSelectableFlags_NoAutoClosePopups))
+			{
+				if (i == 0)
+					layerMask = 0;
+				else
+					layerMask ^= bit;
+			}
+
+			if (selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+
+
 	ImGui::SeparatorText("Noise Properties");
 
 	ImGui::TextUnformatted("Is Noise Active");
@@ -190,6 +223,8 @@ void NoiseSource::Serialize(Json::Value& outComp) const
 	outComp["noiseLevel"] = noiseLevel;
 	outComp["repeat"] = repeat;
 	outComp["repeatInterval"] = repeatInterval;
+
+	outComp["layerMask"] = layerMask;
 }
 
 void NoiseSource::Deserialize(const Json::Value& compObj)
@@ -216,6 +251,8 @@ void NoiseSource::Deserialize(const Json::Value& compObj)
 	if (compObj.isMember("repeatInterval") && compObj["repeatInterval"].isNumeric())
 		repeatInterval = compObj["repeatInterval"].asFloat();
 
+	if (compObj.isMember("layerMask")) 
+		layerMask = compObj["layerMask"].asUInt();
 }
 
 void NoiseSource::CopyFrom(Component* src)
@@ -234,6 +271,7 @@ void NoiseSource::CopyFrom(Component* src)
 	repeat = s->repeat;
 	repeatInterval = s->repeatInterval;
 	repeatTimer = s->repeatTimer;
+	layerMask = s->layerMask;
 }
 
 std::unique_ptr<Component> NoiseSource::Clone(GameObject& go)

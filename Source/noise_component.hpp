@@ -24,6 +24,7 @@ public:
 	bool repeat{};
 	float repeatInterval{ 1.f };
 	float repeatTimer{ 0.f };
+	u32 layerMask{};
 
 	void OnStart() override;
 	void OnUpdate() override;
