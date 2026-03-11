@@ -102,6 +102,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		UpdateEngineCTX();
 
 #ifdef _DEBUG
+		if (AEInputCheckTriggered(AEVK_F5))
+			FrameProfiler::Start();
+
 		ImGuiIO& io = ImGui::GetIO();
 		if (!io.WantCaptureMouse && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{

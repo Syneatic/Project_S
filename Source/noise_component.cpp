@@ -143,9 +143,13 @@ void NoiseSource::HandleHit(const OnCollisionEvent& e)
 	float2 vel2 = rb2 ? rb2->velocity : float2{};
 	float relativeSpeed = length(vel1 - vel2);
 
+	//need to change
 	//only emit if the collision is strong enough, prevents noise from small collisions
-	if (relativeSpeed > 45.0f)
+	if (relativeSpeed > 300.0f)
+	{
+		Debug::Log(relativeSpeed);
 		this->Emit();
+	}
 }
 
 

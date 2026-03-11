@@ -10,10 +10,44 @@
           "type" : "Camera"
         },
         {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
           "Affected By Gravity" : true,
           "Is Static" : false,
           "isKinematic" : false,
           "type" : "RigidBody"
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "isNoiseActive" : true,
+          "lifetime" : 4.0,
+          "noiseLevel" : 40.0,
+          "numParticles" : 128,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "type" : "AudioListener"
+        },
+        {
+          "jumpHeight" : 150.0,
+          "max_speed" : 250.0,
+          "time" : 1.0,
+          "type" : "PlayerController"
         },
         {
           "alignment" : 4,
@@ -31,15 +65,6 @@
           "rendermode" : 1,
           "screenspace" : false,
           "type" : "SpriteRenderer"
-        },
-        {
-          "jumpHeight" : 150.0,
-          "max_speed" : 250.0,
-          "time" : 1.0,
-          "type" : "PlayerController"
-        },
-        {
-          "type" : "AudioListener"
         },
         {
           "collisionMask" : 4294967282,
@@ -267,7 +292,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            0.98823529481887817
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -827,6 +852,12 @@
           "volume" : 1.0
         },
         {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
           "color" : 
           [
             0.7401961088180542,
@@ -843,10 +874,9 @@
           "type" : "NoiseSource"
         },
         {
-          "Affected By Gravity" : true,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
+          "throwAngle" : 0.0,
+          "throwSpeed" : 300.0,
+          "type" : "RockController"
         },
         {
           "alignment" : 4,
@@ -864,11 +894,6 @@
           "rendermode" : 1,
           "screenspace" : false,
           "type" : "SpriteRenderer"
-        },
-        {
-          "throwAngle" : 0.0,
-          "throwSpeed" : 300.0,
-          "type" : "RockController"
         },
         {
           "collisionMask" : 4294967286,
@@ -931,10 +956,6 @@
       "components" : 
       [
         {
-          "enemyType" : 0,
-          "type" : "EnemyController"
-        },
-        {
           "collisionMask" : 4294967283,
           "isTrigger" : false,
           "layerMask" : 1,
@@ -944,6 +965,10 @@
             1.0
           ],
           "type" : "BoxCollider"
+        },
+        {
+          "enemyType" : 0,
+          "type" : "EnemyController"
         },
         {
           "alignment" : 4,
@@ -988,12 +1013,6 @@
       "components" : 
       [
         {
-          "detectDistance" : 100.0,
-          "enemyType" : 1,
-          "groundEmitInterval" : 4.5,
-          "type" : "EnemyController"
-        },
-        {
           "collisionMask" : 4294967267,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -1005,6 +1024,12 @@
           "type" : "BoxCollider"
         },
         {
+          "detectDistance" : 100.0,
+          "enemyType" : 1,
+          "groundEmitInterval" : 4.5,
+          "type" : "EnemyController"
+        },
+        {
           "fileName" : "ore.mp3",
           "loop" : false,
           "pitch" : 1.0,
@@ -1012,6 +1037,12 @@
           "spatialize" : false,
           "type" : "AudioEmitter",
           "volume" : 1.0
+        },
+        {
+          "Affected By Gravity" : false,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
         },
         {
           "color" : 
@@ -1028,12 +1059,6 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
-        },
-        {
-          "Affected By Gravity" : false,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
         },
         {
           "alignment" : 4,
@@ -1086,7 +1111,7 @@
             0.0,
             1.0
           ],
-          "isBurst" : false,
+          "isBurst" : true,
           "lifetime" : 
           [
             3.0,
@@ -1163,7 +1188,7 @@
             0.0,
             1.0
           ],
-          "isBurst" : false,
+          "isBurst" : true,
           "lifetime" : 
           [
             3.0,
@@ -1275,6 +1300,7 @@
             1.0
           ],
           "renderlayer" : 250,
+          "screenspace" : false,
           "text" : "Quit",
           "type" : "TextRenderer"
         }

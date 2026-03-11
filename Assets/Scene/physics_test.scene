@@ -8,6 +8,7 @@
       [
         {
           "collisionMask" : 31,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -30,6 +31,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -53,6 +55,7 @@
       [
         {
           "collisionMask" : 4294967295,
+          "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
           [
@@ -75,6 +78,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -98,6 +102,7 @@
       [
         {
           "collisionMask" : 4294967295,
+          "isTrigger" : false,
           "layerMask" : 4,
           "size" : 
           [
@@ -120,6 +125,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         }
       ],
@@ -143,6 +149,7 @@
       [
         {
           "collisionMask" : 4294967267,
+          "isTrigger" : false,
           "layerMask" : 1,
           "size" : 
           [
@@ -165,14 +172,13 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
           "Affected By Gravity" : true,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         }
       ],
@@ -196,6 +202,7 @@
       [
         {
           "collisionMask" : 4294967267,
+          "isTrigger" : false,
           "layerMask" : 1,
           "size" : 
           [
@@ -218,14 +225,13 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
           "Affected By Gravity" : true,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         }
       ],
@@ -249,6 +255,7 @@
       [
         {
           "collisionMask" : 4294967267,
+          "isTrigger" : false,
           "layerMask" : 1,
           "size" : 
           [
@@ -271,14 +278,13 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
           "Affected By Gravity" : true,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         }
       ],
@@ -302,6 +308,7 @@
       [
         {
           "collisionMask" : 4294967267,
+          "isTrigger" : false,
           "layerMask" : 1,
           "size" : 
           [
@@ -324,14 +331,13 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
           "Affected By Gravity" : true,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         }
       ],
@@ -355,6 +361,7 @@
       [
         {
           "collisionMask" : 4294967267,
+          "isTrigger" : false,
           "layerMask" : 1,
           "size" : 
           [
@@ -377,14 +384,13 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
           "Affected By Gravity" : true,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         }
       ],
@@ -408,6 +414,7 @@
       [
         {
           "collisionMask" : 4294967279,
+          "isTrigger" : false,
           "layerMask" : 1,
           "size" : 
           [
@@ -430,14 +437,13 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
           "Affected By Gravity" : true,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         }
       ],
@@ -461,6 +467,7 @@
       [
         {
           "collisionMask" : 4294967267,
+          "isTrigger" : false,
           "layerMask" : 1,
           "size" : 
           [
@@ -483,14 +490,13 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
           "Affected By Gravity" : true,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         }
       ],
@@ -514,6 +520,7 @@
       [
         {
           "collisionMask" : 4294967265,
+          "isTrigger" : false,
           "layerMask" : 1,
           "size" : 
           [
@@ -536,14 +543,13 @@
           "meshdrawmode" : 3,
           "renderlayer" : 250,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
           "Affected By Gravity" : true,
-          "Gravity" : 9.8000001907348633,
-          "Grounded" : false,
           "Is Static" : false,
-          "Velocity" : 0.0,
+          "isKinematic" : false,
           "type" : "RigidBody"
         }
       ],
@@ -572,7 +578,7 @@
           "relative" : false,
           "spatialize" : false,
           "type" : "AudioEmitter",
-          "volume" : 1.0
+          "volume" : 0.0
         },
         {
           "color" : 
@@ -585,7 +591,7 @@
           "isNoiseActive" : true,
           "lifetime" : 5.0,
           "noiseLevel" : 50.0,
-          "numParticles" : 1024,
+          "numParticles" : 2048,
           "repeat" : true,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"

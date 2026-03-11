@@ -232,58 +232,76 @@ namespace Graphics
             }
         }
    
-        MTX GetAlignmentMatrix(Alignment alignment)
+        float2 GetAlignmentOffset(Alignment alignment)
         {
-            MTX align{};
-            switch (alignment) {
-            case Alignment::TL:
-                AEMtx33Trans(&align, 0.5f, -0.5f);
-                break;
-            case Alignment::TC:
-                AEMtx33Trans(&align, 0.f, -0.5f);
-                break;
-            case Alignment::TR:
-                AEMtx33Trans(&align, -0.5f, -0.5f);
-                break;
-            case Alignment::ML:
-                AEMtx33Trans(&align, 0.5f, 0.f);
-                break;
-            case Alignment::MC:
-                AEMtx33Trans(&align, 0.f, 0.f);
-                break;
-            case Alignment::MR:
-                AEMtx33Trans(&align, -0.5f, 0.f);
-                break;
-            case Alignment::BL:
-                AEMtx33Trans(&align, 0.5f, 0.5f);
-                break;
-            case Alignment::BC:
-                AEMtx33Trans(&align, 0.f, 0.5f);
-                break;
-            case Alignment::BR:
-                AEMtx33Trans(&align, -0.5f, 0.5f);
-                break;                
+            switch (alignment)
+            {
+            case Alignment::TL: return { 0.5f, -0.5f };
+            case Alignment::TC: return { 0.0f, -0.5f };
+            case Alignment::TR: return { -0.5f, -0.5f };
+            case Alignment::ML: return { 0.5f,  0.0f };
+            case Alignment::MC: return { 0.0f,  0.0f };
+            case Alignment::MR: return { -0.5f,  0.0f };
+            case Alignment::BL: return { 0.5f,  0.5f };
+            case Alignment::BC: return { 0.0f,  0.5f };
+            case Alignment::BR: return { -0.5f,  0.5f };
+            default:            return { 0.0f,  0.0f };
+            }
+        }
+
+        void GetTransformMTX(float2 t, float2 s, f32 r, Alignment mode, MTX& mtx, bool notScrnSpace)
+        {
+            struct CamCache
+            {
+                f32 c00, c01, c02; // row 0
+                f32 c10, c11, c12; // row 1
+            } cam;
+
+            cam.c00 = CameraData::camM.m[0][0];
+            cam.c01 = CameraData::camM.m[0][1];
+            cam.c02 = CameraData::camM.m[0][2];
+            cam.c10 = CameraData::camM.m[1][0];
+            cam.c11 = CameraData::camM.m[1][1];
+            cam.c12 = CameraData::camM.m[1][2];
+
+
+            float2 align = GetAlignmentOffset(mode);
+
+            const f32 rotRad = r * (PI / 180.f);
+            const f32 c = cosf(rotRad);
+            const f32 si = sinf(rotRad);
+
+            const f32 csx = c * s.x;
+            const f32 ssx = si * s.x;
+            const f32 csy = c * s.y;
+            const f32 ssy = si * s.y;
+
+            const f32 L00 = csx;
+            const f32 L01 = -ssy;
+            const f32 L02 = t.x + csx * align.x - ssy * align.y;
+            const f32 L10 = ssx;
+            const f32 L11 = csy;
+            const f32 L12 = t.y + ssx * align.x + csy * align.y;
+
+            if (notScrnSpace)
+            {
+                mtx.m[0][0] = cam.c00 * L00 + cam.c01 * L10;
+                mtx.m[0][1] = cam.c00 * L01 + cam.c01 * L11;
+                mtx.m[0][2] = cam.c00 * L02 + cam.c01 * L12 + cam.c02;
+
+                mtx.m[1][0] = cam.c10 * L00 + cam.c11 * L10;
+                mtx.m[1][1] = cam.c10 * L01 + cam.c11 * L11;
+                mtx.m[1][2] = cam.c10 * L02 + cam.c11 * L12 + cam.c12;
+            }
+            else
+            {
+                mtx.m[0][0] = L00;  mtx.m[0][1] = L01;  mtx.m[0][2] = L02;
+                mtx.m[1][0] = L10;  mtx.m[1][1] = L11;  mtx.m[1][2] = L12;
             }
 
-            return align;
-        }
-    
-        void GetTransformMTX(float2 t, float2 s, f32 r, Alignment mode, MTX& mtx)
-        {
-            AEMtx33Identity(&mtx);
-            MTX align = GetAlignmentMatrix(mode);
-            AEMtx33Concat(&mtx, &align, &mtx);
-
-            MTX scale{};
-            AEMtx33Scale(&scale, s.x, s.y);
-            MTX rotate{};
-            AEMtx33RotDeg(&rotate, r);
-            MTX translate{};
-            AEMtx33Trans(&translate, t.x, t.y);
-
-            AEMtx33Concat(&mtx, &scale, &mtx);
-            AEMtx33Concat(&mtx, &rotate, &mtx);
-            AEMtx33Concat(&mtx, &translate, &mtx);
+            mtx.m[2][0] = 0.f;
+            mtx.m[2][1] = 0.f;
+            mtx.m[2][2] = 1.f;
         }
     
         void DrawMesh(VertexBuffer* mesh, DrawMode mode, Texture* texture)
@@ -311,7 +329,7 @@ namespace Graphics
                 AEMtx33Trans(&worldMtx, data.pos.x, data.pos.y);
 
                 AEMtx33 viewPosMtx;
-                AEMtx33Concat(&viewPosMtx, &CameraData::camMatrix, &worldMtx);
+                AEMtx33Concat(&viewPosMtx, &CameraData::camM, &worldMtx);
 
                 screenPixelPos.x = viewPosMtx.m[0][2];
                 screenPixelPos.y = viewPosMtx.m[1][2];
@@ -424,49 +442,59 @@ namespace Graphics
 
     void Execute() //executes this frame's commands
     {
+        //Debug::ScopedTimer t("Render:Execute");
+
         //sort the commands
-        std::sort(_commandBuffer.begin(), _commandBuffer.end());
+        {
+            std::sort(_commandBuffer.begin(), _commandBuffer.end());
+        }
 
         //reset cache
         _currentTex = nullptr;
         _currentMode = (AEGfxRenderMode)-1;
 
         //dispatch commands
-        for (const auto& cmd : _commandBuffer) 
         {
-            const RenderData& d = cmd.data;
-            //apply states
-            ApplyStates(d);
-
-            //set matrix
-            MTX transform{};
-            GetTransformMTX(d.pos,d.scale,d.rot,d.alignment,transform);
-            if(!d.isScreenSpace)
-                AEMtx33Concat(&transform, &CameraData::camMatrix, &transform);
-            AEGfxSetTransform(transform.m);
-
-            //draw based off primitive type
-            switch (cmd.type) 
+			//Debug::ScopedTimer t("render:draw");
+            for (const auto& cmd : _commandBuffer) 
             {
-            case PrimitiveType::QUAD:
-                DrawMesh(_quadMesh, d.drawMode, d.texture);
-                break;
-            case PrimitiveType::TRIANGLE:
-                DrawMesh(_triangleMesh, d.drawMode, d.texture);
-                break;
-            case PrimitiveType::CIRCLE:
-                DrawMesh(_circleMesh, d.drawMode, d.texture);
-                break;
-            case PrimitiveType::BOX:
-                DrawMesh(_boxMesh, d.drawMode, d.texture);
-                break;
-            case PrimitiveType::TEXT:
-                DrawTextMesh(cmd.text.c_str(), d);
-                break;
+                const RenderData& d = cmd.data;
+                //apply states
+                ApplyStates(d);
+
+                //set matrix
+                MTX transform{};
+                GetTransformMTX(d.pos,d.scale,d.rot,d.alignment,transform, !d.isScreenSpace);
+                AEGfxSetTransform(transform.m);
+            
+
+                //draw based off primitive type
+                switch (cmd.type) 
+                {
+                case PrimitiveType::QUAD:
+                    DrawMesh(_quadMesh, d.drawMode, d.texture);
+                    break;
+                case PrimitiveType::TRIANGLE:
+                    DrawMesh(_triangleMesh, d.drawMode, d.texture);
+                    break;
+                case PrimitiveType::CIRCLE:
+                    DrawMesh(_circleMesh, d.drawMode, d.texture);
+                    break;
+                case PrimitiveType::BOX:
+                    DrawMesh(_boxMesh, d.drawMode, d.texture);
+                    break;
+                case PrimitiveType::TEXT:
+                    DrawTextMesh(cmd.text.c_str(), d);
+                    break;
+                }
             }
         }
 
         //clears buffer for nxt frame
         _commandBuffer.clear();
+
+        //FrameProfiler::CommitFrame();
+        //if (FrameProfiler::IsReady())
+            //FrameProfiler::FlushToFile("render_profile.txt");
     }
 }

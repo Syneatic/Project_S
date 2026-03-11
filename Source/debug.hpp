@@ -97,6 +97,30 @@ namespace Debug// TIMER
     };
 }
 
+namespace FrameProfiler
+{
+    // Call once per frame end to commit that frame's timer results
+    void CommitFrame();
+
+    // Set how many frames to accumulate before stats are ready
+    void SetTargetFrameCount(size_t frameCount);
+
+    // Returns true when enough frames have been collected
+    bool IsReady();
+
+    // Computes mean + median for all collected samples (flat list),
+    // writes a human-readable .txt report to `filePath`, and clears state.
+    // Call after IsReady() returns true.
+    void FlushToFile(const std::string& filePath);
+
+    // Same as FlushToFile but returns the report as a string instead
+    std::string FlushToString();
+
+    void Start(); // call this on button press to begin collecting
+    void Stop();  // optional: cancel mid-collection
+    bool IsRunning();
+}
+
 namespace LogManager
 {
     struct LogEntry //to be kept

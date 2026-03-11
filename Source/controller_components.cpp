@@ -55,8 +55,7 @@ void PlayerController::OnStart()
         &_owner,
         [this](const OnCollisionEvent& e)
         {
-                this->HandleCollision(e);
-                //Debug::Log("Collision: Self=", e.self->cname().c_str() ,"Other = ",  e.other->cname().c_str());
+            this->HandleCollision(e);
         }
     );
 
@@ -161,7 +160,6 @@ void PlayerController::OnUpdate()
 
     if (AEInputCheckTriggered(AEVK_E)/* && echoTimer >= echoCooldown*/)
     {
-
         if (noiseSource)
             noiseSource->Emit(_transform.position);
     }
@@ -171,7 +169,7 @@ void PlayerController::OnUpdate()
 
     if (speed >= echoDistanceThreshold)
     {
-        distanceAccumulated += length(currentPos - lastEchoPos);
+        distanceAccumulated += abs(currentPos.x - lastEchoPos.x);
 
         if (distanceAccumulated >= echoDistanceThreshold)
         {
@@ -221,8 +219,6 @@ void PlayerController::HandleCollision(const OnCollisionEvent& e)
         if (auto* rc = e.other->GetComponent<RockController>())
             rc->ResetRock();
     }
-
-    Debug::Log("Collision: Self=%s Other=%s", e.self->cname().c_str(), e.other->cname().c_str());
 }
 
 void PlayerController::HandleTrigger(const OnTriggerEvent& e)
@@ -514,7 +510,6 @@ void EnemyController::UpdateDrop() {
             groundEmitTimer = 0.f;
 
             float2 emitPos = hit.point + hit.normal * 15.f;
-            Debug::Log("Drop ping\n");
 
             if (ns) ns->Emit(emitPos);
         }

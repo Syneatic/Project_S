@@ -493,6 +493,10 @@ namespace //wrappers for drawing ui elements
 			const std::unique_ptr<Component>& compPtr = it->second;
 
 			bool open = ImGui::CollapsingHeader(compPtr->name().c_str(), ImGuiTreeNodeFlags_DefaultOpen);
+			
+			ImGui::TextUnformatted("Active");
+			std::string id = "##active_" + compPtr->name();
+			ImGui::Checkbox(id.c_str(), &compPtr->active());
 
 			// drag source
 			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))

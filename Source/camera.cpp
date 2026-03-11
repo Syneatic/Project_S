@@ -4,15 +4,29 @@
 
 
 int fX, fY, zoom;
-float posX, posY;
 bool scrollHeld{};
 
 namespace CameraSystem 
 {
+	void SetCamM()
+	{
+		AEMtx33Identity(&CameraData::camM);
+
+		AEMtx33 trans{}, rot{}, scale{};
+
+		AEMtx33Trans(&trans, -CameraData::pos.x, -CameraData::pos.y);
+		AEMtx33RotDeg(&rot, -CameraData::rotDeg);
+		AEMtx33Scale(&scale, CameraData::zoomMult, CameraData::zoomMult);
+
+		AEMtx33Concat(&CameraData::camM, &trans, &CameraData::camM);
+		AEMtx33Concat(&CameraData::camM, &rot, &CameraData::camM);
+		AEMtx33Concat(&CameraData::camM, &scale, &CameraData::camM);
+	}
+
 	void OnStart() 
 	{
-		AEMtx33Identity(&CameraData::camMatrix);
-		AEGfxSetCamPosition(0,0);
+		AEMtx33Identity(&CameraData::camM);
+		CameraData::zoomMult = 1;
 	}
 
 	void OnUpdate() 
@@ -36,8 +50,8 @@ namespace CameraSystem
 			fX = lX; fY = lY;
 
 			// set cam position
-			AEGfxGetCamPosition(&posX, &posY);
-			AEGfxSetCamPosition(posX - dX/ CameraData::zoomMult, posY + dY/ CameraData::zoomMult);
+			CameraData::pos.x -= dX / CameraData::zoomMult;
+			CameraData::pos.y += dY / CameraData::zoomMult;
 
 			// reset first X and Y on release
 			if (AEInputCheckReleased(AEVK_MBUTTON)){
@@ -48,8 +62,8 @@ namespace CameraSystem
 
 		//AEInputMouseWheelDelta(&zoom); // check scroll
 		zoom = 0;
-		if (AEInputCheckTriggered(AEVK_I)) { zoom = 1; };
-		if (AEInputCheckTriggered(AEVK_O)) { zoom = -1; };
+		if (AEInputCheckTriggered(AEVK_O)) { zoom = 1; };
+		if (AEInputCheckTriggered(AEVK_I)) { zoom = -1; };
 		if (zoom != 0) 
 		{
 			const float step = 1.5f; // 50% per notch
@@ -57,41 +71,33 @@ namespace CameraSystem
 			else          CameraData::zoomMult /= step;
 		}
 
-		// Translate to origin, scale, translate back
-		AEMtx33 scale{}, negCamPos{}, camPos{};
-		AEMtx33Scale(&scale, CameraData::zoomMult, CameraData::zoomMult);
-		AEMtx33Trans(&negCamPos, -posX, -posY);
-		AEMtx33Trans(&camPos, posX, posY);
-
-		AEMtx33Concat(&negCamPos, &scale, &negCamPos);
-		AEMtx33Concat(&CameraData::camMatrix, &camPos, &negCamPos);
+		// Apply scale to camM
+		SetCamM();
 	}
 
 	void OnExit() 
 	{
-		AEMtx33Identity(&CameraData::camMatrix);
-		AEGfxSetCamPosition(0, 0);
+		AEMtx33Identity(&CameraData::camM);
 		CameraData::zoomMult = 1;
 	}
 
-	void MoveCamera(Transform parentTrans) 
+	void MoveCamera(Transform playerTrans) 
 	{
-		AEMtx33Identity(&CameraData::camMatrix);
-		AEGfxSetCamPosition(parentTrans.position.x, parentTrans.position.y);
+		// fix dis
+		CameraData::pos = playerTrans.position;
+		SetCamM();
 	}
 
 	float2 ScreenToWorld(float2 pos)
 	{
 		float2 worldPos;
 		float2 screen{(f32)AEGfxGetWindowWidth(),(f32)AEGfxGetWindowHeight()};
-		float2 camera{};
-		AEGfxGetCamPosition(&camera.x, &camera.y);
 
 		float ndcX = (pos.x / screen.x) - 0.5f;
 		float ndcY = 0.5f - (pos.y / screen.y);
 
-		worldPos.x = (ndcX * screen.x / CameraData::zoomMult) + camera.x;
-		worldPos.y = (ndcY * screen.y / CameraData::zoomMult) + camera.y;
+		worldPos.x = (ndcX * screen.x / CameraData::zoomMult) + CameraData::pos.x;
+		worldPos.y = (ndcY * screen.y / CameraData::zoomMult) + CameraData::pos.y;
 
 
 		return worldPos;
