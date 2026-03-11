@@ -15,8 +15,9 @@
             1.0,
             1.0
           ],
-          "renderlayer" : 500,
+          "renderlayer" : 2,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "text" : "Project_S",
           "type" : "TextRenderer"
         }
@@ -51,9 +52,10 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 500,
+          "renderlayer" : 2,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -88,8 +90,9 @@
             0.0,
             1.0
           ],
-          "renderlayer" : 500,
+          "renderlayer" : 2,
           "screenspace" : false,
+          "sortOrder" : 1.0,
           "text" : "Play",
           "type" : "TextRenderer"
         }
@@ -124,9 +127,10 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 500,
+          "renderlayer" : 2,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -161,8 +165,9 @@
             0.0,
             1.0
           ],
-          "renderlayer" : 500,
+          "renderlayer" : 2,
           "screenspace" : false,
+          "sortOrder" : 1.0,
           "text" : "Settings",
           "type" : "TextRenderer"
         }
@@ -197,9 +202,10 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 500,
+          "renderlayer" : 2,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -234,8 +240,9 @@
             0.0,
             1.0
           ],
-          "renderlayer" : 500,
+          "renderlayer" : 2,
           "screenspace" : false,
+          "sortOrder" : 1.0,
           "text" : "Credits",
           "type" : "TextRenderer"
         }
@@ -270,9 +277,10 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 500,
+          "renderlayer" : 2,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -307,8 +315,9 @@
             0.0,
             1.0
           ],
-          "renderlayer" : 500,
+          "renderlayer" : 2,
           "screenspace" : false,
+          "sortOrder" : 1.0,
           "text" : "Quit",
           "type" : "TextRenderer"
         }
@@ -362,6 +371,7 @@
             50.0,
             50.0
           ],
+          "renderLayer" : 2,
           "rotation" : 
           [
             0.0,
@@ -372,6 +382,7 @@
             100.0,
             100.0
           ],
+          "sortOrder" : 5.0,
           "spawnLineLength" : 900.0,
           "spawnRate" : 1300.0,
           "spawnShape" : 3,
@@ -439,6 +450,7 @@
             50.0,
             50.0
           ],
+          "renderLayer" : 2,
           "rotation" : 
           [
             0.0,
@@ -449,6 +461,7 @@
             100.0,
             100.0
           ],
+          "sortOrder" : 5.0,
           "spawnLineLength" : 900.0,
           "spawnRate" : 1000.0,
           "spawnShape" : 3,

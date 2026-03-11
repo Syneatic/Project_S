@@ -18,9 +18,10 @@
           ],
           "fileName" : "DigiPen_BLACK.png",
           "meshdrawmode" : 3,
-          "renderlayer" : 250,
+          "renderlayer" : 0,
           "rendermode" : 2,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         }
       ],
@@ -73,6 +74,7 @@
             0.0,
             900.0
           ],
+          "renderLayer" : 2,
           "rotation" : 
           [
             0.0,
@@ -83,6 +85,7 @@
             100.0,
             100.0
           ],
+          "sortOrder" : 5.0,
           "spawnLineLength" : 900.0,
           "spawnRate" : 1000.0,
           "spawnShape" : 3,

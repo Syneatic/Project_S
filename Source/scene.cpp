@@ -28,6 +28,12 @@ GameObject* Scene::FindGameObjectByName(const std::string& name)
     {
         if (go->name() == name)
             return go.get();
+
+		for (auto& goC : go->children())
+		{
+			if (goC->name() == name)
+				return goC.get();
+		}
     }
     return nullptr;
 }
