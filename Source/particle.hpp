@@ -6,7 +6,7 @@
 //SoA approach
 namespace ParticleSystem
 {
-	using FN = void(*)(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide);
+	using FN = void(*)(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, u32 layerMask);
 
 	const int MAX_PARTICLES = 5096 * 4;
 
@@ -31,6 +31,8 @@ namespace ParticleSystem
 		Graphics::RenderLayer layer[MAX_PARTICLES]{};
 		float sortOrder[MAX_PARTICLES]{};
 
+		u32 layerMask[MAX_PARTICLES]{};
+
 		int freeStack[MAX_PARTICLES]{};
 		int freeStackTop = -1;
 	};
@@ -46,6 +48,7 @@ namespace ParticleSystem
 		Graphics::RenderLayer layer{ Graphics::RenderLayer::DEFAULT };
 		float sortOrder{ 0.f };
 		bool timescale{ true };
+		u32 layerMask{0};
 	};
 
 	void Initialize();
@@ -55,7 +58,7 @@ namespace ParticleSystem
 		Color col, bool shouldCollide,
 		FN behaviour, float size = 5.0f, float rotation = 0.0f, 
 		Graphics::RenderLayer layer = Graphics::RenderLayer::DEFAULT,float sortOrder = 0.f,
-		bool timeScale = true);
+		bool timeScale = true, u32 layerMask = 0);
 	void Emit(PoolBuilder const&);
 	void Flush();
 }

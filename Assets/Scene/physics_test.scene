@@ -32,6 +32,7 @@
           "renderlayer" : 250,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         }
       ],
@@ -79,6 +80,7 @@
           "renderlayer" : 250,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         }
       ],
@@ -126,6 +128,7 @@
           "renderlayer" : 250,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         }
       ],
@@ -173,6 +176,7 @@
           "renderlayer" : 250,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -226,6 +230,7 @@
           "renderlayer" : 1,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -279,6 +284,7 @@
           "renderlayer" : 0,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -332,6 +338,7 @@
           "renderlayer" : 250,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -385,6 +392,7 @@
           "renderlayer" : 1,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -438,6 +446,7 @@
           "renderlayer" : 0,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -491,6 +500,7 @@
           "renderlayer" : 0,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -544,6 +554,7 @@
           "renderlayer" : 0,
           "rendermode" : 1,
           "screenspace" : false,
+          "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
         },
         {
@@ -589,6 +600,7 @@
             1.0
           ],
           "isNoiseActive" : true,
+          "layerMask" : 0,
           "lifetime" : 5.0,
           "noiseLevel" : 50.0,
           "numParticles" : 2048,
