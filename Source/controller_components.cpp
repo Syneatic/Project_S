@@ -564,8 +564,8 @@ void EnemyController::UpdatePatrol() {
     {
         groundEmitTimer = 0.f;
         if (ns) {
-            ns->Emit(_owner.worldTransform().position + float2(_owner.worldTransform().scale.x / 0.9, 0));
-            ns->Emit(_owner.worldTransform().position - float2(_owner.worldTransform().scale.x / 0.9, 0));
+            ns->Emit(_owner.worldTransform().position); /* Temp removed+ float2(_owner.worldTransform().scale.x / 0.9, 0)*/
+            //ns->Emit(_owner.worldTransform().position - float2(_owner.worldTransform().scale.x / 0.9, 0));
         }
     }
 
