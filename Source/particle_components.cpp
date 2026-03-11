@@ -36,8 +36,12 @@ void ParticleEmitter::OnStart()
 				spawnPos.y + velocity.y * age
 			};
 
-			ParticleSystem::Emit(agedPos, velocity, age, life, col,
-				false, nullptr, sz, rot, renderLayer, sortOrder);
+			ParticleSystem::Emit(
+				{ 
+					agedPos, velocity, age, life, col,
+					false, nullptr, sz, rot, renderLayer, 
+					sortOrder, timeScale
+				});
 		}
 
 
@@ -57,8 +61,7 @@ void ParticleEmitter::OnUpdate()
 		return;
 	}
 
-	
-	timer += static_cast<float>(EngineCTX::dt);
+	timer += static_cast<float>(timeScale ? EngineCTX::dt : EngineCTX::unscaledDt);
 	float interval = 1.0f / spawnRate;
 
 	while (timer >= interval)
@@ -86,8 +89,12 @@ void ParticleEmitter::OnUpdate()
 		float  rot = Random::RandFloat(rotation.x, rotation.y);
 		Color  col = RandColor(colorA,colorB);
 
-		ParticleSystem::Emit(spawnPos, velocity, 0.f, life, col,
-			true, nullptr, sz, rot,renderLayer, sortOrder);
+		ParticleSystem::Emit(
+			{
+				spawnPos, velocity, 0.f, life, col,
+				true, nullptr, sz, rot, renderLayer, 
+				sortOrder, timeScale
+			});
 
 		timer -= interval;
 	}
@@ -131,6 +138,7 @@ void ParticleEmitter::Serialize(Json::Value& outComp) const
 	outComp["isBurst"] = isBurst;
 
 	outComp["time"] = time;
+	outComp["timescale"] = timeScale;
 	outComp["speed"] = WriteFloat2(speed);
 	outComp["lifetime"] = WriteFloat2(lifetime);
 	outComp["size"] = WriteFloat2(size);
@@ -164,6 +172,7 @@ void ParticleEmitter::Deserialize(const Json::Value& o)
 		isBurst = o["isBurst"].asBool();
 
 	time = o["time"].asFloat();
+	timeScale = o["timescale"].asBool();
 	readfloat2("speed", speed);    
 	readfloat2("lifetime", lifetime); 
 	readfloat2("size", size);     
@@ -197,6 +206,9 @@ void ParticleEmitter::DrawInInspector()
 		break;
 	default: break;
 	}
+
+	ImGui::SeparatorText("EngineCTX");
+	ImGui::Checkbox("Timescale", &timeScale);
 
 	ImGui::SeparatorText("Emission");
 	FloatDrag("Spawn Rate","particle", &spawnRate);

@@ -13,7 +13,6 @@ namespace LevelTransition
 	inline bool inTransition{ false };
 
 	void Init();
-	void RequestTransition(f32 setTime = 4.f);
+	void RequestTransition(f32 setTime = 1.5f);
 	void Update();
-	void UnsubscribeTransitions();
 }

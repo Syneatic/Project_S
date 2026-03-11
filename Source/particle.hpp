@@ -18,6 +18,7 @@ namespace ParticleSystem
 
 		float2 vel[MAX_PARTICLES]{}; //same here
 
+		bool timeScale[MAX_PARTICLES]{};
 		float  time[MAX_PARTICLES]{};
 		float  lifetime[MAX_PARTICLES]{};
 
@@ -34,16 +35,17 @@ namespace ParticleSystem
 		int freeStackTop = -1;
 	};
 
-	struct Emitter
+	struct PoolBuilder
 	{
-		float2 pos;
-		float2 dir; //direction to launch
-		float spread;
-		float spd;
-		float spawnRate;
-		float accumulator;
-		Color color;
-		float lifetime;
+		float2 pos, vel;
+		float time, life;
+		Color col;
+		bool shouldCollide;
+		FN behaviour{ nullptr };
+		float size{ 5.f }, rotation{ 0.f };
+		Graphics::RenderLayer layer{ Graphics::RenderLayer::DEFAULT };
+		float sortOrder{ 0.f };
+		bool timescale{ true };
 	};
 
 	void Initialize();
@@ -52,6 +54,8 @@ namespace ParticleSystem
 	void Emit(float2 pos, float2 vel, float time, float life,
 		Color col, bool shouldCollide,
 		FN behaviour, float size = 5.0f, float rotation = 0.0f, 
-		Graphics::RenderLayer layer = Graphics::RenderLayer::DEFAULT,float sortOrder = 0.f);
+		Graphics::RenderLayer layer = Graphics::RenderLayer::DEFAULT,float sortOrder = 0.f,
+		bool timeScale = true);
+	void Emit(PoolBuilder const&);
 	void Flush();
 }

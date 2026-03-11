@@ -16,6 +16,7 @@
             1.0
           ],
           "renderlayer" : 500,
+          "screenspace" : false,
           "text" : "Project_S",
           "type" : "TextRenderer"
         }
@@ -52,6 +53,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 500,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -87,6 +89,7 @@
             1.0
           ],
           "renderlayer" : 500,
+          "screenspace" : false,
           "text" : "Play",
           "type" : "TextRenderer"
         }
@@ -123,6 +126,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 500,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -158,6 +162,7 @@
             1.0
           ],
           "renderlayer" : 500,
+          "screenspace" : false,
           "text" : "Settings",
           "type" : "TextRenderer"
         }
@@ -194,6 +199,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 500,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -229,6 +235,7 @@
             1.0
           ],
           "renderlayer" : 500,
+          "screenspace" : false,
           "text" : "Credits",
           "type" : "TextRenderer"
         }
@@ -265,6 +272,7 @@
           "meshdrawmode" : 3,
           "renderlayer" : 500,
           "rendermode" : 1,
+          "screenspace" : false,
           "type" : "SpriteRenderer"
         },
         {
@@ -300,6 +308,7 @@
             1.0
           ],
           "renderlayer" : 500,
+          "screenspace" : false,
           "text" : "Quit",
           "type" : "TextRenderer"
         }
@@ -340,8 +349,8 @@
           "isBurst" : false,
           "lifetime" : 
           [
-            5.0,
-            5.0
+            3.0,
+            3.0
           ],
           "radius" : 
           [
@@ -368,15 +377,16 @@
           "spawnShape" : 3,
           "speed" : 
           [
-            500.0,
-            500.0
+            1000.0,
+            1000.0
           ],
           "spread" : 
           [
             0.0,
             0.0
           ],
-          "time" : 5.0,
+          "time" : 1.5,
+          "timescale" : false,
           "type" : "ParticleEmitter"
         }
       ],
@@ -416,8 +426,8 @@
           "isBurst" : false,
           "lifetime" : 
           [
-            5.0,
-            5.0
+            3.0,
+            3.0
           ],
           "radius" : 
           [
@@ -444,8 +454,8 @@
           "spawnShape" : 3,
           "speed" : 
           [
-            500.0,
-            500.0
+            1000.0,
+            1000.0
           ],
           "spread" : 
           [
@@ -453,6 +463,7 @@
             0.0
           ],
           "time" : 0.0,
+          "timescale" : false,
           "type" : "ParticleEmitter"
         }
       ],

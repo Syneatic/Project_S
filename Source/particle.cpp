@@ -58,8 +58,8 @@ namespace ParticleSystem
 					);
 
 			//update pos
-			g_pool.pos[i].x += g_pool.vel[i].x * EngineCTX::dt;
-			g_pool.pos[i].y += g_pool.vel[i].y * EngineCTX::dt;
+			g_pool.pos[i].x += g_pool.vel[i].x * (g_pool.timeScale[i] ? EngineCTX::dt : EngineCTX::unscaledDt);
+			g_pool.pos[i].y += g_pool.vel[i].y * (g_pool.timeScale[i] ? EngineCTX::dt : EngineCTX::unscaledDt);
 		}
 		//Debug::Log("Active Particles : ", activeParticles," FPS : ", EngineCTX::frameRate);
 
@@ -95,8 +95,8 @@ namespace ParticleSystem
 	}
 
 	void Emit(float2 pos, float2 vel, float time, float life,
-		Color col, bool shouldCollide,
-		FN behaviour, float size, float rotation, Graphics::RenderLayer layer, float sortOrder)
+		Color col, bool shouldCollide, FN behaviour, float size, float rotation, 
+		Graphics::RenderLayer layer, float sortOrder, bool timeScale)
 	{
 		if (g_pool.freeStackTop < 0) return; // Pool is full
 
@@ -104,6 +104,7 @@ namespace ParticleSystem
 
 		g_pool.pos[index]      = pos;
 		g_pool.vel[index]      = vel;
+		g_pool.timeScale[index]= timeScale;
 		g_pool.time[index]     = time;
 		g_pool.lifetime[index] = life;
 		g_pool.color[index]    = col;
@@ -116,6 +117,30 @@ namespace ParticleSystem
 
 		g_pool.layer[index] = layer;
 		g_pool.sortOrder[index] = sortOrder + (static_cast<f32>(index) * 0.001f);
+	}
+
+	// Overload to pass a builder object by reference to create a pool.
+	void Emit(PoolBuilder const& pb)
+	{
+		if (g_pool.freeStackTop < 0) return; // Pool is full
+
+		int index = g_pool.freeStack[g_pool.freeStackTop--];
+
+		g_pool.pos[index] = pb.pos;
+		g_pool.vel[index] = pb.vel;
+		g_pool.timeScale[index] = pb.timescale;
+		g_pool.time[index] = pb.time;
+		g_pool.lifetime[index] = pb.life;
+		g_pool.color[index] = pb.col;
+		g_pool.active[index] = true;
+		g_pool.size[index] = pb.size;
+		g_pool.rotation[index] = pb.rotation;
+
+		g_pool.collide[index] = pb.shouldCollide;
+		g_pool.behaviour[index] = pb.behaviour;
+
+		g_pool.layer[index] = pb.layer;
+		g_pool.sortOrder[index] = pb.sortOrder + (static_cast<f32>(index) * 0.001f);
 	}
 
 	void Flush()

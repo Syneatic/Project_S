@@ -7,22 +7,12 @@
 
 namespace LevelTransition
 {
-	// Container for event subscribers.
-	std::vector<EventHandler::SubscriptionHandle> handlers;
 	// Global state for level transition.
 	TransitionState tState{}; 
 	// Float for transition timer.
 	f32 timerFin{}, timerFout{};
 	// Container for pointers to game objects with particle emitters used for transiton effect.
 	GameObject *fadeIn{ nullptr }, *fadeOut{ nullptr };
-
-	bool timerActive = false;
-
-	// Function to subscribe to LevelTransitionEvent.
-	void SubscribeTransition(TransitionState state, std::function<void(const LevelTransitionEvent&)> func)
-	{
-		handlers.push_back(EventHandler::SubscribeFilter(&LevelTransitionEvent::tState, state, func));
-	}
 
 	// Helper function to determine the scene to load for level transition.
 	std::string SceneToSwitch()
@@ -52,58 +42,55 @@ namespace LevelTransition
 	{
 		if (tState == TransitionState::TRANSITION_NULL)
 		{
-			tState = TransitionState::TRANSITION_FADEIN;
-			timerFin = tFin;
-			if (fadeIn) 
+			if (fadeIn)
 				fadeIn->active(true);
-			inTransition = !inTransition;
-			timerActive = true;
+			timerFin = tFin;
+			inTransition = true;
+			EngineCTX::PauseTime();
+			tState = TransitionState::TRANSITION_FADEIN;
 		}
 	}
 
+	// Run this function if tstate in TRANSITION_FADEOUT.
+	void FadeOutTimer()
+	{
+		if (timerFout == 0.f)
+		{
+			if (fadeIn)
+				fadeIn->active(false);
+			if (fadeOut)
+				fadeOut->active(false);
+			const auto* emitter = fadeOut->GetComponent<ParticleEmitter>();
+			timerFout = AEGfxGetWindowWidth() / emitter->speed.x;
+		}
+
+		timerFout -= EngineCTX::unscaledDt;
+		if (timerFout <= 0.f)
+		{
+			inTransition = false;
+			EngineCTX::PauseTime();
+			tState = TransitionState::TRANSITION_NULL;
+		}
+	}
+
+	// Run this function if tstate in TRANSITION_FADEIN.
+	void FadeInTimer()
+	{
+		timerFin -= EngineCTX::unscaledDt;
+		if (timerFin <= 0.f)
+		{
+			timerFout = 0.f;
+			tState = TransitionState::TRANSITION_FADEOUT;
+			SceneManager::RequestSceneSwitch(SceneToSwitch());
+		}
+	}
 
 	void Update()
 	{
 		if (tState == TransitionState::TRANSITION_FADEOUT)
-		{
-			if (timerFout == 0.f)
-			{
-				if (fadeIn)
-					fadeIn->active(false);
-				if (fadeOut)
-					fadeOut->active(false);
-				const auto* emitter = fadeOut->GetComponent<ParticleEmitter>();
-				timerFout = AEGfxGetWindowWidth() / emitter->speed.x;
-			}
-
-			timerFout -= EngineCTX::dt;
-			if (timerFout <= 0.f)
-			{
-				inTransition = !inTransition;
-				tState = TransitionState::TRANSITION_NULL;
-			}
-		}
-
+			FadeOutTimer();
+		
 		if (tState == TransitionState::TRANSITION_FADEIN)
-		{
-			timerFin -= EngineCTX::dt;
-			if (timerFin <= 0.f)
-			{
-				const std::string& sceneToSwitch{ SceneToSwitch() };
-				timerFout = 0.f;
-				tState = TransitionState::TRANSITION_FADEOUT;
-				SceneManager::RequestSceneSwitch(sceneToSwitch);
-			}
-		}
-	}
-
-	// Add unsub for when there is a scene restart here.
-	void UnsubscribeTransitions()
-	{
-		for (auto& sh: handlers)
-		{
-			EventHandler::Unsubscribe(sh);
-		}
-		handlers.clear();
+			FadeInTimer();
 	}
 }

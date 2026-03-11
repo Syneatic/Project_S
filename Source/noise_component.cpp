@@ -34,8 +34,12 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 
 		float2 burstVel = normalize(refl + noise) * speed;
 
-		ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), burstVel, 0.f,
-				lifetime * 0.85f, col, true, Collision);
+		ParticleSystem::Emit({ hit.point + (hit.normal * 0.01f), burstVel, 0.f,
+			lifetime * 0.85f, col, true, Collision });
+
+		/*if (burstLimit > 0)
+			ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), burstVel, 0.f,
+				lifetime * 0.85f, col, true, burstLimit / 2, Collision);*/
 
 		//current particle becomes stationary
 		pos = hit.point;
@@ -105,7 +109,8 @@ void NoiseSource::Emit()
 		currentAngle += Random::RandFloat(-(angleStep/1.5f), angleStep/1.5f);
 		float2 velocity = { cosf(currentAngle) , sinf(currentAngle) };
 		velocity = normalize(velocity) * speed;
-		ParticleSystem::Emit(_transform.position, velocity,0.f, lifetime, color, true,Collision);
+		//ParticleSystem::Emit(_transform.position, velocity,0.f, lifetime, color, true,Collision);
+		ParticleSystem::Emit({ _transform.position, velocity,0.f, lifetime, color, true, Collision});
 	}
 
 	if (audioEmitter) audioEmitter->Play();
@@ -121,7 +126,7 @@ void NoiseSource::Emit(const float2& emitPos)
 		currentAngle += Random::RandFloat(-(angleStep / 1.5f), angleStep / 1.5f);
 		float2 velocity = { cosf(currentAngle) , sinf(currentAngle) };
 		velocity = normalize(velocity) * speed;
-		ParticleSystem::Emit(emitPos, velocity, 0.f, lifetime, color, true, Collision);
+		ParticleSystem::Emit({ emitPos, velocity, 0.f, lifetime, color, true, Collision });
 	}
 
 	if (audioEmitter) audioEmitter->Play();

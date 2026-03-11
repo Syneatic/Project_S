@@ -20,10 +20,10 @@ namespace UISystem
     // Subscribe each button function as an event to event handler.
     void init()
     {
-        SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&) { LevelTransition::RequestTransition();/*SceneManager::RequestSceneSwitch("TestScene");*/ });
+        SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&) { LevelTransition::RequestTransition(); });
         SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent&) { EngineCTX::PauseTime(); });
         SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent&) { SceneManager::RequestSceneReload(); });
-        SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent&) { LevelTransition::RequestTransition();/*SceneManager::RequestSceneSwitch("MainMenu");*/ });
+        SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent&) { LevelTransition::RequestTransition(); });
         SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent&) { EngineCTX::applicationRunning = false; });
     }
 
@@ -39,6 +39,9 @@ namespace UISystem
 
     void Hover_Logic(GameObject& button)
     {
+        if (LevelTransition::inTransition)
+            return;
+
         Transform& t = button.transform();
         SpriteRenderer* r = button.GetComponent<SpriteRenderer>();
         if (checkBounds(t))
@@ -62,6 +65,7 @@ namespace UISystem
                 // Get Button component & use enum key to raise UIButtonEvent on EventHandler. 
                 Button* b = button.GetComponent<Button>();
                 EventHandler::RaiseEvent<UIButtonEvent>(b->fKey);
+                r->color.r = r->color.g = r->color.b = r->color.a;
             }
         }
         // set button rgba to default.

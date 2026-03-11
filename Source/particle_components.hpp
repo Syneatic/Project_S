@@ -25,6 +25,7 @@ public:
 	bool isBurst = false; //one time emit
 
 	float time{ 0.f };
+	bool timeScale{ false };
 	float2 speed{ 150.f,250.f };
 	float2 lifetime{ 1.f,3.f };
 	float2 size{ 3.f,8.f };
