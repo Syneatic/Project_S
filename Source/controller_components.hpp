@@ -18,6 +18,7 @@ class PlayerController : public Controller
 {
 private:
     bool _isGrounded = false;
+    float2 spawnPoint{ 0.f, 0.f };
 
 public:
     f32 maxSpeed = 150.f;
@@ -30,7 +31,6 @@ public:
     f32 echoDistanceThreshold{ 120.f };
     f32 distanceAccumulated{ 0.0f };
 
-    float2 spawnPoint {0.f, 0.f};
     float2 moveStartPos{};
 
     bool ignoreProjectileCollision{ false };
@@ -53,6 +53,10 @@ public:
     void HandleTrigger(const OnTriggerEvent& e);
     void SaveSpawn(const float2& pos);
     void Respawn();
+
+    float2 GetSpawnPoint() const { return spawnPoint; }
+    float2 GetCurrentPosition() const { return _transform.position; }
+    void SetSpawnPoint(const float2& pos) { spawnPoint = pos; }
 
     const std::string name() const override { return "PlayerController"; }
 

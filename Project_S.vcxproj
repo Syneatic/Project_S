@@ -92,6 +92,7 @@
       <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ForcedIncludeFiles>
     </ClCompile>
+    <ClCompile Include="Source\save_game.cpp" />
     <ClCompile Include="Source\audio.cpp" />
     <ClCompile Include="Source\audio_components.cpp" />
     <ClCompile Include="Source\base_components .cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Extern\jsoncpp\include\version.h" />
     <ClInclude Include="Extern\jsoncpp\include\writer.h" />
     <ClInclude Include="Extern\jsoncpp\src\json_tool.h" />
+    <ClInclude Include="Source\save_game.hpp" />
     <ClInclude Include="Source\audio.hpp" />
     <ClInclude Include="Source\audio_components.hpp" />
     <ClInclude Include="Source\camera.hpp" />

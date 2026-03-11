@@ -9,6 +9,7 @@
 #include "level_transition.hpp"
 
 #include "components.hpp"
+#include "save_game.hpp"
 
 float accumulator{ 0 };
 
@@ -51,6 +52,33 @@ void Scene::OnEnter()
 
 	Physics::Initialize();
 
+	SaveGameManager::SaveData data;
+
+	if (SaveGameManager::Load(_name, data))
+	{
+		Debug::Log("Save file name: ", _name);
+		if (auto* player = FindGameObjectByName("Player"))
+		{
+			player->transform().position = data.playerPosition;
+
+			if (auto* pc = player->GetComponent<PlayerController>())
+			{
+				pc->SetSpawnPoint(data.spawnPoint);
+			}
+
+			Debug::Log("Player Current Position Loaded");
+		}
+	}
+
+	bool loaded = SaveGameManager::Load(_name, data);
+	Debug::Log("Scene name:", _name);
+	Debug::Log("Load returned", loaded);
+
+	if (loaded)
+	{
+		Debug::Log("Loaded Player", data.playerPosition, '\n');
+	}
+
 	UISystem::init();
 	LevelTransition::Init();
 	CameraSystem::OnStart(); //reset camera
@@ -90,6 +118,19 @@ void Scene::OnUpdate()
 
 void Scene::OnExit()
 {
+	if (auto* player = FindGameObjectByName("Player"))
+	{
+		SaveGameManager::SaveData data;
+		data.sceneName = _name;
+		data.playerPosition = player->transform().position;
+
+		if (auto* pc = player->GetComponent<PlayerController>())
+		{
+			data.spawnPoint = pc->GetSpawnPoint();
+		}
+		SaveGameManager::Save(data);
+	}
+
 	for (auto& pgo : _gameObjectList)
 	{
 		auto go = pgo.get();

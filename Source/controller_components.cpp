@@ -5,7 +5,7 @@
 #include "scene.hpp"
 #include "physics.hpp"
 #include "physics_types.hpp"
-
+#include "save_game.hpp"
 
 //===================|Player Controller|===================
 void PlayerController::DrawInInspector()
@@ -184,7 +184,9 @@ void PlayerController::OnUpdate()
 
 void PlayerController::OnDestroy()
 {
-
+    SaveGameManager::SaveData savingData;
+    savingData.playerPosition = _owner.worldTransform().position;
+    savingData.spawnPoint = spawnPoint;
 }
 
 void PlayerController::Respawn()
