@@ -30,7 +30,7 @@ namespace UISystem
     static bool checkBounds(Transform const& t)
     {
         s32 mX{}, mY{}; AEInputGetCursorPosition(&mX, &mY);
-        float2 mouseWorld = CameraSystem::ScreenToWorld(float2(mX, mY));
+        float2 mouseWorld = { mX - AEGfxGetWindowWidth() / 2.f, -(mY - AEGfxGetWindowHeight() / 2.f) };
         float2 buttonBounds{ t.position.x - t.scale.x / 2.f, t.position.y - t.scale.y / 2.f };
         bool checkX{ mouseWorld.x > buttonBounds.x && mouseWorld.x < buttonBounds.x + t.scale.x };
         bool checkY{ mouseWorld.y > buttonBounds.y && mouseWorld.y < buttonBounds.y + t.scale.y };

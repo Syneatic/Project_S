@@ -54,7 +54,8 @@ namespace ParticleSystem
 					g_pool.time[i],
 					g_pool.lifetime[i], 
 					g_pool.color[i], 
-					g_pool.collide[i]
+					g_pool.collide[i],
+					g_pool.layerMask[i]
 					);
 
 			//update pos
@@ -96,7 +97,7 @@ namespace ParticleSystem
 
 	void Emit(float2 pos, float2 vel, float time, float life,
 		Color col, bool shouldCollide, FN behaviour, float size, float rotation, 
-		Graphics::RenderLayer layer, float sortOrder, bool timeScale)
+		Graphics::RenderLayer layer, float sortOrder, bool timeScale, u32 layerMask)
 	{
 		if (g_pool.freeStackTop < 0) return; // Pool is full
 
@@ -114,6 +115,8 @@ namespace ParticleSystem
 
 		g_pool.collide[index]        = shouldCollide;
 		g_pool.behaviour[index]      = behaviour;
+
+		g_pool.layerMask[index]		 = layerMask;
 
 		g_pool.layer[index] = layer;
 		g_pool.sortOrder[index] = sortOrder + (static_cast<f32>(index) * 0.001f);
@@ -138,6 +141,8 @@ namespace ParticleSystem
 
 		g_pool.collide[index] = pb.shouldCollide;
 		g_pool.behaviour[index] = pb.behaviour;
+		
+		g_pool.layerMask[index] = pb.layerMask;
 
 		g_pool.layer[index] = pb.layer;
 		g_pool.sortOrder[index] = pb.sortOrder + (static_cast<f32>(index) * 0.001f);

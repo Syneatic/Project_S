@@ -36,6 +36,9 @@ public:
 	{
 		UpdateWorldTransform();
 
+		if (!_active)
+			return;
+
 		for (auto& [type, comp] : _componentMap)
 		{
 			if(comp.get()->active())

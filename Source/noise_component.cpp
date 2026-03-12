@@ -7,12 +7,12 @@
 #include "physics_types.hpp"
 
 
-void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide)
+void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, u32 layerMask)
 {
 	if (!shouldCollide) return;
 
 	f32 dt = static_cast<f32>(EngineCTX::dt);
-	uint32_t mask = (1 << 1) | (1 << 2);
+	//uint32_t mask = (1 << 1) | (1 << 2);
 
 	float speed = length(vel);
 	if (speed < 0.001f) return;
@@ -25,7 +25,7 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 	sweepDist = std::min(sweepDist, MAX_SWEEP);
 
 	RaycastHit hit;
-	if (Physics::Raycast(pos, dir, sweepDist, hit, mask))
+	if (Physics::Raycast(pos, dir, sweepDist, hit, layerMask))
 	{
 		//reflect particle
 		float2 refl = reflect(dir, hit.normal);
@@ -34,8 +34,23 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 
 		float2 burstVel = normalize(refl + noise) * speed;
 
-		ParticleSystem::Emit({ hit.point + (hit.normal * 0.01f), burstVel, 0.f,
-			lifetime * 0.85f, col, true, Collision });
+		ParticleSystem::PoolBuilder poolParticle {};
+
+		poolParticle.pos = hit.point + (hit.normal * 0.01f);
+		poolParticle.vel = burstVel;
+		poolParticle.time = 0.f;
+		poolParticle.life = lifetime * 0.85f;
+		poolParticle.shouldCollide = true;
+		poolParticle.col = col;
+		poolParticle.behaviour = Collision;
+		poolParticle.size = 5.f;
+		poolParticle.rotation = 0.f;
+		poolParticle.layer = Graphics::RenderLayer::DEFAULT;
+		poolParticle.sortOrder = 0.f;
+		poolParticle.timescale = true;
+		poolParticle.layerMask = layerMask;
+
+		ParticleSystem::Emit(poolParticle);
 
 		/*if (burstLimit > 0)
 			ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), burstVel, 0.f,
@@ -110,7 +125,7 @@ void NoiseSource::Emit()
 		float2 velocity = { cosf(currentAngle) , sinf(currentAngle) };
 		velocity = normalize(velocity) * speed;
 		//ParticleSystem::Emit(_transform.position, velocity,0.f, lifetime, color, true,Collision);
-		ParticleSystem::Emit({ _transform.position, velocity,0.f, lifetime, color, true, Collision});
+		ParticleSystem::Emit({ _transform.position, velocity,0.f, lifetime, color, true, Collision, 0.5, 0.f, Graphics::RenderLayer::DEFAULT, 0.f, true, layerMask});
 	}
 
 	if (audioEmitter) audioEmitter->Play();
@@ -126,7 +141,7 @@ void NoiseSource::Emit(const float2& emitPos)
 		currentAngle += Random::RandFloat(-(angleStep / 1.5f), angleStep / 1.5f);
 		float2 velocity = { cosf(currentAngle) , sinf(currentAngle) };
 		velocity = normalize(velocity) * speed;
-		ParticleSystem::Emit({ emitPos, velocity, 0.f, lifetime, color, true, Collision });
+		ParticleSystem::Emit({ emitPos, velocity, 0.f, lifetime, color, true, Collision, 0.5, 0.f, Graphics::RenderLayer::DEFAULT, 0.f, true, layerMask });
 	}
 
 	if (audioEmitter) audioEmitter->Play();
@@ -163,6 +178,39 @@ void NoiseSource::DrawInInspector()
 	ImGui::ColorEdit4("##emitter_color", c);
 	color = Color(c);
 
+	const std::array<const char*, 6> layerNames[] =
+	{
+		"Nothing",
+		"Player",
+		"Environment",
+		"Enemy",
+		"Projectile",
+		"CheckPoint"
+	};
+
+	ImGui::TextUnformatted("Layer Mask");
+	if (ImGui::BeginCombo("##layerMask", "Layer Mask"))
+	{
+		for (int i = 0; i < layerNames->size(); i++)
+		{
+			u32 bit = (i == 0) ? 0u : (1u << (i - 1));
+			bool selected = (i == 0) ? (layerMask == 0) : (layerMask & bit) != 0;
+
+			if (ImGui::Selectable(layerNames->data()[i], selected, ImGuiSelectableFlags_NoAutoClosePopups))
+			{
+				if (i == 0)
+					layerMask = 0;
+				else
+					layerMask ^= bit;
+			}
+
+			if (selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+
+
 	ImGui::SeparatorText("Noise Properties");
 
 	ImGui::TextUnformatted("Is Noise Active");
@@ -190,6 +238,8 @@ void NoiseSource::Serialize(Json::Value& outComp) const
 	outComp["noiseLevel"] = noiseLevel;
 	outComp["repeat"] = repeat;
 	outComp["repeatInterval"] = repeatInterval;
+
+	outComp["layerMask"] = layerMask;
 }
 
 void NoiseSource::Deserialize(const Json::Value& compObj)
@@ -216,6 +266,8 @@ void NoiseSource::Deserialize(const Json::Value& compObj)
 	if (compObj.isMember("repeatInterval") && compObj["repeatInterval"].isNumeric())
 		repeatInterval = compObj["repeatInterval"].asFloat();
 
+	if (compObj.isMember("layerMask")) 
+		layerMask = compObj["layerMask"].asUInt();
 }
 
 void NoiseSource::CopyFrom(Component* src)
@@ -234,6 +286,7 @@ void NoiseSource::CopyFrom(Component* src)
 	repeat = s->repeat;
 	repeatInterval = s->repeatInterval;
 	repeatTimer = s->repeatTimer;
+	layerMask = s->layerMask;
 }
 
 std::unique_ptr<Component> NoiseSource::Clone(GameObject& go)

@@ -1,5 +1,6 @@
 #include "camera.hpp"
 #include "gameobject.hpp"
+#include "math.hpp"
 #include "controller_components.hpp"
 #include "scene.hpp"
 #include "physics.hpp"
@@ -48,7 +49,6 @@ void PlayerController::OnStart()
     rb = _owner.GetComponent<RigidBody>();
     noiseSource = _owner.GetComponent<NoiseSource>();
     rockObject = SceneManager::ActiveScene()->FindGameObjectByName("Rock");
-    spawnPoint = _transform.position;
 
     _owner.Subscribe<OnCollisionEvent>(
         &OnCollisionEvent::self,
@@ -373,7 +373,8 @@ void EnemyController::DrawInInspector()
     case EnemyType::Static:
         break;
     case EnemyType::Drop:
-        ImGui::DragFloat("Detect Distance", &detectDistance, 10.f);
+        ImGui::DragFloat("Detect Distance", &detectDistance, 300.f);
+        ImGui::DragFloat("X Axis Range of Player", &rangeDistance, 100.f);
         ImGui::DragFloat("Time Interval", &groundEmitInterval, 1.5f);
         break;
 
@@ -396,6 +397,7 @@ void EnemyController::Serialize(Json::Value& outComp) const
     {
     case EnemyType::Drop:
         outComp["detectDistance"] = detectDistance;
+        outComp["range_x"] = rangeDistance;
         outComp["groundEmitInterval"] = groundEmitInterval;
         break;
 
@@ -421,6 +423,7 @@ void EnemyController::Deserialize(const Json::Value& compObj)
     {
     case EnemyType::Drop:
         if (compObj.isMember("detectDistance")) detectDistance = compObj["detectDistance"].asFloat();
+        if (compObj.isMember("range_x")) rangeDistance = compObj["range_x"].asFloat();
         break;
 
     case EnemyType::Patrol:
@@ -438,7 +441,6 @@ void EnemyController::OnStart()
     rb = _owner.GetComponent<RigidBody>();
     ns = _owner.GetComponent<NoiseSource>();
 
-    rb = _owner.GetComponent<RigidBody>();
     playerObject = SceneManager::ActiveScene()->FindGameObjectByName("Player");
 
     if (type == EnemyType::Drop)
@@ -494,7 +496,9 @@ void EnemyController::UpdateDrop() {
     f32 xDist = absf(playerObject->transform().position.x - _transform.position.x);
     f32 yDist = _transform.position.y - playerObject->transform().position.y;
 
-    if (xDist <= 50.f && yDist > 0 && yDist <= 100.f) {
+    if (xDist <= rangeDistance && yDist > 0 && yDist <= detectDistance) {
+        if (hasDropped == false) 
+            if (ns) ns->Emit(_transform.position);
         rb->useGravity = true;
         hasDropped = true;
     }
@@ -547,12 +551,6 @@ void EnemyController::UpdatePatrol() {
 
     if (!groundAhead)
     {
-        if (!wasNearEdge && groundEmitTimer >= groundEmitInterval)
-        {
-            groundEmitTimer = 0.f;
-            if (ns) ns->Emit(_transform.position);
-        }
-
         wasNearEdge = true;
         patrolDir *= -1;
         return;
@@ -562,10 +560,14 @@ void EnemyController::UpdatePatrol() {
         wasNearEdge = false;
     }
 
-    //f32 distance = _transform.position.x - startPos.x;
-
-    //if (distance > patrolRange) patrolDir = -1;
-    //if (distance < -patrolRange) patrolDir = 1;
+    if (!wasNearEdge && groundEmitTimer >= groundEmitInterval)
+    {
+        groundEmitTimer = 0.f;
+        if (ns) {
+            ns->Emit(_owner.worldTransform().position); 
+            
+        }
+    }
 
     rb->velocity.x = patrolDir * moveSpeed;
 }
