@@ -2,6 +2,7 @@
 #include "enginectx.hpp"
 #include "scene.hpp"
 #include "scene_manager.hpp"
+#include "particle.hpp"
 #include "eventhandler.hpp"
 #include "gameobject.hpp"
 
@@ -58,10 +59,14 @@ namespace LevelTransition
 		{
 			if (fadeIn)
 				fadeIn->active(false);
+
 			if (fadeOut)
+			{
 				fadeOut->active(false);
-			const auto* emitter = fadeOut->GetComponent<ParticleEmitter>();
-			timerFout = AEGfxGetWindowWidth() / emitter->speed.x;
+				auto* emitter = fadeOut->GetComponent<ParticleEmitter>();
+				timerFout = AEGfxGetWindowWidth() / emitter->speed.x;
+				ParticleSystem::Render();
+			}
 		}
 
 		timerFout -= EngineCTX::unscaledDt;
