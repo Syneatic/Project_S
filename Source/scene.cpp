@@ -99,6 +99,7 @@ void Scene::OnUpdate()
 			ParticleSystem::Update();
 			ParticleSystem::Render();
 		}
+
 		EventHandler::CallQ();
 		Graphics::Execute();
 	}

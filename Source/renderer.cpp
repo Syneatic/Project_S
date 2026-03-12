@@ -21,21 +21,6 @@ namespace Graphics
         PrimitiveType type;
         std::string text; //if using text renderer
 
-        //sorting operator
-        //bool operator<(const RenderCommand& other) const 
-        //{
-        //    //primary layer sort
-        //    if (data.layer != other.data.layer)
-        //        return data.layer < other.data.layer;
-
-        //    //secondary sort with same layer
-        //    if (data.sortOrder != other.data.sortOrder)
-        //        return data.sortOrder < other.data.sortOrder;
-
-        //    //sort by texture, prevents additional texture set calls
-        //    return data.texture < other.data.texture;
-        //}
-
         bool operator<(const RenderCommand& other) const
         {
             return data.sortKey < other.data.sortKey;
