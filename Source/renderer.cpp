@@ -219,6 +219,7 @@ namespace Graphics
         
         void RadixSort(std::vector<RenderCommand>& buf) 
         {
+            PROFILE_SCOPE(__func__);
             const size_t n = buf.size();
             if (n < 2) return;
 
@@ -509,7 +510,8 @@ namespace Graphics
 
         //sort the commands
         //swaps algorithm based off buffer size
-        {      
+        {   
+            PROFILE_SCOPE("Sort");
             if (_commandBuffer.size() < 1500)
                 std::sort(_commandBuffer.begin(), _commandBuffer.end());
             else    
@@ -522,6 +524,7 @@ namespace Graphics
 
         //dispatch commands
         {
+            PROFILE_SCOPE("Dispatch");
 			//Debug::ScopedTimer t("render:draw");
             for (const auto& cmd : _commandBuffer) 
             {

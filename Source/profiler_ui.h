@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Profiler.h"
-
+#include "profiler.h"
 
 // ─────────────────────────────────────────────
 //  ProfilerUI
@@ -28,10 +27,37 @@ public:
         {
             bool paused = prof.IsPaused();
             if (ImGui::MenuItem(paused ? "Resume" : "Pause"))
-                prof.SetPaused(!paused);
+            {
+                bool nowPaused = !paused;
+                prof.SetPaused(nowPaused);
+                if (nowPaused)
+                {
+                    // Snap to whatever frame is currently shown
+                    const auto& fs = prof.Frames();
+                    m_pausedAtFrame = m_selectedFrame >= 0 && m_selectedFrame < (int)fs.size()
+                                        ? m_selectedFrame
+                                        : (int)fs.size() - 1;
+                    m_selectedFrame = m_pausedAtFrame;
+                }
+                else
+                {
+                    // Resume — stop pinning
+                    m_pausedAtFrame = -1;
+                    m_selectedFrame = -1;
+                }
+            }
 
             if (ImGui::MenuItem("Clear"))
+            {
                 m_selectedFrame = -1;
+                m_pausedAtFrame = -1;
+            }
+
+            if (prof.IsPaused())
+            {
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.2f, 1.0f), "PAUSED");
+            }
 
             ImGui::EndMenuBar();
         }
@@ -49,10 +75,15 @@ public:
 
         ImGui::Separator();
 
-        // Resolve which frame to display
+        // Resolve which frame to display.
+        // While paused: pin to m_pausedAtFrame unless the user explicitly
+        // clicks a different bar in the frame selector.
         int displayIdx = m_selectedFrame;
         if (displayIdx < 0 || displayIdx >= (int)frames.size())
+        {
+            // Not paused and nothing selected — follow the latest frame
             displayIdx = (int)frames.size() - 1;
+        }
         const FrameData& fd = frames[displayIdx];
 
         // ── Tabs ─────────────────────────────────────────────────────
@@ -81,6 +112,7 @@ public:
 
 private:
     int   m_selectedFrame  = -1;
+    int   m_pausedAtFrame  = -1;     // frame index snapped at pause time
     float m_timelineZoom   = 1.0f;   // ms per pixel scale
     float m_timelineScroll = 0.0f;
 
@@ -335,9 +367,25 @@ private:
         bool open = ImGui::TreeNodeEx(node.name.c_str(), flags);
 
         ImGui::NextColumn();
-        ImGui::Text("%.3f ms", node.totalMs);  ImGui::NextColumn();
+        // Total ms + per-call average when called multiple times
+        if (node.callCount > 1)
+        {
+            ImGui::Text("%.3f ms", node.totalMs);
+            ImGui::SameLine();
+            ImGui::TextDisabled("(%.3f avg)", node.totalMs / node.callCount);
+        }
+        else
+        {
+            ImGui::Text("%.3f ms", node.totalMs);
+        }
+        ImGui::NextColumn();
         ImGui::Text("%.3f ms", node.selfMs);   ImGui::NextColumn();
-        ImGui::Text("%d",      node.callCount); ImGui::NextColumn();
+        // Color the call count orange if > 1 to draw attention
+        if (node.callCount > 1)
+            ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.2f, 1.0f), "%d", node.callCount);
+        else
+            ImGui::Text("%d", node.callCount);
+        ImGui::NextColumn();
 
         if (open && !node.children.empty())
         {
@@ -351,7 +399,7 @@ private:
     // Samples are ordered by start time; depth encodes nesting.
     std::vector<TreeNode> BuildTree(const std::vector<ProfileSample>& samples)
     {
-        // Sort by start time
+        // Sort by start time so parents always precede their children
         std::vector<const ProfileSample*> sorted;
         sorted.reserve(samples.size());
         for (auto& s : samples) sorted.push_back(&s);
@@ -359,7 +407,7 @@ private:
             [](const ProfileSample* a, const ProfileSample* b)
             { return a->startMs < b->startMs; });
 
-        // Use a stack to reconstruct nesting
+        // Build an unmerged tree using a depth stack
         std::vector<TreeNode*> stack;
         std::vector<TreeNode>  roots;
 
@@ -370,8 +418,8 @@ private:
             node.totalMs   = sp->durationMs;
             node.callCount = 1;
 
-            // Pop stack to correct depth parent
-            while (!stack.empty() && stack.size() > (size_t)sp->depth)
+            // Pop back to the correct parent depth
+            while (!stack.empty() && (int)stack.size() > sp->depth)
                 stack.pop_back();
 
             if (stack.empty())
@@ -387,9 +435,45 @@ private:
             }
         }
 
-        // Compute self time (total - sum of children)
+        // Merge repeated same-named siblings (fixed-timestep physics calls etc.)
+        MergeSiblings(roots);
         ComputeSelfTime(roots);
         return roots;
+    }
+
+    // Merges sibling nodes that share the same name into one aggregated node.
+    // totalMs and callCount are accumulated; children lists are concatenated
+    // then recursively merged, so sub-scopes inside each Physics tick are
+    // also correctly aggregated (e.g. Broadphase x3, NarrowPhase x3).
+    void MergeSiblings(std::vector<TreeNode>& nodes)
+    {
+        std::vector<TreeNode> merged;
+        merged.reserve(nodes.size());
+
+        for (auto& node : nodes)
+        {
+            TreeNode* existing = nullptr;
+            for (auto& m : merged)
+                if (m.name == node.name) { existing = &m; break; }
+
+            if (existing)
+            {
+                existing->totalMs   += node.totalMs;
+                existing->callCount += node.callCount;
+                for (auto& child : node.children)
+                    existing->children.push_back(std::move(child));
+            }
+            else
+            {
+                merged.push_back(std::move(node));
+            }
+        }
+
+        nodes = std::move(merged);
+
+        // Recurse so children are merged too
+        for (auto& n : nodes)
+            MergeSiblings(n.children);
     }
 
     void ComputeSelfTime(std::vector<TreeNode>& nodes)

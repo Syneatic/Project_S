@@ -70,15 +70,19 @@ void Scene::OnUpdate()
 		AEGfxSetBackgroundColor(0.f,0.f,0.f);
 		LevelTransition::Update();
 
-		for (auto& pgo : _gameObjectList)
 		{
-			auto go = pgo.get();
-			if (!go->active()) continue;
+			PROFILE_SCOPE("Update GameObjects");
+			for (auto& pgo : _gameObjectList)
+			{
+				auto go = pgo.get();
+				if (!go->active()) continue;
 
-			go->OnUpdate();
+				go->OnUpdate();
+			}
+
+			Audio::Update();
 		}
 
-		Audio::Update();
 
 		if (AEInputCheckTriggered(AEVK_P))
 			EngineCTX::PauseTime();
@@ -90,10 +94,13 @@ void Scene::OnUpdate()
 			accumulator -= EngineCTX::fixedDt;
 		}
 
-		ParticleSystem::Update();
+		{
+			PROFILE_SCOPE("Particle");
+			ParticleSystem::Update();
+			ParticleSystem::Render();
+		}
 		EventHandler::CallQ();
 		Graphics::Execute();
-		ParticleSystem::Render();
 	}
 	PROFILE_FRAME_END();
 

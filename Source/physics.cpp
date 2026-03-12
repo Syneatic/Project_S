@@ -281,6 +281,8 @@ namespace
 	//wrapped function steps 
 	void IntegrateMotion(f32 dt)
 	{
+		PROFILE_SCOPE(__func__);
+
 		for (auto rb : _rigidbodies)
 		{
 			//if is an unmoving but want to prevent phasing
@@ -305,6 +307,8 @@ namespace
 
 	void UpdateAABBs()
 	{
+		PROFILE_SCOPE(__func__);
+
 		for (auto col : _colliders)
 		{
 			if (!col) continue;
@@ -329,6 +333,8 @@ namespace
 
 	void BuildSpatialGrid()
 	{
+		PROFILE_SCOPE(__func__);
+
 		//clear grid first
 		ClearGrid(_grid);
 
@@ -359,6 +365,8 @@ namespace
 
 	void GenerateBroadPhasePairs()
 	{
+		PROFILE_SCOPE(__func__);
+
 		_broadphasePairs.clear();
 
 		std::unordered_set<u64, PairHash> seen; //only needs to exist in this scope
@@ -395,6 +403,8 @@ namespace
 
 	void NarrowPhaseCollision()
 	{
+		PROFILE_SCOPE(__func__);
+
 		_manifolds.clear();
 		//iterate through the pairs
 		//we do obb on each
@@ -458,6 +468,8 @@ namespace
 
 	void ResolveCollision()
 	{
+		PROFILE_SCOPE(__func__);
+
 		for (auto& manifold : _manifolds)
 		{
 			Collider* c1 = manifold.c1;
@@ -616,6 +628,8 @@ namespace Physics
 
 	void Step()
 	{
+		PROFILE_SCOPE("Physics");
+
 		//Debug::ScopedTimer timer("Physics");
 		f32 dt = EngineCTX::fixedDt;
 

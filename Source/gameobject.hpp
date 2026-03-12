@@ -34,15 +34,23 @@ public:
 
 	void OnUpdate()
 	{
+		PROFILE_SCOPE(__func__);
+
 		UpdateWorldTransform();
 
 		if (!_active)
 			return;
 
-		for (auto& [type, comp] : _componentMap)
 		{
-			if(comp.get()->active())
-				comp.get()->OnUpdate();
+			PROFILE_SCOPE("Components");
+			for (auto& [type, comp] : _componentMap)
+			{
+				if (comp.get()->active())
+				{
+					PROFILE_SCOPE("OnUpdate");
+					comp.get()->OnUpdate();
+				}
+			}
 		}
 
 		for (auto& child : _children)
