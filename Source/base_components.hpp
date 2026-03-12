@@ -10,6 +10,7 @@ class Component
 protected:
     GameObject& _owner;
     Transform& _transform;
+    Transform& _worldTransform;
     bool _active{ true };
 
 public:
@@ -19,6 +20,8 @@ public:
 
     Transform& transform() { return _transform; }
     const Transform& transform() const { return _transform; }
+    Transform& worldTransform() { return _worldTransform; }
+    const Transform& worldTransform() const { return _worldTransform; }
 
     bool& active() { return _active; }
 	bool active() const { return _active; }
