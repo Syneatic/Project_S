@@ -199,7 +199,7 @@
       <Filter>Source Files\datatypes</Filter>
     </ClCompile>
     <ClCompile Include="Source\save_game.cpp">
-      <Filter>Source Files\systems</Filter>
+      <Filter>Source Files\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -372,7 +372,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\save_game.hpp">
-      <Filter>Header Files\systems</Filter>
+      <Filter>Header Files\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -70,7 +70,7 @@ void EditorScene::RefreshScene()
 void EditorScene::OnEnter()
 {
 	//start on prototype for testing
-	SceneIO::DeserializeScene(loadedScene, "physics_test");
+	SceneIO::DeserializeScene(loadedScene, "Play_Level");
 
 	RefreshScene();
 	ParticleSystem::Initialize();

@@ -31,6 +31,11 @@ public:
     f32 echoDistanceThreshold{ 120.f };
     f32 distanceAccumulated{ 0.0f };
 
+    bool isPinging = false;
+    float pingActiveTimer{};
+    float pingActiveDuration{};
+    float2 lastPingPosition{};
+
     float2 moveStartPos{};
 
     bool ignoreProjectileCollision{ false };
@@ -57,6 +62,8 @@ public:
     float2 GetSpawnPoint() const { return spawnPoint; }
     float2 GetCurrentPosition() const { return _transform.position; }
     void SetSpawnPoint(const float2& pos) { spawnPoint = pos; }
+
+    void TriggerPing(const float2& pos);
 
     const std::string name() const override { return "PlayerController"; }
 
@@ -120,6 +127,12 @@ public:
     float2 startPos{};
     int patrolDir = 1; // 1 = right, -1 = left
 
+    bool heardPlayer = false;
+    float targetX = 0.f;
+    float hearRange = 200.f;
+    float hearHeight = 100.f;
+    float hearMoveSpeed = 120.f;
+
     RigidBody* rb = nullptr;
     NoiseSource* ns = nullptr;
 
@@ -137,6 +150,8 @@ public:
     //Helper Function
     void UpdateDrop();
     void UpdatePatrol();
+    void CheckPlayerSound();
+    void MoveTowardsXPos();
 
     const std::string name() const override { return "EnemyController"; }
     EnemyController(GameObject& go) : Controller(go) {};

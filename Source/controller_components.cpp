@@ -49,7 +49,7 @@ void PlayerController::OnStart()
     rb = _owner.GetComponent<RigidBody>();
     noiseSource = _owner.GetComponent<NoiseSource>();
     rockObject = SceneManager::ActiveScene()->FindGameObjectByName("Rock");
-
+    pingActiveDuration = noiseSource->noiseLevel / 10.f;
     _owner.Subscribe<OnCollisionEvent>(
         &OnCollisionEvent::self,
         &_owner,
@@ -158,10 +158,9 @@ void PlayerController::OnUpdate()
 
     //===================|Echo Mechanic|=====================
 
-    if (AEInputCheckTriggered(AEVK_E)/* && echoTimer >= echoCooldown*/)
+    if (AEInputCheckTriggered(AEVK_E))
     {
-        if (noiseSource)
-            noiseSource->Emit(_transform.position);
+        TriggerPing(_transform.position);
     }
 
     float2 currentPos = _owner.worldTransform().position;
@@ -175,8 +174,15 @@ void PlayerController::OnUpdate()
         {
             distanceAccumulated = 0.f;
 
-            if (noiseSource) noiseSource->Emit(currentPos);
+            TriggerPing(currentPos);
         }
+    }
+
+    if (isPinging)
+    {
+        pingActiveTimer += EngineCTX::dt;
+        if (pingActiveTimer >= pingActiveDuration)
+            isPinging = false;
     }
 
     lastEchoPos = currentPos;
@@ -199,6 +205,16 @@ void PlayerController::SaveSpawn(const float2& pos)
 {
     spawnPoint = pos;
     Debug::Log("Spawn saved at: %f, %f", pos.x, pos.y);
+}
+
+void PlayerController::TriggerPing(const float2& pos)
+{
+    isPinging = true;
+    pingActiveTimer = 0.f;
+    lastPingPosition = _transform.position;
+
+    if (noiseSource)
+        noiseSource->Emit(pos);
 }
 
 void PlayerController::HandleCollision(const OnCollisionEvent& e)
@@ -482,6 +498,13 @@ void EnemyController::OnUpdate()
     default:
         break;
     }
+
+    CheckPlayerSound();
+    if (heardPlayer)
+    {
+        MoveTowardsXPos();
+        return;
+    }
 }
 
 void EnemyController::OnDestroy()
@@ -573,6 +596,40 @@ void EnemyController::UpdatePatrol() {
 
     rb->velocity.x = patrolDir * moveSpeed;
 }
+
+void EnemyController::CheckPlayerSound()
+{
+    if (auto* pc = playerObject->GetComponent<PlayerController>())
+    {
+        if (pc->isPinging)
+        {
+            float2 pingPos = pc->lastPingPosition;
+
+            float2 dist = pingPos - _transform.position;
+
+            if (absf(dist.x) <= hearRange && absf(dist.y) <= hearHeight)
+            {
+                heardPlayer = true;
+                targetX = pingPos.x;
+            }
+        }
+    }
+}
+
+void EnemyController::MoveTowardsXPos()
+{
+    float dx = targetX - _transform.position.x;
+
+    if (absf(dx) < 5.f)
+    {
+        rb->velocity.x = 0.f;
+        heardPlayer = false;
+        return;
+    }
+
+    rb->velocity.x = (dx > 0.f) ? hearMoveSpeed : -hearMoveSpeed;
+}
+
 
 void EnemyController::CopyFrom(Component* src)
 {

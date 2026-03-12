@@ -72,15 +72,6 @@ void Scene::OnEnter()
 		}
 	}
 
-	bool loaded = SaveGameManager::Load(_name, data);
-	Debug::Log("Scene name:", _name);
-	Debug::Log("Load returned", loaded);
-
-	if (loaded)
-	{
-		Debug::Log("Loaded Player", data.playerPosition, '\n');
-	}
-
 	UISystem::init();
 	LevelTransition::Init();
 	CameraSystem::OnStart(); //reset camera
