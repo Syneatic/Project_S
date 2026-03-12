@@ -12,7 +12,7 @@ public:
 	f32 volume{1};		//  0    to 1
 	f32 pitch{1};		//  0.5  to 2
 	bool loop{false};
-	bool spatialize{ false };
+	bool spatialize{ true };
 	bool relativeToListener{ false};
 
 	void OnStart() override;
@@ -21,6 +21,7 @@ public:
 	void SetLoop(bool loop);
 
 	void Play();
+	void Play(sf::Sound clip);
 
 	void DrawInInspector() override;
 	void Serialize(Json::Value& outComp) const override;
