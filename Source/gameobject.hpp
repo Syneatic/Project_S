@@ -84,7 +84,7 @@ public:
 	{
 		PROFILE_SCOPE(__func__);
 
-		//UpdateWorldTransform();
+		UpdateWorldTransform();
 
 		if (!_active)
 			return;
