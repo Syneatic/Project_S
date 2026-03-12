@@ -3,10 +3,17 @@
 // ─────────────────────────────────────────────
 //  Macros
 // ─────────────────────────────────────────────
-#define PROFILE_SCOPE(name)   ProfilerScope _prof_##__LINE__(name)
-#define PROFILE_FUNCTION()    PROFILE_SCOPE(__FUNCTION__)
-#define PROFILE_FRAME_BEGIN() Profiler::Get().BeginFrame()
-#define PROFILE_FRAME_END()   Profiler::Get().EndFrame()
+#ifdef _DEBUG
+#  define PROFILE_SCOPE(name)   ProfilerScope _prof_##__LINE__(name)
+#  define PROFILE_FUNCTION()    PROFILE_SCOPE(__FUNCTION__)
+#  define PROFILE_FRAME_BEGIN() Profiler::Get().BeginFrame()
+#  define PROFILE_FRAME_END()   Profiler::Get().EndFrame()
+#else
+#  define PROFILE_SCOPE(name)   ((void)0)
+#  define PROFILE_FUNCTION()    ((void)0)
+#  define PROFILE_FRAME_BEGIN() ((void)0)
+#  define PROFILE_FRAME_END()   ((void)0)
+#endif
 
 // ─────────────────────────────────────────────
 //  Data structures
