@@ -27,6 +27,8 @@ namespace ParticleSystem
 
 	void Update()
 	{
+		PROFILE_SCOPE(__func__);
+
 		//Debug::ScopedTimer t("p_update");
 		int activeParticles{};
 		
@@ -69,6 +71,7 @@ namespace ParticleSystem
 	void Render() //by pass our wrapper for performance's sake
 	{
 		//Debug::ScopedTimer t("p_render");
+		PROFILE_SCOPE(__func__);
 
 		for (int i = 0; i < MAX_PARTICLES; ++i) 
 		{
@@ -91,7 +94,10 @@ namespace ParticleSystem
 			data.scale = { g_pool.size[i], g_pool.size[i] };
 			data.sortOrder = g_pool.sortOrder[i];
 
-			Graphics::Submit(data, Graphics::PrimitiveType::QUAD);
+			{
+				PROFILE_SCOPE("Submit");
+				Graphics::Submit(data, Graphics::PrimitiveType::QUAD);
+			}
 		}
 	}
 

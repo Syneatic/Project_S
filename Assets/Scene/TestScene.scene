@@ -114,7 +114,7 @@
             1.0
           ],
           "isNoiseActive" : true,
-          "layerMask" : 0,
+          "layerMask" : 22,
           "lifetime" : 4.0,
           "noiseLevel" : 40.0,
           "numParticles" : 128,
@@ -869,7 +869,7 @@
             1.0
           ],
           "isNoiseActive" : true,
-          "layerMask" : 0,
+          "layerMask" : 7,
           "lifetime" : 1.0,
           "noiseLevel" : 10.0,
           "numParticles" : 128,
@@ -914,7 +914,7 @@
             1.0
           ],
           "isNoiseActive" : true,
-          "layerMask" : 0,
+          "layerMask" : 6,
           "lifetime" : 1.0,
           "noiseLevel" : 10.0,
           "numParticles" : 128,
@@ -965,7 +965,7 @@
             1.0
           ],
           "isNoiseActive" : true,
-          "layerMask" : 0,
+          "layerMask" : 22,
           "lifetime" : 1.0,
           "noiseLevel" : 10.0,
           "numParticles" : 256,
