@@ -10,8 +10,10 @@
 #include <cmath>
 #include <cfloat>
 #include <chrono>
+#include <cstdio>
 #include <cstdint>
 #include <cstdlib>
+#include <cstring>
 #include <crtdbg.h>
 #include <deque>
 #include <functional>
@@ -41,7 +43,6 @@
 #include <windows.h>
 
 
-
 //3rd
 #include "IMGUI/imgui.h"
 #include "ImGUI/imgui_impl_opengl3.h"
@@ -62,3 +63,5 @@
 #include "renderer.hpp"
 #include "imgui_helper.hpp"
 #include "json_parser_helper.hpp"
+
+#include "profiler_ui.h"

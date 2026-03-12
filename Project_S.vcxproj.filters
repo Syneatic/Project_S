@@ -362,6 +362,12 @@
     <ClInclude Include="Source\physics_types.hpp">
       <Filter>Header Files\datatypes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\profiler_ui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\profiler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Extern\jsoncpp\src\json_valueiterator.inl">

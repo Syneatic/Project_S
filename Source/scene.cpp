@@ -10,6 +10,8 @@
 
 #include "components.hpp"
 
+#include "profiler_ui.h"
+
 float accumulator{ 0 };
 
 void Scene::InitializeGameObjects()
@@ -58,34 +60,55 @@ void Scene::OnEnter()
 
 void Scene::OnUpdate()
 {
-	//test draw
-	AEGfxSetBackgroundColor(0.f,0.f,0.f);
-	LevelTransition::Update();
+	ProfilerUI profilerUI;
 
-	for (auto& pgo : _gameObjectList)
+	PROFILE_FRAME_BEGIN();
 	{
-		auto go = pgo.get();
-		if (!go->active()) continue;
+		PROFILE_SCOPE("GameLoop");
 
-		go->OnUpdate();
+		//test draw
+		AEGfxSetBackgroundColor(0.f,0.f,0.f);
+		LevelTransition::Update();
+
+		for (auto& pgo : _gameObjectList)
+		{
+			auto go = pgo.get();
+			if (!go->active()) continue;
+
+			go->OnUpdate();
+		}
+
+		Audio::Update();
+
+		if (AEInputCheckTriggered(AEVK_P))
+			EngineCTX::PauseTime();
+
+		accumulator += EngineCTX::dt;
+		while (accumulator >= EngineCTX::fixedDt)
+		{
+			Physics::Step();
+			accumulator -= EngineCTX::fixedDt;
+		}
+
+		ParticleSystem::Update();
+		EventHandler::CallQ();
+		Graphics::Execute();
+		ParticleSystem::Render();
 	}
+	PROFILE_FRAME_END();
 
-	Audio::Update();
-
-	if (AEInputCheckTriggered(AEVK_P))
-		EngineCTX::PauseTime();
-
-	accumulator += EngineCTX::dt;
-	while (accumulator >= EngineCTX::fixedDt)
+	if (EngineCTX::imguiInitialize)
 	{
-		Physics::Step();
-		accumulator -= EngineCTX::fixedDt;
-	}
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
 
-	ParticleSystem::Update();
-	EventHandler::CallQ();
-	Graphics::Execute();
-	ParticleSystem::Render();
+		profilerUI.Render();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		ImGui::EndFrame();
+	}
 }
 
 void Scene::OnExit()

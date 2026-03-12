@@ -504,6 +504,7 @@ namespace Graphics
 
     void Execute() //executes this frame's commands
     {
+        PROFILE_SCOPE("Renderer");
         //Debug::ScopedTimer t("Render:Execute");
 
         //sort the commands

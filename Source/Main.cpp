@@ -36,6 +36,13 @@ void InitializeImGUI(bool& initStatus)
 	//add other flags here
 
 	ImGui::StyleColorsDark();
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.WindowRounding = 4.0f;
+	style.FrameRounding = 3.0f;
+	style.ChildRounding = 3.0f;
+	style.ScrollbarRounding = 3.0f;
+	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.13f, 0.13f, 0.13f, 1.0f);
 	
 	HWND hwnd = AESysGetWindowHandle();
 	g_AEWndProc = reinterpret_cast<WNDPROC>(
