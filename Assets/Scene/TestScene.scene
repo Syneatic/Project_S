@@ -74,7 +74,7 @@
           "name" : "FadeIn",
           "position" : 
           [
-            0.0,
+            -2.0325000286102295,
             0.0
           ],
           "rotation" : -90.0,
@@ -1202,7 +1202,7 @@
       "components" : 
       [
         {
-          "buttonFunctionId" : 11,
+          "buttonFunctionId" : 7,
           "type" : "Button"
         },
         {

@@ -601,10 +601,10 @@ namespace //wrappers for drawing ui elements
 					if (i == 1) selectedObj.AddComponent<AudioListener>();
 				});
 
-			ComponentSubMenu("UI", { "Display", "Button", "Text"},
+			ComponentSubMenu("UI", { "Slider", "Button", "Text" },
 				[&](int i)
 				{
-					if (i == 0) selectedObj.AddComponent<Display>();
+					if (i == 0) selectedObj.AddComponent<Slider>();
 					if (i == 1) selectedObj.AddComponent<Button>();
 					if (i == 2) selectedObj.AddComponent<TextRenderer>();
 				});

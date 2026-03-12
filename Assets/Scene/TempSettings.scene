@@ -1,0 +1,202 @@
+{
+  "gameObjects" : 
+  [
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "renderlayer" : 2,
+          "screenspace" : true,
+          "sortOrder" : 1.0,
+          "text" : "Back",
+          "type" : "TextRenderer"
+        }
+      ],
+      "name" : "BackText",
+      "position" : 
+      [
+        -613.0,
+        369.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "buttonFunctionId" : 0,
+          "type" : "Button"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 2,
+          "rendermode" : 1,
+          "screenspace" : true,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "Back",
+      "position" : 
+      [
+        -616.0,
+        367.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        180.0,
+        70.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : 
+      [
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "text" : "Settings",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "SettingsHeader",
+          "position" : 
+          [
+            0.0,
+            333.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.5,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "text" : "SFX",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "SFXHeader",
+          "position" : 
+          [
+            0.0,
+            150.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "text" : "Music",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "MusicHeader",
+          "position" : 
+          [
+            0.0,
+            -100.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "components" : [],
+      "name" : "SettingsMenu",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "name" : "TempSettings"
+}
