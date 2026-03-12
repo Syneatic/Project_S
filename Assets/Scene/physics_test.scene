@@ -600,7 +600,7 @@
             1.0
           ],
           "isNoiseActive" : true,
-          "layerMask" : 0,
+          "layerMask" : 6,
           "lifetime" : 5.0,
           "noiseLevel" : 50.0,
           "numParticles" : 2048,
