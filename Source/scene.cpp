@@ -104,6 +104,8 @@ void Scene::OnUpdate()
 	}
 	PROFILE_FRAME_END();
 
+
+#ifdef _DEBUG
 	if (EngineCTX::imguiInitialize)
 	{
 		ImGui_ImplOpenGL3_NewFrame();
@@ -116,6 +118,7 @@ void Scene::OnUpdate()
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		ImGui::EndFrame();
 	}
+#endif
 }
 
 void Scene::OnExit()
