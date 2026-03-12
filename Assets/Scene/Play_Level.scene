@@ -4,6 +4,119 @@
     {
       "active" : true,
       "children" : [],
+      "components" : [],
+      "name" : "===========ENVIRONMENT=============",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Wall",
+      "position" : 
+      [
+        -978.5,
+        58.000003814697266
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        20.0,
+        400.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Wall_clone",
+      "position" : 
+      [
+        -732.5,
+        173.85000610351562
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        20.0,
+        222.44999694824219
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
       "components" : 
       [
         {
@@ -47,6 +160,71 @@
       [
         2000.0,
         27.25
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor_clone",
+      "position" : 
+      [
+        -609.0,
+        61.50006103515625
+      ],
+      "rotation" : -5.5999999046325684,
+      "scale" : 
+      [
+        261.14999389648438,
+        20.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : [],
+      "name" : "==============PLAYER================",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
       ]
     },
     {
@@ -131,99 +309,31 @@
       "name" : "Player",
       "position" : 
       [
-        -588.99993896484375,
-        -78.000007629394531
+        -865.99981689453125,
+        -113.00000762939453
       ],
       "rotation" : 0.0,
       "scale" : 
       [
-        30.000001907348633,
-        80.0
+        15.0,
+        30.0
       ]
     },
     {
       "active" : true,
       "children" : [],
-      "components" : 
-      [
-        {
-          "fileName" : "ore.mp3",
-          "loop" : false,
-          "pitch" : 1.0,
-          "relative" : false,
-          "spatialize" : false,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
-        },
-        {
-          "Affected By Gravity" : true,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
-        },
-        {
-          "color" : 
-          [
-            0.77450978755950928,
-            0.77450978755950928,
-            0.77450978755950928,
-            1.0
-          ],
-          "isNoiseActive" : true,
-          "layerMask" : 6,
-          "lifetime" : 1.5,
-          "noiseLevel" : 15.0,
-          "numParticles" : 128,
-          "repeat" : false,
-          "repeatInterval" : 1.0,
-          "type" : "NoiseSource"
-        },
-        {
-          "collisionMask" : 3,
-          "isTrigger" : false,
-          "layerMask" : 8,
-          "size" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "BoxCollider"
-        },
-        {
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
-          [
-            0.67647057771682739,
-            0.67647057771682739,
-            0.67647057771682739,
-            1.0
-          ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 250,
-          "rendermode" : 1,
-          "screenspace" : false,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
-        },
-        {
-          "throwAngle" : 0.0,
-          "throwSpeed" : 800.0,
-          "type" : "RockController"
-        }
-      ],
-      "name" : "Rock",
+      "components" : [],
+      "name" : "=========ENEMY GAME OBJECT=========",
       "position" : 
       [
-        260.99993896484375,
-        -68.999946594238281
+        0.0,
+        0.0
       ],
       "rotation" : 0.0,
       "scale" : 
       [
-        25.0,
-        25.0
+        0.0,
+        0.0
       ]
     },
     {
@@ -310,54 +420,6 @@
       [
         50.0,
         50.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
-          [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 250,
-          "rendermode" : 1,
-          "screenspace" : false,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
-        },
-        {
-          "collisionMask" : 4294967295,
-          "isTrigger" : false,
-          "layerMask" : 2,
-          "size" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "BoxCollider"
-        }
-      ],
-      "name" : "Wall",
-      "position" : 
-      [
-        -932.0,
-        58.000003814697266
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        20.0,
-        400.0
       ]
     },
     {
@@ -512,7 +574,7 @@
           "type" : "NoiseSource"
         }
       ],
-      "name" : "Enemy_clone_clone",
+      "name" : "Static Enemy",
       "position" : 
       [
         59.000041961669922,
@@ -523,6 +585,23 @@
       [
         50.0,
         50.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : [],
+      "name" : "=====CHECKPOINT GAME OBJECT=======",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
       ]
     },
     {
@@ -548,8 +627,8 @@
           [
             1.0,
             1.0,
-            1.0,
-            1.0
+            0.039215683937072754,
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -560,11 +639,11 @@
           "type" : "SpriteRenderer"
         }
       ],
-      "name" : "Checkpoint",
+      "name" : "Checkpoint (Start)",
       "position" : 
       [
-        -153.33335876464844,
-        -79.333381652832031
+        -926.83343505859375,
+        -113.33342742919922
       ],
       "rotation" : 0.0,
       "scale" : 
@@ -576,18 +655,134 @@
     {
       "active" : true,
       "children" : [],
-      "components" : [],
-      "name" : "GameObject143",
+      "components" : 
+      [
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
+          "color" : 
+          [
+            0.77450978755950928,
+            0.77450978755950928,
+            0.77450978755950928,
+            1.0
+          ],
+          "isNoiseActive" : true,
+          "layerMask" : 6,
+          "lifetime" : 1.5,
+          "noiseLevel" : 15.0,
+          "numParticles" : 128,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "collisionMask" : 3,
+          "isTrigger" : false,
+          "layerMask" : 8,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            0.67647057771682739,
+            0.67647057771682739,
+            0.67647057771682739,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "throwAngle" : 0.0,
+          "throwSpeed" : 800.0,
+          "type" : "RockController"
+        }
+      ],
+      "name" : "Rock",
       "position" : 
       [
-        0.0,
-        0.0
+        260.99993896484375,
+        -68.999946594238281
       ],
       "rotation" : 0.0,
       "scale" : 
       [
-        0.0,
-        0.0
+        25.0,
+        25.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967265,
+          "isTrigger" : true,
+          "layerMask" : 16,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            0.039215683937072754,
+            0.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        }
+      ],
+      "name" : "Checkpoint (1)",
+      "position" : 
+      [
+        -28.833412170410156,
+        -103.00011444091797
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        10.0,
+        10.0
       ]
     }
   ],

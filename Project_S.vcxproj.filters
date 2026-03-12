@@ -198,6 +198,9 @@
     <ClCompile Include="enginectx.cpp">
       <Filter>Source Files\datatypes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\save_game.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gameobject.hpp">
@@ -367,6 +370,9 @@
     </ClInclude>
     <ClInclude Include="Source\profiler.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\save_game.hpp">
+      <Filter>Header Files\systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

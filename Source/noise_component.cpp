@@ -125,7 +125,7 @@ void NoiseSource::Emit()
 		float2 velocity = { cosf(currentAngle) , sinf(currentAngle) };
 		velocity = normalize(velocity) * speed;
 		//ParticleSystem::Emit(_transform.position, velocity,0.f, lifetime, color, true,Collision);
-		ParticleSystem::Emit({ _transform.position, velocity,0.f, lifetime, color, true, Collision, 0.5, 0.f, Graphics::RenderLayer::DEFAULT, 0.f, true, layerMask});
+		ParticleSystem::Emit({ _transform.position, velocity,0.f, lifetime, color, true, Collision, 5.f, 0.f, Graphics::RenderLayer::DEFAULT, 0.f, true, layerMask});
 	}
 
 	if (audioEmitter) audioEmitter->Play();
@@ -141,7 +141,7 @@ void NoiseSource::Emit(const float2& emitPos)
 		currentAngle += Random::RandFloat(-(angleStep / 1.5f), angleStep / 1.5f);
 		float2 velocity = { cosf(currentAngle) , sinf(currentAngle) };
 		velocity = normalize(velocity) * speed;
-		ParticleSystem::Emit({ emitPos, velocity, 0.f, lifetime, color, true, Collision, 0.5, 0.f, Graphics::RenderLayer::DEFAULT, 0.f, true, layerMask });
+		ParticleSystem::Emit({ emitPos, velocity, 0.f, lifetime, color, true, Collision, 5.f, 0.f, Graphics::RenderLayer::DEFAULT, 0.f, true, layerMask });
 	}
 
 	if (audioEmitter) audioEmitter->Play();
