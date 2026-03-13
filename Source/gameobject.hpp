@@ -73,6 +73,8 @@ private:
 public:
 	void OnStart()
 	{
+		UpdateWorldTransform();
+
 		for (auto& [type, comp] : _componentMap)
 			comp.get()->OnStart();
 		

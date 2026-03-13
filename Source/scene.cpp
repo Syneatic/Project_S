@@ -94,6 +94,8 @@ void Scene::OnUpdate()
 			accumulator -= EngineCTX::fixedDt;
 		}
 
+		Physics::SyncToLocal();
+
 		{
 			PROFILE_SCOPE("Particle");
 			ParticleSystem::Update();
