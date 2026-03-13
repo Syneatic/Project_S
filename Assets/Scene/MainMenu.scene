@@ -843,7 +843,7 @@
           ],
           "sortOrder" : 5.0,
           "spawnLineLength" : 900.0,
-          "spawnRate" : 1000.0,
+          "spawnRate" : 1200.0,
           "spawnShape" : 3,
           "speed" : 
           [

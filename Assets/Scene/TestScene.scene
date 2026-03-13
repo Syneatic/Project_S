@@ -74,10 +74,89 @@
           "name" : "FadeIn",
           "position" : 
           [
-            -2.0325000286102295,
+            -800.0,
             0.0
           ],
           "rotation" : -90.0,
+          "scale" : 
+          [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "colorA" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "colorB" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "isBurst" : false,
+              "lifetime" : 
+              [
+                3.0,
+                3.0
+              ],
+              "radius" : 
+              [
+                0.0,
+                50.0
+              ],
+              "rect" : 
+              [
+                50.0,
+                50.0
+              ],
+              "renderLayer" : 2,
+              "rotation" : 
+              [
+                0.0,
+                360.0
+              ],
+              "size" : 
+              [
+                100.0,
+                150.0
+              ],
+              "sortOrder" : 3.0,
+              "spawnLineLength" : 900.0,
+              "spawnRate" : 1000.0,
+              "spawnShape" : 3,
+              "speed" : 
+              [
+                1000.0,
+                1000.0
+              ],
+              "spread" : 
+              [
+                0.0,
+                0.0
+              ],
+              "time" : 1.5,
+              "timescale" : false,
+              "type" : "ParticleEmitter"
+            }
+          ],
+          "name" : "FadeOut",
+          "position" : 
+          [
+            800.0,
+            0.0
+          ],
+          "rotation" : 90.0,
           "scale" : 
           [
             0.0,
@@ -1269,85 +1348,6 @@
       [
         1.0,
         1.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "colorA" : 
-          [
-            0.0,
-            0.0,
-            0.0,
-            1.0
-          ],
-          "colorB" : 
-          [
-            0.0,
-            0.0,
-            0.0,
-            1.0
-          ],
-          "isBurst" : false,
-          "lifetime" : 
-          [
-            3.0,
-            3.0
-          ],
-          "radius" : 
-          [
-            0.0,
-            50.0
-          ],
-          "rect" : 
-          [
-            50.0,
-            50.0
-          ],
-          "renderLayer" : 2,
-          "rotation" : 
-          [
-            0.0,
-            360.0
-          ],
-          "size" : 
-          [
-            100.0,
-            150.0
-          ],
-          "sortOrder" : 3.0,
-          "spawnLineLength" : 900.0,
-          "spawnRate" : 1000.0,
-          "spawnShape" : 3,
-          "speed" : 
-          [
-            1000.0,
-            1000.0
-          ],
-          "spread" : 
-          [
-            0.0,
-            0.0
-          ],
-          "time" : 1.5,
-          "timescale" : false,
-          "type" : "ParticleEmitter"
-        }
-      ],
-      "name" : "FadeOut",
-      "position" : 
-      [
-        800.0,
-        0.0
-      ],
-      "rotation" : 90.0,
-      "scale" : 
-      [
-        0.0,
-        0.0
       ]
     }
   ],
