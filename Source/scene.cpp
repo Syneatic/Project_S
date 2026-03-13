@@ -133,7 +133,6 @@ void Scene::OnUpdate()
 
 #ifdef _DEBUG
 	//Profiler::Get().SetPaused(EngineCTX::debugMode);
-	Debug::Log("Profiler Running ? ", Profiler::Get().IsPaused());
 	if (EngineCTX::imguiInitialize)
 	{
 		ImGui_ImplOpenGL3_NewFrame();
