@@ -17,6 +17,7 @@ namespace EngineCTX
 	inline bool isPaused{ false };
 	inline bool applicationRunning{ true };
 	inline bool imguiInitialize{ false };
+	inline bool debugMode{ false };
 
 	void PauseTime();
 }
