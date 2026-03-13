@@ -132,6 +132,7 @@ void Scene::OnUpdate()
 
 
 #ifdef _DEBUG
+	//Profiler::Get().SetPaused(EngineCTX::debugMode);
 	if (EngineCTX::imguiInitialize)
 	{
 		ImGui_ImplOpenGL3_NewFrame();

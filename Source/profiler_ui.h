@@ -84,6 +84,8 @@ public:
         }
         const FrameData& fd = frames[displayIdx];
 
+        ImGui::TextUnformatted(std::to_string(AEFrameRateControllerGetFrameRate()).c_str());
+
         if (ImGui::BeginTabBar("ProfilerTabs"))
         {
             if (ImGui::BeginTabItem("Tree View"))
