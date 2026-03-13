@@ -26,8 +26,8 @@
 
 static char const* _buttonNames[]
 {
-	"GamePlay", "GamePause", "GameRestart", "ToggleSettings", /*"MusicUp", "MusicDown",
-	"SfxUp", "SfxDown",*/ "GameSave", "GameLoad", "ToggleCredits", "GameQuit", "AppExit"
+	"GamePlay", "GamePause", "GameRestart", "SettingsMM", /*"MusicUp", "MusicDown",
+	"SfxUp", "SfxDown",*/"SettingsGame", "GameSave", "GameLoad", "ToggleCredits", "GameQuit", "AppExit"
 };
 
 void Button::DrawInInspector()

@@ -213,7 +213,7 @@
               "type" : "SpriteRenderer"
             },
             {
-              "buttonFunctionId" : 6,
+              "buttonFunctionId" : 7,
               "type" : "Button"
             }
           ],
@@ -288,7 +288,7 @@
               "type" : "SpriteRenderer"
             },
             {
-              "buttonFunctionId" : 8,
+              "buttonFunctionId" : 9,
               "type" : "Button"
             }
           ],
@@ -646,7 +646,7 @@
               "type" : "SpriteRenderer"
             },
             {
-              "buttonFunctionId" : 6,
+              "buttonFunctionId" : 7,
               "type" : "Button"
             }
           ],

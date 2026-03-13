@@ -57,6 +57,9 @@ namespace LevelTransition
 	{
 		if (timerFout == 0.f)
 		{
+			if (restartCalled)
+				restartCalled = false;
+
 			if (fadeIn)
 				fadeIn->active(false);
 
@@ -86,12 +89,17 @@ namespace LevelTransition
 		{
 			timerFout = 0.f;
 			tState = TransitionState::TRANSITION_FADEOUT;
-			SceneManager::RequestSceneSwitch(SceneToSwitch());
+
+			if (!restartCalled)
+				SceneManager::RequestSceneSwitch(SceneToSwitch());
+			else
+				SceneManager::RequestSceneReload();
 		}
 	}
 
 	void Update()
 	{
+		// Fade out check must always be before fade in.
 		if (tState == TransitionState::TRANSITION_FADEOUT)
 			FadeOutTimer();
 		

@@ -12,9 +12,10 @@ enum class FunctionKey
 	PLAY_GAME,
 	PAUSE_GAME,
 	RESTART_GAME,
-	SETTINGS_TOGGLE,
+	SETTINGS_MM,
 	/*MUSIC_INC, MUSIC_DEC,
 	SFX_INC, SFX_DEC,*/
+	SETTINGS_GAME,
 	SAVE_GAME, LOAD_GAME,
 	CREDITS_TOGGLE,
 	QUIT_GAME,
@@ -95,5 +96,7 @@ namespace UISystem
 	void init();
 	void Hover_Logic(Button& button);
 	void Hover_Logic(Slider& button);
+	void TogglePauseMenuGame();
+	void TempEndScreenPlsRemove();
 	void exit();
 }

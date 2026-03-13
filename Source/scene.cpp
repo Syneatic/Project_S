@@ -106,9 +106,11 @@ void Scene::OnUpdate()
 			Audio::Update();
 		}
 
-
 		if (AEInputCheckTriggered(AEVK_P))
-			EngineCTX::PauseTime();
+			UISystem::TogglePauseMenuGame();
+
+		if (AEInputCheckTriggered(AEVK_Z))
+			UISystem::TempEndScreenPlsRemove();
 
 		accumulator += EngineCTX::dt;
 		while (accumulator >= EngineCTX::fixedDt)
