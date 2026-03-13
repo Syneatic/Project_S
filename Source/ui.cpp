@@ -63,6 +63,7 @@ namespace
         pauseMenu->active(false);
         endScreenHolder->active(false);
 
+        EngineCTX::PauseTime();
         LevelTransition::restartCalled = true;
         LevelTransition::RequestTransition();
     }

@@ -30,7 +30,7 @@
           "position" : 
           [
             0.0,
-            316.0
+            355.0
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -67,11 +67,11 @@
               "type" : "Button"
             }
           ],
-          "name" : "PlayButton",
+          "name" : "NewGameButton",
           "position" : 
           [
             0.0,
-            135.0
+            199.0
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -97,21 +97,96 @@
               "renderlayer" : 2,
               "screenspace" : true,
               "sortOrder" : 1.0,
-              "text" : "Play",
+              "text" : "New Game",
               "type" : "TextRenderer"
             }
           ],
-          "name" : "PlayText",
+          "name" : "NewGameText",
           "position" : 
           [
             0.0,
-            135.0
+            199.0
           ],
           "rotation" : 0.0,
           "scale" : 
           [
             1.0,
             0.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "Load Game",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "LoadGameText",
+          "position" : 
+          [
+            0.0,
+            75.999992370605469
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "buttonFunctionId" : 1,
+              "type" : "Button"
+            },
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "LoadGameButton",
+          "position" : 
+          [
+            0.0,
+            70.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            400.0,
+            100.0
           ]
         },
         {
@@ -138,7 +213,7 @@
               "type" : "SpriteRenderer"
             },
             {
-              "buttonFunctionId" : 3,
+              "buttonFunctionId" : 4,
               "type" : "Button"
             }
           ],
@@ -146,7 +221,7 @@
           "position" : 
           [
             0.0,
-            0.0
+            -61.000057220458984
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -180,7 +255,7 @@
           "position" : 
           [
             0.0,
-            0.0
+            -61.000057220458984
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -213,7 +288,7 @@
               "type" : "SpriteRenderer"
             },
             {
-              "buttonFunctionId" : 7,
+              "buttonFunctionId" : 6,
               "type" : "Button"
             }
           ],
@@ -221,7 +296,7 @@
           "position" : 
           [
             0.0,
-            -133.0
+            -193.00004577636719
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -255,7 +330,7 @@
           "position" : 
           [
             0.0,
-            -131.0
+            -191.00004577636719
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -288,7 +363,7 @@
               "type" : "SpriteRenderer"
             },
             {
-              "buttonFunctionId" : 9,
+              "buttonFunctionId" : 8,
               "type" : "Button"
             }
           ],
@@ -296,7 +371,7 @@
           "position" : 
           [
             0.0,
-            -273.0
+            -326.00003051757812
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -330,7 +405,7 @@
           "position" : 
           [
             0.0,
-            -265.0
+            -318.00003051757812
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -350,8 +425,8 @@
       "rotation" : 0.0,
       "scale" : 
       [
-        0.0,
-        0.0
+        1.0,
+        1.0
       ]
     },
     {
@@ -398,7 +473,7 @@
           "components" : 
           [
             {
-              "buttonFunctionId" : 3,
+              "buttonFunctionId" : 4,
               "type" : "Button"
             },
             {
@@ -546,8 +621,8 @@
       "rotation" : 0.0,
       "scale" : 
       [
-        0.0,
-        0.0
+        1.0,
+        1.0
       ]
     },
     {
@@ -646,7 +721,7 @@
               "type" : "SpriteRenderer"
             },
             {
-              "buttonFunctionId" : 7,
+              "buttonFunctionId" : 6,
               "type" : "Button"
             }
           ],
@@ -711,8 +786,8 @@
       "rotation" : 0.0,
       "scale" : 
       [
-        0.0,
-        0.0
+        1.0,
+        1.0
       ]
     },
     {
