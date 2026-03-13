@@ -22,4 +22,6 @@ namespace Physics
 	void Step();
 
 	bool Raycast(float2 origin, float2 direction, f32 maxDistance, RaycastHit& outHit,u32 layerMask);
+
+	void SyncToLocal();
 }

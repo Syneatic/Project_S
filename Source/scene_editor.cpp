@@ -25,6 +25,12 @@ namespace
 			Editor::SaveScene(scene);
 			Debug::Log("Scene saved!");
 		}
+
+		if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+		{
+			//if any imgui window not focused
+			CameraSystem::ZoomInput();
+		}
 	}
 
 	void UpdateGO(GameObject& go)

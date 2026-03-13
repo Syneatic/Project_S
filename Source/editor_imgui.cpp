@@ -444,7 +444,7 @@ namespace //wrappers for drawing ui elements
 		//iterate through each component and display its properties here
 		//name text box
 		auto& transform = selectedObj.transform();
-		//auto& wtransform = selectedObj.worldTransform();
+		auto& wtransform = selectedObj.worldTransform();
 
 		NameInputText(selectedObj.name());
 
@@ -473,13 +473,13 @@ namespace //wrappers for drawing ui elements
 			ImGui::Separator();
 		}
 
-		/*if (ImGui::CollapsingHeader("World Transform", ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader("World Transform", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			Float2DragReset("Position", &wtransform.position.x, { 0.f,0.f }, 0.05f);
-			Float2DragReset("Scale", &wtransform.scale.x, { 1.f,1.f }, 0.05f);
-			FloatDragReset("Rotation", &wtransform.rotation, 0.f, 0.1f);
+			Float2DragReset("Position","worldtransform", &wtransform.position.x, {0.f,0.f}, 0.05f);
+			Float2DragReset("Scale", "worldtransform", &wtransform.scale.x, { 1.f,1.f }, 0.05f);
+			FloatDragReset("Rotation", "worldtransform", &wtransform.rotation, 0.f, 0.1f);
 			ImGui::Separator();
-		}*/
+		}
 
 		//drawing of component elements
 		const auto& comps = selectedObj.componentMap();

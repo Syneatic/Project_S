@@ -60,16 +60,6 @@ namespace CameraSystem
 			}
 		}
 
-		//Debug::Log(AEInputMouseWheelDelta())
-		AEInputMouseWheelDelta(&zoom); // check scroll
-
-		if (zoom != 0) 
-		{
-			const float step = 1.5f; // 50% per notch
-			if (zoom > 0) CameraData::zoomMult *= step;
-			else          CameraData::zoomMult /= step;
-		}
-
 		// Apply scale to camM
 		SetCamM();
 	}
@@ -86,6 +76,19 @@ namespace CameraSystem
 		CameraData::pos = playerTrans.position;
 		SetCamM();
 	}
+
+	void ZoomInput()
+	{
+		AEInputMouseWheelDelta(&zoom); // check scroll
+
+		if (zoom != 0)
+		{
+			const float step = 1.5f; // 50% per notch
+			if (zoom > 0) CameraData::zoomMult *= step;
+			else          CameraData::zoomMult /= step;
+		}
+	}
+
 
 	float2 ScreenToWorld(float2 pos)
 	{

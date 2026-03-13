@@ -27,7 +27,7 @@ namespace ParticleSystem
 
 	void Update()
 	{
-		PROFILE_SCOPE(__func__);
+		PROFILE_FUNCTION();
 
 		//Debug::ScopedTimer t("p_update");
 		int activeParticles{};
