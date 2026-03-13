@@ -206,7 +206,6 @@ void PlayerController::HandleCollision(const OnCollisionEvent& e)
     if (col->layer == 1 << 2)
     {
         //==================|Collision with Enemy|=======================
-        Debug::Log("Player hit enemy -> Respawn");
         Respawn();
     }
 

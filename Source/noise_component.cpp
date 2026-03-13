@@ -159,7 +159,6 @@ void NoiseSource::HandleHit(const OnCollisionEvent& e)
 	//only emit if the collision is strong enough, prevents noise from small collisions
 	if (relativeSpeed > 300.0f)
 	{
-		Debug::Log(relativeSpeed);
 		this->Emit();
 	}
 }
