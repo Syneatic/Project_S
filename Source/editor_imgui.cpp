@@ -15,6 +15,9 @@
 
 namespace //helpers
 {
+	std::vector<std::unique_ptr<GameObject>> _goCopies;
+	std::unique_ptr<Component>  _compCopy;
+
 	std::wstring OpenFile()
 	{
 		//get current directory
@@ -404,6 +407,35 @@ namespace //wrappers for drawing ui elements
 
 			if (!Editor::selectedObjects.empty())
 			{
+				if (ImGui::MenuItem("Copy"))
+				{
+					//clear copies first
+					_goCopies.clear();
+					for (auto go : Editor::selectedObjects)
+					{
+						auto copy = GameObject::Clone(*go); //create a clone
+						_goCopies.push_back(std::move(copy)); //move it into copy buffer
+					}
+					Editor::selectedObjects.clear();
+				}
+			}
+
+			if (!_goCopies.empty())
+			{
+				if (ImGui::MenuItem("Paste"))
+				{
+					for (auto& go : _goCopies)
+					{
+						//copy into scene's gameobject list
+						scene.gameObjectList().push_back(std::move(go));
+					}
+
+					_goCopies.clear();
+				}
+			}
+
+			if (!Editor::selectedObjects.empty())
+			{
 				if (ImGui::MenuItem("Delete Selected"))
 				{
 					for (auto go : Editor::selectedObjects)
@@ -423,6 +455,7 @@ namespace //wrappers for drawing ui elements
 					}
 					Editor::selectedObjects.clear();
 				}
+
 			}
 	
 			ImGui::EndPopup();
