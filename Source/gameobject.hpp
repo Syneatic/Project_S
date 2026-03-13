@@ -86,8 +86,6 @@ public:
 	{
 		PROFILE_SCOPE(__func__);
 
-		UpdateWorldTransform();
-
 		if (!_active)
 			return;
 
@@ -290,7 +288,9 @@ public:
 
 		// propagate to children
 		for (auto& child : _children)
+		{
 			child->UpdateWorldTransform(&_worldTransform);
+		}
 	}
 
 

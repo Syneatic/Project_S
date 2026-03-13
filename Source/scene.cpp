@@ -98,6 +98,8 @@ void Scene::OnUpdate()
 			for (auto& pgo : _gameObjectList)
 			{
 				auto go = pgo.get();
+				go->UpdateWorldTransform();
+
 				if (!go->active()) continue;
 
 				go->OnUpdate();

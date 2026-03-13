@@ -102,6 +102,7 @@ void EditorScene::OnUpdate()
 
 		UpdateGO(*go);
 	}
+
 	ParticleSystem::Update();
 
 	Graphics::Execute();
