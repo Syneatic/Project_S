@@ -8,12 +8,7 @@
 #include "ui_components.hpp"
 #include "render_components.hpp"
 
-namespace UISystem
-{
-
-}
-
-// Helper function anon namespace
+// Helper functions anon namespace
 namespace
 {
     float2 mouseWorld()
@@ -31,27 +26,22 @@ namespace
         return checkX && checkY;
     }
 
-    GameObject* mainMenuHolder{}, *settingsHolder{}, *creditsHolder{};
+    // 0 is mainMenuHolder, 1 is settingsHolder, 2 is creditsHolder
+    std::vector<GameObject*> mainMenuHolders;
     void ToggleSettingsMM()
     {
-        mainMenuHolder->active(!mainMenuHolder->active());
-        settingsHolder->active(!settingsHolder->active());
+        mainMenuHolders[0]->active(!mainMenuHolders[0]->active());
+        mainMenuHolders[1]->active(!mainMenuHolders[1]->active());
     }
 
     void ToggleCreditsMM()
     {
-        mainMenuHolder->active(!mainMenuHolder->active());
-        creditsHolder->active(!creditsHolder->active());
+        mainMenuHolders[0]->active(!mainMenuHolders[0]->active());
+        mainMenuHolders[2]->active(!mainMenuHolders[2]->active());
     }
 
-    GameObject* pauseMenu{}, * pauseOverlay{}, *pauseMenuSettings{};
-    GameObject* endScreenHolder{};
-    void EndScreen()
-    {
-        EngineCTX::PauseTime();
-        pauseOverlay->active(!pauseOverlay->active());
-        endScreenHolder->active(!endScreenHolder->active());
-    }
+    // 0 is pauseOverlay, 1 is pauseMenu, 2 is pauseMenuSettings, 3 is endScreenHolder.
+    std::vector<GameObject*> pauseMenuHolders;
 
     void TogglePauseSettingsGame()
     {
@@ -60,8 +50,8 @@ namespace
 
     void RestartGame()
     {
-        pauseMenu->active(false);
-        endScreenHolder->active(false);
+        pauseMenuHolders[1]->active(false);
+        pauseMenuHolders[3]->active(false);
 
         EngineCTX::PauseTime();
         LevelTransition::restartCalled = true;
@@ -84,10 +74,11 @@ namespace UISystem
     {
         if (SceneManager::ActiveScene()->name() == "MainMenu")
         {
-            mainMenuHolder = SceneManager::ActiveScene()->FindGameObjectByName("MainMenuHolder");
-            settingsHolder = SceneManager::ActiveScene()->FindGameObjectByName("SettingsHolder");
-            creditsHolder = SceneManager::ActiveScene()->FindGameObjectByName("CreditsHolder");
-            settingsHolder->active(false); creditsHolder->active(false);
+            mainMenuHolders.push_back(SceneManager::ActiveScene()->FindGameObjectByName("MainMenuHolder")); //0
+            mainMenuHolders.push_back(SceneManager::ActiveScene()->FindGameObjectByName("SettingsHolder")); //1
+            mainMenuHolders.back()->active(false);
+            mainMenuHolders.push_back(SceneManager::ActiveScene()->FindGameObjectByName("CreditsHolder")); //2
+            mainMenuHolders.back()->active(false);
 
             SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&) { LevelTransition::RequestTransition(); });
             SubscribeButton(FunctionKey::SETTINGS_MM, [](const UIButtonEvent&) { ToggleSettingsMM(); });
@@ -97,10 +88,14 @@ namespace UISystem
 
         if (SceneManager::ActiveScene()->name() == "TestScene")//Change to PlayLevel before checkin.
         {
-            pauseMenu = SceneManager::ActiveScene()->FindGameObjectByName("PauseMenuHolder");
-            pauseOverlay = SceneManager::ActiveScene()->FindGameObjectByName("PauseOverlay");
-            endScreenHolder = SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHolder");
-            pauseMenu->active(false); pauseOverlay->active(false); endScreenHolder->active(false);
+            pauseMenuHolders.push_back(SceneManager::ActiveScene()->FindGameObjectByName("PauseOverlay")); //0
+            pauseMenuHolders.push_back(SceneManager::ActiveScene()->FindGameObjectByName("PauseMenuHolder")); //1
+            pauseMenuHolders.push_back(SceneManager::ActiveScene()->FindGameObjectByName("PauseSettingsHolder")); //2
+            pauseMenuHolders.push_back(SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHolder")); //3
+            for (auto& go : pauseMenuHolders)
+            {
+                go->active(false);
+            }
 
             SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent&) { TogglePauseMenuGame(); });
             SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent&) { RestartGame(); });
@@ -190,13 +185,15 @@ namespace UISystem
     void TogglePauseMenuGame()
     {
         EngineCTX::PauseTime();
-        pauseMenu->active(!pauseMenu->active());
-        pauseOverlay->active(!pauseOverlay->active());
+        pauseMenuHolders[1]->active(!pauseMenuHolders[1]->active());
+        pauseMenuHolders[0]->active(!pauseMenuHolders[0]->active());
     }
 
-    void TempEndScreenPlsRemove()
+    void EndScreen()
     {
-        EndScreen();
+        EngineCTX::PauseTime();
+        pauseMenuHolders[0]->active(!pauseMenuHolders[0]->active());
+        pauseMenuHolders[3]->active(!pauseMenuHolders[3]->active());
     }
 
     // test function for unsub.

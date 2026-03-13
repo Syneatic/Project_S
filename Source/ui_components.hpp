@@ -95,6 +95,6 @@ namespace UISystem
 	void Hover_Logic(Button& button);
 	void Hover_Logic(Slider& button);
 	void TogglePauseMenuGame();
-	void TempEndScreenPlsRemove();
+	void EndScreen();
 	void exit();
 }
