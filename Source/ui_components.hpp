@@ -71,7 +71,6 @@ public:
 	float value{};           // 0.0f to 1.0f
 	bool isDragging{};
 	AudioSpecifier audioS{};
-	//float handleWidth{};     // for click hit-testing
 
 	void DrawInInspector() override;
 	void Serialize(Json::Value& outComp) const override;
@@ -86,7 +85,9 @@ public:
 	void CopyFrom(Component* src) override;
 	std::unique_ptr<Component> Clone(GameObject& go) override;
 private:
-	GameObject* trackObject{ nullptr };  // pointer to the slider track GameObject
+	Transform* _trackTransform{ nullptr };  // pointer to the slider track GameObject
+public:
+	Transform& TrackTransform() { return *_trackTransform; }
 };
 
 namespace UISystem

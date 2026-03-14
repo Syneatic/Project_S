@@ -95,7 +95,7 @@ void Slider::DrawInInspector()
 		{
 			bool is_selected = (i == static_cast<int>(audioS));
 
-			if (ImGui::Selectable(_buttonNames[i], is_selected))
+			if (ImGui::Selectable(_audioSpecifier[i], is_selected))
 				audioS = static_cast<AudioSpecifier>(i);
 
 			if (is_selected)
@@ -124,11 +124,10 @@ void Slider::Deserialize(const Json::Value& compObj)
 void Slider::OnStart() 
 {
 	// Get the track gameobject (should be a child/parent).
-	trackObject = _owner.children().front().get();
-	Transform& t = trackObject->transform();
-	float halfTrack = t.scale.x / 2.f;
-	minX = t.position.x - halfTrack;
-	maxX = t.position.x + halfTrack;
+	_trackTransform = &_owner.parent()->worldTransform();
+	float halfTrack = _trackTransform->scale.x / 2.f;
+	minX = (_trackTransform->position.x - halfTrack);
+	maxX = (_trackTransform->position.x + halfTrack);
 	isDragging = false;
 }
 

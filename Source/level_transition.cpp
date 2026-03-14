@@ -102,8 +102,6 @@ namespace LevelTransition
 
 	void Update()
 	{
-		Debug::Log(EngineCTX::isPaused);
-
 		// Fade out check must always be before fade in.
 		if (tState == TransitionState::TRANSITION_FADEOUT)
 			FadeOutTimer();

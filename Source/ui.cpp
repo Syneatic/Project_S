@@ -8,7 +8,7 @@
 #include "ui_components.hpp"
 #include "render_components.hpp"
 
-// Helper function for game object holders.
+// Helper anon namespace for game object holders.
 namespace
 {
     struct
@@ -34,7 +34,6 @@ namespace
             two->active(!two->active());
         }
     }
-
     void ToggleUIPair(bool state, GameObject* one, GameObject* two)
     {
         if (one && two)
@@ -86,9 +85,9 @@ namespace UISystem
     {
         if (SceneManager::ActiveScene()->name() == "MainMenu")
         {
-            mainMenuHolders.mainMenu = SceneManager::ActiveScene()->FindGameObjectByName("MainMenuHolder"); //0
-            mainMenuHolders.mainSettings = SceneManager::ActiveScene()->FindGameObjectByName("SettingsHolder"); //1
-            mainMenuHolders.mainCredits = SceneManager::ActiveScene()->FindGameObjectByName("CreditsHolder"); //2
+            mainMenuHolders.mainMenu = SceneManager::ActiveScene()->FindGameObjectByName("MainMenuHolder");
+            mainMenuHolders.mainSettings = SceneManager::ActiveScene()->FindGameObjectByName("SettingsHolder");
+            mainMenuHolders.mainCredits = SceneManager::ActiveScene()->FindGameObjectByName("CreditsHolder");
             mainMenuHolders.mainSettings->active(false); mainMenuHolders.mainCredits->active(false);
 
             SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&) 
@@ -163,9 +162,11 @@ namespace UISystem
         if (LevelTransition::inTransition)
             return;
 
-        Transform& t = slider.transform();
+        Transform const& wtSlider = slider.worldTransform();
+        Transform& tSlider = slider.transform();
         SpriteRenderer* r = slider.gameObject().GetComponent<SpriteRenderer>();
-        if (::checkBounds(t))
+
+        if (::checkBounds(wtSlider))
         {
             r->color.r = r->color.g = r->color.b = r->color.a * .75f;
 
@@ -176,7 +177,7 @@ namespace UISystem
             
         if (AEInputCheckTriggered(AEVK_LBUTTON) && !slider.isDragging)
         {
-            if (::checkBounds(t))
+            if (::checkBounds(wtSlider))
                 slider.isDragging = true;
         }
 
@@ -188,8 +189,8 @@ namespace UISystem
 
         if (slider.isDragging)
         {
-            float clampedX = std::clamp(::mouseWorld().x, slider.minX, slider.maxX);
-            t.position.x = clampedX;
+            f32 clampedX = std::clamp(::mouseWorld().x, slider.minX, slider.maxX);
+            tSlider.position.x = clampedX / slider.TrackTransform().scale.x;
 
             // Normalize to 0..1
             slider.value = (clampedX - slider.minX) / (slider.maxX - slider.minX);
