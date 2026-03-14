@@ -46,6 +46,7 @@ void Scene::InitializeGameObjects()
 	Debug::Log("Total GameObjects : ", _gameObjectList.size());
 	for (auto& pgo : _gameObjectList)
 	{
+		pgo->UpdateWorldTransform();
 		pgo.get()->OnStart();
 	}
 }
@@ -118,11 +119,12 @@ void Scene::OnUpdate()
 			for (auto& pgo : _gameObjectList)
 			{
 				auto go = pgo.get();
+
+				if (go->active())
+				{
+					go->OnUpdate();
+				}
 				go->UpdateWorldTransform();
-
-				if (!go->active()) continue;
-
-				go->OnUpdate();
 			}
 
 			Audio::Update();
