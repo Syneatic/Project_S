@@ -45,9 +45,12 @@ namespace LevelTransition
 		{
 			if (fadeIn)
 				fadeIn->active(true);
+
+			if (!EngineCTX::isPaused)
+				EngineCTX::PauseTime();
+
 			timerFin = tFin;
 			inTransition = true;
-			EngineCTX::PauseTime();
 			tState = TransitionState::TRANSITION_FADEIN;
 		}
 	}
@@ -99,6 +102,8 @@ namespace LevelTransition
 
 	void Update()
 	{
+		Debug::Log(EngineCTX::isPaused);
+
 		// Fade out check must always be before fade in.
 		if (tState == TransitionState::TRANSITION_FADEOUT)
 			FadeOutTimer();

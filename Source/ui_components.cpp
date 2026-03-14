@@ -124,11 +124,12 @@ void Slider::Deserialize(const Json::Value& compObj)
 void Slider::OnStart() 
 {
 	// Get the track gameobject (should be a child/parent).
-	//trackObject = ;
+	trackObject = _owner.children().front().get();
 	Transform& t = trackObject->transform();
 	float halfTrack = t.scale.x / 2.f;
 	minX = t.position.x - halfTrack;
 	maxX = t.position.x + halfTrack;
+	isDragging = false;
 }
 
 void Slider::OnUpdate()
