@@ -73,8 +73,6 @@ private:
 public:
 	void OnStart()
 	{
-		UpdateWorldTransform();
-
 		for (auto& [type, comp] : _componentMap)
 			comp.get()->OnStart();
 		
@@ -86,9 +84,7 @@ public:
 	{
 		PROFILE_SCOPE(__func__);
 
-		if (!_active)
-			return;
-
+		if (_active)
 		{
 			PROFILE_SCOPE("Components");
 			for (auto& [type, comp] : _componentMap)
@@ -98,13 +94,16 @@ public:
 					PROFILE_SCOPE("OnUpdate");
 					comp.get()->OnUpdate();
 				}
-			}
+			}		
 		}
 
 		for (auto& child : _children)
 		{
-			if(child->active())
+			child->UpdateWorldTransform();
+			if (child->active())
+			{
 				child->OnUpdate();
+			}
 		}
 	}
 
