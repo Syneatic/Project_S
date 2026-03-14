@@ -31,7 +31,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -79,7 +79,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -127,7 +127,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -175,7 +175,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -223,7 +223,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -271,7 +271,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -319,7 +319,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -367,7 +367,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -415,7 +415,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -463,7 +463,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -511,7 +511,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -559,7 +559,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -607,7 +607,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -655,7 +655,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -703,7 +703,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -751,7 +751,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -799,7 +799,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -847,7 +847,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -895,7 +895,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -943,7 +943,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -991,7 +991,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1039,7 +1039,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1077,6 +1077,96 @@
     {
       "active" : true,
       "children" : [],
+      "components" : 
+      [
+        {
+          "fileName" : "bouken.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            0.34803920984268188,
+            0.82742226123809814,
+            1.0,
+            1.0
+          ],
+          "isNoiseActive" : false,
+          "layerMask" : 2,
+          "lifetime" : 0.5,
+          "noiseLevel" : 5.0,
+          "numParticles" : 64,
+          "repeat" : true,
+          "repeatInterval" : 4.5,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "emit_clone_clone_clone",
+      "position" : 
+      [
+        66.000091552734375,
+        -174.00004577636719
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "fileName" : "bouken.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            0.34803920984268188,
+            0.82742226123809814,
+            1.0,
+            1.0
+          ],
+          "isNoiseActive" : false,
+          "layerMask" : 2,
+          "lifetime" : 0.40000000596046448,
+          "noiseLevel" : 4.0,
+          "numParticles" : 16,
+          "repeat" : true,
+          "repeatInterval" : 1.5,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "emit_clone",
+      "position" : 
+      [
+        191.0,
+        -139.99998474121094
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
       "components" : [],
       "name" : "===========LEVEL 1 (2) BUILDING=========",
       "position" : 
@@ -1104,7 +1194,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1152,7 +1242,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1200,7 +1290,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1248,7 +1338,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1296,7 +1386,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1344,7 +1434,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1392,7 +1482,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1440,7 +1530,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1488,7 +1578,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1536,7 +1626,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1584,7 +1674,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1632,7 +1722,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1680,7 +1770,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1728,7 +1818,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1776,7 +1866,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1824,7 +1914,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1872,7 +1962,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1920,7 +2010,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1968,7 +2058,7 @@
             1.0,
             1.0,
             1.0,
-            1.0
+            0.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -2382,26 +2472,26 @@
               "spawnShape" : 3,
               "speed" : 
               [
-                1200.0,
-                1200.0
+                1000.0,
+                1000.0
               ],
               "spread" : 
               [
                 0.0,
                 0.0
               ],
-              "time" : 0.0,
+              "time" : 3.0,
               "timescale" : false,
               "type" : "ParticleEmitter"
             }
           ],
-          "name" : "FadeIn",
+          "name" : "FadeOut",
           "position" : 
           [
-            -53.330001831054688,
+            112.55999755859375,
             0.0
           ],
-          "rotation" : -90.0,
+          "rotation" : 90.0,
           "scale" : 
           [
             1.0,
@@ -2461,26 +2551,26 @@
               "spawnShape" : 3,
               "speed" : 
               [
-                1000.0,
-                1000.0
+                1200.0,
+                1200.0
               ],
               "spread" : 
               [
                 0.0,
                 0.0
               ],
-              "time" : 5.0,
+              "time" : 0.0,
               "timescale" : false,
               "type" : "ParticleEmitter"
             }
           ],
-          "name" : "FadeOut",
+          "name" : "FadeIn",
           "position" : 
           [
-            112.65599822998047,
+            -53.330001831054688,
             0.0
           ],
-          "rotation" : 90.0,
+          "rotation" : -90.0,
           "scale" : 
           [
             1.0,
@@ -2660,9 +2750,9 @@
           ],
           "isNoiseActive" : true,
           "layerMask" : 2,
-          "lifetime" : 2.0,
-          "noiseLevel" : 20.0,
-          "numParticles" : 32,
+          "lifetime" : 0.75,
+          "noiseLevel" : 7.5,
+          "numParticles" : 16,
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
@@ -3365,8 +3455,8 @@
       "name" : "Rock",
       "position" : 
       [
-        260.99993896484375,
-        -68.999946594238281
+        614.99993896484375,
+        474.00006103515625
       ],
       "rotation" : 0.0,
       "scale" : 
@@ -3399,9 +3489,9 @@
           ],
           "isNoiseActive" : false,
           "layerMask" : 2,
-          "lifetime" : 1.0,
-          "noiseLevel" : 10.0,
-          "numParticles" : 64,
+          "lifetime" : 0.5,
+          "noiseLevel" : 5.0,
+          "numParticles" : 16,
           "repeat" : true,
           "repeatInterval" : 2.5,
           "type" : "NoiseSource"
@@ -3444,56 +3534,11 @@
           ],
           "isNoiseActive" : false,
           "layerMask" : 2,
-          "lifetime" : 1.0,
-          "noiseLevel" : 10.0,
+          "lifetime" : 0.5,
+          "noiseLevel" : 5.0,
           "numParticles" : 64,
           "repeat" : true,
-          "repeatInterval" : 1.5,
-          "type" : "NoiseSource"
-        }
-      ],
-      "name" : "emit_clone",
-      "position" : 
-      [
-        191.0,
-        -115.0
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "fileName" : "bouken.mp3",
-          "loop" : false,
-          "pitch" : 1.0,
-          "relative" : false,
-          "spatialize" : true,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
-        },
-        {
-          "color" : 
-          [
-            0.34803920984268188,
-            0.82742226123809814,
-            1.0,
-            1.0
-          ],
-          "isNoiseActive" : false,
-          "layerMask" : 2,
-          "lifetime" : 1.0,
-          "noiseLevel" : 10.0,
-          "numParticles" : 64,
-          "repeat" : true,
-          "repeatInterval" : 1.5,
+          "repeatInterval" : 4.5,
           "type" : "NoiseSource"
         }
       ],
