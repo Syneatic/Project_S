@@ -26,6 +26,13 @@ namespace LevelTransition
 	{
 		fadeIn = SceneManager::ActiveScene()->FindGameObjectByName("FadeIn");
 		fadeOut = SceneManager::ActiveScene()->FindGameObjectByName("FadeOut");
+
+		// Assume same parent (player).
+		if (fadeIn->parent() && fadeOut->parent())
+		{
+			fadeIn->UpdateWorldTransform(&fadeIn->parent()->transform());
+			fadeOut->UpdateWorldTransform(&fadeOut->parent()->transform());
+		}
 	}
 
 	void Init()
