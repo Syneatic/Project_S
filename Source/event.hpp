@@ -28,6 +28,12 @@ struct UIButtonEvent : public Event<UIButtonEvent>
 	UIButtonEvent(FunctionKey fKey) : fKey{ fKey } {}
 };
 
+struct UISliderEvent : public Event<UISliderEvent>
+{
+	AudioSpecifier aS;
+	UISliderEvent(AudioSpecifier aS) : aS{ aS } {}
+};
+
 struct PingEvent : public Event<PingEvent>
 {
 	size_t targetId;
@@ -56,10 +62,10 @@ struct OnTriggerEvent : public Event<OnTriggerEvent>
 	}
 };
 
-struct LevelTransitionEvent : public Event<LevelTransitionEvent>
-{
-	LevelTransition::TransitionState tState;
-
-	LevelTransitionEvent(LevelTransition::TransitionState tState)
-		: tState(tState) {}
-};
+//struct LevelTransitionEvent : public Event<LevelTransitionEvent>
+//{
+//	LevelTransition::TransitionState tState;
+//
+//	LevelTransitionEvent(LevelTransition::TransitionState tState)
+//		: tState(tState) {}
+//};
