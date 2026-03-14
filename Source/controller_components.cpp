@@ -196,7 +196,7 @@ void PlayerController::OnUpdate()
 
     //Reset player to first savepoint
     if (AEInputCheckTriggered(AEVK_T)) {
-        worldTransform().position = initialSpawnPoint;
+        transform().position = initialSpawnPoint;
         Debug::Log("Reset Player Location to the start");
     }
 }
