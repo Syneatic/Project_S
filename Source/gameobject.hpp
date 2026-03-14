@@ -99,7 +99,6 @@ public:
 
 		for (auto& child : _children)
 		{
-			child->UpdateWorldTransform();
 			if (child->active())
 			{
 				child->OnUpdate();
