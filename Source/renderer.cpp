@@ -329,6 +329,29 @@ namespace Graphics
             mtx.m[2][1] = 0.f;
             mtx.m[2][2] = 1.f;
         }
+
+        bool InViewport(const RenderData& d)
+        {
+            if (d.isScreenSpace) return true; // always render screenspace objects
+
+            f32 winW = (f32)AEGfxGetWindowWidth();
+            f32 winH = (f32)AEGfxGetWindowHeight();
+
+            float2 screenPos;
+            screenPos.x = CameraData::camM.m[0][0] * d.pos.x + CameraData::camM.m[0][1] * d.pos.y + CameraData::camM.m[0][2];
+            screenPos.y = CameraData::camM.m[1][0] * d.pos.x + CameraData::camM.m[1][1] * d.pos.y + CameraData::camM.m[1][2];
+
+            f32 objW = fabsf(d.scale.x) * 0.5f;
+            f32 objH = fabsf(d.scale.y) * 0.5f;
+
+            // buffer set slightly outside
+            f32 boundX = winW * 0.5f * 1.1f;
+            f32 boundY = winH * 0.5f * 1.1f;
+
+            // AABB
+            return (screenPos.x + objW > -boundX) && (screenPos.x - objW < boundX) &&
+                   (screenPos.y + objH > -boundY) && (screenPos.y - objH < boundY);
+        }
     
         void DrawMesh(VertexBuffer* mesh, DrawMode mode, Texture* texture)
         {
@@ -456,6 +479,8 @@ namespace Graphics
 
     void Submit(const RenderData& data, PrimitiveType type, const char* text)
     {
+        if (!InViewport(data)) return;
+
         //construct command
         RenderCommand cmd;
         cmd.data = data;
