@@ -18,7 +18,7 @@ namespace LevelTransition
 	// Helper function to determine the scene to load for level transition.
 	std::string SceneToSwitch()
 	{
-		return SceneManager::ActiveScene()->cname() == "MainMenu" ? "TestScene" : "MainMenu";
+		return SceneManager::ActiveScene()->cname() == "MainMenu" ? "Play_Level" : "MainMenu";
 	}
 
 	// Helper function to get pointer to particle emitter for level transition.

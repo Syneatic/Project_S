@@ -137,7 +137,7 @@ namespace UISystem
         if (SceneManager::ActiveScene()->name() == "MainMenu")
             UIMainMenu();
 
-        if (SceneManager::ActiveScene()->name() == "TestScene")//Change to PlayLevel before checkin.
+        if (SceneManager::ActiveScene()->name() == "Play_Level")//Change to PlayLevel before checkin.
             UIPlayLevel();
 
         if (SceneManager::ActiveScene()->name() != "Intro")
