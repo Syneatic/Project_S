@@ -195,8 +195,10 @@ void PlayerController::OnUpdate()
     lastEchoPos = currentPos;
 
     //Reset player to first savepoint
-    if (AEInputCheckTriggered(AEVK_T))
-        _transform.position = initialSpawnPoint;
+    if (AEInputCheckTriggered(AEVK_T)) {
+        worldTransform().position = initialSpawnPoint;
+        Debug::Log("Reset Player Location to the start");
+    }
 }
 
 void PlayerController::OnDestroy()

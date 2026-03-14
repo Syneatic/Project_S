@@ -108,5 +108,6 @@ namespace LevelTransition
 		
 		if (tState == TransitionState::TRANSITION_FADEIN)
 			FadeInTimer();
+		Debug::Log(fadeOut->worldTransform().position);
 	}
 }

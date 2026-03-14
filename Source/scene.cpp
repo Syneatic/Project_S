@@ -179,7 +179,6 @@ void Scene::OnExit()
 	{
 		SaveGameManager::SaveData data;
 		data.sceneName = _name;
-		//data.initialSpawnPosition = ;
 
 		if (auto* pc = player->GetComponent<PlayerController>())
 		{
