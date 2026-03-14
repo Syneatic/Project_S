@@ -92,6 +92,7 @@ void Scene::OnEnter()
 			{
 				pc->SetSpawnPoint(data.spawnPoint);
 			}
+			player->UpdateWorldTransform();
 
 			Debug::Log("Player Current Position Loaded");
 		}
