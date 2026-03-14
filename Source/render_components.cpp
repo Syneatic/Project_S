@@ -165,6 +165,7 @@ void Renderer::Serialize(Json::Value& outComp) const
     outComp["alignment"] = static_cast<int>(alignment);
     outComp["color"] = WriteColor(color);
     outComp["screenspace"] = isScreenSpace;
+    outComp["active"] = _active;
     //texture is abit tricky for now
     //i think save it as a filename for now
 }
@@ -173,6 +174,7 @@ void Renderer::Deserialize(const Json::Value& compObj)
 {
     renderLayer = static_cast<Graphics::RenderLayer>(compObj["renderLayer"].asInt());
     sortOrder = compObj["sortOrder"].asFloat();
+    _active = compObj["active"].asBool();
 
     if (compObj.isMember("fileName") && compObj["fileName"].isString())
         fileName = compObj["fileName"].asString();

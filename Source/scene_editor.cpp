@@ -41,12 +41,14 @@ namespace
 		{
 			if (auto* c = dynamic_cast<Renderer*>(comp.get()))
 			{
-				c->OnUpdate();
+				if(c->active())
+					c->OnUpdate();
 			}
 
 			if (auto* c = dynamic_cast<ParticleEmitter*>(comp.get()))
 			{
-				c->OnUpdate();
+				if (c->active())
+					c->OnUpdate();
 			}
 		}
 
