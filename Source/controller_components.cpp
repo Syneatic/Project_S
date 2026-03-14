@@ -13,8 +13,8 @@ void PlayerController::DrawInInspector()
     ImGui::TextUnformatted("Max Speed");
     ImGui::DragFloat("##max_speed", &maxSpeed, 0.1f);
 
-    //ImGui::TextUnformatted("Acceleration");
-    //ImGui::DragFloat("##Acceleration", &acceleration, 0.1f);
+    ImGui::TextUnformatted("Echo Distance");
+    ImGui::DragFloat("##echoDistanceThreshold", &echoDistanceThreshold, 0.1f);
 
     ImGui::TextUnformatted("TimeToReach");
     ImGui::DragFloat("##TimeToReach", &time, 0.1f);
@@ -26,6 +26,7 @@ void PlayerController::DrawInInspector()
 void PlayerController::Serialize(Json::Value& outComp) const
 {
     outComp["max_speed"] = maxSpeed;
+    outComp["echoDistanceThreshold"] = echoDistanceThreshold;
     outComp["time"] = time;
     outComp["jumpHeight"] = jumpHeight;
 }
@@ -34,6 +35,9 @@ void PlayerController::Deserialize(const Json::Value& compObj)
 {
     if (compObj.isMember("max_speed") && compObj["max_speed"].isNumeric())
         maxSpeed = compObj["max_speed"].asFloat();
+
+    if (compObj.isMember("echoDistanceThreshold") && compObj["echoDistanceThreshold"].isNumeric())
+        echoDistanceThreshold = compObj["echoDistanceThreshold"].asFloat();
 
     if (compObj.isMember("jumpHeight") && compObj["jumpHeight"].isNumeric())
         jumpHeight = compObj["jumpHeight"].asFloat();
@@ -49,7 +53,7 @@ void PlayerController::OnStart()
     rb = _owner.GetComponent<RigidBody>();
     noiseSource = _owner.GetComponent<NoiseSource>();
     rockObject = SceneManager::ActiveScene()->FindGameObjectByName("Rock");
-    pingActiveDuration = noiseSource->noiseLevel / 10.f;
+    pingActiveDuration = 2.f;
     _owner.Subscribe<OnCollisionEvent>(
         &OnCollisionEvent::self,
         &_owner,
@@ -158,7 +162,7 @@ void PlayerController::OnUpdate()
 
     //===================|Echo Mechanic|=====================
 
-    if (AEInputCheckTriggered(AEVK_E))
+    if (AEInputCheckTriggered(AEVK_E) && _isGrounded)
     {
         TriggerPing(_transform.position);
     }
@@ -166,7 +170,7 @@ void PlayerController::OnUpdate()
     float2 currentPos = _owner.worldTransform().position;
     f32 speed = length(rb->velocity);
 
-    if (speed >= echoDistanceThreshold)
+    if (speed >= maxSpeed && _isGrounded)
     {
         distanceAccumulated += abs(currentPos.x - lastEchoPos.x);
 
@@ -174,7 +178,7 @@ void PlayerController::OnUpdate()
         {
             distanceAccumulated = 0.f;
 
-            TriggerPing(currentPos);
+            //TriggerPing(currentPos);
         }
     }
 
@@ -182,16 +186,23 @@ void PlayerController::OnUpdate()
     {
         pingActiveTimer += EngineCTX::dt;
         if (pingActiveTimer >= pingActiveDuration)
+        {
             isPinging = false;
+        }
+        Debug::Log("Player Ping", isPinging, '\n');
     }
 
     lastEchoPos = currentPos;
+
+    //Reset player to first savepoint
+    if (AEInputCheckTriggered(AEVK_T))
+        _transform.position = initialSpawnPoint;
 }
 
 void PlayerController::OnDestroy()
 {
     SaveGameManager::SaveData savingData;
-    savingData.playerPosition = _owner.worldTransform().position;
+    //savingData.playerPosition = _owner.worldTransform().position;
     savingData.spawnPoint = spawnPoint;
 }
 
@@ -215,6 +226,12 @@ void PlayerController::TriggerPing(const float2& pos)
 
     if (noiseSource)
         noiseSource->Emit(pos);
+}
+
+void PlayerController::ResetSpawn()
+{
+    spawnPoint = initialSpawnPoint;
+    Respawn();
 }
 
 void PlayerController::HandleCollision(const OnCollisionEvent& e)
@@ -492,18 +509,21 @@ void EnemyController::OnUpdate()
         break;
 
     case EnemyType::Patrol:
-        UpdatePatrol();
+
+        CheckPlayerSound();
+        if (heardPlayer)
+        {
+            MoveTowardsXPos();
+            return;
+        }
+        else
+        {
+            UpdatePatrol();
+        }
         break;
 
     default:
         break;
-    }
-
-    CheckPlayerSound();
-    if (heardPlayer)
-    {
-        MoveTowardsXPos();
-        return;
     }
 }
 
@@ -607,11 +627,19 @@ void EnemyController::CheckPlayerSound()
 
             float2 dist = pingPos - _transform.position;
 
-            if (absf(dist.x) <= hearRange && absf(dist.y) <= hearHeight)
-            {
-                heardPlayer = true;
-                targetX = pingPos.x;
-            }
+            if (absf(dist.x) > hearRange && absf(dist.y) > hearHeight) return;
+
+            float rayDist = length(dist);
+            if (rayDist <= 0.001f) return;
+
+            RaycastHit hit;
+            u32 wallMask = static_cast<u32>(Layer::Environment);
+
+            if (Physics::Raycast(_transform.position, normalize(dist), rayDist, hit, wallMask)) return;
+
+            heardPlayer = true;
+            targetX = pingPos.x;
+
         }
     }
 }
@@ -620,7 +648,7 @@ void EnemyController::MoveTowardsXPos()
 {
     float dx = targetX - _transform.position.x;
 
-    if (absf(dx) < 5.f)
+    if (absf(dx) <= 10.f)
     {
         rb->velocity.x = 0.f;
         heardPlayer = false;
@@ -628,6 +656,19 @@ void EnemyController::MoveTowardsXPos()
     }
 
     rb->velocity.x = (dx > 0.f) ? hearMoveSpeed : -hearMoveSpeed;
+
+    f32 dir = (dx > 0.f) ? 1.f : -1.f;
+
+    RaycastHit hit;
+    u32 wallMask = static_cast<u32>(Layer::Environment);
+    float2 origin = _transform.position;
+    float2 rayDir = float2(dir, 0);
+
+    if (Physics::Raycast(origin, rayDir, 20.f, hit, wallMask))
+    {
+        heardPlayer = false;
+        return;
+    }
 }
 
 

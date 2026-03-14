@@ -19,6 +19,7 @@ class PlayerController : public Controller
 private:
     bool _isGrounded = false;
     float2 spawnPoint{ 0.f, 0.f };
+    float2 initialSpawnPoint{ -889.833 , -113.000 };
 
 public:
     f32 maxSpeed = 150.f;
@@ -58,6 +59,7 @@ public:
     void HandleTrigger(const OnTriggerEvent& e);
     void SaveSpawn(const float2& pos);
     void Respawn();
+    void ResetSpawn();
 
     float2 GetSpawnPoint() const { return spawnPoint; }
     float2 GetCurrentPosition() const { return _transform.position; }
@@ -127,11 +129,15 @@ public:
     float2 startPos{};
     int patrolDir = 1; // 1 = right, -1 = left
 
+    bool framePing = false;
     bool heardPlayer = false;
     float targetX = 0.f;
     float hearRange = 200.f;
     float hearHeight = 100.f;
     float hearMoveSpeed = 120.f;
+
+    bool investigating = false;
+    float2 investigateTarget{};
 
     RigidBody* rb = nullptr;
     NoiseSource* ns = nullptr;

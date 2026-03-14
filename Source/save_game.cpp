@@ -16,7 +16,7 @@ namespace SaveGameManager
 
 		//save the specific data value
 		root["scene"] = data.sceneName;
-		root["playerPosition"] = WriteFloat2(data.playerPosition);
+		root["firstSpawn"] = WriteFloat2(data.initialSpawnPosition);
 		root["spawnPoint"] = WriteFloat2(data.spawnPoint);
 
 		Json::StreamWriterBuilder builder; //Json writer to transfer from the program to the new file
@@ -47,8 +47,8 @@ namespace SaveGameManager
 		if (root.isMember("scene"))
 			outData.sceneName = root["scene"].asString();
 
-		if (root.isMember("playerPosition"))
-			ReadFloat2(root["playerPosition"], outData.playerPosition);
+		if (root.isMember("firstSpawn"))
+			ReadFloat2(root["firstSpawn"], outData.initialSpawnPosition);
 
 		if (root.isMember("spawnPoint"))
 			ReadFloat2(root["spawnPoint"], outData.spawnPoint);

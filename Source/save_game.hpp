@@ -8,7 +8,7 @@ namespace SaveGameManager {
 	{
 	public:
 		std::string sceneName;
-		float2 playerPosition{};
+		float2 initialSpawnPosition{};
 		float2 spawnPoint{};
 	};
 

@@ -61,7 +61,7 @@ void Scene::OnEnter()
 		Debug::Log("Save file name: ", _name);
 		if (auto* player = FindGameObjectByName("Player"))
 		{
-			player->transform().position = data.playerPosition;
+			player->transform().position = data.spawnPoint;
 
 			if (auto* pc = player->GetComponent<PlayerController>())
 			{
@@ -146,7 +146,7 @@ void Scene::OnExit()
 	{
 		SaveGameManager::SaveData data;
 		data.sceneName = _name;
-		data.playerPosition = player->transform().position;
+		//data.initialSpawnPosition = ;
 
 		if (auto* pc = player->GetComponent<PlayerController>())
 		{
