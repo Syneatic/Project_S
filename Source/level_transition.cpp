@@ -2,6 +2,7 @@
 #include "enginectx.hpp"
 #include "scene.hpp"
 #include "scene_manager.hpp"
+#include "particle.hpp"
 #include "eventhandler.hpp"
 #include "gameobject.hpp"
 
@@ -44,9 +45,12 @@ namespace LevelTransition
 		{
 			if (fadeIn)
 				fadeIn->active(true);
+
+			if (!EngineCTX::isPaused)
+				EngineCTX::PauseTime();
+
 			timerFin = tFin;
 			inTransition = true;
-			EngineCTX::PauseTime();
 			tState = TransitionState::TRANSITION_FADEIN;
 		}
 	}
@@ -56,12 +60,19 @@ namespace LevelTransition
 	{
 		if (timerFout == 0.f)
 		{
+			if (restartCalled)
+				restartCalled = false;
+
 			if (fadeIn)
 				fadeIn->active(false);
+
 			if (fadeOut)
+			{
 				fadeOut->active(false);
-			const auto* emitter = fadeOut->GetComponent<ParticleEmitter>();
-			timerFout = AEGfxGetWindowWidth() / emitter->speed.x;
+				auto* emitter = fadeOut->GetComponent<ParticleEmitter>();
+				timerFout = AEGfxGetWindowWidth() / emitter->speed.x;
+				ParticleSystem::Render();
+			}
 		}
 
 		timerFout -= EngineCTX::unscaledDt;
@@ -81,12 +92,17 @@ namespace LevelTransition
 		{
 			timerFout = 0.f;
 			tState = TransitionState::TRANSITION_FADEOUT;
-			SceneManager::RequestSceneSwitch(SceneToSwitch());
+
+			if (!restartCalled)
+				SceneManager::RequestSceneSwitch(SceneToSwitch());
+			else
+				SceneManager::RequestSceneReload();
 		}
 	}
 
 	void Update()
 	{
+		// Fade out check must always be before fade in.
 		if (tState == TransitionState::TRANSITION_FADEOUT)
 			FadeOutTimer();
 		

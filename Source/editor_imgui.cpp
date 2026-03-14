@@ -15,6 +15,9 @@
 
 namespace //helpers
 {
+	std::vector<std::unique_ptr<GameObject>> _goCopies;
+	std::unique_ptr<Component>  _compCopy;
+
 	std::wstring OpenFile()
 	{
 		//get current directory
@@ -404,6 +407,35 @@ namespace //wrappers for drawing ui elements
 
 			if (!Editor::selectedObjects.empty())
 			{
+				if (ImGui::MenuItem("Copy"))
+				{
+					//clear copies first
+					_goCopies.clear();
+					for (auto go : Editor::selectedObjects)
+					{
+						auto copy = GameObject::Clone(*go); //create a clone
+						_goCopies.push_back(std::move(copy)); //move it into copy buffer
+					}
+					Editor::selectedObjects.clear();
+				}
+			}
+
+			if (!_goCopies.empty())
+			{
+				if (ImGui::MenuItem("Paste"))
+				{
+					for (auto& go : _goCopies)
+					{
+						//copy into scene's gameobject list
+						scene.gameObjectList().push_back(std::move(go));
+					}
+
+					_goCopies.clear();
+				}
+			}
+
+			if (!Editor::selectedObjects.empty())
+			{
 				if (ImGui::MenuItem("Delete Selected"))
 				{
 					for (auto go : Editor::selectedObjects)
@@ -423,6 +455,7 @@ namespace //wrappers for drawing ui elements
 					}
 					Editor::selectedObjects.clear();
 				}
+
 			}
 	
 			ImGui::EndPopup();
@@ -440,11 +473,18 @@ namespace //wrappers for drawing ui elements
 		if (Editor::selectedObjects.empty()) { ImGui::End(); return; }
 		GameObject& selectedObj = *Editor::selectedObjects[0];
 
+		ImGui::TextUnformatted("Active");
+		bool active = selectedObj.active();
+		if (ImGui::Checkbox("##active", &active))
+		{
+			selectedObj.active(active);
+		}
+
 		//display selected object's properties
 		//iterate through each component and display its properties here
 		//name text box
 		auto& transform = selectedObj.transform();
-		//auto& wtransform = selectedObj.worldTransform();
+		auto& wtransform = selectedObj.worldTransform();
 
 		NameInputText(selectedObj.name());
 
@@ -473,13 +513,13 @@ namespace //wrappers for drawing ui elements
 			ImGui::Separator();
 		}
 
-		/*if (ImGui::CollapsingHeader("World Transform", ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader("World Transform", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			Float2DragReset("Position", &wtransform.position.x, { 0.f,0.f }, 0.05f);
-			Float2DragReset("Scale", &wtransform.scale.x, { 1.f,1.f }, 0.05f);
-			FloatDragReset("Rotation", &wtransform.rotation, 0.f, 0.1f);
+			Float2DragReset("Position","worldtransform", &wtransform.position.x, {0.f,0.f}, 0.05f);
+			Float2DragReset("Scale", "worldtransform", &wtransform.scale.x, { 1.f,1.f }, 0.05f);
+			FloatDragReset("Rotation", "worldtransform", &wtransform.rotation, 0.f, 0.1f);
 			ImGui::Separator();
-		}*/
+		}
 
 		//drawing of component elements
 		const auto& comps = selectedObj.componentMap();
@@ -601,10 +641,10 @@ namespace //wrappers for drawing ui elements
 					if (i == 1) selectedObj.AddComponent<AudioListener>();
 				});
 
-			ComponentSubMenu("UI", { "Display", "Button", "Text"},
+			ComponentSubMenu("UI", { "Slider", "Button", "Text" },
 				[&](int i)
 				{
-					if (i == 0) selectedObj.AddComponent<Display>();
+					if (i == 0) selectedObj.AddComponent<Slider>();
 					if (i == 1) selectedObj.AddComponent<Button>();
 					if (i == 2) selectedObj.AddComponent<TextRenderer>();
 				});

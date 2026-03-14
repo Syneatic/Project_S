@@ -25,20 +25,30 @@ namespace
 			Editor::SaveScene(scene);
 			Debug::Log("Scene saved!");
 		}
+
+		if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+		{
+			//if any imgui window not focused
+			CameraSystem::ZoomInput();
+		}
 	}
 
 	void UpdateGO(GameObject& go)
 	{
+		if (!(go.active())) return;
+
 		for (auto& [type, comp] : go.componentMap())
 		{
 			if (auto* c = dynamic_cast<Renderer*>(comp.get()))
 			{
-				c->OnUpdate();
+				if(c->active())
+					c->OnUpdate();
 			}
 
 			if (auto* c = dynamic_cast<ParticleEmitter*>(comp.get()))
 			{
-				c->OnUpdate();
+				if (c->active())
+					c->OnUpdate();
 			}
 		}
 
@@ -46,6 +56,7 @@ namespace
 		{
 			for (auto& child : go.children())
 			 {
+
 				 UpdateGO(*child);
 			}
 		}
@@ -96,6 +107,7 @@ void EditorScene::OnUpdate()
 
 		UpdateGO(*go);
 	}
+
 	ParticleSystem::Update();
 
 	Graphics::Execute();

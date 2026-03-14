@@ -14,9 +14,9 @@ void ParticleEmitter::OnStart()
 
 		float baseAngle;
 		if (spawnShape == SpawnShape::LINE)
-			baseAngle = (_transform.rotation + 90.f) * (PI / 180.0f);
+			baseAngle = (_worldTransform.rotation + 90.f) * (PI / 180.0f);
 		else
-			baseAngle = _transform.rotation * (PI / 180.0f);
+			baseAngle = _worldTransform.rotation * (PI / 180.0f);
 
 		float sprd = Random::RandFloat(spread.x, spread.y) * (PI / 180.0f);
 		float angle = baseAngle + sprd;
@@ -72,11 +72,11 @@ void ParticleEmitter::OnUpdate()
 		if (spawnShape == SpawnShape::LINE)
 		{
 			// Line runs along local X, so perpendicular is local Y = rot + 90deg
-			baseAngle = (_transform.rotation + 90.f) * (PI / 180.0f);
+			baseAngle = (_worldTransform.rotation + 90.f) * (PI / 180.0f);
 		}
 		else
 		{
-			baseAngle = _transform.rotation * (PI / 180.0f);
+			baseAngle = _worldTransform.rotation * (PI / 180.0f);
 		}
 
 		float sprd = Random::RandFloat(spread.x, spread.y) * (PI / 180.0f);
@@ -104,7 +104,7 @@ void ParticleEmitter::OnDestroy() {};
 
 void ParticleEmitter::Burst()
 {
-	float2 origin = _transform.position;
+	float2 origin = _worldTransform.position;
 	int    count = static_cast<int>(spawnRate);
 	float  angleStep = (2.0f * PI) / count;
 
@@ -271,8 +271,8 @@ std::unique_ptr<Component> ParticleEmitter::Clone(GameObject& go)
 
 float2 ParticleEmitter::SampleSpawnPosition() const
 {
-	float2 origin = _transform.position;
-	float  rot = _transform.rotation * (PI / 180.0f);
+	float2 origin = _worldTransform.position;
+	float  rot = _worldTransform.rotation * (PI / 180.0f);
 	float  cr = cosf(rot), sr = sinf(rot);
 
 	// Rotate a local offset into world space

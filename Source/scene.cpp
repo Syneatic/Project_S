@@ -10,7 +10,34 @@
 
 #include "components.hpp"
 
+#include "profiler_ui.h"
+
 float accumulator{ 0 };
+ProfilerUI profilerUI;
+
+void BuildDockSpace()
+{
+	ImGuiWindowFlags host_flags =
+		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
+		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground;
+
+	const ImGuiViewport* vp = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(vp->WorkPos);
+	ImGui::SetNextWindowSize(vp->WorkSize);
+	ImGui::SetNextWindowViewport(vp->ID);
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+	ImGui::Begin("##dockspace", nullptr, host_flags);
+	ImGui::PopStyleVar(2);
+
+	ImGuiID dockspace_id = ImGui::GetID("MainDockSpace");
+	ImGui::DockSpace(dockspace_id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
+	ImGui::End();
+}
 
 void Scene::InitializeGameObjects()
 {
@@ -18,6 +45,7 @@ void Scene::InitializeGameObjects()
 	Debug::Log("Total GameObjects : ", _gameObjectList.size());
 	for (auto& pgo : _gameObjectList)
 	{
+		pgo->UpdateWorldTransform();
 		pgo.get()->OnStart();
 	}
 }
@@ -58,37 +86,73 @@ void Scene::OnEnter()
 
 void Scene::OnUpdate()
 {
-	//test draw
-	AEGfxSetBackgroundColor(0.f,0.f,0.f);
-	LevelTransition::Update();
-
-	for (auto& pgo : _gameObjectList)
+	PROFILE_FRAME_BEGIN();
 	{
-		auto go = pgo.get();
-		if (!go->active()) continue;
+		PROFILE_SCOPE("GameLoop");
 
-		go->OnUpdate();
+		//test draw
+		AEGfxSetBackgroundColor(0.f,0.f,0.f);
+		LevelTransition::Update();
+
+		{
+			PROFILE_SCOPE("Update GameObjects");
+			for (auto& pgo : _gameObjectList)
+			{
+				auto go = pgo.get();
+
+				if (go->active())
+				{
+					go->OnUpdate();
+				}
+				go->UpdateWorldTransform();
+			}
+
+			Audio::Update();
+		}
+
+		if (AEInputCheckTriggered(AEVK_P))
+			UISystem::TogglePauseMenuGame();
+
+		if (AEInputCheckTriggered(AEVK_Z))
+			UISystem::EndScreen();
+
+		accumulator += EngineCTX::dt;
+		while (accumulator >= EngineCTX::fixedDt)
+		{
+			Physics::Step();
+			accumulator -= EngineCTX::fixedDt;
+		}
+
+		Physics::SyncToLocal();
+
+		{
+			PROFILE_SCOPE("Particle");
+			ParticleSystem::Update();
+			ParticleSystem::Render();
+		}
+
+		EventHandler::CallQ();
+		Graphics::Execute();
 	}
+	PROFILE_FRAME_END();
 
-	Audio::Update();
 
-	if (AEInputCheckTriggered(AEVK_P))
-		EngineCTX::PauseTime();
-
-	accumulator += EngineCTX::dt;
-	while (accumulator >= EngineCTX::fixedDt)
-	{
-		Physics::Step();
-		accumulator -= EngineCTX::fixedDt;
-	}
-
-	ParticleSystem::Update();
-	EventHandler::CallQ();
-	Graphics::Execute();
-	ParticleSystem::Render();
 #ifdef _DEBUG
-	if (!IsEditorScene())
-		Debugger::Tick(*this);
+	//Profiler::Get().SetPaused(EngineCTX::debugMode);
+	if (EngineCTX::imguiInitialize)
+	{
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+
+		BuildDockSpace();
+		if(EngineCTX::debugMode)
+			profilerUI.Render();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		ImGui::EndFrame();
+	}
 #endif
 }
 

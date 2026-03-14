@@ -98,7 +98,8 @@ namespace //OBB
 		{
 			if (!col) continue;
 			auto box = dynamic_cast<BoxCollider*>(col);
-			auto& t = box->transform();
+			if (!box) continue;
+			auto& t = box->worldTransform(); //here
 			auto& obb = col->obb;
 			f32 rad = t.rotation * (PI / 180.f); // degrees -> radians
 			float2 axisX = { cosf(rad),  sinf(rad) };
@@ -281,6 +282,8 @@ namespace
 	//wrapped function steps 
 	void IntegrateMotion(f32 dt)
 	{
+		PROFILE_SCOPE(__func__);
+
 		for (auto rb : _rigidbodies)
 		{
 			//if is an unmoving but want to prevent phasing
@@ -291,7 +294,7 @@ namespace
 				rb->accumulatedForce += {0, -Physics::gravity };
 			}
 
-			auto& t = rb->transform();
+			auto& t = rb->worldTransform();
 
 			//integrate force
 			// [A = F/M]
@@ -305,6 +308,8 @@ namespace
 
 	void UpdateAABBs()
 	{
+		PROFILE_SCOPE(__func__);
+
 		for (auto col : _colliders)
 		{
 			if (!col) continue;
@@ -329,6 +334,8 @@ namespace
 
 	void BuildSpatialGrid()
 	{
+		PROFILE_SCOPE(__func__);
+
 		//clear grid first
 		ClearGrid(_grid);
 
@@ -359,6 +366,8 @@ namespace
 
 	void GenerateBroadPhasePairs()
 	{
+		PROFILE_SCOPE(__func__);
+
 		_broadphasePairs.clear();
 
 		std::unordered_set<u64, PairHash> seen; //only needs to exist in this scope
@@ -395,6 +404,8 @@ namespace
 
 	void NarrowPhaseCollision()
 	{
+		PROFILE_SCOPE(__func__);
+
 		_manifolds.clear();
 		//iterate through the pairs
 		//we do obb on each
@@ -458,6 +469,8 @@ namespace
 
 	void ResolveCollision()
 	{
+		PROFILE_SCOPE(__func__);
+
 		for (auto& manifold : _manifolds)
 		{
 			Collider* c1 = manifold.c1;
@@ -551,9 +564,9 @@ namespace
 				float2 correction = normal * correctionMag;
 
 				if (rb1_solid)
-					c1->gameObject().transform().position = c1->gameObject().transform().position + correction * invMass1;
+					c1->gameObject().worldTransform().position = c1->gameObject().worldTransform().position + correction * invMass1;
 				if (rb2_solid)
-					c2->gameObject().transform().position = c2->gameObject().transform().position - correction * invMass2;
+					c2->gameObject().worldTransform().position = c2->gameObject().worldTransform().position - correction * invMass2;
 			}
 		}
 	}
@@ -616,7 +629,10 @@ namespace Physics
 
 	void Step()
 	{
-		//Debug::ScopedTimer timer("Physics");
+		PROFILE_SCOPE("Physics");
+
+		if (_rigidbodies.empty() && _colliders.empty()) return;
+
 		f32 dt = EngineCTX::fixedDt;
 
 		IntegrateMotion(dt);
@@ -740,5 +756,35 @@ namespace Physics
 		outHit.layerHit = closestCol->layer;
 
 		return true;
+	}
+
+	void SyncToLocal()
+	{
+		for (auto rb : _rigidbodies)
+		{
+			if (!rb) continue;
+			GameObject& go = rb->gameObject();
+			// If no parent, local == world directly
+			// If parented, invert parent's world transform
+			const GameObject* parent = go.parent();
+			if (!parent)
+			{
+				go.transform() = go.worldTransform();
+			}
+			else
+			{
+				const Transform& pw = parent->worldTransform();
+				Transform& local = go.transform();
+				Transform& world = go.worldTransform();
+
+				local.position = (pw.scale.x != 0.f && pw.scale.y != 0.f)
+					? (world.position - pw.position) / pw.scale
+					: (world.position - pw.position);
+				local.scale = (pw.scale.x != 0.f && pw.scale.y != 0.f)
+					? world.scale / pw.scale
+					: world.scale;
+				local.rotation = world.rotation - pw.rotation;
+			}
+		}
 	}
 }

@@ -20,7 +20,55 @@ private:
 	std::vector<std::unique_ptr<GameObject>> _children{}; //unused for now
 	std::vector<EventHandler::SubscriptionHandle> _eventList{};
 	Transform _transform{}; //this will always be local
-	Transform _worldTransform{};
+	Transform _worldTransform{}; //always use this for physics/render
+
+	void WorldToLocal()
+	{
+		if (!_parent) //local = world if no parent
+		{
+			_transform = _worldTransform;
+			return;
+		}
+
+		const Transform& pw = _parent->_worldTransform;
+
+		float2 worldPos = _worldTransform.position;
+
+		//convert local to world
+		float2 pos = (pw.scale != 0.f) ? (worldPos - pw.position) / pw.scale : (worldPos - pw.position);
+		float2 scl = (pw.scale != 0.f)? _worldTransform.scale / pw.scale : _worldTransform.scale;
+		float rot = _worldTransform.rotation - pw.rotation;
+
+		_transform.position = pos;
+		_transform.scale = scl;
+		_transform.rotation = rot;
+	}
+
+	void LocalToWorld()
+	{
+		if (!_parent)
+		{
+			_worldTransform = _transform;
+			return;
+		}
+
+		const Transform& pw = _parent->_worldTransform;
+		float2 localPos = _transform.position;
+		
+
+		float2 pos = pw.position + (localPos * pw.scale);
+		float2 scl = pw.scale * _transform.scale;
+		float rot = pw.rotation + _transform.rotation;
+
+		_worldTransform.position = pos;
+		_worldTransform.scale = scl;
+		_worldTransform.rotation = rot;
+
+		//propogate to children as well
+		for (auto& child : _children)
+			child->LocalToWorld();
+	}
+
 
 public:
 	void OnStart()
@@ -34,19 +82,28 @@ public:
 
 	void OnUpdate()
 	{
-		UpdateWorldTransform();
+		PROFILE_SCOPE(__func__);
 
-		if (!_active)
-			return;
-
-		for (auto& [type, comp] : _componentMap)
+		if (_active)
 		{
-			if(comp.get()->active())
-				comp.get()->OnUpdate();
+			PROFILE_SCOPE("Components");
+			for (auto& [type, comp] : _componentMap)
+			{
+				if (comp.get()->active())
+				{
+					PROFILE_SCOPE("OnUpdate");
+					comp.get()->OnUpdate();
+				}
+			}		
 		}
 
 		for (auto& child : _children)
-			child->OnUpdate();
+		{
+			if (child->active())
+			{
+				child->OnUpdate();
+			}
+		}
 	}
 
 	void OnDestroy()
@@ -139,33 +196,7 @@ public:
 
 	void AddChild(std::unique_ptr<GameObject> child)
 	{
-		UpdateWorldTransform();           // refresh this object's world chain
-		child->UpdateWorldTransform();    // refresh child's world chain (still unparented, so world == local)
-
 		child->_parent = this;
-
-		// Convert child's current world position into local space of this parent.
-		// Position: subtract parent world pos, then un-apply parent scale.
-		child->_transform.position.x = _worldTransform.scale.x != 0.f
-			? (child->_worldTransform.position.x - _worldTransform.position.x) / _worldTransform.scale.x
-			: (child->_worldTransform.position.x - _worldTransform.position.x);
-
-		child->_transform.position.y = _worldTransform.scale.y != 0.f
-			? (child->_worldTransform.position.y - _worldTransform.position.y) / _worldTransform.scale.y
-			: (child->_worldTransform.position.y - _worldTransform.position.y);
-
-		// Scale: divide child world scale by parent world scale.
-		child->_transform.scale.x = _worldTransform.scale.x != 0.f
-			? child->_worldTransform.scale.x / _worldTransform.scale.x
-			: child->_worldTransform.scale.x;
-
-		child->_transform.scale.y = _worldTransform.scale.y != 0.f
-			? child->_worldTransform.scale.y / _worldTransform.scale.y
-			: child->_worldTransform.scale.y;
-
-		// Rotation: subtract parent world rotation.
-		child->_transform.rotation = child->_worldTransform.rotation - _worldTransform.rotation;
-
 		_children.emplace_back(std::move(child));
 
 		// Propagate so the child's _worldTransform is consistent immediately.
@@ -258,7 +289,9 @@ public:
 
 		// propagate to children
 		for (auto& child : _children)
+		{
 			child->UpdateWorldTransform(&_worldTransform);
+		}
 	}
 
 

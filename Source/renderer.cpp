@@ -21,21 +21,6 @@ namespace Graphics
         PrimitiveType type;
         std::string text; //if using text renderer
 
-        //sorting operator
-        //bool operator<(const RenderCommand& other) const 
-        //{
-        //    //primary layer sort
-        //    if (data.layer != other.data.layer)
-        //        return data.layer < other.data.layer;
-
-        //    //secondary sort with same layer
-        //    if (data.sortOrder != other.data.sortOrder)
-        //        return data.sortOrder < other.data.sortOrder;
-
-        //    //sort by texture, prevents additional texture set calls
-        //    return data.texture < other.data.texture;
-        //}
-
         bool operator<(const RenderCommand& other) const
         {
             return data.sortKey < other.data.sortKey;
@@ -219,6 +204,7 @@ namespace Graphics
         
         void RadixSort(std::vector<RenderCommand>& buf) 
         {
+            PROFILE_SCOPE(__func__);
             const size_t n = buf.size();
             if (n < 2) return;
 
@@ -342,6 +328,29 @@ namespace Graphics
             mtx.m[2][0] = 0.f;
             mtx.m[2][1] = 0.f;
             mtx.m[2][2] = 1.f;
+        }
+
+        bool InViewport(const RenderData& d)
+        {
+            if (d.isScreenSpace) return true; // always render screenspace objects
+
+            f32 winW = (f32)AEGfxGetWindowWidth();
+            f32 winH = (f32)AEGfxGetWindowHeight();
+
+            float2 screenPos;
+            screenPos.x = CameraData::camM.m[0][0] * d.pos.x + CameraData::camM.m[0][1] * d.pos.y + CameraData::camM.m[0][2];
+            screenPos.y = CameraData::camM.m[1][0] * d.pos.x + CameraData::camM.m[1][1] * d.pos.y + CameraData::camM.m[1][2];
+
+            f32 objW = fabsf(d.scale.x) * 0.5f;
+            f32 objH = fabsf(d.scale.y) * 0.5f;
+
+            // buffer set slightly outside
+            f32 boundX = winW * 0.5f * 1.1f;
+            f32 boundY = winH * 0.5f * 1.1f;
+
+            // AABB
+            return (screenPos.x + objW > -boundX) && (screenPos.x - objW < boundX) &&
+                   (screenPos.y + objH > -boundY) && (screenPos.y - objH < boundY);
         }
     
         void DrawMesh(VertexBuffer* mesh, DrawMode mode, Texture* texture)
@@ -470,6 +479,8 @@ namespace Graphics
 
     void Submit(const RenderData& data, PrimitiveType type, const char* text)
     {
+        if (!InViewport(data)) return;
+
         //construct command
         RenderCommand cmd;
         cmd.data = data;
@@ -504,11 +515,13 @@ namespace Graphics
 
     void Execute() //executes this frame's commands
     {
+        PROFILE_SCOPE("Renderer");
         //Debug::ScopedTimer t("Render:Execute");
 
         //sort the commands
         //swaps algorithm based off buffer size
-        {      
+        {   
+            PROFILE_SCOPE("Sort");
             if (_commandBuffer.size() < 1500)
                 std::sort(_commandBuffer.begin(), _commandBuffer.end());
             else    
@@ -520,40 +533,39 @@ namespace Graphics
         _currentMode = (AEGfxRenderMode)-1;
 
         //dispatch commands
+        for (const auto& cmd : _commandBuffer) 
         {
-			//Debug::ScopedTimer t("render:draw");
-            for (const auto& cmd : _commandBuffer) 
+            PROFILE_SCOPE("Dispatch");
+            const RenderData& d = cmd.data;
+            //apply states
+            ApplyStates(d);
+
+            //set matrix
+            MTX transform{};
+            GetTransformMTX(d.pos,d.scale,d.rot,d.alignment,transform, !d.isScreenSpace);
+            AEGfxSetTransform(transform.m);
+        
+
+            //draw based off primitive type
+            switch (cmd.type) 
             {
-                const RenderData& d = cmd.data;
-                //apply states
-                ApplyStates(d);
-
-                //set matrix
-                MTX transform{};
-                GetTransformMTX(d.pos,d.scale,d.rot,d.alignment,transform, !d.isScreenSpace);
-                AEGfxSetTransform(transform.m);
-            
-
-                //draw based off primitive type
-                switch (cmd.type) 
-                {
-                case PrimitiveType::QUAD:
-                    DrawMesh(_quadMesh, d.drawMode, d.texture);
-                    break;
-                case PrimitiveType::TRIANGLE:
-                    DrawMesh(_triangleMesh, d.drawMode, d.texture);
-                    break;
-                case PrimitiveType::CIRCLE:
-                    DrawMesh(_circleMesh, d.drawMode, d.texture);
-                    break;
-                case PrimitiveType::BOX:
-                    DrawMesh(_boxMesh, d.drawMode, d.texture);
-                    break;
-                case PrimitiveType::TEXT:
-                    DrawTextMesh(cmd.text.c_str(), d);
-                    break;
-                }
+            case PrimitiveType::QUAD:
+                DrawMesh(_quadMesh, d.drawMode, d.texture);
+                break;
+            case PrimitiveType::TRIANGLE:
+                DrawMesh(_triangleMesh, d.drawMode, d.texture);
+                break;
+            case PrimitiveType::CIRCLE:
+                DrawMesh(_circleMesh, d.drawMode, d.texture);
+                break;
+            case PrimitiveType::BOX:
+                DrawMesh(_boxMesh, d.drawMode, d.texture);
+                break;
+            case PrimitiveType::TEXT:
+                DrawTextMesh(cmd.text.c_str(), d);
+                break;
             }
+        
         }
 
         //clears buffer for nxt frame

@@ -97,11 +97,33 @@ void AudioEmitter::OnStart()
 	sound.setRelativeToListener(relativeToListener); //follows the listener
 	sound.setMinDistance(10.f);
 	sound.setAttenuation(0.2f);
+
+	
 }
 
 void AudioEmitter::Play()
 {
-	soundPtr.get()->play();
+	auto& sound = *soundPtr.get();
+	sound.setVolume(volume);
+	sound.setPitch(pitch);
+	sound.setLooping(loop);
+	sound.setSpatializationEnabled(spatialize);
+	sound.setRelativeToListener(relativeToListener); //follows the listener
+	sound.setMinDistance(10.f);
+	sound.setAttenuation(0.2f);
+	sound.play();
+}
+
+void AudioEmitter::Play(sf::Sound clip)
+{
+	clip.setVolume(volume);
+	clip.setPitch(pitch);
+	clip.setLooping(loop);
+	clip.setSpatializationEnabled(spatialize);
+	clip.setRelativeToListener(relativeToListener); //follows the listener
+	clip.setMinDistance(10.f);
+	clip.setAttenuation(0.2f);
+	clip.play();
 }
 
 void AudioEmitter::DrawInInspector()

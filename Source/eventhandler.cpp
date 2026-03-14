@@ -11,7 +11,6 @@ namespace EventHandler
 			auto type = event.getType(); // Get the std::type_index of the IEvent.
 			auto it = subscribers.find(type); // Find the iterator to event inner map element in subscriber outer map.
 
-
 			// Check iterator is valid.
 			if (it != subscribers.end())
 			{

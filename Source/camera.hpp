@@ -19,6 +19,7 @@ namespace CameraSystem {
 	void OnUpdate();
 	void OnExit();
 	void MoveCamera(Transform);
+	void ZoomInput();
 
 	float2 ScreenToWorld(float2 screen);
 }

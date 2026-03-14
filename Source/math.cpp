@@ -52,6 +52,21 @@ float2 float2::operator/(const float rhs)
 	return { x / rhs,y / rhs };
 }
 
+float2 float2::operator/(const float2 rhs)
+{
+	return { x / rhs.x, y / rhs.y };
+}
+
+
+bool float2::operator!= (const float2 rhs) const
+{
+	return (x != rhs.x) && (y != rhs.y);
+}
+
+bool float2::operator!= (const float rhs) const
+{
+	return (x != rhs) && (y != rhs);
+}
 
 
 std::ostream& operator<< (std::ostream& o,const float2& f)
@@ -64,6 +79,8 @@ bool operator== (const float2& a, const float2& b)
 {
 	return (a.x == b.x) && (a.y == b.y);
 }
+
+
 
 f32 absf(f32 a) { return a < 0.f ? -a : a; }
 f32 dot(float2 a, float2 b) { return a.x * b.x + a.y * b.y; }

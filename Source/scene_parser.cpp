@@ -70,6 +70,11 @@ namespace SceneIO
             auto& c = go.AddComponent<Button>();
             c.Deserialize(compObj);
         }
+        else if (type == "Slider")
+        {
+            auto& c = go.AddComponent<Slider>();
+            c.Deserialize(compObj);
+        }
         else if (type == "RigidBody")
         {   
             auto& c = go.AddComponent<RigidBody>();

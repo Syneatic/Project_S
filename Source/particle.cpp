@@ -1,12 +1,34 @@
-#pragma once
-
 #include "particle.hpp"
 #include "physics.hpp"
 #include "camera.hpp"
 
 namespace
 {
-		
+	int FindDyingParticle(const ParticleSystem::Pool& pool)
+	{
+		int   idx = -1;
+		float oldestRatio = -1.f;
+
+		for (int i = 0; i < ParticleSystem::MAX_PARTICLES; i++)
+		{
+			if (!pool.active[i]) continue;
+
+			float t = pool.time[i];
+			float lt = pool.lifetime[i];
+			float ratio = t / lt;
+
+			if (ratio > oldestRatio)
+			{
+				idx = i;
+				oldestRatio = ratio;
+			}
+		}
+		if (idx >= 0)
+		{
+			//Debug::Log("FOUND DYING PARTICLE AT : ", idx);
+		}
+		return idx;
+	}
 }
 
 
@@ -27,6 +49,8 @@ namespace ParticleSystem
 
 	void Update()
 	{
+		PROFILE_FUNCTION();
+
 		//Debug::ScopedTimer t("p_update");
 		int activeParticles{};
 		
@@ -69,6 +93,7 @@ namespace ParticleSystem
 	void Render() //by pass our wrapper for performance's sake
 	{
 		//Debug::ScopedTimer t("p_render");
+		PROFILE_SCOPE(__func__);
 
 		for (int i = 0; i < MAX_PARTICLES; ++i) 
 		{
@@ -91,7 +116,10 @@ namespace ParticleSystem
 			data.scale = { g_pool.size[i], g_pool.size[i] };
 			data.sortOrder = g_pool.sortOrder[i];
 
-			Graphics::Submit(data, Graphics::PrimitiveType::QUAD);
+			{
+				PROFILE_SCOPE("Submit");
+				Graphics::Submit(data, Graphics::PrimitiveType::QUAD);
+			}
 		}
 	}
 
@@ -99,9 +127,21 @@ namespace ParticleSystem
 		Color col, bool shouldCollide, FN behaviour, float size, float rotation, 
 		Graphics::RenderLayer layer, float sortOrder, bool timeScale, u32 layerMask)
 	{
-		if (g_pool.freeStackTop < 0) return; // Pool is full
+		int index = 0;
 
-		int index = g_pool.freeStack[g_pool.freeStackTop--];
+		if (g_pool.freeStackTop < 0)
+		{
+			index = FindDyingParticle(g_pool);
+		}
+		else
+		{
+			index = g_pool.freeStack[g_pool.freeStackTop--];
+			if (index < 0)
+			{
+				Debug::Log("INVALID FOUND!");
+				return;
+			}
+		}
 
 		g_pool.pos[index]      = pos;
 		g_pool.vel[index]      = vel;
@@ -125,27 +165,9 @@ namespace ParticleSystem
 	// Overload to pass a builder object by reference to create a pool.
 	void Emit(PoolBuilder const& pb)
 	{
-		if (g_pool.freeStackTop < 0) return; // Pool is full
-
-		int index = g_pool.freeStack[g_pool.freeStackTop--];
-
-		g_pool.pos[index] = pb.pos;
-		g_pool.vel[index] = pb.vel;
-		g_pool.timeScale[index] = pb.timescale;
-		g_pool.time[index] = pb.time;
-		g_pool.lifetime[index] = pb.life;
-		g_pool.color[index] = pb.col;
-		g_pool.active[index] = true;
-		g_pool.size[index] = pb.size;
-		g_pool.rotation[index] = pb.rotation;
-
-		g_pool.collide[index] = pb.shouldCollide;
-		g_pool.behaviour[index] = pb.behaviour;
-		
-		g_pool.layerMask[index] = pb.layerMask;
-
-		g_pool.layer[index] = pb.layer;
-		g_pool.sortOrder[index] = pb.sortOrder + (static_cast<f32>(index) * 0.001f);
+		Emit(pb.pos,pb.vel,pb.time,pb.life,pb.col,pb.shouldCollide,
+			pb.behaviour,pb.size,pb.rotation,pb.layer,pb.sortOrder,
+			pb.timescale,pb.layerMask);
 	}
 
 	void Flush()
