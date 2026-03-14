@@ -45,6 +45,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -158,6 +159,7 @@
               "type" : "Button"
             },
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -195,6 +197,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -270,6 +273,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -345,6 +349,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -477,6 +482,7 @@
               "type" : "Button"
             },
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -586,11 +592,7 @@
               "components" : 
               [
                 {
-                  "audioS" : 0,
-                  "type" : "Slider",
-                  "value" : 0.0
-                },
-                {
+                  "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
                   "color" : 
@@ -607,6 +609,11 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 0,
+                  "type" : "Slider",
+                  "value" : 0.0
                 }
               ],
               "name" : "SettingsSFXSliderKnob",
@@ -626,6 +633,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -701,6 +709,12 @@
               "components" : 
               [
                 {
+                  "audioS" : 0,
+                  "type" : "Slider",
+                  "value" : 0.0
+                },
+                {
+                  "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
                   "color" : 
@@ -717,11 +731,6 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
-                },
-                {
-                  "audioS" : 0,
-                  "type" : "Slider",
-                  "value" : 0.0
                 }
               ],
               "name" : "SettingsMusicSliderKnob_clone",
@@ -741,6 +750,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -865,6 +875,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -906,6 +917,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 

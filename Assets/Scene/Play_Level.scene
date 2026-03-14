@@ -24,6 +24,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -72,6 +73,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -120,6 +122,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -168,6 +171,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -216,6 +220,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -264,6 +269,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -312,6 +318,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -360,6 +367,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -408,6 +416,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -456,6 +465,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -504,6 +514,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -552,6 +563,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -600,6 +612,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -648,6 +661,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -696,6 +710,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -744,6 +759,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -792,6 +808,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -840,6 +857,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -888,6 +906,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -936,6 +955,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -984,6 +1004,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1032,6 +1053,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1187,6 +1209,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1235,6 +1258,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1283,6 +1307,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1331,6 +1356,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1379,6 +1405,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1427,6 +1454,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1475,6 +1503,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1523,6 +1552,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1571,6 +1601,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1619,6 +1650,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1667,6 +1699,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1715,6 +1748,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1763,6 +1797,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1811,6 +1846,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1859,6 +1895,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1907,6 +1944,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1955,6 +1993,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2003,6 +2042,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2051,6 +2091,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2099,6 +2140,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2164,6 +2206,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2212,6 +2255,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2260,6 +2304,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2308,6 +2353,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2356,6 +2402,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2427,16 +2474,16 @@
             {
               "colorA" : 
               [
-                0.0,
-                0.0,
-                0.0,
+                1.0,
+                1.0,
+                1.0,
                 1.0
               ],
               "colorB" : 
               [
-                0.0,
-                0.0,
-                0.0,
+                0.54411768913269043,
+                0.54411768913269043,
+                0.54411768913269043,
                 1.0
               ],
               "isBurst" : false,
@@ -2627,6 +2674,7 @@
           "type" : "BoxCollider"
         },
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2708,6 +2756,7 @@
           "type" : "BoxCollider"
         },
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2794,6 +2843,7 @@
           "type" : "BoxCollider"
         },
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2881,6 +2931,7 @@
           "type" : "BoxCollider"
         },
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2965,6 +3016,7 @@
           "type" : "BoxCollider"
         },
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -3056,6 +3108,7 @@
           "type" : "BoxCollider"
         },
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -3164,6 +3217,7 @@
           "type" : "BoxCollider"
         },
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -3272,6 +3326,7 @@
           "type" : "BoxCollider"
         },
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -3429,6 +3484,7 @@
           "type" : "BoxCollider"
         },
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -3561,6 +3617,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -3609,6 +3666,7 @@
       "components" : 
       [
         {
+          "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -3727,6 +3785,7 @@
       "components" : 
       [
         {
+          "active" : true,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -3821,7 +3880,7 @@
           "position" : 
           [
             0.0,
-            350.0
+            -253.99998474121094
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -3836,6 +3895,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -3911,6 +3971,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -3990,6 +4051,7 @@
               "type" : "Button"
             },
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -4065,6 +4127,7 @@
               "type" : "Button"
             },
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -4189,6 +4252,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -4268,6 +4332,7 @@
               "type" : "Button"
             },
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -4426,6 +4491,7 @@
           "components" : 
           [
             {
+              "active" : false,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -4501,6 +4567,7 @@
           "components" : 
           [
             {
+              "active" : false,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -4580,6 +4647,7 @@
               "type" : "Button"
             },
             {
+              "active" : false,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -4655,6 +4723,7 @@
               "type" : "Button"
             },
             {
+              "active" : false,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
