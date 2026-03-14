@@ -473,6 +473,13 @@ namespace //wrappers for drawing ui elements
 		if (Editor::selectedObjects.empty()) { ImGui::End(); return; }
 		GameObject& selectedObj = *Editor::selectedObjects[0];
 
+		ImGui::TextUnformatted("Active");
+		bool active = selectedObj.active();
+		if (ImGui::Checkbox("##active", &active))
+		{
+			selectedObj.active(active);
+		}
+
 		//display selected object's properties
 		//iterate through each component and display its properties here
 		//name text box
