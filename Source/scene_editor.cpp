@@ -35,6 +35,8 @@ namespace
 
 	void UpdateGO(GameObject& go)
 	{
+		if (!(go.active())) return;
+
 		for (auto& [type, comp] : go.componentMap())
 		{
 			if (auto* c = dynamic_cast<Renderer*>(comp.get()))
@@ -52,6 +54,7 @@ namespace
 		{
 			for (auto& child : go.children())
 			 {
+
 				 UpdateGO(*child);
 			}
 		}
