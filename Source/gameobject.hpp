@@ -102,7 +102,10 @@ public:
 		}
 
 		for (auto& child : _children)
-			child->OnUpdate();
+		{
+			if(child->active())
+				child->OnUpdate();
+		}
 	}
 
 	void OnDestroy()
