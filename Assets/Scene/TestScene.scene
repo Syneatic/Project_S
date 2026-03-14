@@ -54,12 +54,12 @@
               ],
               "sortOrder" : 3.0,
               "spawnLineLength" : 900.0,
-              "spawnRate" : 1000.0,
+              "spawnRate" : 1200.0,
               "spawnShape" : 3,
               "speed" : 
               [
-                1000.0,
-                1000.0
+                1200.0,
+                1200.0
               ],
               "spread" : 
               [
@@ -74,14 +74,14 @@
           "name" : "FadeIn",
           "position" : 
           [
-            0.0,
+            -40.0,
             0.0
           ],
           "rotation" : -90.0,
           "scale" : 
           [
-            0.0,
-            0.0
+            1.0,
+            1.0
           ]
         }
       ],
@@ -172,6 +172,85 @@
       [
         20.0,
         50.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "colorA" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "colorB" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "isBurst" : false,
+          "lifetime" : 
+          [
+            3.0,
+            3.0
+          ],
+          "radius" : 
+          [
+            0.0,
+            50.0
+          ],
+          "rect" : 
+          [
+            50.0,
+            50.0
+          ],
+          "renderLayer" : 2,
+          "rotation" : 
+          [
+            0.0,
+            360.0
+          ],
+          "size" : 
+          [
+            100.0,
+            150.0
+          ],
+          "sortOrder" : 3.0,
+          "spawnLineLength" : 900.0,
+          "spawnRate" : 1200.0,
+          "spawnShape" : 3,
+          "speed" : 
+          [
+            1000.0,
+            1000.0
+          ],
+          "spread" : 
+          [
+            0.0,
+            0.0
+          ],
+          "time" : 2.0,
+          "timescale" : false,
+          "type" : "ParticleEmitter"
+        }
+      ],
+      "name" : "FadeOut",
+      "position" : 
+      [
+        800.0,
+        0.0
+      ],
+      "rotation" : 90.0,
+      "scale" : 
+      [
+        1.0,
+        1.0
       ]
     },
     {
@@ -1202,18 +1281,14 @@
       "components" : 
       [
         {
-          "buttonFunctionId" : 11,
-          "type" : "Button"
-        },
-        {
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
           [
-            1.0,
-            1.0,
-            1.0,
-            1.0
+            0.45098039507865906,
+            0.45098039507865906,
+            0.45098039507865906,
+            0.86274510622024536
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1224,45 +1299,364 @@
           "type" : "SpriteRenderer"
         }
       ],
-      "name" : "GameObject43",
+      "name" : "PauseOverlay",
       "position" : 
       [
-        -673.0,
-        368.0
+        0.0,
+        0.0
       ],
       "rotation" : 0.0,
       "scale" : 
       [
-        200.0,
-        75.0
+        1600.0,
+        900.0
       ]
     },
     {
       "active" : true,
-      "children" : [],
-      "components" : 
+      "children" : 
       [
         {
-          "alignment" : 4,
-          "color" : 
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Quit",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "QuitText",
+          "position" : 
           [
             0.0,
-            0.0,
-            0.0,
-            1.0
+            -253.99998474121094
           ],
-          "renderlayer" : 2,
-          "screenspace" : true,
-          "sortOrder" : 1.0,
-          "text" : "Quit",
-          "type" : "TextRenderer"
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "PAUSED",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "PauseHeader",
+          "position" : 
+          [
+            0.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.5,
+            1.5
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 2,
+              "type" : "Button"
+            }
+          ],
+          "name" : "ResumeButton",
+          "position" : 
+          [
+            0.0,
+            212.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            320.0,
+            80.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Resume",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "ResumeText",
+          "position" : 
+          [
+            -3.0000686645507812,
+            212.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 3,
+              "type" : "Button"
+            }
+          ],
+          "name" : "RestartButton",
+          "position" : 
+          [
+            0.0,
+            47.000003814697266
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            320.0,
+            80.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Restart",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "RestartText",
+          "position" : 
+          [
+            0.0,
+            52.999992370605469
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "buttonFunctionId" : 5,
+              "type" : "Button"
+            },
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "SettingsButton",
+          "position" : 
+          [
+            0.0,
+            -97.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            320.0,
+            80.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Settings",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "SettingsText",
+          "position" : 
+          [
+            0.0,
+            -92.999984741210938
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            0.89999997615814209,
+            0.89999997615814209
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "buttonFunctionId" : 7,
+              "type" : "Button"
+            },
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "QuitButton",
+          "position" : 
+          [
+            0.0,
+            -264.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            320.0,
+            80.0
+          ]
         }
       ],
-      "name" : "GameObject81",
+      "components" : [],
+      "name" : "PauseMenuHolder",
       "position" : 
       [
-        -671.0,
-        379.0
+        0.0,
+        0.0
       ],
       "rotation" : 0.0,
       "scale" : 
@@ -1273,81 +1667,258 @@
     },
     {
       "active" : true,
-      "children" : [],
-      "components" : 
+      "children" : 
       [
         {
-          "colorA" : 
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Quit",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "EndQuitText",
+          "position" : 
           [
             0.0,
-            0.0,
-            0.0,
+            -145.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
             1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "",
+              "type" : "TextRenderer"
+            }
           ],
-          "colorB" : 
+          "name" : "EndScreenHeader",
+          "position" : 
           [
             0.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.5,
+            1.5
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 3,
+              "type" : "Button"
+            }
+          ],
+          "name" : "EndRestartButton",
+          "position" : 
+          [
             0.0,
+            95.999984741210938
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            320.0,
+            80.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Restart",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "EndRestartText",
+          "position" : 
+          [
             0.0,
+            101.99997711181641
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
             1.0
-          ],
-          "isBurst" : false,
-          "lifetime" : 
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
           [
-            3.0,
-            3.0
+            {
+              "buttonFunctionId" : 7,
+              "type" : "Button"
+            },
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "type" : "SpriteRenderer"
+            }
           ],
-          "radius" : 
-          [
-            0.0,
-            50.0
-          ],
-          "rect" : 
-          [
-            50.0,
-            50.0
-          ],
-          "renderLayer" : 2,
-          "rotation" : 
-          [
-            0.0,
-            360.0
-          ],
-          "size" : 
-          [
-            100.0,
-            150.0
-          ],
-          "sortOrder" : 3.0,
-          "spawnLineLength" : 900.0,
-          "spawnRate" : 1000.0,
-          "spawnShape" : 3,
-          "speed" : 
-          [
-            1000.0,
-            1000.0
-          ],
-          "spread" : 
+          "name" : "EndQuitButton",
+          "position" : 
           [
             0.0,
-            0.0
+            -155.00001525878906
           ],
-          "time" : 1.5,
-          "timescale" : false,
-          "type" : "ParticleEmitter"
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            320.0,
+            80.0
+          ]
         }
       ],
-      "name" : "FadeOut",
+      "components" : [],
+      "name" : "EndScreenHolder",
       "position" : 
-      [
-        800.0,
-        0.0
-      ],
-      "rotation" : 90.0,
-      "scale" : 
       [
         0.0,
         0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : 
+      [
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Settings",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "PauseSettingsHeader",
+          "position" : 
+          [
+            0.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.25,
+            1.25
+          ]
+        }
+      ],
+      "components" : [],
+      "name" : "PauseSettingsHolder",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        1.0
       ]
     }
   ],

@@ -245,7 +245,7 @@ void SpriteRenderer::Deserialize(const Json::Value& compObj)
 
 void SpriteRenderer::Draw()
 {
-    Transform& t = _transform;
+    Transform& t = _worldTransform;
     Graphics::RenderData data{};
     //transform
     data.pos = t.position;

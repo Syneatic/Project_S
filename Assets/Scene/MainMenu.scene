@@ -3,176 +3,778 @@
   [
     {
       "active" : true,
-      "children" : [],
-      "components" : 
+      "children" : 
       [
         {
-          "alignment" : 4,
-          "color" : 
+          "active" : true,
+          "children" : [],
+          "components" : 
           [
-            1.0,
-            1.0,
-            1.0,
-            1.0
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "text" : "Project_S",
+              "type" : "TextRenderer"
+            }
           ],
-          "renderlayer" : 2,
-          "screenspace" : true,
-          "sortOrder" : 0.0,
-          "text" : "Project_S",
-          "type" : "TextRenderer"
-        }
-      ],
-      "name" : "Title",
-      "position" : 
-      [
-        0.0,
-        316.0
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        1.5,
-        0.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
+          "name" : "Title",
+          "position" : 
           [
-            1.0,
-            1.0,
-            1.0,
-            1.0
+            0.0,
+            355.0
           ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 2,
-          "rendermode" : 1,
-          "screenspace" : true,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.5,
+            0.0
+          ]
         },
         {
-          "buttonFunctionId" : 0,
-          "type" : "Button"
-        }
-      ],
-      "name" : "PlayButton",
-      "position" : 
-      [
-        0.0,
-        135.0
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        400.0,
-        100.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "alignment" : 4,
-          "color" : 
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 0,
+              "type" : "Button"
+            }
+          ],
+          "name" : "NewGameButton",
+          "position" : 
           [
             0.0,
-            0.0,
-            0.0,
-            1.0
+            199.0
           ],
-          "renderlayer" : 2,
-          "screenspace" : true,
-          "sortOrder" : 1.0,
-          "text" : "Play",
-          "type" : "TextRenderer"
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            400.0,
+            100.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "New Game",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "NewGameText",
+          "position" : 
+          [
+            0.0,
+            199.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "Load Game",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "LoadGameText",
+          "position" : 
+          [
+            0.0,
+            75.999992370605469
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "buttonFunctionId" : 1,
+              "type" : "Button"
+            },
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "LoadGameButton",
+          "position" : 
+          [
+            0.0,
+            70.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            400.0,
+            100.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 4,
+              "type" : "Button"
+            }
+          ],
+          "name" : "SettingsButton",
+          "position" : 
+          [
+            0.0,
+            -61.000057220458984
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            400.0,
+            100.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "Settings",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "SettingsText",
+          "position" : 
+          [
+            0.0,
+            -61.000057220458984
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 6,
+              "type" : "Button"
+            }
+          ],
+          "name" : "CreditsButton",
+          "position" : 
+          [
+            0.0,
+            -193.00004577636719
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            400.0,
+            100.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "Credits",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "CreditsText",
+          "position" : 
+          [
+            0.0,
+            -191.00004577636719
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 8,
+              "type" : "Button"
+            }
+          ],
+          "name" : "QuitButton",
+          "position" : 
+          [
+            0.0,
+            -326.00003051757812
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            400.0,
+            100.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "Quit",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "QuitText",
+          "position" : 
+          [
+            0.0,
+            -318.00003051757812
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
         }
       ],
-      "name" : "PlayText",
+      "components" : [],
+      "name" : "MainMenuHolder",
       "position" : 
       [
         0.0,
-        135.0
+        0.0
       ],
       "rotation" : 0.0,
       "scale" : 
       [
         1.0,
-        0.0
+        1.0
       ]
     },
     {
       "active" : true,
-      "children" : [],
-      "components" : 
+      "children" : 
       [
         {
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
+          "active" : true,
+          "children" : [],
+          "components" : 
           [
-            1.0,
-            1.0,
-            1.0,
-            1.0
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "text" : "Settings",
+              "type" : "TextRenderer"
+            }
           ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 2,
-          "rendermode" : 1,
-          "screenspace" : true,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
+          "name" : "SettingsHeader",
+          "position" : 
+          [
+            0.0,
+            320.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.25,
+            1.25
+          ]
         },
         {
-          "buttonFunctionId" : 3,
-          "type" : "Button"
-        }
-      ],
-      "name" : "SettingsButton",
-      "position" : 
-      [
-        0.0,
-        0.0
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        400.0,
-        100.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "buttonFunctionId" : 4,
+              "type" : "Button"
+            },
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "SettingsBackButton",
+          "position" : 
+          [
+            -600.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            240.0,
+            80.0
+          ]
+        },
         {
-          "alignment" : 4,
-          "color" : 
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Back",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "SettingsBackText",
+          "position" : 
+          [
+            -600.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "SFX",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "SettingsSFXHeader",
+          "position" : 
           [
             0.0,
-            0.0,
-            0.0,
-            1.0
+            170.0
           ],
-          "renderlayer" : 2,
-          "screenspace" : true,
-          "sortOrder" : 1.0,
-          "text" : "Settings",
-          "type" : "TextRenderer"
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            0.85000002384185791,
+            0.85000002384185791
+          ]
+        },
+        {
+          "active" : true,
+          "children" : 
+          [
+            {
+              "active" : true,
+              "children" : [],
+              "components" : 
+              [
+                {
+                  "audioS" : 0,
+                  "type" : "Slider",
+                  "value" : 0.0
+                },
+                {
+                  "alignment" : 4,
+                  "blendmode" : 1,
+                  "color" : 
+                  [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "fileName" : "",
+                  "meshdrawmode" : 3,
+                  "renderlayer" : 2,
+                  "rendermode" : 1,
+                  "screenspace" : true,
+                  "sortOrder" : 3.0,
+                  "type" : "SpriteRenderer"
+                }
+              ],
+              "name" : "SettingsSFXSliderKnob",
+              "position" : 
+              [
+                0.0,
+                0.0
+              ],
+              "rotation" : 0.0,
+              "scale" : 
+              [
+                0.05000000074505806,
+                2.5
+              ]
+            }
+          ],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                0.68627452850341797,
+                0.68627452850341797,
+                0.68627452850341797,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "SettingsSFXSliderTrack",
+          "position" : 
+          [
+            0.0,
+            30.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            500.0,
+            10.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "Music",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "SettingsMusicHeader",
+          "position" : 
+          [
+            0.0,
+            -130.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            0.85000002384185791,
+            0.85000002384185791
+          ]
+        },
+        {
+          "active" : true,
+          "children" : 
+          [
+            {
+              "active" : true,
+              "children" : [],
+              "components" : 
+              [
+                {
+                  "alignment" : 4,
+                  "blendmode" : 1,
+                  "color" : 
+                  [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "fileName" : "",
+                  "meshdrawmode" : 3,
+                  "renderlayer" : 2,
+                  "rendermode" : 1,
+                  "screenspace" : true,
+                  "sortOrder" : 3.0,
+                  "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 0,
+                  "type" : "Slider",
+                  "value" : 0.0
+                }
+              ],
+              "name" : "SettingsMusicSliderKnob_clone",
+              "position" : 
+              [
+                0.0,
+                0.0
+              ],
+              "rotation" : 0.0,
+              "scale" : 
+              [
+                0.05000000074505806,
+                2.5
+              ]
+            }
+          ],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                0.68627452850341797,
+                0.68627452850341797,
+                0.68627452850341797,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "SettingsMusicSliderTrack_clone",
+          "position" : 
+          [
+            0.0,
+            -263.00003051757812
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            500.0,
+            10.0
+          ]
         }
       ],
-      "name" : "SettingsText",
+      "components" : [],
+      "name" : "SettingsHolder",
       "position" : 
       [
         0.0,
@@ -182,157 +784,172 @@
       "scale" : 
       [
         1.0,
-        0.0
+        1.0
       ]
     },
     {
       "active" : true,
-      "children" : [],
-      "components" : 
+      "children" : 
       [
         {
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
+          "active" : true,
+          "children" : [],
+          "components" : 
           [
-            1.0,
-            1.0,
-            1.0,
-            1.0
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "text" : "Credits",
+              "type" : "TextRenderer"
+            }
           ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 2,
-          "rendermode" : 1,
-          "screenspace" : true,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
+          "name" : "CreditsHeader",
+          "position" : 
+          [
+            0.0,
+            320.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.25,
+            1.25
+          ]
         },
         {
-          "buttonFunctionId" : 10,
-          "type" : "Button"
-        }
-      ],
-      "name" : "CreditsButton",
-      "position" : 
-      [
-        0.0,
-        -133.0
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        400.0,
-        100.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "Back",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "CreditsBackText",
+          "position" : 
+          [
+            -600.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
         {
-          "alignment" : 4,
-          "color" : 
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 6,
+              "type" : "Button"
+            }
+          ],
+          "name" : "CreditsBackButton",
+          "position" : 
+          [
+            -600.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            240.0,
+            80.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 0,
+              "rendermode" : 2,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "CreditsPNG",
+          "position" : 
           [
             0.0,
-            0.0,
-            0.0,
-            1.0
+            0.0
           ],
-          "renderlayer" : 2,
-          "screenspace" : true,
-          "sortOrder" : 1.0,
-          "text" : "Credits",
-          "type" : "TextRenderer"
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
         }
       ],
-      "name" : "CreditsText",
+      "components" : [],
+      "name" : "CreditsHolder",
       "position" : 
       [
         0.0,
-        -131.0
+        0.0
       ],
       "rotation" : 0.0,
       "scale" : 
       [
         1.0,
-        0.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
-          [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 2,
-          "rendermode" : 1,
-          "screenspace" : true,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
-        },
-        {
-          "buttonFunctionId" : 12,
-          "type" : "Button"
-        }
-      ],
-      "name" : "QuitButton",
-      "position" : 
-      [
-        0.0,
-        -273.0
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        400.0,
-        100.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "alignment" : 4,
-          "color" : 
-          [
-            0.0,
-            0.0,
-            0.0,
-            1.0
-          ],
-          "renderlayer" : 2,
-          "screenspace" : true,
-          "sortOrder" : 1.0,
-          "text" : "Quit",
-          "type" : "TextRenderer"
-        }
-      ],
-      "name" : "QuitText",
-      "position" : 
-      [
-        0.0,
-        -265.0
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        1.0,
-        0.0
+        1.0
       ]
     },
     {
@@ -382,9 +999,9 @@
             100.0,
             100.0
           ],
-          "sortOrder" : 5.0,
+          "sortOrder" : 3.0,
           "spawnLineLength" : 900.0,
-          "spawnRate" : 1300.0,
+          "spawnRate" : 1000.0,
           "spawnShape" : 3,
           "speed" : 
           [
@@ -461,9 +1078,9 @@
             100.0,
             100.0
           ],
-          "sortOrder" : 5.0,
+          "sortOrder" : 3.0,
           "spawnLineLength" : 900.0,
-          "spawnRate" : 1000.0,
+          "spawnRate" : 1200.0,
           "spawnShape" : 3,
           "speed" : 
           [

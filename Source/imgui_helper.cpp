@@ -21,7 +21,7 @@ std::string FormatID(const std::string& label, const std::string& id)
 	std::string back = "##";
 	back += tolowerandnspc(label);
 	back += "_";
-	back += tolowerandnspc(label);
+	back += tolowerandnspc(id);
 	return back;
 }
 
@@ -37,7 +37,7 @@ void FloatDragReset(const std::string& label, std::string id, float* var, float 
 	TextUnformatted(label.c_str());
 	DragFloat(FormatID(label,id).c_str(), var, speed, min, max);
 	SameLine();
-	std::string btnLabel = "Reset##" + label;
+	std::string btnLabel = "Reset##" + label + id;
 	if (Button(btnLabel.c_str()))
 		*var = resetVal;
 }
@@ -53,7 +53,7 @@ void Float2DragReset(const std::string& label, std::string id, float* var, float
 	TextUnformatted(label.c_str());
 	DragFloat2(FormatID(label,id).c_str(), var, speed);
 	SameLine();
-	std::string btnLabel = "Reset##" + label;
+	std::string btnLabel = "Reset##" + label + id;
 	if (Button(btnLabel.c_str()))
 	{
 		var[0] = resetVal.x;

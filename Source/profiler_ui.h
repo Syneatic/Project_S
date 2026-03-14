@@ -16,13 +16,14 @@ public:
         Profiler& prof = Profiler::Get();
 
         ImGui::SetNextWindowSize(ImVec2(900, 600), ImGuiCond_FirstUseEver);
+
         if (!ImGui::Begin("Profiler", nullptr, ImGuiWindowFlags_MenuBar))
         {
             ImGui::End();
             return;
         }
 
-        // ── Menu bar ────────────────────────────────────────────────
+        //top menu
         if (ImGui::BeginMenuBar())
         {
             bool paused = prof.IsPaused();
@@ -32,7 +33,7 @@ public:
                 prof.SetPaused(nowPaused);
                 if (nowPaused)
                 {
-                    // Snap to whatever frame is currently shown
+                    //snap to latest frame
                     const auto& fs = prof.Frames();
                     m_pausedAtFrame = m_selectedFrame >= 0 && m_selectedFrame < (int)fs.size()
                                         ? m_selectedFrame
@@ -70,38 +71,26 @@ public:
             return;
         }
 
-        // ── Frame selector (mini frame-time graph) ───────────────────
         RenderFrameSelector(frames);
 
         ImGui::Separator();
 
-        // Resolve which frame to display.
-        // While paused: pin to m_pausedAtFrame unless the user explicitly
-        // clicks a different bar in the frame selector.
+        //choose which frame to display
         int displayIdx = m_selectedFrame;
         if (displayIdx < 0 || displayIdx >= (int)frames.size())
         {
-            // Not paused and nothing selected — follow the latest frame
+            //follow latest frame if resume
             displayIdx = (int)frames.size() - 1;
         }
         const FrameData& fd = frames[displayIdx];
 
-        // ── Tabs ─────────────────────────────────────────────────────
+        ImGui::TextUnformatted(std::to_string(AEFrameRateControllerGetFrameRate()).c_str());
+
         if (ImGui::BeginTabBar("ProfilerTabs"))
         {
-            if (ImGui::BeginTabItem("Timeline"))
-            {
-                RenderTimeline(fd);
-                ImGui::EndTabItem();
-            }
             if (ImGui::BeginTabItem("Tree View"))
             {
                 RenderTreeView(fd);
-                ImGui::EndTabItem();
-            }
-            if (ImGui::BeginTabItem("Memory"))
-            {
-                RenderMemory(frames);
                 ImGui::EndTabItem();
             }
             ImGui::EndTabBar();
@@ -166,7 +155,9 @@ private:
             {
                 float mx = ImGui::GetIO().MousePos.x;
                 if (mx >= x0 && mx < x1)
+                {
                     m_selectedFrame = i;
+                }
             }
         }
 
@@ -185,130 +176,6 @@ private:
         }
 
         ImGui::Dummy(ImVec2(availW, 2)); // spacing after graph
-    }
-
-    // ── Timeline ─────────────────────────────────────────────────────
-
-    void RenderTimeline(const FrameData& fd)
-    {
-        if (fd.samples.empty())
-        {
-            ImGui::TextDisabled("No samples in this frame.");
-            return;
-        }
-
-        // Controls
-        ImGui::SliderFloat("Zoom", &m_timelineZoom, 0.1f, 20.0f, "%.2fx");
-        ImGui::SameLine();
-        ImGui::TextDisabled("(scroll to zoom, drag to pan)");
-
-        const float rowH      = 22.0f;
-        const float labelW    = 140.0f;
-        const float rulerH    = 20.0f;
-
-        // Find max depth and frame duration
-        int    maxDepth    = 0;
-        double frameDurMs  = fd.frameTimeMs > 0 ? fd.frameTimeMs : 16.667;
-        for (auto& s : fd.samples)
-            maxDepth = std::max(maxDepth, s.depth);
-
-        float  totalH   = rulerH + (maxDepth + 1) * rowH + 4.0f;
-        float  availW   = ImGui::GetContentRegionAvail().x - labelW;
-        float  pxPerMs  = (availW / (float)frameDurMs) * m_timelineZoom;
-
-        // Scroll region
-        ImGui::BeginChild("##timeline_scroll", ImVec2(0, totalH + 20), false,
-                          ImGuiWindowFlags_HorizontalScrollbar);
-
-        ImDrawList* dl     = ImGui::GetWindowDrawList();
-        ImVec2      origin = ImGui::GetCursorScreenPos();
-        origin.x += labelW;
-
-        float totalW = std::max(availW, pxPerMs * (float)frameDurMs);
-        ImGui::InvisibleButton("##tl_area", ImVec2(labelW + totalW, totalH));
-
-        // Zoom on scroll
-        if (ImGui::IsItemHovered())
-        {
-            float wheel = ImGui::GetIO().MouseWheel;
-            if (wheel != 0.0f)
-                m_timelineZoom = std::clamp(m_timelineZoom * (1.0f + wheel * 0.1f), 0.1f, 50.0f);
-        }
-
-        // Ruler
-        {
-            float rulerY = origin.y;
-            dl->AddRectFilled(ImVec2(origin.x, rulerY),
-                              ImVec2(origin.x + totalW, rulerY + rulerH),
-                              IM_COL32(45, 45, 45, 255));
-
-            float stepMs = 1.0f;
-            if (pxPerMs < 10) stepMs = 5.0f;
-            if (pxPerMs < 2)  stepMs = 10.0f;
-
-            for (float ms = 0; ms <= (float)frameDurMs + stepMs; ms += stepMs)
-            {
-                float x = origin.x + ms * pxPerMs;
-                dl->AddLine(ImVec2(x, rulerY), ImVec2(x, rulerY + rulerH),
-                            IM_COL32(140, 140, 140, 200), 1.0f);
-                char buf[16];
-                snprintf(buf, sizeof(buf), "%.0fms", ms);
-                dl->AddText(ImVec2(x + 2, rulerY + 3),
-                            IM_COL32(200, 200, 200, 255), buf);
-            }
-        }
-
-        // Depth labels on the left
-        for (int d = 0; d <= maxDepth; ++d)
-        {
-            float y = origin.y + rulerH + d * rowH;
-            char label[32];
-            snprintf(label, sizeof(label), "Depth %d", d);
-            dl->AddText(ImVec2(origin.x - labelW + 4, y + 4),
-                        IM_COL32(180, 180, 180, 255), label);
-            // row bg
-            uint32_t rowBg = (d % 2 == 0)
-                ? IM_COL32(38, 38, 38, 255)
-                : IM_COL32(44, 44, 44, 255);
-            dl->AddRectFilled(ImVec2(origin.x, y),
-                              ImVec2(origin.x + totalW, y + rowH), rowBg);
-        }
-
-        // Sample bars
-        ImVec2 mousePos = ImGui::GetIO().MousePos;
-        for (auto& s : fd.samples)
-        {
-            float x0 = origin.x + (float)s.startMs * pxPerMs;
-            float y0 = origin.y + rulerH + s.depth * rowH + 1;
-            float x1 = x0 + std::max(1.0f, (float)s.durationMs * pxPerMs);
-            float y1 = y0 + rowH - 2;
-
-            uint32_t col  = s.color;
-            bool     hov  = (mousePos.x >= x0 && mousePos.x <= x1 &&
-                              mousePos.y >= y0 && mousePos.y <= y1);
-            if (hov) col = BrightenColor(col);
-
-            dl->AddRectFilled(ImVec2(x0, y0), ImVec2(x1, y1), col, 2.0f);
-            dl->AddRect      (ImVec2(x0, y0), ImVec2(x1, y1),
-                              IM_COL32(0, 0, 0, 80), 2.0f);
-
-            // Label inside bar if wide enough
-            if (x1 - x0 > 30)
-            {
-                char label[64];
-                snprintf(label, sizeof(label), "%s %.2fms", s.name, s.durationMs);
-                dl->AddText(ImVec2(x0 + 3, y0 + 4),
-                            IM_COL32(255, 255, 255, 220), label);
-            }
-
-            if (hov)
-            {
-                ImGui::SetTooltip("%s\nStart:    %.3f ms\nDuration: %.3f ms",
-                                  s.name, s.startMs, s.durationMs);
-            }
-        }
-
-        ImGui::EndChild();
     }
 
     // ── Tree View ────────────────────────────────────────────────────
@@ -484,118 +351,6 @@ private:
             for (auto& c : n.children) childrenTotal += c.totalMs;
             n.selfMs = std::max(0.0, n.totalMs - childrenTotal);
             ComputeSelfTime(n.children);
-        }
-    }
-
-    // ── Memory ───────────────────────────────────────────────────────
-
-    void RenderMemory(const std::vector<FrameData>& frames)
-    {
-        const FrameData& last = frames.back();
-
-        // Stats row
-        ImGui::Text("Live allocations : %zu",   last.memAllocCount);
-        ImGui::SameLine(250);
-        ImGui::Text("Heap in use : %.2f KB",    last.memAllocated / 1024.0);
-
-        ImGui::Separator();
-        ImGui::TextUnformatted("Heap usage over last frames:");
-
-        // Graph
-        const float graphH = 120.0f;
-        float       availW = ImGui::GetContentRegionAvail().x;
-        ImDrawList* dl     = ImGui::GetWindowDrawList();
-        ImVec2      origin = ImGui::GetCursorScreenPos();
-
-        ImGui::InvisibleButton("##mem_graph", ImVec2(availW, graphH));
-        dl->AddRectFilled(origin,
-                          ImVec2(origin.x + availW, origin.y + graphH),
-                          IM_COL32(28, 28, 28, 255));
-
-        // Find max for scale
-        size_t maxMem = 1;
-        for (auto& f : frames) maxMem = std::max(maxMem, f.memAllocated);
-
-        int   count  = (int)frames.size();
-        float stepX  = availW / std::max(count - 1, 1);
-
-        // Draw filled area
-        std::vector<ImVec2> pts;
-        pts.reserve(count + 2);
-        for (int i = 0; i < count; ++i)
-        {
-            float t = (float)frames[i].memAllocated / (float)maxMem;
-            float x = origin.x + i * stepX;
-            float y = origin.y + graphH - t * (graphH - 4);
-            pts.push_back(ImVec2(x, y));
-        }
-
-        // Fill under the line
-        for (int i = 0; i + 1 < count; ++i)
-        {
-            ImVec2 p0 = pts[i], p1 = pts[i + 1];
-            dl->AddQuadFilled(
-                p0, p1,
-                ImVec2(p1.x, origin.y + graphH),
-                ImVec2(p0.x, origin.y + graphH),
-                IM_COL32(60, 140, 220, 80));
-        }
-
-        // Line on top
-        for (int i = 0; i + 1 < count; ++i)
-            dl->AddLine(pts[i], pts[i + 1], IM_COL32(100, 180, 255, 220), 1.5f);
-
-        // Y-axis labels
-        for (int i = 0; i <= 4; ++i)
-        {
-            float pct = i / 4.0f;
-            float y   = origin.y + graphH - pct * (graphH - 4);
-            size_t kb = (size_t)(maxMem * pct / 1024);
-            char buf[32];
-            snprintf(buf, sizeof(buf), "%zu KB", kb);
-            dl->AddText(ImVec2(origin.x + 4, y - 10),
-                        IM_COL32(160, 160, 160, 200), buf);
-            dl->AddLine(ImVec2(origin.x, y),
-                        ImVec2(origin.x + availW, y),
-                        IM_COL32(60, 60, 60, 120), 1.0f);
-        }
-
-        // Hover tooltip
-        if (ImGui::IsItemHovered())
-        {
-            float mx  = ImGui::GetIO().MousePos.x;
-            int   idx = (int)((mx - origin.x) / stepX + 0.5f);
-            idx = std::clamp(idx, 0, count - 1);
-            ImGui::SetTooltip("Frame %d\nAllocs: %zu\nBytes: %.2f KB",
-                              idx,
-                              frames[idx].memAllocCount,
-                              frames[idx].memAllocated / 1024.0);
-        }
-
-        ImGui::Dummy(ImVec2(availW, 4));
-        ImGui::Separator();
-
-        // Allocation count graph
-        ImGui::TextUnformatted("Allocation count over last frames:");
-        ImVec2 origin2 = ImGui::GetCursorScreenPos();
-        ImGui::InvisibleButton("##alloc_graph", ImVec2(availW, graphH));
-        dl->AddRectFilled(origin2,
-                          ImVec2(origin2.x + availW, origin2.y + graphH),
-                          IM_COL32(28, 28, 28, 255));
-
-        size_t maxAlloc = 1;
-        for (auto& f : frames) maxAlloc = std::max(maxAlloc, f.memAllocCount);
-
-        for (int i = 0; i + 1 < count; ++i)
-        {
-            float t0 = (float)frames[i].memAllocCount   / (float)maxAlloc;
-            float t1 = (float)frames[i+1].memAllocCount / (float)maxAlloc;
-            float x0 = origin2.x + i * stepX;
-            float x1 = origin2.x + (i + 1) * stepX;
-            float y0 = origin2.y + graphH - t0 * (graphH - 4);
-            float y1 = origin2.y + graphH - t1 * (graphH - 4);
-            dl->AddLine(ImVec2(x0, y0), ImVec2(x1, y1),
-                        IM_COL32(220, 140, 60, 220), 1.5f);
         }
     }
 

@@ -14,6 +14,31 @@
 #include "profiler_ui.h"
 
 float accumulator{ 0 };
+ProfilerUI profilerUI;
+
+void BuildDockSpace()
+{
+	ImGuiWindowFlags host_flags =
+		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
+		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground;
+
+	const ImGuiViewport* vp = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(vp->WorkPos);
+	ImGui::SetNextWindowSize(vp->WorkSize);
+	ImGui::SetNextWindowViewport(vp->ID);
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+	ImGui::Begin("##dockspace", nullptr, host_flags);
+	ImGui::PopStyleVar(2);
+
+	ImGuiID dockspace_id = ImGui::GetID("MainDockSpace");
+	ImGui::DockSpace(dockspace_id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
+	ImGui::End();
+}
 
 void Scene::InitializeGameObjects()
 {
@@ -79,8 +104,6 @@ void Scene::OnEnter()
 
 void Scene::OnUpdate()
 {
-	ProfilerUI profilerUI;
-
 	PROFILE_FRAME_BEGIN();
 	{
 		PROFILE_SCOPE("GameLoop");
@@ -94,6 +117,8 @@ void Scene::OnUpdate()
 			for (auto& pgo : _gameObjectList)
 			{
 				auto go = pgo.get();
+				go->UpdateWorldTransform();
+
 				if (!go->active()) continue;
 
 				go->OnUpdate();
@@ -102,9 +127,11 @@ void Scene::OnUpdate()
 			Audio::Update();
 		}
 
-
 		if (AEInputCheckTriggered(AEVK_P))
-			EngineCTX::PauseTime();
+			UISystem::TogglePauseMenuGame();
+
+		if (AEInputCheckTriggered(AEVK_Z))
+			UISystem::EndScreen();
 
 		accumulator += EngineCTX::dt;
 		while (accumulator >= EngineCTX::fixedDt)
@@ -113,11 +140,14 @@ void Scene::OnUpdate()
 			accumulator -= EngineCTX::fixedDt;
 		}
 
+		Physics::SyncToLocal();
+
 		{
 			PROFILE_SCOPE("Particle");
 			ParticleSystem::Update();
 			ParticleSystem::Render();
 		}
+
 		EventHandler::CallQ();
 		Graphics::Execute();
 	}
@@ -125,13 +155,16 @@ void Scene::OnUpdate()
 
 
 #ifdef _DEBUG
+	//Profiler::Get().SetPaused(EngineCTX::debugMode);
 	if (EngineCTX::imguiInitialize)
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		profilerUI.Render();
+		BuildDockSpace();
+		if(EngineCTX::debugMode)
+			profilerUI.Render();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

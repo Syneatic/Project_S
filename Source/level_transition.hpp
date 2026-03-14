@@ -11,6 +11,7 @@ namespace LevelTransition
 	};
 
 	inline bool inTransition{ false };
+	inline bool restartCalled{ false };
 
 	void Init();
 	void RequestTransition(f32 setTime = 1.5f);

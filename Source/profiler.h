@@ -3,10 +3,17 @@
 // ─────────────────────────────────────────────
 //  Macros
 // ─────────────────────────────────────────────
-#define PROFILE_SCOPE(name)   ProfilerScope _prof_##__LINE__(name)
-#define PROFILE_FUNCTION()    PROFILE_SCOPE(__FUNCTION__)
-#define PROFILE_FRAME_BEGIN() Profiler::Get().BeginFrame()
-#define PROFILE_FRAME_END()   Profiler::Get().EndFrame()
+#ifdef _DEBUG
+#  define PROFILE_SCOPE(name)   ProfilerScope _prof_##__LINE__(name)
+#  define PROFILE_FUNCTION()    PROFILE_SCOPE(__FUNCTION__)
+#  define PROFILE_FRAME_BEGIN() Profiler::Get().BeginFrame()
+#  define PROFILE_FRAME_END()   Profiler::Get().EndFrame()
+#else
+#  define PROFILE_SCOPE(name)   ((void)0)
+#  define PROFILE_FUNCTION()    ((void)0)
+#  define PROFILE_FRAME_BEGIN() ((void)0)
+#  define PROFILE_FRAME_END()   ((void)0)
+#endif
 
 // ─────────────────────────────────────────────
 //  Data structures
@@ -47,6 +54,7 @@ public:
     // Called once per frame by the game loop
     void BeginFrame()
     {
+        if (m_paused) return;
         m_frameStart  = Clock::now();
         m_depth       = 0;
         m_openSamples.clear();
@@ -55,13 +63,12 @@ public:
 
     void EndFrame()
     {
+        if (m_paused) return;
         double frameMs = ToMs(Clock::now() - m_frameStart);
 
         FrameData fd;
         fd.samples       = std::move(m_currentSamples);
         fd.frameTimeMs   = frameMs;
-        fd.memAllocated  = m_memAllocatedBytes;
-        fd.memAllocCount = m_memAllocCount;
 
         if ((int)m_frames.size() >= kMaxFrameHistory)
             m_frames.erase(m_frames.begin());
@@ -71,6 +78,7 @@ public:
     // Called by ProfilerScope constructor / destructor
     void PushScope(const char* name)
     {
+        if (m_paused) return;
         OpenSample os;
         os.name  = name;
         os.start = Clock::now();
@@ -80,6 +88,7 @@ public:
 
     void PopScope()
     {
+        if (m_paused) return;
         if (m_openSamples.empty()) return;
 
         auto& os  = m_openSamples.back();
@@ -95,19 +104,6 @@ public:
         m_currentSamples.push_back(s);
         m_openSamples.pop_back();
         --m_depth;
-    }
-
-    // Memory tracking (called from overridden new/delete)
-    void TrackAlloc(size_t bytes)
-    {
-        m_memAllocatedBytes += bytes;
-        ++m_memAllocCount;
-    }
-
-    void TrackFree(size_t bytes)
-    {
-        if (m_memAllocatedBytes >= bytes) m_memAllocatedBytes -= bytes;
-        if (m_memAllocCount > 0)          --m_memAllocCount;
     }
 
     // Access recorded frames
@@ -152,19 +148,16 @@ private:
     std::vector<ProfileSample> m_currentSamples;
     std::vector<FrameData>     m_frames;
 
-    size_t m_memAllocatedBytes = 0;
-    size_t m_memAllocCount     = 0;
     bool   m_paused            = false;
 };
 
-// ─────────────────────────────────────────────
-//  RAII scope guard
-// ─────────────────────────────────────────────
-
+//RAII
 struct ProfilerScope
 {
     explicit ProfilerScope(const char* name) { Profiler::Get().PushScope(name); }
     ~ProfilerScope()                         { Profiler::Get().PopScope(); }
+
+    //no copying
     ProfilerScope(const ProfilerScope&)            = delete;
     ProfilerScope& operator=(const ProfilerScope&) = delete;
 };

@@ -93,6 +93,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// ===== INITIALIZE SYSTEMS =====
 	InitializeImGUI(EngineCTX::imguiInitialize);
+	Profiler::Get().SetPaused(!EngineCTX::debugMode);
 
 	//grab all scene
 	SceneManager::Initialize();
@@ -118,9 +119,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		UpdateEngineCTX();
 
 #ifdef _DEBUG
-		if (AEInputCheckTriggered(AEVK_F5))
-			FrameProfiler::Start();
-
 		ImGuiIO& io = ImGui::GetIO();
 		if (!io.WantCaptureMouse && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
 		{
@@ -132,6 +130,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 			if (AEInputCheckTriggered(AEVK_3)) 
 				SceneManager::RequestSceneSwitch("Play_Level");	
+
+			if (AEInputCheckTriggered(AEVK_4))
+				SceneManager::RequestSceneSwitch("physics_test");
+		}
+
+		if (AEInputCheckTriggered(AEVK_F5))
+		{
+			EngineCTX::debugMode = !EngineCTX::debugMode;
+			Profiler::Get().SetPaused(!EngineCTX::debugMode);
 		}
 #endif
 	
