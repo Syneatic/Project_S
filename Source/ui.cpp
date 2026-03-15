@@ -241,9 +241,9 @@ namespace UISystem
             ToggleUIPair(false, pauseMenuHolders.pauseMenu, pauseMenuHolders.pauseSettings);
     }
 
-    void EndScreen()
+    void EndScreen(bool state)
     {
-        SetEndScreenText(true);
+        SetEndScreenText(state);
         EngineCTX::PauseTime();
         ToggleUIPair(pauseMenuHolders.endScreen, pauseMenuHolders.pauseOverlay);
     }
