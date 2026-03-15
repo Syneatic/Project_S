@@ -2,6 +2,7 @@
 #include "gameobject.hpp"
 #include "camera.hpp"
 #include "scene.hpp"
+#include "audio.hpp"
 #include "scene_manager.hpp"
 #include "eventhandler.hpp"
 #include "level_transition.hpp"
@@ -142,10 +143,12 @@ namespace UISystem
 
         if (SceneManager::ActiveScene()->name() != "Intro")
         {
-            SubscribeSlider(AudioSpecifier::SFX, [](UISliderEvent const&)
-                {});
-            SubscribeSlider(AudioSpecifier::MUSIC, [](UISliderEvent const&)
-                {});
+            SubscribeSlider(AudioSpecifier::GLOBAL, [](UISliderEvent const& e)
+                { Audio::SetMasterVolume(e.value); });
+            SubscribeSlider(AudioSpecifier::SFX, [](UISliderEvent const& e)
+                { Audio::SetSFXVolume(e.value); });
+            SubscribeSlider(AudioSpecifier::MUSIC, [](UISliderEvent const& e)
+                { Audio::SetMusicVolume(e.value); });
         }
     }
 
@@ -225,7 +228,7 @@ namespace UISystem
             slider.value = (clampedX - slider.minX) / (slider.maxX - slider.minX);
 
             // Apply to SFML audio
-            //EventHandler::RaiseEvent<UISliderEvent>(slider.audioS);
+            EventHandler::RaiseEvent<UISliderEvent>(slider.audioS, slider.value);
         }
     }
 

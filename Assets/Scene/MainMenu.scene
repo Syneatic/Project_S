@@ -45,6 +45,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -158,6 +159,7 @@
               "type" : "Button"
             },
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -195,6 +197,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -270,6 +273,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -345,6 +349,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -458,7 +463,7 @@
           "position" : 
           [
             0.0,
-            320.0
+            329.99996948242188
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -477,6 +482,7 @@
               "type" : "Button"
             },
             {
+              "active" : false,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -559,15 +565,15 @@
               "renderlayer" : 2,
               "screenspace" : true,
               "sortOrder" : 1.0,
-              "text" : "SFX",
+              "text" : "Global",
               "type" : "TextRenderer"
             }
           ],
-          "name" : "SettingsSFXHeader",
+          "name" : "SettingsGlobalHeader",
           "position" : 
           [
             0.0,
-            170.0
+            194.0
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -591,6 +597,7 @@
                   "value" : 0.0
                 },
                 {
+                  "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
                   "color" : 
@@ -609,7 +616,7 @@
                   "type" : "SpriteRenderer"
                 }
               ],
-              "name" : "SettingsSFXSliderKnob",
+              "name" : "SettingsSFXKnob_clone",
               "position" : 
               [
                 0.0,
@@ -626,13 +633,131 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
               [
-                0.68627452850341797,
-                0.68627452850341797,
-                0.68627452850341797,
+                0.45588237047195435,
+                0.45588237047195435,
+                0.45588237047195435,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "SettingsGlobalSliderTrack",
+          "position" : 
+          [
+            0.0,
+            73.999969482421875
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            500.0,
+            10.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "SFX",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "SettingsSFXHeader",
+          "position" : 
+          [
+            0.0,
+            -36.999992370605469
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            0.85000002384185791,
+            0.85000002384185791
+          ]
+        },
+        {
+          "active" : true,
+          "children" : 
+          [
+            {
+              "active" : true,
+              "children" : [],
+              "components" : 
+              [
+                {
+                  "audioS" : 1,
+                  "type" : "Slider",
+                  "value" : 0.0
+                },
+                {
+                  "active" : true,
+                  "alignment" : 4,
+                  "blendmode" : 1,
+                  "color" : 
+                  [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "fileName" : "",
+                  "meshdrawmode" : 3,
+                  "renderlayer" : 2,
+                  "rendermode" : 1,
+                  "screenspace" : true,
+                  "sortOrder" : 3.0,
+                  "type" : "SpriteRenderer"
+                }
+              ],
+              "name" : "SettingsSFXKnob",
+              "position" : 
+              [
+                0.0,
+                0.0
+              ],
+              "rotation" : 0.0,
+              "scale" : 
+              [
+                0.05000000074505806,
+                2.5
+              ]
+            }
+          ],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                0.45588237047195435,
+                0.45588237047195435,
+                0.45588237047195435,
                 1.0
               ],
               "fileName" : "",
@@ -648,7 +773,7 @@
           "position" : 
           [
             0.0,
-            30.0
+            -145.0
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -682,7 +807,7 @@
           "position" : 
           [
             0.0,
-            -130.0
+            -247.99995422363281
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -701,6 +826,12 @@
               "components" : 
               [
                 {
+                  "audioS" : 2,
+                  "type" : "Slider",
+                  "value" : 0.0
+                },
+                {
+                  "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
                   "color" : 
@@ -717,14 +848,9 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
-                },
-                {
-                  "audioS" : 0,
-                  "type" : "Slider",
-                  "value" : 0.0
                 }
               ],
-              "name" : "SettingsMusicSliderKnob_clone",
+              "name" : "SettingsSFXKnob_clone",
               "position" : 
               [
                 0.0,
@@ -741,13 +867,14 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
               [
-                0.68627452850341797,
-                0.68627452850341797,
-                0.68627452850341797,
+                0.45588237047195435,
+                0.45588237047195435,
+                0.45588237047195435,
                 1.0
               ],
               "fileName" : "",
@@ -759,11 +886,11 @@
               "type" : "SpriteRenderer"
             }
           ],
-          "name" : "SettingsMusicSliderTrack_clone",
+          "name" : "SettingsMusicSliderTrack",
           "position" : 
           [
             0.0,
-            -263.00003051757812
+            -364.0
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -865,6 +992,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -906,6 +1034,7 @@
           "components" : 
           [
             {
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 

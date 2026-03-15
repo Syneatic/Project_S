@@ -31,7 +31,8 @@ struct UIButtonEvent : public Event<UIButtonEvent>
 struct UISliderEvent : public Event<UISliderEvent>
 {
 	AudioSpecifier aS;
-	UISliderEvent(AudioSpecifier aS) : aS{ aS } {}
+	float value{};
+	UISliderEvent(AudioSpecifier aS, float value) : aS{ aS }, value{ value } {}
 };
 
 struct PingEvent : public Event<PingEvent>

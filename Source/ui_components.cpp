@@ -124,7 +124,7 @@ void Slider::Deserialize(const Json::Value& compObj)
 void Slider::OnStart() 
 {
 	// Get the track gameobject (should be a child/parent).
-	_trackTransform = &_owner.parent()->worldTransform();
+	_trackTransform = &_owner.parent()->transform();
 	float halfTrack = _trackTransform->scale.x / 2.f;
 	minX = (_trackTransform->position.x - halfTrack);
 	maxX = (_trackTransform->position.x + halfTrack);
@@ -133,6 +133,9 @@ void Slider::OnStart()
 
 void Slider::OnUpdate()
 {
+	//_owner.UpdateWorldTransform(&_owner.parent()->worldTransform());
+	Debug::Log(worldTransform().position);
+	Debug::Log(transform().position);
 	UISystem::Hover_Logic(*this);
 }
 void Slider::OnDestroy() {}
