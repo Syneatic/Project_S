@@ -74,12 +74,6 @@ void Scene::OnEnter()
 	//initialize all gameobjects
 	if (_gameObjectList.empty()) return;
 
-	ParticleSystem::Initialize();
-	ParticleSystem::Flush();
-	InitializeGameObjects();
-
-	Physics::Initialize();
-
 	SaveGameManager::SaveData data;
 
 	if (SaveGameManager::Load(_name, data))
@@ -98,6 +92,14 @@ void Scene::OnEnter()
 			Debug::Log("Player Current Position Loaded");
 		}
 	}
+
+	ParticleSystem::Initialize();
+	ParticleSystem::Flush();
+	InitializeGameObjects();
+
+	Physics::Initialize();
+
+	
 
 	UISystem::init();
 	LevelTransition::Init();

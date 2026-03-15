@@ -2527,7 +2527,7 @@
                 0.0,
                 0.0
               ],
-              "time" : 1.5,
+              "time" : 3.0,
               "timescale" : false,
               "type" : "ParticleEmitter"
             }
@@ -2684,7 +2684,7 @@
           "type" : "PlayerController"
         },
         {
-          "active" : false,
+          "active" : true,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2706,8 +2706,8 @@
       "name" : "Player",
       "position" : 
       [
-        -889.8330078125,
-        -155.64999389648438
+        794.66693115234375,
+        271.85003662109375
       ],
       "rotation" : 0.0,
       "scale" : 
