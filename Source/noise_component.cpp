@@ -67,7 +67,7 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 
 		//change color based on what got hit
 		//if (hit.layerHit == (1 << 1)) col = Color(1.f, 1.f, 1.f); // environment
-		//if (hit.layerHit == (1 << 2)) col = Color(1.f, 0.f, 0.f); // enemy
+		if (hit.layerHit == (1 << 2)) col = Color(1.f, 0.f, 0.f); // enemy
 	}
 
 }

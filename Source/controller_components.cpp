@@ -6,6 +6,7 @@
 #include "physics.hpp"
 #include "physics_types.hpp"
 #include "save_game.hpp"
+#include "ui_components.hpp"
 
 //===================|Player Controller|===================
 void PlayerController::DrawInInspector()
