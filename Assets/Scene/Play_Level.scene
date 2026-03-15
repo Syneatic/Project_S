@@ -5580,85 +5580,6 @@
             1.0,
             1.0
           ]
-        },
-        {
-          "active" : false,
-          "children" : [],
-          "components" : 
-          [
-            {
-              "colorA" : 
-              [
-                1.0,
-                1.0,
-                1.0,
-                1.0
-              ],
-              "colorB" : 
-              [
-                0.54411768913269043,
-                0.54411768913269043,
-                0.54411768913269043,
-                1.0
-              ],
-              "isBurst" : false,
-              "lifetime" : 
-              [
-                3.0,
-                3.0
-              ],
-              "radius" : 
-              [
-                0.0,
-                50.0
-              ],
-              "rect" : 
-              [
-                50.0,
-                50.0
-              ],
-              "renderLayer" : 2,
-              "rotation" : 
-              [
-                0.0,
-                360.0
-              ],
-              "size" : 
-              [
-                100.0,
-                150.0
-              ],
-              "sortOrder" : 3.0,
-              "spawnLineLength" : 900.0,
-              "spawnRate" : 1200.0,
-              "spawnShape" : 3,
-              "speed" : 
-              [
-                1000.0,
-                1000.0
-              ],
-              "spread" : 
-              [
-                0.0,
-                0.0
-              ],
-              "time" : 3.0,
-              "timescale" : false,
-              "type" : "ParticleEmitter"
-            }
-          ],
-          "name" : "FadeOut",
-          "position" : 
-          [
-            112.65599822998047,
-            0.0
-          ],
-          "rotation" : 90.0,
-          "scale" : 
-          [
-            15.0,
-            30.0
-          ]
         }
       ],
       "components" : 
@@ -6081,6 +6002,85 @@
           "type" : "BoxCollider"
         },
         {
+          "enemyType" : 0,
+          "type" : "EnemyController"
+        },
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "isNoiseActive" : false,
+          "layerMask" : 0,
+          "lifetime" : 1.5,
+          "noiseLevel" : 15.0,
+          "numParticles" : 128,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "Static Enemy_clone_clone",
+      "position" : 
+      [
+        2744.88916015625,
+        -138.322265625
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        501.81399536132812,
+        26.331350326538086
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967271,
+          "isTrigger" : false,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
           "detectDistance" : 300.0,
           "enemyType" : 1,
           "groundEmitInterval" : 1.5,
@@ -6308,85 +6308,6 @@
       [
         53.77783203125,
         25.574348449707031
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "collisionMask" : 4294967271,
-          "isTrigger" : false,
-          "layerMask" : 4,
-          "size" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "BoxCollider"
-        },
-        {
-          "enemyType" : 0,
-          "type" : "EnemyController"
-        },
-        {
-          "active" : false,
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
-          [
-            1.0,
-            0.0,
-            0.0,
-            1.0
-          ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 0,
-          "rendermode" : 1,
-          "screenspace" : false,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
-        },
-        {
-          "fileName" : "ore.mp3",
-          "loop" : false,
-          "pitch" : 1.0,
-          "relative" : false,
-          "spatialize" : false,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
-        },
-        {
-          "color" : 
-          [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "isNoiseActive" : false,
-          "layerMask" : 0,
-          "lifetime" : 1.5,
-          "noiseLevel" : 15.0,
-          "numParticles" : 128,
-          "repeat" : false,
-          "repeatInterval" : 1.0,
-          "type" : "NoiseSource"
-        }
-      ],
-      "name" : "Static Enemy_clone_clone",
-      "position" : 
-      [
-        2966.222412109375,
-        -769.65557861328125
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        501.81399536132812,
-        26.331350326538086
       ]
     },
     {
@@ -7171,6 +7092,224 @@
       [
         1657.1666259765625,
         33.999893188476562
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        10.0,
+        10.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967265,
+          "isTrigger" : true,
+          "layerMask" : 16,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "active" : true,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            0.039215683937072754,
+            0.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "colorA" : 
+          [
+            0.41868507862091064,
+            1.0,
+            0.29411762952804565,
+            1.0
+          ],
+          "colorB" : 
+          [
+            0.15582238137722015,
+            0.5098038911819458,
+            0.079969234764575958,
+            1.0
+          ],
+          "isBurst" : false,
+          "lifetime" : 
+          [
+            0.30000001192092896,
+            0.5
+          ],
+          "radius" : 
+          [
+            0.0,
+            50.0
+          ],
+          "rect" : 
+          [
+            50.0,
+            50.0
+          ],
+          "renderLayer" : 250,
+          "rotation" : 
+          [
+            0.0,
+            0.0
+          ],
+          "size" : 
+          [
+            3.0,
+            8.0
+          ],
+          "sortOrder" : 0.0,
+          "spawnLineLength" : 5.0,
+          "spawnRate" : 10.0,
+          "spawnShape" : 3,
+          "speed" : 
+          [
+            150.0,
+            250.0
+          ],
+          "spread" : 
+          [
+            -15.0,
+            15.0
+          ],
+          "time" : 0.0,
+          "timescale" : false,
+          "type" : "ParticleEmitter"
+        }
+      ],
+      "name" : "Checkpoint (3)",
+      "position" : 
+      [
+        3091.5,
+        -596.0001220703125
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        10.0,
+        10.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967265,
+          "isTrigger" : true,
+          "layerMask" : 32,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "active" : true,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            0.039215683937072754,
+            0.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "colorA" : 
+          [
+            1.0,
+            0.92647057771682739,
+            0.58333337306976318,
+            1.0
+          ],
+          "colorB" : 
+          [
+            0.65272408723831177,
+            0.69607841968536377,
+            0.45040369033813477,
+            1.0
+          ],
+          "isBurst" : false,
+          "lifetime" : 
+          [
+            0.30000001192092896,
+            0.5
+          ],
+          "radius" : 
+          [
+            0.0,
+            50.0
+          ],
+          "rect" : 
+          [
+            50.0,
+            50.0
+          ],
+          "renderLayer" : 1,
+          "rotation" : 
+          [
+            0.0,
+            0.0
+          ],
+          "size" : 
+          [
+            3.0,
+            8.0
+          ],
+          "sortOrder" : 0.0,
+          "spawnLineLength" : 5.0,
+          "spawnRate" : 20.0,
+          "spawnShape" : 3,
+          "speed" : 
+          [
+            150.0,
+            250.0
+          ],
+          "spread" : 
+          [
+            -15.0,
+            15.0
+          ],
+          "time" : 0.0,
+          "timescale" : false,
+          "type" : "ParticleEmitter"
+        }
+      ],
+      "name" : "Winning Trigger",
+      "position" : 
+      [
+        4629.8330078125,
+        -925.08331298828125
       ],
       "rotation" : 0.0,
       "scale" : 
@@ -8855,115 +8994,6 @@
       [
         1.0,
         1.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "collisionMask" : 4294967265,
-          "isTrigger" : true,
-          "layerMask" : 16,
-          "size" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "BoxCollider"
-        },
-        {
-          "active" : true,
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
-          [
-            1.0,
-            1.0,
-            0.039215683937072754,
-            0.0
-          ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 250,
-          "rendermode" : 1,
-          "screenspace" : false,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
-        },
-        {
-          "colorA" : 
-          [
-            0.41868507862091064,
-            1.0,
-            0.29411762952804565,
-            1.0
-          ],
-          "colorB" : 
-          [
-            0.15582238137722015,
-            0.5098038911819458,
-            0.079969234764575958,
-            1.0
-          ],
-          "isBurst" : false,
-          "lifetime" : 
-          [
-            0.30000001192092896,
-            0.5
-          ],
-          "radius" : 
-          [
-            0.0,
-            50.0
-          ],
-          "rect" : 
-          [
-            50.0,
-            50.0
-          ],
-          "renderLayer" : 250,
-          "rotation" : 
-          [
-            0.0,
-            0.0
-          ],
-          "size" : 
-          [
-            3.0,
-            8.0
-          ],
-          "sortOrder" : 0.0,
-          "spawnLineLength" : 5.0,
-          "spawnRate" : 10.0,
-          "spawnShape" : 3,
-          "speed" : 
-          [
-            150.0,
-            250.0
-          ],
-          "spread" : 
-          [
-            -15.0,
-            15.0
-          ],
-          "time" : 0.0,
-          "timescale" : false,
-          "type" : "ParticleEmitter"
-        }
-      ],
-      "name" : "Checkpoint (2)_clone",
-      "position" : 
-      [
-        3091.5,
-        -596.0001220703125
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        10.0,
-        10.0
       ]
     }
   ],

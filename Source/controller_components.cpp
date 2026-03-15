@@ -244,7 +244,8 @@ void PlayerController::HandleCollision(const OnCollisionEvent& e)
     if (col->layer == 1 << 2)
     {
         //==================|Collision with Enemy|=======================
-        Respawn();
+        /*Respawn();*/
+        UISystem::EndScreen(false);
     }
 
     if (col->layer == 1 << 3)
@@ -265,6 +266,14 @@ void PlayerController::HandleTrigger(const OnTriggerEvent& e)
     {
         Debug::Log("Checkpoint Reached");
         SaveSpawn(e.other->transform().position);
+    }
+
+    if (col->layer == 1 << 5)
+    {
+        Debug::Log("Game End");
+        //SaveSpawn(e.other->transform().position);
+        UISystem::EndScreen(true);
+        SaveSpawn(initialSpawnPoint);
     }
 }
 

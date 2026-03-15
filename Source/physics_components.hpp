@@ -8,8 +8,9 @@ enum class Layer : uint32_t
     Player = 1 << 0,
     Environment = 1 << 1,
     Enemy = 1 << 2,
-    Projectile = 1 << 3, //not for raycast for other object projectiles
-    CheckPoint = 1 << 4 
+    Projectile = 1 << 3,
+    CheckPoint = 1 << 4,
+    End = 1 << 5
 };
 
 const char* LayerToString(Layer layer);

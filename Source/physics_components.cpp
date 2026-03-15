@@ -12,6 +12,7 @@ const char* LayerToString(Layer layer)
     case Layer::Environment: return "Environment";
     case Layer::Projectile: return "Projectile";
     case Layer::CheckPoint: return "CheckPoint";
+    case Layer::End: return "End";
     default: return "Untagged";
     }
 }
@@ -25,14 +26,15 @@ void Collider::OnStart()
 void Collider::DrawBaseInspector()
 {
     ImGui::SeparatorText("Collision Layer");
-    const std::array<const char*, 6> layerNames[] =
+    const std::array<const char*, 7> layerNames[] =
     {
         "Nothing",
         "Player",
         "Environment",
         "Enemy",
         "Projectile",
-        "CheckPoint"
+        "CheckPoint",
+        "End"
     };
 
     int currentLayer = 0;
