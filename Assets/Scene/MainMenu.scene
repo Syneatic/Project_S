@@ -482,7 +482,7 @@
               "type" : "Button"
             },
             {
-              "active" : false,
+              "active" : true,
               "alignment" : 4,
               "blendmode" : 1,
               "color" : 
@@ -614,6 +614,11 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 0,
+                  "type" : "Slider",
+                  "value" : 0.0
                 }
               ],
               "name" : "SettingsSFXKnob_clone",
