@@ -32,7 +32,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -81,7 +81,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -130,7 +130,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -179,7 +179,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -228,7 +228,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            0.97647058963775635
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -277,7 +277,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -326,7 +326,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -352,12 +352,12 @@
       "position" : 
       [
         58.666671752929688,
-        -209.83326721191406
+        -209.0
       ],
       "rotation" : 0.0,
       "scale" : 
       [
-        60.0,
+        64.0,
         15.0
       ]
     },
@@ -375,7 +375,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -424,7 +424,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -473,7 +473,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -522,7 +522,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -571,7 +571,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -620,7 +620,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -669,7 +669,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -718,7 +718,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -767,7 +767,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -816,7 +816,7 @@
             1.0,
             1.0,
             1.0,
-            0.0
+            1.0
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
@@ -1748,7 +1748,7 @@
       "components" : 
       [
         {
-          "active" : false,
+          "active" : true,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1797,7 +1797,7 @@
       "components" : 
       [
         {
-          "active" : false,
+          "active" : true,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1846,7 +1846,7 @@
       "components" : 
       [
         {
-          "active" : false,
+          "active" : true,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1895,7 +1895,7 @@
       "components" : 
       [
         {
-          "active" : false,
+          "active" : true,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1944,7 +1944,7 @@
       "components" : 
       [
         {
-          "active" : false,
+          "active" : true,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -1993,7 +1993,7 @@
       "components" : 
       [
         {
-          "active" : false,
+          "active" : true,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2042,7 +2042,7 @@
       "components" : 
       [
         {
-          "active" : false,
+          "active" : true,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2091,7 +2091,7 @@
       "components" : 
       [
         {
-          "active" : false,
+          "active" : true,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
@@ -2218,7 +2218,7 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 1,
+          "renderlayer" : 250,
           "rendermode" : 1,
           "screenspace" : false,
           "sortOrder" : 0.0,
@@ -2236,17 +2236,115 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "Floor (Enemy At)",
+      "name" : "Floor (Enemy At)_clone",
       "position" : 
       [
-        2074.550048828125,
-        9.7189998626708984
+        2275.142822265625,
+        -132.57728576660156
       ],
       "rotation" : 0.0,
       "scale" : 
       [
-        286.89999389648438,
+        66.592529296875,
         15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 1,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier",
+      "position" : 
+      [
+        2290.10595703125,
+        -48.148139953613281
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        144.34703063964844,
+        179.334228515625
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 1,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone",
+      "position" : 
+      [
+        1940.0,
+        24.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        20.0,
+        40.200000762939453
       ]
     },
     {
@@ -2323,6 +2421,55 @@
           "type" : "SpriteRenderer"
         },
         {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)",
+      "position" : 
+      [
+        2074.550048828125,
+        9.7189998626708984
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        286.89999389648438,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 1,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
           "collisionMask" : 4294967295,
           "isTrigger" : false,
           "layerMask" : 2,
@@ -2365,7 +2512,56 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 1,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2680.475830078125,
+        -154.243896484375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        702.0,
+        14.550000190734863
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
           "rendermode" : 1,
           "screenspace" : false,
           "sortOrder" : 0.0,
@@ -2383,17 +2579,703 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "Barrier",
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone",
       "position" : 
       [
-        2225.494873046875,
-        -48.148139953613281
+        2324.66650390625,
+        -368.592529296875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        12.201999664306641,
+        497.08404541015625
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone",
+      "position" : 
+      [
+        3036.27783203125,
+        -710.03692626953125
       ],
       "rotation" : 0.0,
       "scale" : 
       [
         45.902450561523438,
         179.334228515625
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone",
+      "position" : 
+      [
+        2971.142822265625,
+        -784.5772705078125
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        116.81494140625,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone",
+      "position" : 
+      [
+        2910.272705078125,
+        -718.92596435546875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        13.10200023651123,
+        179.334228515625
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2616.475830078125,
+        -623.243896484375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        600.0,
+        14.550000190734863
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : true,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3087.475830078125,
+        -623.2440185546875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        147.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3006.66650390625,
+        -410.592529296875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        12.201999664306641,
+        211.08399963378906
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2785.475830078125,
+        -499.24383544921875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        445.08499145507812,
+        14.550000190734863
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2545.475830078125,
+        -376.243896484375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        223.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3086.475830078125,
+        -302.243896484375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        175.59300231933594,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2889.475830078125,
+        -378.243896484375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        223.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3163.66650390625,
+        -182.59251403808594
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        15.701999664306641,
+        709.16705322265625
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Ceiling (Part 2)_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3080.778076171875,
+        154.14840698242188
+      ],
+      "rotation" : -16.838117599487305,
+      "scale" : 
+      [
+        164.500244140625,
+        14.699999809265137
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2987.629150390625,
+        30.666759490966797
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        3.5999999046325684,
+        23.049999237060547
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3008.66650390625,
+        29.407501220703125
+      ],
+      "rotation" : -20.600000381469727,
+      "scale" : 
+      [
+        45.902450561523438,
+        10.0
       ]
     },
     {
@@ -2421,6 +3303,447 @@
           "type" : "SpriteRenderer"
         },
         {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Ceiling (Part 2)_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2861.6669921875,
+        176.00021362304688
+      ],
+      "rotation" : 0.5,
+      "scale" : 
+      [
+        284.5,
+        14.699999809265137
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 1,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Ceiling (Part 2)_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2588.6669921875,
+        181.50018310546875
+      ],
+      "rotation" : -2.7999999523162842,
+      "scale" : 
+      [
+        284.5,
+        14.699999809265137
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 1,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Ceiling (Part 2)_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2300.000244140625,
+        173.50019836425781
+      ],
+      "rotation" : 5.4000000953674316,
+      "scale" : 
+      [
+        300.0,
+        14.699999809265137
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2907.475830078125,
+        36.756092071533203
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        66.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2814.809326171875,
+        -51.243907928466797
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        66.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone",
+      "position" : 
+      [
+        2752.809326171875,
+        59.422763824462891
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        66.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone",
+      "position" : 
+      [
+        2661.476318359375,
+        -71.910560607910156
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        66.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone",
+      "position" : 
+      [
+        2597.47607421875,
+        9.4227561950683594
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        66.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        2740.475830078125,
+        -149.243896484375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        494.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
           "collisionMask" : 4294967295,
           "isTrigger" : false,
           "layerMask" : 2,
@@ -2432,17 +3755,1651 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "Barrier_clone",
+      "name" : "Barrier_clone_clone_clone_clone",
       "position" : 
       [
-        1940.0,
-        24.0
+        3008.66650390625,
+        -64.592514038085938
       ],
       "rotation" : 0.0,
       "scale" : 
       [
-        20.0,
-        40.200000762939453
+        45.902450561523438,
+        179.334228515625
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone",
+      "position" : 
+      [
+        2472.611083984375,
+        -71.259254455566406
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        45.902450561523438,
+        179.334228515625
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone",
+      "position" : 
+      [
+        2428.166748046875,
+        -48.148139953613281
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        45.902450561523438,
+        179.334228515625
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone",
+      "position" : 
+      [
+        2374.142822265625,
+        -108.57723999023438
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        66.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : [],
+      "name" : "===========LEVEL 3 (1) BUILDING=========",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        4180.14306640625,
+        -655.2440185546875
+      ],
+      "rotation" : -22.899999618530273,
+      "scale" : 
+      [
+        80.481201171875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        4082.809326171875,
+        -729.91070556640625
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        80.481201171875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        4526.0,
+        -512.25927734375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        12.0,
+        707.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        4353.0,
+        -550.25927734375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        12.0,
+        512.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        4270.36474609375,
+        -298.24404907226562
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        183.33349609375,
+        13.649999618530273
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3855.475830078125,
+        -170.577392578125
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1373.696044921875,
+        15.247500419616699
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3799.3330078125,
+        -458.59243774414062
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        12.201999664306641,
+        52.9998779296875
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3922.36474609375,
+        -298.24404907226562
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        334.33349609375,
+        13.649999618530273
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3547.36474609375,
+        -352.24404907226562
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        141.33349609375,
+        13.649999618530273
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3340.36474609375,
+        -410.24404907226562
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        141.33349609375,
+        13.649999618530273
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3840.809326171875,
+        -875.91070556640625
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        80.481201171875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3998.809326171875,
+        -754.91070556640625
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        80.481201171875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3733.99462890625,
+        -578.5032958984375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        80.481201171875,
+        87.59259033203125
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3952.216552734375,
+        -488.20700073242188
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        376.63763427734375,
+        15.299999237060547
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3936.253662109375,
+        -624.13287353515625
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        223.00433349609375,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        4040.999755859375,
+        -714.25927734375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        12.0,
+        179.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        4135.142578125,
+        -804.57733154296875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        500.0,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3699.142578125,
+        -804.57733154296875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        200.0,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3216.475830078125,
+        -872.57733154296875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        200.0,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3942.80908203125,
+        -946.6328125
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1406.6817626953125,
+        14.662500381469727
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3324.475830078125,
+        -734.57733154296875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        175.0,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3236.999755859375,
+        -829.25927734375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        12.0,
+        240.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3366.3330078125,
+        -681.592529296875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        12.201999664306641,
+        100.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3420.475830078125,
+        -804.57733154296875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        200.0,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3687.142578125,
+        -624.1329345703125
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        174.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3689.475830078125,
+        -686.57733154296875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        509.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3682.66650390625,
+        -653.592529296875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        12.201999664306641,
+        51.083999633789062
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3402.475830078125,
+        -486.57733154296875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        485.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3335.475830078125,
+        -623.2440185546875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        352.592529296875,
+        15.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967295,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3768.3330078125,
+        -517.5924072265625
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        12.201999664306641,
+        52.9998779296875
       ]
     },
     {
@@ -2623,6 +5580,85 @@
             1.0,
             1.0
           ]
+        },
+        {
+          "active" : false,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "colorA" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "colorB" : 
+              [
+                0.54411768913269043,
+                0.54411768913269043,
+                0.54411768913269043,
+                1.0
+              ],
+              "isBurst" : false,
+              "lifetime" : 
+              [
+                3.0,
+                3.0
+              ],
+              "radius" : 
+              [
+                0.0,
+                50.0
+              ],
+              "rect" : 
+              [
+                50.0,
+                50.0
+              ],
+              "renderLayer" : 2,
+              "rotation" : 
+              [
+                0.0,
+                360.0
+              ],
+              "size" : 
+              [
+                100.0,
+                150.0
+              ],
+              "sortOrder" : 3.0,
+              "spawnLineLength" : 900.0,
+              "spawnRate" : 1200.0,
+              "spawnShape" : 3,
+              "speed" : 
+              [
+                1000.0,
+                1000.0
+              ],
+              "spread" : 
+              [
+                0.0,
+                0.0
+              ],
+              "time" : 3.0,
+              "timescale" : false,
+              "type" : "ParticleEmitter"
+            }
+          ],
+          "name" : "FadeOut",
+          "position" : 
+          [
+            112.65599822998047,
+            0.0
+          ],
+          "rotation" : 90.0,
+          "scale" : 
+          [
+            15.0,
+            30.0
+          ]
         }
       ],
       "components" : 
@@ -2651,13 +5687,13 @@
             1.0,
             1.0,
             1.0,
-            0.99215686321258545
+            0.39215686917304993
           ],
           "isNoiseActive" : false,
           "layerMask" : 6,
-          "lifetime" : 3.0,
-          "noiseLevel" : 30.0,
-          "numParticles" : 64,
+          "lifetime" : 1.0,
+          "noiseLevel" : 10.0,
+          "numParticles" : 128,
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
@@ -2736,6 +5772,127 @@
     {
       "active" : true,
       "children" : [],
+      "components" : [],
+      "name" : "===========LEVEL 1 ENEMY=========",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967271,
+          "isTrigger" : false,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "enemyType" : 2,
+          "groundEmitInterval" : 1.0,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.6169999837875366,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "isNoiseActive" : true,
+          "layerMask" : 2,
+          "lifetime" : 2.0,
+          "noiseLevel" : 20.0,
+          "numParticles" : 32,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        }
+      ],
+      "name" : "Enemy (Patrol)_clone",
+      "position" : 
+      [
+        1714.5,
+        181.65005493164062
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        25.0,
+        25.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : [],
+      "name" : "===========LEVEL 2 ENEMY=========",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
       "components" : 
       [
         {
@@ -2788,8 +5945,8 @@
           [
             1.0,
             0.0,
-            0.0,
-            1.0
+            0.73725491762161255,
+            0.49019607901573181
           ],
           "isNoiseActive" : true,
           "layerMask" : 2,
@@ -3072,6 +6229,610 @@
       [
         53.77783203125,
         25.574348449707031
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967271,
+          "isTrigger" : false,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "enemyType" : 0,
+          "type" : "EnemyController"
+        },
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "isNoiseActive" : false,
+          "layerMask" : 0,
+          "lifetime" : 1.5,
+          "noiseLevel" : 15.0,
+          "numParticles" : 128,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "Static Enemy_clone",
+      "position" : 
+      [
+        2376.33349609375,
+        -99.433380126953125
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        53.77783203125,
+        25.574348449707031
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967271,
+          "isTrigger" : false,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "enemyType" : 0,
+          "type" : "EnemyController"
+        },
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "isNoiseActive" : false,
+          "layerMask" : 0,
+          "lifetime" : 1.5,
+          "noiseLevel" : 15.0,
+          "numParticles" : 128,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "Static Enemy_clone_clone",
+      "position" : 
+      [
+        2966.222412109375,
+        -769.65557861328125
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        501.81399536132812,
+        26.331350326538086
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967271,
+          "isTrigger" : false,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "enemyType" : 0,
+          "type" : "EnemyController"
+        },
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : false,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "isNoiseActive" : false,
+          "layerMask" : 0,
+          "lifetime" : 1.5,
+          "noiseLevel" : 15.0,
+          "numParticles" : 128,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "Static Enemy_clone_clone",
+      "position" : 
+      [
+        2966.222412109375,
+        -769.65557861328125
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        99.5556640625,
+        25.574348449707031
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967267,
+          "isTrigger" : false,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "enemyType" : 2,
+          "groundEmitInterval" : 1.0,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.6169999837875366,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.73725491762161255,
+            0.49019607901573181
+          ],
+          "isNoiseActive" : true,
+          "layerMask" : 2,
+          "lifetime" : 0.75,
+          "noiseLevel" : 7.5,
+          "numParticles" : 16,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        }
+      ],
+      "name" : "Enemy (Patrol)_clone_clone_clone_clone",
+      "position" : 
+      [
+        2886.5,
+        -357.34991455078125
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        25.0,
+        25.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : [],
+      "name" : "===========LEVEL 3 ENEMY=========",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967271,
+          "isTrigger" : false,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "detectDistance" : 200.0,
+          "enemyType" : 1,
+          "groundEmitInterval" : 1.2000000476837158,
+          "range_x" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            0.97277909517288208,
+            0.39801999926567078,
+            0.99019604921340942,
+            1.0
+          ],
+          "isNoiseActive" : false,
+          "layerMask" : 6,
+          "lifetime" : 1.5,
+          "noiseLevel" : 15.0,
+          "numParticles" : 32,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        }
+      ],
+      "name" : "Enemy Drop",
+      "position" : 
+      [
+        3559.33349609375,
+        -789.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        70.6666259765625,
+        137.6666259765625
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967271,
+          "isTrigger" : false,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "enemyType" : 2,
+          "groundEmitInterval" : 1.0,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.6169999837875366,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.73725491762161255,
+            0.49019607901573181
+          ],
+          "isNoiseActive" : true,
+          "layerMask" : 2,
+          "lifetime" : 0.75,
+          "noiseLevel" : 7.5,
+          "numParticles" : 16,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        }
+      ],
+      "name" : "Enemy (Patrol)_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3831.5,
+        -465.3499755859375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        25.0,
+        25.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967271,
+          "isTrigger" : false,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "detectDistance" : 600.0,
+          "enemyType" : 1,
+          "groundEmitInterval" : 1.2000000476837158,
+          "range_x" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "ore.mp3",
+          "loop" : false,
+          "pitch" : 1.0,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "color" : 
+          [
+            0.97277909517288208,
+            0.39801999926567078,
+            0.99019604921340942,
+            1.0
+          ],
+          "isNoiseActive" : false,
+          "layerMask" : 6,
+          "lifetime" : 1.5,
+          "noiseLevel" : 15.0,
+          "numParticles" : 32,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        },
+        {
+          "Affected By Gravity" : false,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        }
+      ],
+      "name" : "Enemy Drop_clone_clone",
+      "position" : 
+      [
+        4133.85205078125,
+        -285.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        82.65771484375,
+        78.246627807617188
       ]
     },
     {
@@ -3609,104 +7370,6 @@
       [
         0.0,
         0.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "active" : false,
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
-          [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 250,
-          "rendermode" : 1,
-          "screenspace" : false,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
-        },
-        {
-          "collisionMask" : 4294967295,
-          "isTrigger" : false,
-          "layerMask" : 2,
-          "size" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "BoxCollider"
-        }
-      ],
-      "name" : "Barrier_clone",
-      "position" : 
-      [
-        2324.828125,
-        -48.148139953613281
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        45.902450561523438,
-        179.334228515625
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "active" : false,
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
-          [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 250,
-          "rendermode" : 1,
-          "screenspace" : false,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
-        },
-        {
-          "collisionMask" : 4294967293,
-          "isTrigger" : false,
-          "layerMask" : 2,
-          "size" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "BoxCollider"
-        }
-      ],
-      "name" : "Floor (Enemy At)_clone",
-      "position" : 
-      [
-        2275.142822265625,
-        -132.57728576660156
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        66.592529296875,
-        15.0
       ]
     },
     {
@@ -5192,6 +8855,115 @@
       [
         1.0,
         1.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "collisionMask" : 4294967265,
+          "isTrigger" : true,
+          "layerMask" : 16,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "active" : true,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            0.039215683937072754,
+            0.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 250,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "colorA" : 
+          [
+            0.41868507862091064,
+            1.0,
+            0.29411762952804565,
+            1.0
+          ],
+          "colorB" : 
+          [
+            0.15582238137722015,
+            0.5098038911819458,
+            0.079969234764575958,
+            1.0
+          ],
+          "isBurst" : false,
+          "lifetime" : 
+          [
+            0.30000001192092896,
+            0.5
+          ],
+          "radius" : 
+          [
+            0.0,
+            50.0
+          ],
+          "rect" : 
+          [
+            50.0,
+            50.0
+          ],
+          "renderLayer" : 250,
+          "rotation" : 
+          [
+            0.0,
+            0.0
+          ],
+          "size" : 
+          [
+            3.0,
+            8.0
+          ],
+          "sortOrder" : 0.0,
+          "spawnLineLength" : 5.0,
+          "spawnRate" : 10.0,
+          "spawnShape" : 3,
+          "speed" : 
+          [
+            150.0,
+            250.0
+          ],
+          "spread" : 
+          [
+            -15.0,
+            15.0
+          ],
+          "time" : 0.0,
+          "timescale" : false,
+          "type" : "ParticleEmitter"
+        }
+      ],
+      "name" : "Checkpoint (2)_clone",
+      "position" : 
+      [
+        3091.5,
+        -596.0001220703125
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        10.0,
+        10.0
       ]
     }
   ],
