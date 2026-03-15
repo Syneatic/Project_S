@@ -136,7 +136,7 @@ void Scene::OnUpdate()
 			UISystem::TogglePauseMenuGame();
 
 		if (AEInputCheckTriggered(AEVK_Z))
-			UISystem::EndScreen();
+			UISystem::EndScreen(true);
 
 		accumulator += EngineCTX::dt;
 		while (accumulator >= EngineCTX::fixedDt)
