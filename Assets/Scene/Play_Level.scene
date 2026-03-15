@@ -3728,59 +3728,6 @@
     },
     {
       "active" : false,
-      "children" : 
-      [
-        {
-          "active" : true,
-          "children" : [],
-          "components" : 
-          [
-            {
-              "alignment" : 4,
-              "color" : 
-              [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-              ],
-              "renderlayer" : 2,
-              "screenspace" : true,
-              "sortOrder" : 2.0,
-              "text" : "Settings",
-              "type" : "TextRenderer"
-            }
-          ],
-          "name" : "PauseSettingsHeader",
-          "position" : 
-          [
-            0.0,
-            350.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            1.25,
-            1.25
-          ]
-        }
-      ],
-      "components" : [],
-      "name" : "PauseSettingsHolder",
-      "position" : 
-      [
-        0.0,
-        0.0
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        1.0,
-        1.0
-      ]
-    },
-    {
-      "active" : false,
       "children" : [],
       "components" : 
       [
@@ -3815,6 +3762,483 @@
       [
         1600.0,
         900.0
+      ]
+    },
+    {
+      "active" : false,
+      "children" : 
+      [
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Settings",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "PauseSettingsHeader_clone",
+          "position" : 
+          [
+            0.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.25,
+            1.25
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "buttonFunctionId" : 5,
+              "type" : "Button"
+            },
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "PauseSettingsBackButton",
+          "position" : 
+          [
+            -600.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            240.0,
+            80.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Back",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "PauseSettingsBackText",
+          "position" : 
+          [
+            -600.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Global",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "PauseSettingsGlobalHeader_clone",
+          "position" : 
+          [
+            0.0,
+            217.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : 
+          [
+            {
+              "active" : true,
+              "children" : [],
+              "components" : 
+              [
+                {
+                  "audioS" : 0,
+                  "type" : "Slider"
+                },
+                {
+                  "active" : true,
+                  "alignment" : 4,
+                  "blendmode" : 1,
+                  "color" : 
+                  [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "fileName" : "",
+                  "meshdrawmode" : 3,
+                  "renderlayer" : 2,
+                  "rendermode" : 1,
+                  "screenspace" : true,
+                  "sortOrder" : 3.0,
+                  "type" : "SpriteRenderer"
+                }
+              ],
+              "name" : "SettingsSFXKnob_clone",
+              "position" : 
+              [
+                0.0,
+                0.0
+              ],
+              "rotation" : 0.0,
+              "scale" : 
+              [
+                0.05000000074505806,
+                2.5
+              ]
+            }
+          ],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                0.45588237047195435,
+                0.45588237047195435,
+                0.45588237047195435,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "PauseSettingsGlobalSliderTrack_clone",
+          "position" : 
+          [
+            0.0,
+            104.99998474121094
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            500.0,
+            10.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "SFX",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "PauseSettingsSFXHeader_clone",
+          "position" : 
+          [
+            0.0,
+            -2.0000076293945312
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : 
+          [
+            {
+              "active" : true,
+              "children" : [],
+              "components" : 
+              [
+                {
+                  "audioS" : 1,
+                  "type" : "Slider"
+                },
+                {
+                  "active" : true,
+                  "alignment" : 4,
+                  "blendmode" : 1,
+                  "color" : 
+                  [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "fileName" : "",
+                  "meshdrawmode" : 3,
+                  "renderlayer" : 2,
+                  "rendermode" : 1,
+                  "screenspace" : true,
+                  "sortOrder" : 3.0,
+                  "type" : "SpriteRenderer"
+                }
+              ],
+              "name" : "SettingsSFXKnob_clone_clone",
+              "position" : 
+              [
+                0.0,
+                0.0
+              ],
+              "rotation" : 0.0,
+              "scale" : 
+              [
+                0.05000000074505806,
+                2.5
+              ]
+            }
+          ],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                0.45588237047195435,
+                0.45588237047195435,
+                0.45588237047195435,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "PauseSettingsSFXSliderTrack_clone",
+          "position" : 
+          [
+            0.0,
+            -129.00003051757812
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            500.0,
+            10.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "text" : "Music",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "PauseSettingsMusicHeader_clone",
+          "position" : 
+          [
+            0.0,
+            -250.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : 
+          [
+            {
+              "active" : true,
+              "children" : [],
+              "components" : 
+              [
+                {
+                  "audioS" : 2,
+                  "type" : "Slider"
+                },
+                {
+                  "active" : true,
+                  "alignment" : 4,
+                  "blendmode" : 1,
+                  "color" : 
+                  [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "fileName" : "",
+                  "meshdrawmode" : 3,
+                  "renderlayer" : 2,
+                  "rendermode" : 1,
+                  "screenspace" : true,
+                  "sortOrder" : 3.0,
+                  "type" : "SpriteRenderer"
+                }
+              ],
+              "name" : "SettingsSFXKnob_clone_clone_clone",
+              "position" : 
+              [
+                0.0,
+                0.0
+              ],
+              "rotation" : 0.0,
+              "scale" : 
+              [
+                0.05000000074505806,
+                2.5
+              ]
+            }
+          ],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                0.45588237047195435,
+                0.45588237047195435,
+                0.45588237047195435,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 2.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "PauseSettingsMusicSliderTrack_clone",
+          "position" : 
+          [
+            0.0,
+            -375.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            500.0,
+            10.0
+          ]
+        }
+      ],
+      "components" : [],
+      "name" : "PauseSettingsHolder",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        1.0
       ]
     },
     {

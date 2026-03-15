@@ -68,7 +68,7 @@ class Slider : public Component
 {
 public:
 	float minX{}, maxX{};      // world-space bounds of the track
-	float value{};           // 0.0f to 1.0f
+	f32 value{};           // 0.0f to 1.0f
 	bool isDragging{};
 	AudioSpecifier audioS{};
 
@@ -86,6 +86,7 @@ public:
 	std::unique_ptr<Component> Clone(GameObject& go) override;
 private:
 	Transform* _trackTransform{ nullptr };  // pointer to the slider track GameObject
+	f32 FindSliderVal();
 public:
 	Transform& TrackTransform() { return *_trackTransform; }
 };

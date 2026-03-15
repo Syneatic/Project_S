@@ -1,4 +1,5 @@
 #include "eventhandler.hpp"
+#include "audio.hpp"
 #include "ui_components.hpp"
 #include "gameobject.hpp"
 
@@ -108,17 +109,32 @@ void Slider::DrawInInspector()
 
 void Slider::Serialize(Json::Value& outComp) const
 {
-	outComp["value"] = value;
+	//outComp["value"] = value;
 	outComp["audioS"] = static_cast<int>(audioS);
 }
 
 void Slider::Deserialize(const Json::Value& compObj)
 {
-	if (compObj.isMember("value"))
-		value = compObj["value"].asFloat();
+	/*if (compObj.isMember("value"))
+		value = compObj["value"].asFloat();*/
 
 	if (compObj.isMember("audioS"))
 		audioS = static_cast<AudioSpecifier>(compObj["audioS"].asInt());
+}
+
+f32 Slider::FindSliderVal()
+{
+	switch (audioS)
+	{
+	case AudioSpecifier::GLOBAL:
+		return Audio::GetMasterVolume();
+	case AudioSpecifier::SFX:
+		return Audio::GetSFXVolume();
+	case AudioSpecifier::MUSIC:
+		return Audio::GetMusicVolume();
+	default:
+		return 1.f;
+	}
 }
 
 void Slider::OnStart() 
@@ -128,14 +144,12 @@ void Slider::OnStart()
 	float halfTrack = _trackTransform->scale.x / 2.f;
 	minX = (_trackTransform->position.x - halfTrack);
 	maxX = (_trackTransform->position.x + halfTrack);
-	isDragging = false;
+	isDragging = false; value = FindSliderVal();
+	transform().position.x = (value * (maxX - minX) + minX) / _trackTransform->scale.x;
 }
 
 void Slider::OnUpdate()
 {
-	//_owner.UpdateWorldTransform(&_owner.parent()->worldTransform());
-	Debug::Log(worldTransform().position);
-	Debug::Log(transform().position);
 	UISystem::Hover_Logic(*this);
 }
 void Slider::OnDestroy() {}
