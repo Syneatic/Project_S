@@ -2527,7 +2527,7 @@
                 0.0,
                 0.0
               ],
-              "time" : 3.0,
+              "time" : 1.5,
               "timescale" : false,
               "type" : "ParticleEmitter"
             }
@@ -2535,7 +2535,7 @@
           "name" : "FadeOut",
           "position" : 
           [
-            112.55999755859375,
+            53.330001831054688,
             0.0
           ],
           "rotation" : 90.0,
@@ -3880,7 +3880,7 @@
           "position" : 
           [
             0.0,
-            -253.99998474121094
+            350.0
           ],
           "rotation" : 0.0,
           "scale" : 
