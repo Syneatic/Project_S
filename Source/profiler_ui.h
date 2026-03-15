@@ -116,6 +116,8 @@ private:
         ImVec2      cursor    = ImGui::GetCursorScreenPos();
         float       availW    = ImGui::GetContentRegionAvail().x;
 
+        if (availW <= 0.f) return;
+
         ImGui::InvisibleButton("##frame_sel", ImVec2(availW, graphH));
         bool hovered = ImGui::IsItemHovered();
 

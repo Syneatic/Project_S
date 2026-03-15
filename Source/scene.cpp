@@ -17,13 +17,15 @@ ProfilerUI profilerUI;
 
 void BuildDockSpace()
 {
+	const ImGuiViewport* vp = ImGui::GetMainViewport();
+	if (vp->WorkSize.x <= 0.f || vp->WorkSize.y <= 0.f) return;
+
 	ImGuiWindowFlags host_flags =
 		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
 		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground;
 
-	const ImGuiViewport* vp = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(vp->WorkPos);
 	ImGui::SetNextWindowSize(vp->WorkSize);
 	ImGui::SetNextWindowViewport(vp->ID);
@@ -138,7 +140,6 @@ void Scene::OnUpdate()
 
 
 #ifdef _DEBUG
-	//Profiler::Get().SetPaused(EngineCTX::debugMode);
 	if (EngineCTX::imguiInitialize)
 	{
 		ImGui_ImplOpenGL3_NewFrame();
@@ -146,8 +147,12 @@ void Scene::OnUpdate()
 		ImGui::NewFrame();
 
 		BuildDockSpace();
-		if(EngineCTX::debugMode)
+
+		if (EngineCTX::debugMode)
+		{
 			profilerUI.Render();
+			Debugger::Tick(*this);
+		}
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

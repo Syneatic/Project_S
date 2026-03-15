@@ -4,20 +4,27 @@
 // ----------------------------------------------------------------
 // Debugger overlay ¨C DEBUG builds only.
 //
-// Wraps any running Scene. Physics, gameplay, audio all run
-// normally. At the end of Scene::OnUpdate() call Debugger::Tick().
+// Plugs into the existing ImGui frame that Scene::OnUpdate() owns.
+// Does NOT start/end its own ImGui frame.
 //
-// Hover  -> cyan outline + inspector preview
-// Click  -> locks inspector to that object (outline persists)
-// Click empty space -> unlocks
+// Toggled by F5 via EngineCTX::debugMode.
+// Call Debugger::Tick() INSIDE the existing ImGui frame block.
 // ----------------------------------------------------------------
 namespace Debugger
 {
 #ifdef _DEBUG
-    // Call once at the very end of Scene::OnUpdate().
-    // Handles picking, outline drawing, and full ImGui overlay.
+    // Call inside the existing #ifdef _DEBUG ImGui frame in Scene::OnUpdate().
+    // Handles picking, outlines, hierarchy, inspector, error popup.
     void Tick(Scene& scene);
+
+    // True when debugMode is on this frame ¡ª lets other systems block input.
+    bool IsActive();
+
+    // Push a non-fatal error into the overlay popup instead of crashing.
+    void ReportError(const std::string& msg);
 #else
-    inline void Tick(Scene&) {}  // zero overhead in Release
+    inline void Tick(Scene&) {}
+    inline bool IsActive() { return false; }
+    inline void ReportError(const std::string&) {}
 #endif
 }

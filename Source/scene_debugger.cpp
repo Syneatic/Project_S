@@ -1,27 +1,23 @@
-// scene_debugger.cpp
-// Read-only overlay debugger.
-// Compiled only in _DEBUG builds.
 #ifdef _DEBUG
 
-// systems
 #include "renderer.hpp"
 #include "camera.hpp"
 #include "gameobject.hpp"
-
-// scene
 #include "scene_debugger.hpp"
 #include "scene_manager.hpp"
-
-// comps
 #include "components.hpp"
 
-// ================================================================
-//  State
-// ================================================================
 namespace
 {
-    GameObject* _hovered{ nullptr };  // object under mouse this frame
-    GameObject* _locked{ nullptr };   // clicked and pinned
+    GameObject* _hovered{ nullptr };
+    GameObject* _locked{ nullptr };
+    bool        _active{ false };
+    int         _warmupFrames{ 0 };
+    int _inspectorSettledFrames{ 0 };
+
+    // ── Error popup state ────────────────────────────────────────
+    std::string _errorMsg{};
+    bool        _showError{ false };
 
     // ── Hit testing ─────────────────────────────────────────────
 
@@ -53,6 +49,7 @@ namespace
     }
 
     // ── Outline drawing ─────────────────────────────────────────
+    // Called BEFORE Graphics::Execute() so outlines appear same frame.
 
     void DrawOutline(const GameObject& go, Color col)
     {
@@ -86,41 +83,26 @@ namespace
 
     bool BeginPropTable(const char* id)
     {
+        if (ImGui::GetContentRegionAvail().x <= 0.f) return false;
         return ImGui::BeginTable(id, 2,
             ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchSame);
     }
 
+
     // ── UI panels ────────────────────────────────────────────────
-
-    void BuildDockSpace()
-    {
-        ImGuiWindowFlags flags =
-            ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
-            ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
-            ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
-            ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground;
-
-        const ImGuiViewport* vp = ImGui::GetMainViewport();
-        ImGui::SetNextWindowPos(vp->WorkPos);
-        ImGui::SetNextWindowSize(vp->WorkSize);
-        ImGui::SetNextWindowViewport(vp->ID);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.f);
-        ImGui::Begin("##dbg_dock", nullptr, flags);
-        ImGui::PopStyleVar(2);
-        ImGui::DockSpace(ImGui::GetID("DbgDockSpace"), ImVec2(0, 0),
-            ImGuiDockNodeFlags_PassthruCentralNode);
-        ImGui::End();
-    }
+    // These are called INSIDE an already-open ImGui frame.
 
     void BuildMenuBar(Scene& scene)
     {
+        const ImGuiViewport* vp = ImGui::GetMainViewport();
+        if (vp->WorkSize.x <= 0.f || vp->WorkSize.y <= 0.f) return;
+
         ImGui::BeginMainMenuBar();
         ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(0.15f, 0.05f, 0.25f, 1.f));
 
         if (ImGui::BeginMenu("Debugger"))
         {
-            ImGui::TextDisabled("Read-only overlay");
+            ImGui::TextDisabled("Read-only overlay  [F5 to hide]");
             ImGui::Separator();
             if (ImGui::MenuItem("Switch to Editor"))
                 SceneManager::SwitchToEditor();
@@ -143,7 +125,6 @@ namespace
         ImGui::EndMainMenuBar();
     }
 
-    // Recursively draw read-only hierarchy node
     void DrawNode(GameObject* go)
     {
         if (go->cname().empty()) return;
@@ -159,7 +140,6 @@ namespace
         flags |= hasChildren ? 0 : ImGuiTreeNodeFlags_Leaf;
         if (isTarget) flags |= ImGuiTreeNodeFlags_Selected;
 
-        // Teal tint for the inspected object
         if (isTarget)
         {
             ImGui::PushStyleColor(ImGuiCol_Header,
@@ -172,16 +152,10 @@ namespace
 
         if (isTarget) ImGui::PopStyleColor(2);
 
-        // Click in hierarchy also locks
+        // Click in hierarchy = lock/unlock
         if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
-        {
-            if (_locked == go)
-                _locked = nullptr;   // click same → unlock
-            else
-                _locked = go;
-        }
+            _locked = (_locked == go) ? nullptr : go;
 
-        // Quick world-pos tooltip
         if (ImGui::IsItemHovered())
         {
             const Transform& wt = go->worldTransform();
@@ -204,21 +178,22 @@ namespace
 
     void BuildHierarchyWindow(Scene& scene)
     {
+        const ImGuiViewport* vp = ImGui::GetMainViewport();
+        if (vp->WorkSize.x <= 0.f || vp->WorkSize.y <= 0.f) return;
         ImGui::SetNextWindowSizeConstraints(ImVec2(280.f, 100.f), ImVec2(FLT_MAX, FLT_MAX));
         ImGui::Begin("Hierarchy##dbg");
-
         ImGui::TextUnformatted(scene.name().c_str());
         ImGui::Separator();
-
         for (auto& pgo : scene.gameObjectList())
             DrawNode(pgo.get());
-
         ImGui::End();
     }
 
     void BuildInspectorWindow()
     {
-        // Show locked object if pinned, otherwise hovered preview
+        const ImGuiViewport* vp = ImGui::GetMainViewport();
+        if (vp->WorkSize.x <= 0.f || vp->WorkSize.y <= 0.f) return;
+
         GameObject* target = _locked ? _locked : _hovered;
 
         ImGui::SetNextWindowSizeConstraints(ImVec2(300.f, 100.f), ImVec2(FLT_MAX, FLT_MAX));
@@ -231,16 +206,14 @@ namespace
             return;
         }
 
-        // ── Title bar ────────────────────────────────────────────
+        // Title row
         if (_locked)
         {
-            // Purple pin indicator when locked
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.8f, 0.4f, 1.f, 1.f));
             ImGui::TextUnformatted(u8"\u25CF LOCKED");
             ImGui::PopStyleColor();
             ImGui::SameLine();
-            if (ImGui::SmallButton("Unlock"))
-                _locked = nullptr;
+            if (ImGui::SmallButton("Unlock")) _locked = nullptr;
             ImGui::SameLine();
         }
         else
@@ -266,7 +239,7 @@ namespace
 
         ImGui::Separator();
 
-        // ── Local transform ──────────────────────────────────────
+        // Local transform
         if (ImGui::CollapsingHeader("Transform (local)", ImGuiTreeNodeFlags_DefaultOpen))
         {
             const Transform& lt = target->transform();
@@ -279,7 +252,7 @@ namespace
             }
         }
 
-        // ── World transform ──────────────────────────────────────
+        // World transform
         if (ImGui::CollapsingHeader("Transform (world)", ImGuiTreeNodeFlags_DefaultOpen))
         {
             const Transform& wt = target->worldTransform();
@@ -294,7 +267,7 @@ namespace
 
         ImGui::Separator();
 
-        // ── Components ───────────────────────────────────────────
+        // Components
         const auto& comps = target->componentMap();
         const auto& compOrder = target->componentOrder();
 
@@ -314,7 +287,6 @@ namespace
             bool open = ImGui::CollapsingHeader(
                 comp->name().c_str(), ImGuiTreeNodeFlags_DefaultOpen);
 
-            // Read-only active badge
             ImGui::SameLine();
             {
                 bool active = comp->active();
@@ -326,10 +298,13 @@ namespace
 
             if (open)
             {
-                // BeginDisabled makes every widget non-interactive
-                ImGui::BeginDisabled(true);
-                const_cast<Component*>(comp)->DrawInInspector();
-                ImGui::EndDisabled();
+                float avail = ImGui::GetContentRegionAvail().x;
+                if (avail > 1.f && _inspectorSettledFrames >= 2)  // must be truly settled
+                {
+                    ImGui::BeginDisabled(true);
+                    const_cast<Component*>(comp)->DrawInInspector();
+                    ImGui::EndDisabled();
+                }
                 ImGui::Separator();
             }
         }
@@ -340,9 +315,14 @@ namespace
     void BuildStatusBar()
     {
         const ImGuiViewport* vp = ImGui::GetMainViewport();
-        ImGui::SetNextWindowPos(
-            ImVec2(vp->WorkPos.x, vp->WorkPos.y + vp->WorkSize.y - 24.f));
-        ImGui::SetNextWindowSize(ImVec2(vp->WorkSize.x, 24.f));
+        if (vp->WorkSize.x <= 0.f || vp->WorkSize.y <= 0.f) return;
+
+        float statusH = 24.f;
+        float winW = std::max(vp->WorkSize.x, 1.f); // ← clamp width
+        float winY = vp->WorkPos.y + vp->WorkSize.y - statusH;
+
+        ImGui::SetNextWindowPos(ImVec2(vp->WorkPos.x, winY));
+        ImGui::SetNextWindowSize(ImVec2(winW, statusH));
         ImGui::SetNextWindowBgAlpha(0.75f);
 
         ImGuiWindowFlags flags =
@@ -355,40 +335,93 @@ namespace
         if (_locked)
         {
             const Transform& wt = _locked->worldTransform();
-            ImGui::Text(
-                u8"\u25CF LOCKED  %s  |  pos (%.2f, %.2f)  |  %zu component(s)  "
-                "| click object or [Unlock] to release",
-                _locked->cname().c_str(),
-                wt.position.x, wt.position.y,
+            ImGui::Text(u8"\u25CF LOCKED  %s  |  pos (%.2f, %.2f)  |  %zu component(s)  |  click to unlock",
+                _locked->cname().c_str(), wt.position.x, wt.position.y,
                 _locked->componentOrder().size());
         }
         else if (_hovered)
         {
             const Transform& wt = _hovered->worldTransform();
-            ImGui::Text(
-                u8"\u25CB HOVER  %s  |  pos (%.2f, %.2f)  |  click to lock",
-                _hovered->cname().c_str(),
-                wt.position.x, wt.position.y);
+            ImGui::Text(u8"\u25CB HOVER  %s  |  pos (%.2f, %.2f)  |  click to lock",
+                _hovered->cname().c_str(), wt.position.x, wt.position.y);
         }
         else
         {
-            ImGui::TextDisabled("DEBUG MODE  |  hover a GameObject to inspect");
+            ImGui::TextDisabled("DEBUG MODE  |  hover a GameObject to inspect  |  F5 to toggle");
         }
 
         ImGui::End();
     }
 
-} // anonymous namespace
+    void BuildErrorPopup()
+    {
+        if (!_showError) return;
 
+        const ImGuiViewport* vp = ImGui::GetMainViewport();
+        if (vp->WorkSize.x <= 0.f || vp->WorkSize.y <= 0.f) return; // ADD THIS
 
-// ================================================================
-//  Public entry point
-// ================================================================
+        ImGui::SetNextWindowPos(vp->GetCenter(), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+        ImGui::SetNextWindowSize(ImVec2(500.f, 200.f));
+
+        ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.7f, 0.1f, 0.1f, 1.f));
+        ImGui::Begin("Runtime Error##dbgerr", nullptr,
+            ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+            ImGuiWindowFlags_NoDocking);
+        ImGui::PopStyleColor();
+
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.f, 0.35f, 0.35f, 1.f));
+        ImGui::TextUnformatted("An error occurred at runtime:");
+        ImGui::PopStyleColor();
+
+        ImGui::Spacing();
+        ImGui::TextWrapped("%s", _errorMsg.c_str());
+        ImGui::Spacing();
+        ImGui::Separator();
+
+        // Guard against zero content width
+        float btnW = std::max(ImGui::GetContentRegionAvail().x, 1.f); // CHANGE THIS
+        if (ImGui::Button("Dismiss##dbgerr", ImVec2(btnW, 0.f)))
+            _showError = false;
+
+        ImGui::End();
+    }
+
+}
 namespace Debugger
 {
+    bool IsActive() { return _active; }
+
+    void ReportError(const std::string& msg)
+    {
+        _errorMsg = msg;
+        _showError = true;
+        Debug::Log("Debugger error: ", msg);
+    }
+
     void Tick(Scene& scene)
     {
-        // ── 1. Pick hovered object (skip if ImGui owns mouse) ────
+        bool wasActive = _active;
+        _active = EngineCTX::debugMode;
+
+        if (!_active)
+        {
+            _hovered = nullptr;
+            _warmupFrames = 3;   // reset so next toggle-on gets 3 skip frames
+            return;
+        }
+
+        // On fresh toggle-on, start warmup countdown
+        if (!wasActive)
+            _warmupFrames = 3;
+
+        // During warmup: skip ALL ImGui panels, just tick down
+        if (_warmupFrames > 0)
+        {
+            --_warmupFrames;
+            _inspectorSettledFrames = 0;  // reset settled counter during warmup
+            return;
+        }
+
         if (!ImGui::GetIO().WantCaptureMouse)
         {
             s32 mx, my;
@@ -397,43 +430,27 @@ namespace Debugger
                 { static_cast<f32>(mx), static_cast<f32>(my) });
 
             _hovered = PickFromScene(scene, worldMouse);
-
-            // Left click in viewport
             if (AEInputCheckTriggered(AEVK_LBUTTON))
-            {
-                if (_hovered)
-                    _locked = (_locked == _hovered) ? nullptr : _hovered;
-                else
-                    _locked = nullptr;  // clicked empty space → unlock
-            }
+                _locked = _hovered
+                ? ((_locked == _hovered) ? nullptr : _hovered)
+                : nullptr;
         }
 
-        // ── 2. Draw outlines (submitted before Graphics::Execute
-        //       already ran, so we re-submit here for next frame;
-        //       or call Graphics::Execute again if your pipeline
-        //       allows it — adjust to match your render order) ────
+        // ── 2. Outlines ───────────────────────────────────────────
         if (_locked)
-            DrawOutline(*_locked, Color(0xFF'CC'55'FF));   // purple = locked
+            DrawOutline(*_locked, Color(0xFF'CC'55'FF));
         else if (_hovered)
-            DrawOutline(*_hovered, Color(0xFF'00'FF'FF));  // cyan   = hover
+            DrawOutline(*_hovered, Color(0xFF'00'FF'FF));
 
-        // ── 3. ImGui overlay ─────────────────────────────────────
-        if (!EngineCTX::imguiInitialize) return;
-
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplWin32_NewFrame();
-        ImGui::NewFrame();
-
-        BuildDockSpace();
+        // ── 3. ImGui panels ───────────────────────────────────────
+        if (ImGui::GetMainViewport()->WorkSize.x <= 0.f) return;
         BuildMenuBar(scene);
         BuildHierarchyWindow(scene);
         BuildInspectorWindow();
         BuildStatusBar();
-
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        ImGui::EndFrame();
+        BuildErrorPopup();
+        _inspectorSettledFrames++;
     }
-}
+ }
 
 #endif // _DEBUG

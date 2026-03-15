@@ -7,6 +7,7 @@
 #include "level_transition.hpp"
 #include "ui_components.hpp"
 #include "render_components.hpp"
+#include "scene_debugger.hpp"
 
 // Helper anon namespace for game object holders.
 namespace
@@ -152,6 +153,9 @@ namespace UISystem
     // Logic for button click.
     void Hover_Logic(Button& button)
     {
+#ifdef _DEBUG
+        if (Debugger::IsActive()) return; 
+#endif
         if (LevelTransition::inTransition)
             return;
 
