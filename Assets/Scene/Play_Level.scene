@@ -7701,7 +7701,7 @@
               "type" : "TextRenderer"
             }
           ],
-          "name" : "PauseSettingsGlobalHeader_clone",
+          "name" : "PauseSettingsGlobalHeader",
           "position" : 
           [
             0.0,
@@ -7747,7 +7747,7 @@
                   "type" : "SpriteRenderer"
                 }
               ],
-              "name" : "SettingsSFXKnob_clone",
+              "name" : "PauseSettingsGlobalKnob",
               "position" : 
               [
                 0.0,
@@ -7783,7 +7783,7 @@
               "type" : "SpriteRenderer"
             }
           ],
-          "name" : "PauseSettingsGlobalSliderTrack_clone",
+          "name" : "PauseSettingsGlobalSliderTrack",
           "position" : 
           [
             0.0,
@@ -7817,7 +7817,7 @@
               "type" : "TextRenderer"
             }
           ],
-          "name" : "PauseSettingsSFXHeader_clone",
+          "name" : "PauseSettingsSFXHeader",
           "position" : 
           [
             0.0,
@@ -7863,7 +7863,7 @@
                   "type" : "SpriteRenderer"
                 }
               ],
-              "name" : "SettingsSFXKnob_clone_clone",
+              "name" : "PauseSettingsSFXKnob",
               "position" : 
               [
                 0.0,
@@ -7899,7 +7899,7 @@
               "type" : "SpriteRenderer"
             }
           ],
-          "name" : "PauseSettingsSFXSliderTrack_clone",
+          "name" : "PauseSettingsSFXSliderTrack",
           "position" : 
           [
             0.0,
@@ -7933,7 +7933,7 @@
               "type" : "TextRenderer"
             }
           ],
-          "name" : "PauseSettingsMusicHeader_clone",
+          "name" : "PauseSettingsMusicHeader",
           "position" : 
           [
             0.0,
@@ -7979,7 +7979,7 @@
                   "type" : "SpriteRenderer"
                 }
               ],
-              "name" : "SettingsSFXKnob_clone_clone_clone",
+              "name" : "PauseSettingsMusicKnob",
               "position" : 
               [
                 0.0,
@@ -8015,7 +8015,7 @@
               "type" : "SpriteRenderer"
             }
           ],
-          "name" : "PauseSettingsMusicSliderTrack_clone",
+          "name" : "PauseSettingsMusicSliderTrack",
           "position" : 
           [
             0.0,

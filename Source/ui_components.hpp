@@ -23,7 +23,7 @@ enum class FunctionKey
 
 enum class AudioSpecifier : char
 {
-	GLOBAL, MUSIC, SFX, COUNT
+	GLOBAL, SFX, MUSIC, COUNT
 };
 
 // Display component to attach image or custom texture.
