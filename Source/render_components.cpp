@@ -74,7 +74,7 @@ namespace
 // ===== RENDERER DEF =====
 void Renderer::DrawInInspector()
 {
-    RenderSort("particle", renderLayer, sortOrder);
+    RenderSort("renderer", renderLayer, sortOrder);
 
     static const char* _blendNames[] = { "NONE", "BLEND", "ADD", "MULTIPLY"};
     static const char* _renderNames[] = { "NONE", "COLOR", "TEXTURE"};

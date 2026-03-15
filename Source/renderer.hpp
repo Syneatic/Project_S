@@ -13,9 +13,9 @@ namespace Graphics
     enum RenderLayer
     {
         BACKGROUND = 0,
-        DEFAULT = 250,
-        UI = 500,
-        GIZMOS = 750,
+        DEFAULT,
+        UI,
+        GIZMOS,
     };
 
     enum class PrimitiveType
