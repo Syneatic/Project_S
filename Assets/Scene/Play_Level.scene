@@ -5634,7 +5634,7 @@
           "type" : "AudioListener"
         },
         {
-          "echoDistanceThreshold" : 200.0,
+          "echoDistanceThreshold" : 100.0,
           "jumpHeight" : 60.0,
           "max_speed" : 200.0,
           "time" : 0.60000002384185791,
@@ -7020,7 +7020,7 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 250,
+          "renderlayer" : 1,
           "rendermode" : 1,
           "screenspace" : false,
           "sortOrder" : 0.0,
@@ -7129,7 +7129,7 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 250,
+          "renderlayer" : 1,
           "rendermode" : 1,
           "screenspace" : false,
           "sortOrder" : 0.0,
@@ -7166,7 +7166,7 @@
             50.0,
             50.0
           ],
-          "renderLayer" : 250,
+          "renderLayer" : 0,
           "rotation" : 
           [
             0.0,
@@ -7238,7 +7238,7 @@
           ],
           "fileName" : "",
           "meshdrawmode" : 3,
-          "renderlayer" : 250,
+          "renderlayer" : 1,
           "rendermode" : 1,
           "screenspace" : false,
           "sortOrder" : 0.0,
@@ -7275,7 +7275,7 @@
             50.0,
             50.0
           ],
-          "renderLayer" : 1,
+          "renderLayer" : 0,
           "rotation" : 
           [
             0.0,
