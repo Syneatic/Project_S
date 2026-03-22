@@ -365,7 +365,7 @@
               ],
               "fileName" : "",
               "meshdrawmode" : 3,
-              "renderlayer" : 1,
+              "renderlayer" : 2,
               "rendermode" : 1,
               "screenspace" : true,
               "sortOrder" : 0.0,
@@ -399,9 +399,9 @@
                 0.0,
                 1.0
               ],
-              "renderlayer" : 1,
+              "renderlayer" : 2,
               "screenspace" : true,
-              "sortOrder" : 0.0,
+              "sortOrder" : 1.0,
               "text" : "Controls",
               "type" : "TextRenderer"
             }
@@ -668,10 +668,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 0,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -689,6 +685,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 0,
+                  "type" : "Slider"
                 }
               ],
               "name" : "SettingsGlobalKnob",
@@ -784,10 +784,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 1,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -805,6 +801,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 1,
+                  "type" : "Slider"
                 }
               ],
               "name" : "SettingsSFXKnob",
@@ -900,10 +900,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 2,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -921,6 +917,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 2,
+                  "type" : "Slider"
                 }
               ],
               "name" : "SettingsSFXKnob_clone",
