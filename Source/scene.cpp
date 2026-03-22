@@ -76,8 +76,9 @@ void Scene::OnEnter()
 
 	SaveGameManager::SaveData data;
 
-	if (SaveGameManager::Load(_name, data))
+	if (SaveGameManager::toLoad)
 	{
+		SaveGameManager::Load(_name, data);
 		Debug::Log("Save file name: ", _name);
 		if (auto* player = FindGameObjectByName("Player"))
 		{

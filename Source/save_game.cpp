@@ -29,21 +29,22 @@ namespace SaveGameManager
 		writer->write(root, &out);
 	}
 
-	bool Load(const std::string& sceneName, SaveData& outData)
+	void Load(const std::string& sceneName, SaveData& outData)
 	{
 		std::string fullPath = savePath + sceneName + ".save";
 		
 		//Debug::Log("Level Save Name", fullPath), "\n";
 
 		std::ifstream in(fullPath, std::ios::binary);
-		if (!in) return false; //check if input file stream cannot be read
+		if (!in) return; //check if input file stream cannot be read
 
 		Json::CharReaderBuilder builder;
 		std::string errs;
 		Json::Value root;
 
 		if (!parseFromStream(builder, in, &root, &errs))
-			return false;
+			return;
+
 		if (root.isMember("scene"))
 			outData.sceneName = root["scene"].asString();
 
@@ -54,8 +55,6 @@ namespace SaveGameManager
 			ReadFloat2(root["spawnPoint"], outData.spawnPoint);
 
 		//File has been successfully run
-		return true;
+		//return true;
 	}
-
-
 };

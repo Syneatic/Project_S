@@ -3,6 +3,7 @@
 #include "camera.hpp"
 #include "scene.hpp"
 #include "audio.hpp"
+#include "save_game.hpp"
 #include "scene_manager.hpp"
 #include "eventhandler.hpp"
 #include "level_transition.hpp"
@@ -100,7 +101,9 @@ namespace
         mainMenuHolders.mainSettings->active(false); mainMenuHolders.mainCredits->active(false);
 
         SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&)
-            { LevelTransition::RequestTransition(); });
+            { LevelTransition::RequestTransition(); SaveGameManager::toLoad = false; });
+        SubscribeButton(FunctionKey::LOAD_GAME, [](const UIButtonEvent&)
+            { LevelTransition::RequestTransition(); SaveGameManager::toLoad = true; });
         SubscribeButton(FunctionKey::SETTINGS_MM, [](const UIButtonEvent&)
             { ToggleUIPair(mainMenuHolders.mainMenu, mainMenuHolders.mainSettings); });
         SubscribeButton(FunctionKey::CREDITS_TOGGLE, [](const UIButtonEvent&)

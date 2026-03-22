@@ -11,7 +11,8 @@ namespace SaveGameManager {
 		float2 initialSpawnPosition{};
 		float2 spawnPoint{};
 	};
+	inline bool toLoad{ false };
 
 	void Save(const SaveData& data);
-	bool Load(const std::string& sceneName, SaveData& outData);
+	void Load(const std::string& sceneName, SaveData& outData);
 }
