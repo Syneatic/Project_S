@@ -94,6 +94,7 @@ public:
 namespace UISystem
 {
 	void init();
+	void Update();
 	void Hover_Logic(Button& button);
 	void Hover_Logic(Slider& button);
 	void TogglePauseMenuGame();

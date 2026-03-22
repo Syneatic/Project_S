@@ -133,11 +133,12 @@ void Scene::OnUpdate()
 			Audio::Update();
 		}
 
-		if (AEInputCheckTriggered(AEVK_P))
+		UISystem::Update();
+		if (AEInputCheckTriggered(AEVK_ESCAPE))
 			UISystem::TogglePauseMenuGame();
 
-		if (AEInputCheckTriggered(AEVK_Z))
-			UISystem::EndScreen(true);
+		/*if (AEInputCheckTriggered(AEVK_Z))
+			UISystem::EndScreen(true);*/
 
 		accumulator += EngineCTX::dt;
 		while (accumulator >= EngineCTX::fixedDt)

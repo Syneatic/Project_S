@@ -15,14 +15,14 @@ namespace
 {
     struct
     {
-        GameObject* mainMenu = nullptr, *mainSettings = nullptr,
-            *mainCredits = nullptr;
+        GameObject* mainMenu = nullptr, * mainSettings = nullptr,
+            * mainCredits = nullptr, * mouseParticle = nullptr;
     }mainMenuHolders;
 
     struct
     {
-        GameObject* pauseOverlay = nullptr, *pauseMenu = nullptr,
-            *pauseSettings = nullptr, *endScreen = nullptr;
+        GameObject* pauseOverlay = nullptr, * pauseMenu = nullptr,
+            * pauseSettings = nullptr, * endScreen = nullptr;
 
         
     }pauseMenuHolders;
@@ -98,6 +98,7 @@ namespace
         mainMenuHolders.mainMenu = SceneManager::ActiveScene()->FindGameObjectByName("MainMenuHolder");
         mainMenuHolders.mainSettings = SceneManager::ActiveScene()->FindGameObjectByName("SettingsHolder");
         mainMenuHolders.mainCredits = SceneManager::ActiveScene()->FindGameObjectByName("CreditsHolder");
+        mainMenuHolders.mouseParticle = SceneManager::ActiveScene()->FindGameObjectByName("MouseParticle");
         mainMenuHolders.mainSettings->active(false); mainMenuHolders.mainCredits->active(false);
 
         SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&)
@@ -152,6 +153,16 @@ namespace UISystem
                 { Audio::SetSFXVolume(e.value); });
             SubscribeSlider(AudioSpecifier::MUSIC, [](UISliderEvent const& e)
                 { Audio::SetMusicVolume(e.value); });
+        }
+    }
+
+    void Update()
+    {
+        if (SceneManager::ActiveScene()->name() == "MainMenu")
+        {
+            
+            mainMenuHolders.mouseParticle->transform().position = mouseWorld();
+            Debug::Log("MouseParticlePos: ", mainMenuHolders.mouseParticle->transform().position);
         }
     }
 
