@@ -216,7 +216,7 @@
               "type" : "SpriteRenderer"
             },
             {
-              "buttonFunctionId" : 8,
+              "buttonFunctionId" : 10,
               "type" : "Button"
             }
           ],
@@ -349,7 +349,7 @@
           "components" : 
           [
             {
-              "buttonFunctionId" : 6,
+              "buttonFunctionId" : 7,
               "type" : "Button"
             },
             {
@@ -1142,6 +1142,173 @@
       ],
       "components" : [],
       "name" : "CreditsHolder",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : 
+      [
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "text" : "Controls",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "ControlsHeader",
+          "position" : 
+          [
+            0.0,
+            320.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.25,
+            1.25
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "Back",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "ControlsBackText",
+          "position" : 
+          [
+            -600.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 7,
+              "type" : "Button"
+            }
+          ],
+          "name" : "ControlsBackButton",
+          "position" : 
+          [
+            -600.0,
+            350.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            240.0,
+            80.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 0,
+              "rendermode" : 2,
+              "screenspace" : true,
+              "sortOrder" : 0.0,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "ControlsPNG",
+          "position" : 
+          [
+            0.0,
+            0.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "components" : [],
+      "name" : "ControlsHolder",
       "position" : 
       [
         0.0,

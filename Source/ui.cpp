@@ -16,15 +16,15 @@ namespace
     struct
     {
         GameObject* mainMenu = nullptr, * mainSettings = nullptr,
-            * mainCredits = nullptr, * mouseParticle = nullptr;
+            * mainCredits = nullptr, * mainControls = nullptr,
+            * mouseParticle = nullptr;
     }mainMenuHolders;
 
     struct
     {
         GameObject* pauseOverlay = nullptr, * pauseMenu = nullptr,
-            * pauseSettings = nullptr, * endScreen = nullptr;
-
-        
+            * pauseSettings = nullptr, * pauseControls = nullptr,
+            * endScreen = nullptr;
     }pauseMenuHolders;
 
     TextRenderer* endScreenHeader = nullptr;
@@ -98,8 +98,10 @@ namespace
         mainMenuHolders.mainMenu = SceneManager::ActiveScene()->FindGameObjectByName("MainMenuHolder");
         mainMenuHolders.mainSettings = SceneManager::ActiveScene()->FindGameObjectByName("SettingsHolder");
         mainMenuHolders.mainCredits = SceneManager::ActiveScene()->FindGameObjectByName("CreditsHolder");
+        mainMenuHolders.mainControls = SceneManager::ActiveScene()->FindGameObjectByName("ControlsHolder");
         mainMenuHolders.mouseParticle = SceneManager::ActiveScene()->FindGameObjectByName("MouseParticle");
         mainMenuHolders.mainSettings->active(false); mainMenuHolders.mainCredits->active(false);
+        mainMenuHolders.mainControls->active(false);
 
         SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&)
             { LevelTransition::RequestTransition(); SaveGameManager::toLoad = false; });
@@ -109,6 +111,8 @@ namespace
             { ToggleUIPair(mainMenuHolders.mainMenu, mainMenuHolders.mainSettings); });
         SubscribeButton(FunctionKey::CREDITS_TOGGLE, [](const UIButtonEvent&)
             { ToggleUIPair(mainMenuHolders.mainMenu, mainMenuHolders.mainCredits); });
+        SubscribeButton(FunctionKey::CONTROLS_MM, [](const UIButtonEvent&)
+            { ToggleUIPair(mainMenuHolders.mainMenu, mainMenuHolders.mainControls); });
         SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent&)
             { EngineCTX::applicationRunning = false; });
     }
@@ -118,6 +122,7 @@ namespace
         pauseMenuHolders.pauseOverlay = SceneManager::ActiveScene()->FindGameObjectByName("PauseOverlay");
         pauseMenuHolders.pauseMenu = SceneManager::ActiveScene()->FindGameObjectByName("PauseMenuHolder");
         pauseMenuHolders.pauseSettings = SceneManager::ActiveScene()->FindGameObjectByName("PauseSettingsHolder");
+        pauseMenuHolders.pauseControls = SceneManager::ActiveScene()->FindGameObjectByName("PauseControlsHolder");
         pauseMenuHolders.endScreen = SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHolder");
         endScreenHeader = SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHeader")->GetComponent<TextRenderer>();
         ToggleUIPair(false, pauseMenuHolders.pauseOverlay, pauseMenuHolders.pauseMenu);
@@ -129,6 +134,8 @@ namespace
             { RestartGame(); });
         SubscribeButton(FunctionKey::SETTINGS_GAME, [](const UIButtonEvent&)
             { if (EngineCTX::isPaused) ToggleUIPair(pauseMenuHolders.pauseMenu, pauseMenuHolders.pauseSettings); });
+        SubscribeButton(FunctionKey::CONTROLS_GAME, [](const UIButtonEvent&)
+            { if (EngineCTX::isPaused) ToggleUIPair(pauseMenuHolders.pauseMenu, pauseMenuHolders.pauseControls); });
         SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent&)
             { LevelTransition::RequestTransition(); });
     }
@@ -253,6 +260,9 @@ namespace UISystem
 
         if (pauseMenuHolders.pauseSettings->active())
             ToggleUIPair(false, pauseMenuHolders.pauseMenu, pauseMenuHolders.pauseSettings);
+
+        if (pauseMenuHolders.pauseControls->active())
+            ToggleUIPair(false, pauseMenuHolders.pauseMenu, pauseMenuHolders.pauseControls);
     }
 
     void EndScreen(bool state)
