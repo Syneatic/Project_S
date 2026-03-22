@@ -26,6 +26,9 @@ public:
     f32 jumpHeight = 60.f;
     f32 time = 0.7f;
 
+    f32 coyoteTimer = 0.f;
+    f32 coyoteMax = 0.15f;
+
     float2 lastEchoPos{};
     bool wasMoving{ false };
     f32 minEchoDistance{ 100.f };
@@ -42,6 +45,15 @@ public:
     bool ignoreProjectileCollision{ false };
     f32 ignoreTimer{ 0.f };
     f32 ignoreDuration{ 0.5f };
+
+    f32 currentAlpha = 1.f;
+    f32 pingFadeSpeed = 1.5f;
+    f32 fadeCooldownTimer = 0.f;
+    f32 fadeCooldownDuration = 2.f;
+    bool isFadingOut = false;
+    bool isFadeCoolingDown = false;
+
+    bool canPing = true;
 
     RigidBody* rb = nullptr;
     GameObject* rockObject = nullptr;

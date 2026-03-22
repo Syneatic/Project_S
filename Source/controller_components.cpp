@@ -81,7 +81,19 @@ void PlayerController::OnUpdate()
 	//we use a ray cast downwards to check if the player is grounded
     RaycastHit hit;
     //or use whatever range u want
-    _isGrounded = Physics::Raycast(_transform.position, float2(0.f, -1.f), _transform.scale.y / 2.f + 10.f, hit, 1 << 1);
+    bool rayGround = Physics::Raycast(_transform.position, float2(0.f, -1.f), _transform.scale.y / 2.f + 10.f, hit, 1 << 1);
+    if (rayGround)
+    {
+        _isGrounded = true;
+        coyoteTimer = coyoteMax;
+    }
+    else
+    {
+        coyoteTimer -= EngineCTX::dt;
+
+        if (coyoteTimer > 0.f) _isGrounded = true;
+        else _isGrounded = false;
+    }
 
     float input = 0.f;
 
@@ -165,7 +177,11 @@ void PlayerController::OnUpdate()
 
     if (AEInputCheckTriggered(AEVK_E) && _isGrounded)
     {
-        TriggerPing(_transform.position);
+        if (!isFadingOut && !isFadeCoolingDown)
+        {
+            TriggerPing(_transform.position);
+            isFadingOut = true;
+        }
     }
 
     float2 currentPos = _owner.worldTransform().position;
@@ -179,7 +195,7 @@ void PlayerController::OnUpdate()
         {
             distanceAccumulated = 0.f;
 
-            //TriggerPing(currentPos);
+            if (noiseSource) noiseSource->Emit(currentPos);
         }
     }
 
@@ -193,7 +209,37 @@ void PlayerController::OnUpdate()
         Debug::Log("Player Ping", isPinging, '\n');
     }
 
+    if (isFadingOut)
+    {
+        currentAlpha -= pingFadeSpeed * EngineCTX::dt;
+        if (currentAlpha <= 0.f)
+        {
+            currentAlpha = 0.f;
+            isFadingOut = false;
+            isFadeCoolingDown = true;
+            fadeCooldownTimer = 0.f;
+        }
+    }
+
     lastEchoPos = currentPos;
+    if (isFadeCoolingDown)
+    {
+        fadeCooldownTimer += EngineCTX::dt;
+
+        if (fadeCooldownTimer >= fadeCooldownDuration)
+        {
+            isFadeCoolingDown = false;
+        }
+    }
+    if (!isFadingOut && !isFadeCoolingDown && currentAlpha < 1.f)
+    {
+        currentAlpha += pingFadeSpeed * EngineCTX::dt;
+        if (currentAlpha > 1.f) currentAlpha = 1.f;
+    }
+
+    auto* sr = _owner.GetComponent<SpriteRenderer>();
+    if (!sr) return;
+    else sr->color.a = currentAlpha;
 
     //Reset player to first savepoint
     if (AEInputCheckTriggered(AEVK_T)) {
@@ -224,6 +270,7 @@ void PlayerController::SaveSpawn(const float2& pos)
 void PlayerController::TriggerPing(const float2& pos)
 {
     isPinging = true;
+
     pingActiveTimer = 0.f;
     lastPingPosition = _transform.position;
 
