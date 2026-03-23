@@ -81,7 +81,7 @@ void PlayerController::OnUpdate()
 	//we use a ray cast downwards to check if the player is grounded
     RaycastHit hit;
     //or use whatever range u want
-    bool rayGround = Physics::Raycast(_transform.position, float2(0.f, -1.f), _transform.scale.y / 2.f + 10.f, hit, 1 << 1);
+    bool rayGround = Physics::Raycast(_transform.position, float2(0.f, -1.f), _transform.scale.y / 2.f + 2.5f, hit, 1 << 1);
     if (rayGround)
     {
         _isGrounded = true;
@@ -123,12 +123,13 @@ void PlayerController::OnUpdate()
     float timerToReach = 2.f;
 
     //Once if space is pressed once
-    if (AEInputCheckTriggered(AEVK_SPACE) && _isGrounded)
+    if (AEInputCheckTriggered(AEVK_SPACE) && _isGrounded )
     {           
         //Set the space bar velocity to true
         //Check if the player reach the height (dt)
         float jumpSpeed = std::sqrt(timerToReach * Physics::gravity * jumpHeight);
         rb->AddForce({0.f,jumpSpeed * 75.f});
+        coyoteTimer = 0.f;
     }
 
     //===================|Throw Mechanic|=====================
@@ -175,7 +176,7 @@ void PlayerController::OnUpdate()
 
     //===================|Echo Mechanic|=====================
 
-    if (AEInputCheckTriggered(AEVK_E) && _isGrounded)
+    if (AEInputCheckTriggered(AEVK_E))
     {
         if (!isFadingOut && !isFadeCoolingDown)
         {
