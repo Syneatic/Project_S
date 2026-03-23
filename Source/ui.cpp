@@ -131,7 +131,7 @@ namespace
         SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent&)
             { UISystem::TogglePauseMenuGame(); });
         SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent&)
-            { RestartGame(); });
+            { RestartGame(); SaveGameManager::toLoad = true; });
         SubscribeButton(FunctionKey::SETTINGS_GAME, [](const UIButtonEvent&)
             { if (EngineCTX::isPaused) ToggleUIPair(pauseMenuHolders.pauseMenu, pauseMenuHolders.pauseSettings); });
         SubscribeButton(FunctionKey::CONTROLS_GAME, [](const UIButtonEvent&)

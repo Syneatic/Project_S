@@ -92,6 +92,7 @@ void Scene::OnEnter()
 
 			Debug::Log("Player Current Position Loaded");
 		}
+		SaveGameManager::toLoad = false;
 	}
 
 	ParticleSystem::Initialize();
