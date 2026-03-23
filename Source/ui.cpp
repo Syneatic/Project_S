@@ -165,12 +165,8 @@ namespace UISystem
 
     void Update()
     {
-        if (SceneManager::ActiveScene()->name() == "MainMenu")
-        {
-            
+        if (SceneManager::ActiveScene()->name() == "MainMenu") 
             mainMenuHolders.mouseParticle->transform().position = mouseWorld();
-            Debug::Log("MouseParticlePos: ", mainMenuHolders.mouseParticle->transform().position);
-        }
     }
 
     // Logic for button click.

@@ -135,7 +135,7 @@ void Scene::OnUpdate()
 		}
 
 		UISystem::Update();
-		if (AEInputCheckTriggered(AEVK_ESCAPE))
+		if (AEInputCheckTriggered(AEVK_ESCAPE) && SceneManager::ActiveScene()->cname() == "Play_Level")
 			UISystem::TogglePauseMenuGame();
 
 		/*if (AEInputCheckTriggered(AEVK_Z))
