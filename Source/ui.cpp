@@ -24,7 +24,7 @@ namespace
     {
         GameObject* pauseOverlay = nullptr, * pauseMenu = nullptr,
             * pauseSettings = nullptr, * pauseControls = nullptr,
-            * endScreen = nullptr;
+            * gameTimer = nullptr, * endScreen = nullptr;
     }pauseMenuHolders;
 
     TextRenderer* endScreenHeader = nullptr;
@@ -122,6 +122,7 @@ namespace
         pauseMenuHolders.pauseMenu = SceneManager::ActiveScene()->FindGameObjectByName("PauseMenuHolder");
         pauseMenuHolders.pauseSettings = SceneManager::ActiveScene()->FindGameObjectByName("PauseSettingsHolder");
         pauseMenuHolders.pauseControls = SceneManager::ActiveScene()->FindGameObjectByName("PauseControlsHolder");
+        pauseMenuHolders.gameTimer = SceneManager::ActiveScene()->FindGameObjectByName("TimerValue");
         pauseMenuHolders.endScreen = SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHolder");
         endScreenHeader = SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHeader")->GetComponent<TextRenderer>();
         ToggleUIPair(false, pauseMenuHolders.pauseOverlay, pauseMenuHolders.pauseMenu);
@@ -166,6 +167,9 @@ namespace UISystem
     {
         if (SceneManager::ActiveScene()->name() == "MainMenu") 
             mainMenuHolders.mouseParticle->transform().position = mouseWorld();
+
+        if (SceneManager::ActiveScene()->name() == "Play_Level")
+            EngineCTX::gameTimer += EngineCTX::dt;
     }
 
     // Logic for button click.
@@ -268,6 +272,11 @@ namespace UISystem
         SetEndScreenText(state);
         EngineCTX::PauseTime();
         ToggleUIPair(pauseMenuHolders.endScreen, pauseMenuHolders.pauseOverlay);
+    }
+
+    GameObject& GetTimer()
+    {
+        return *pauseMenuHolders.gameTimer;
     }
 
     // test function for unsub.

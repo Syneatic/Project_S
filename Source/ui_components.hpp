@@ -100,6 +100,7 @@ namespace UISystem
 	void Hover_Logic(Button& button);
 	void Hover_Logic(Slider& button);
 	void TogglePauseMenuGame();
+	GameObject& GetTimer();
 	void EndScreen(bool state);
 	void exit();
 }

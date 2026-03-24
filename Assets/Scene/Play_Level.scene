@@ -7530,7 +7530,77 @@
     },
     {
       "active" : false,
-      "children" : [],
+      "children" : 
+      [
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "Timer",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "TimerHeader",
+          "position" : 
+          [
+            -600.0,
+            50.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 1.0,
+              "text" : "0.00",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "TimerValue",
+          "position" : 
+          [
+            -600.0,
+            -50.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
+        }
+      ],
       "components" : 
       [
         {
@@ -8460,74 +8530,6 @@
             0.89999997615814209,
             0.0
           ]
-        },
-        {
-          "active" : true,
-          "children" : [],
-          "components" : 
-          [
-            {
-              "alignment" : 4,
-              "color" : 
-              [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-              ],
-              "renderlayer" : 2,
-              "screenspace" : true,
-              "sortOrder" : 1.0,
-              "text" : "Timer",
-              "type" : "TextRenderer"
-            }
-          ],
-          "name" : "TimerHeader",
-          "position" : 
-          [
-            -600.0,
-            330.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            1.0,
-            0.0
-          ]
-        },
-        {
-          "active" : true,
-          "children" : [],
-          "components" : 
-          [
-            {
-              "alignment" : 4,
-              "color" : 
-              [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-              ],
-              "renderlayer" : 2,
-              "screenspace" : true,
-              "sortOrder" : 1.0,
-              "text" : "0.00",
-              "type" : "TextRenderer"
-            }
-          ],
-          "name" : "Timer",
-          "position" : 
-          [
-            -600.0,
-            250.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            1.0,
-            0.0
-          ]
         }
       ],
       "components" : [],
@@ -8899,74 +8901,6 @@
           [
             320.0,
             80.0
-          ]
-        },
-        {
-          "active" : true,
-          "children" : [],
-          "components" : 
-          [
-            {
-              "alignment" : 4,
-              "color" : 
-              [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-              ],
-              "renderlayer" : 2,
-              "screenspace" : true,
-              "sortOrder" : 1.0,
-              "text" : "Time",
-              "type" : "TextRenderer"
-            }
-          ],
-          "name" : "TimerHeader_clone",
-          "position" : 
-          [
-            -2.288818359375e-05,
-            200.0
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            0.75,
-            0.0
-          ]
-        },
-        {
-          "active" : true,
-          "children" : [],
-          "components" : 
-          [
-            {
-              "alignment" : 4,
-              "color" : 
-              [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-              ],
-              "renderlayer" : 2,
-              "screenspace" : true,
-              "sortOrder" : 1.0,
-              "text" : "0.00",
-              "type" : "TextRenderer"
-            }
-          ],
-          "name" : "Timer_clone",
-          "position" : 
-          [
-            -2.288818359375e-05,
-            143.99998474121094
-          ],
-          "rotation" : 0.0,
-          "scale" : 
-          [
-            0.75,
-            0.0
           ]
         }
       ],
