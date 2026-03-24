@@ -88,7 +88,6 @@ namespace
 
     void RestartGame()
     {
-        ToggleUIPair(false, pauseMenuHolders.pauseMenu, pauseMenuHolders.endScreen);
         LevelTransition::restartCalled = true;
         LevelTransition::RequestTransition();
     }
@@ -251,6 +250,9 @@ namespace UISystem
 
     void TogglePauseMenuGame()
     {
+        if (LevelTransition::inTransition)
+            return;
+
         EngineCTX::PauseTime();
         ToggleUIPair(pauseMenuHolders.pauseMenu, pauseMenuHolders.pauseOverlay);
 
