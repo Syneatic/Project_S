@@ -7556,8 +7556,8 @@
           "name" : "TimerHeader",
           "position" : 
           [
-            -600.0,
-            50.0
+            600.0,
+            350.0
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -7590,8 +7590,8 @@
           "name" : "TimerValue",
           "position" : 
           [
-            -600.0,
-            -50.0
+            600.0,
+            250.0
           ],
           "rotation" : 0.0,
           "scale" : 

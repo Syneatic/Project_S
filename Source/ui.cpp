@@ -9,6 +9,7 @@
 #include "level_transition.hpp"
 #include "ui_components.hpp"
 #include "render_components.hpp"
+#include <string>
 
 // Helper anon namespace for game object holders.
 namespace
@@ -105,7 +106,10 @@ namespace
         SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&)
             { LevelTransition::RequestTransition(); SaveGameManager::toLoad = false; });
         SubscribeButton(FunctionKey::LOAD_GAME, [](const UIButtonEvent&)
-            { LevelTransition::RequestTransition(); SaveGameManager::toLoad = true; });
+            { 
+                if (std::ifstream{ "Saves/Play_Level.save", std::ios::binary })
+                { LevelTransition::RequestTransition(); SaveGameManager::toLoad = true; }               
+            });
         SubscribeButton(FunctionKey::SETTINGS_MM, [](const UIButtonEvent&)
             { ToggleUIPair(mainMenuHolders.mainMenu, mainMenuHolders.mainSettings); });
         SubscribeButton(FunctionKey::CREDITS_TOGGLE, [](const UIButtonEvent&)
@@ -169,7 +173,11 @@ namespace UISystem
             mainMenuHolders.mouseParticle->transform().position = mouseWorld();
 
         if (SceneManager::ActiveScene()->name() == "Play_Level")
+        {
             EngineCTX::gameTimer += EngineCTX::dt;
+            pauseMenuHolders.gameTimer->GetComponent<TextRenderer>()->text 
+                = std::to_string(static_cast<int>(EngineCTX::gameTimer)) + " Sec";
+        }                  
     }
 
     // Logic for button click.
