@@ -13,6 +13,7 @@ namespace EngineCTX
 	inline u32 frameCount{};
 	
 	inline float2 windowSize{};
+	inline f32 gameTimer{ 0.f };
 
 	inline bool isPaused{ false };
 	inline bool applicationRunning{ true };
