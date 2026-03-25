@@ -109,7 +109,7 @@ void PlayerController::OnUpdate()
         if (!_isGrounded)
         {
             //lower acceleration in air
-			acceleration *= 0.8f;
+			//acceleration *= 0.8f;
         }
         rb->velocity.x += input * acceleration * EngineCTX::dt;
     }
