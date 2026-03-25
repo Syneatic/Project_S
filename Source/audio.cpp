@@ -71,6 +71,10 @@ namespace Audio
 			}
 
 			e->soundPtr = std::make_unique<sf::Sound>(*buffer);
+			if (!e->soundPtr)
+			{
+				Debug::Log("ERROR MAKING SOUND BUFFER");
+			}
 		}
 	}
 

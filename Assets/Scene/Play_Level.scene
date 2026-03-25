@@ -1102,7 +1102,7 @@
       "components" : 
       [
         {
-          "fileName" : "bouken.mp3",
+          "fileName" : "drip_1.wav",
           "loop" : false,
           "pitch" : 1.0,
           "relative" : false,
@@ -1147,7 +1147,7 @@
       "components" : 
       [
         {
-          "fileName" : "bouken.mp3",
+          "fileName" : "drip_1.wav",
           "loop" : false,
           "pitch" : 1.0,
           "relative" : false,
@@ -5588,13 +5588,13 @@
           "type" : "Camera"
         },
         {
-          "fileName" : "ore.mp3",
+          "fileName" : "echolocate.mp3",
           "loop" : false,
           "pitch" : 1.0,
           "relative" : false,
           "spatialize" : false,
           "type" : "AudioEmitter",
-          "volume" : 1.0
+          "volume" : 0.29199999570846558
         },
         {
           "Affected By Gravity" : true,
@@ -5749,7 +5749,7 @@
           "type" : "SpriteRenderer"
         },
         {
-          "fileName" : "ore.mp3",
+          "fileName" : "enemy_footstep.mp3",
           "loop" : false,
           "pitch" : 1.6169999837875366,
           "relative" : false,
@@ -5853,7 +5853,7 @@
           "type" : "SpriteRenderer"
         },
         {
-          "fileName" : "ore.mp3",
+          "fileName" : "enemy_footstep.mp3",
           "loop" : false,
           "pitch" : 1.6169999837875366,
           "relative" : false,
@@ -5940,7 +5940,7 @@
           "type" : "SpriteRenderer"
         },
         {
-          "fileName" : "ore.mp3",
+          "fileName" : "enemy_footstep.mp3",
           "loop" : false,
           "pitch" : 1.6169999837875366,
           "relative" : false,
@@ -6107,7 +6107,7 @@
           "type" : "SpriteRenderer"
         },
         {
-          "fileName" : "ore.mp3",
+          "fileName" : "rock_drop.wav",
           "loop" : false,
           "pitch" : 1.0,
           "relative" : false,
@@ -6431,7 +6431,7 @@
           "type" : "SpriteRenderer"
         },
         {
-          "fileName" : "ore.mp3",
+          "fileName" : "enemy_footstep.mp3",
           "loop" : false,
           "pitch" : 1.6169999837875366,
           "relative" : false,
@@ -6536,7 +6536,7 @@
           "type" : "SpriteRenderer"
         },
         {
-          "fileName" : "ore.mp3",
+          "fileName" : "rock_drop.wav",
           "loop" : false,
           "pitch" : 1.0,
           "relative" : false,
@@ -6623,7 +6623,7 @@
           "type" : "SpriteRenderer"
         },
         {
-          "fileName" : "ore.mp3",
+          "fileName" : "enemy_footstep.mp3",
           "loop" : false,
           "pitch" : 1.6169999837875366,
           "relative" : false,
@@ -6711,7 +6711,7 @@
           "type" : "SpriteRenderer"
         },
         {
-          "fileName" : "ore.mp3",
+          "fileName" : "rock_drop.wav",
           "loop" : false,
           "pitch" : 1.0,
           "relative" : false,
@@ -7427,7 +7427,7 @@
       "components" : 
       [
         {
-          "fileName" : "bouken.mp3",
+          "fileName" : "drip_1.wav",
           "loop" : false,
           "pitch" : 1.0,
           "relative" : false,
@@ -7472,7 +7472,7 @@
       "components" : 
       [
         {
-          "fileName" : "bouken.mp3",
+          "fileName" : "drip_1.wav",
           "loop" : false,
           "pitch" : 1.0,
           "relative" : false,

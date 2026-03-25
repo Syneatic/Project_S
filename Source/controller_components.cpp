@@ -104,8 +104,16 @@ void PlayerController::OnUpdate()
 
     float acceleration = maxSpeed / time;
 
-    if (input != 0.f)   
+    if (input != 0.f)
+    {
+        if (!_isGrounded)
+        {
+            //lower acceleration in air
+			acceleration *= 0.8f;
+        }
         rb->velocity.x += input * acceleration * EngineCTX::dt;
+    }
+
     //else 
     //{
     //    float friction = acceleration;

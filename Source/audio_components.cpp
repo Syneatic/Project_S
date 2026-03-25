@@ -166,6 +166,9 @@ void AudioEmitter::Serialize(Json::Value& outComp) const
 
 void AudioEmitter::Deserialize(const Json::Value& compObj)
 {
+
+	volume = compObj["volume"].asFloat();
+
 	if (compObj.isMember("fileName") && compObj["fileName"].isString())
 		fileName = compObj["fileName"].asString();
 
