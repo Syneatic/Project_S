@@ -100,7 +100,9 @@ void PlayerController::OnUpdate()
 
     //===================|Movement Speed|===================
     if (AEInputCheckCurr(AEVK_A))   input -= 1.f;
+    else if (AEInputCheckReleased(AEVK_A)) input = 0.f;
     if (AEInputCheckCurr(AEVK_D))   input += 1.f;
+    else if (AEInputCheckReleased(AEVK_D)) input = 0.f;
 
     float acceleration = maxSpeed / time;
 
@@ -111,21 +113,22 @@ void PlayerController::OnUpdate()
             //lower acceleration in air
 			//acceleration *= 0.8f;
         }
-        rb->velocity.x += input * acceleration * EngineCTX::dt;
+        //rb->velocity.x += input * acceleration * EngineCTX::dt;
+        rb->AddForce(float2(1,0) * (input * acceleration));
     }
 
-    //else 
-    //{
-    //    float friction = acceleration;
-    //    //friction
-    //    if (rb->velocity.x > 0.f)
-    //        rb->velocity.x = std::max(0.f, rb->velocity.x - friction * static_cast<f32>(EngineCTX::dt));
-    //    else if (rb->velocity.x < 0.f) {
-    //        rb->velocity.x = std::min(0.f, rb->velocity.x + friction * static_cast<f32>(EngineCTX::dt));
-    //    }
-    //}
+    else 
+    {
+        float friction = acceleration;
+        //friction
+        if (rb->velocity.x > 0.f)
+            rb->velocity.x = std::max(0.f, rb->velocity.x - friction * static_cast<f32>(EngineCTX::dt));
+        else if (rb->velocity.x < 0.f) {
+            rb->velocity.x = std::min(0.f, rb->velocity.x + friction * static_cast<f32>(EngineCTX::dt));
+        }
+    }
     rb->velocity.x = std::clamp(rb->velocity.x, -maxSpeed, maxSpeed);
-
+    
     //===================|Jump Mechanic|=====================
 
     float timerToReach = 2.f;
