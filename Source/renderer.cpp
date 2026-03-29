@@ -451,7 +451,7 @@ namespace Graphics
         InitBoxMesh();
         InitLineMesh();
 
-        _currentFont = AEGfxCreateFont("./Assets/liberation-mono.ttf", 72);
+        _currentFont = AEGfxCreateFont("./Assets/Ubuntu-Light.ttf", 72);
     }
 
     void Flush()
