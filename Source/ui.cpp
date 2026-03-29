@@ -19,7 +19,7 @@ namespace
     {
         GameObject* mainMenu = nullptr, * mainSettings = nullptr,
             * mainCredits = nullptr, * mainControls = nullptr,
-            * mouseParticle = nullptr;
+            * mainConfirmation = nullptr, * mouseParticle = nullptr;
     }mainMenuHolders;
     // Anon struct for pause menu ui objects.
     struct
@@ -108,9 +108,10 @@ namespace
         mainMenuHolders.mainSettings = SceneManager::ActiveScene()->FindGameObjectByName("SettingsHolder");
         mainMenuHolders.mainCredits = SceneManager::ActiveScene()->FindGameObjectByName("CreditsHolder");
         mainMenuHolders.mainControls = SceneManager::ActiveScene()->FindGameObjectByName("ControlsHolder");
+        mainMenuHolders.mainConfirmation = SceneManager::ActiveScene()->FindGameObjectByName("ConfirmationHolder");
         mainMenuHolders.mouseParticle = SceneManager::ActiveScene()->FindGameObjectByName("MouseParticle");
         mainMenuHolders.mainSettings->active(false); mainMenuHolders.mainCredits->active(false);
-        mainMenuHolders.mainControls->active(false);
+        mainMenuHolders.mainControls->active(false); mainMenuHolders.mainConfirmation->active(false);
 
         // Subscribe mainmenu button function as an event to event handler.
         SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&)
@@ -128,6 +129,8 @@ namespace
             { ToggleUIPair(mainMenuHolders.mainMenu, mainMenuHolders.mainControls); });
         SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent&)
             { EngineCTX::applicationRunning = false; });
+        SubscribeButton(FunctionKey::CONFIRMATION_MM, [](const UIButtonEvent&)
+            { ToggleUI(mainMenuHolders.mainConfirmation); });
     }
 
     void UIPlayLevel()

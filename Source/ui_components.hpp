@@ -20,6 +20,7 @@ enum class FunctionKey
 	CONTROLS_GAME,
 	QUIT_GAME,
 	EXIT_APP,
+	CONFIRMATION_MM,
 	COUNT
 };
 

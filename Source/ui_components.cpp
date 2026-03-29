@@ -30,7 +30,7 @@ static char const* _buttonNames[]
 	"GamePlay", "GameLoad", "GamePause", 
 	"GameRestart", "SettingsMM", "SettingsGame", 
 	"ToggleCredits", "ControlsMM", "ControlsGame",
-	"GameQuit", "AppExit"
+	"GameQuit", "AppExit", "ConfirmationScreenMM"
 };
 
 void Button::DrawInInspector()

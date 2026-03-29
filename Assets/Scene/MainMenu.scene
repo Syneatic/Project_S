@@ -66,6 +66,15 @@
             {
               "buttonFunctionId" : 0,
               "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "NewGameButton",
@@ -176,6 +185,15 @@
               "screenspace" : true,
               "sortOrder" : 0.0,
               "type" : "SpriteRenderer"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "LoadGameButton",
@@ -216,8 +234,17 @@
               "type" : "SpriteRenderer"
             },
             {
-              "buttonFunctionId" : 10,
+              "buttonFunctionId" : 11,
               "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "QuitButton",
@@ -294,6 +321,15 @@
             {
               "buttonFunctionId" : 4,
               "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "SettingsButton",
@@ -370,6 +406,15 @@
               "screenspace" : true,
               "sortOrder" : 0.0,
               "type" : "SpriteRenderer"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "ControlsButton",
@@ -446,6 +491,15 @@
             {
               "buttonFunctionId" : 6,
               "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "CreditsButton",
@@ -575,6 +629,15 @@
               "screenspace" : true,
               "sortOrder" : 1.0,
               "type" : "SpriteRenderer"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "SettingsBackButton",
@@ -668,10 +731,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 0,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -689,6 +748,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 0,
+                  "type" : "Slider"
                 }
               ],
               "name" : "SettingsGlobalKnob",
@@ -784,10 +847,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 1,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -805,6 +864,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 1,
+                  "type" : "Slider"
                 }
               ],
               "name" : "SettingsSFXKnob",
@@ -900,10 +963,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 2,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -921,6 +980,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 2,
+                  "type" : "Slider"
                 }
               ],
               "name" : "SettingsSFXKnob_clone",
@@ -1086,6 +1149,15 @@
             {
               "buttonFunctionId" : 6,
               "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "CreditsBackButton",
@@ -1253,6 +1325,15 @@
             {
               "buttonFunctionId" : 7,
               "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "ControlsBackButton",
@@ -1368,7 +1449,7 @@
             100.0,
             100.0
           ],
-          "sortOrder" : 3.0,
+          "sortOrder" : 4.0,
           "spawnLineLength" : 900.0,
           "spawnRate" : 1200.0,
           "spawnShape" : 3,
@@ -1447,7 +1528,7 @@
             100.0,
             100.0
           ],
-          "sortOrder" : 3.0,
+          "sortOrder" : 4.0,
           "spawnLineLength" : 900.0,
           "spawnRate" : 1200.0,
           "spawnShape" : 3,
@@ -1710,6 +1791,271 @@
         0.0
       ],
       "rotation" : 90.0,
+      "scale" : 
+      [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : 
+      [
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                0.45098036527633667,
+                0.45098036527633667,
+                0.45098036527633667,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 2.5,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "COverlay",
+          "position" : 
+          [
+            0.0,
+            0.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            500.0,
+            300.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.81862747669219971,
+                0.080257594585418701,
+                0.080257594585418701,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 3.0,
+              "text" : "Are you sure?",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "ConfirmationHeader",
+          "position" : 
+          [
+            0.0,
+            100.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 3.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 10,
+              "type" : "Button"
+            }
+          ],
+          "name" : "YesB",
+          "position" : 
+          [
+            -125.0,
+            -50.000022888183594
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            200.0,
+            100.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 3.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 11,
+              "type" : "Button"
+            }
+          ],
+          "name" : "NoB",
+          "position" : 
+          [
+            125.0,
+            -50.000022888183594
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            200.0,
+            100.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 3.0999999046325684,
+              "text" : "YES",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "YesT",
+          "position" : 
+          [
+            -125.0,
+            -49.999969482421875
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 3.0999999046325684,
+              "text" : "NO",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "NoT",
+          "position" : 
+          [
+            129.99996948242188,
+            -49.999969482421875
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
+        }
+      ],
+      "components" : [],
+      "name" : "ConfirmationHolder",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "type" : "AudioListener"
+        }
+      ],
+      "name" : "Listener",
+      "position" : 
+      [
+        0.0,
+        0.0
+      ],
+      "rotation" : 0.0,
       "scale" : 
       [
         0.0,
