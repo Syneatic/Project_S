@@ -355,8 +355,18 @@ void TextRenderer::Draw()
     data.sortOrder = sortOrder;
 
     data.color = color;
-    
-    Graphics::Submit(data,Graphics::PrimitiveType::TEXT,text.c_str());
+
+    char roundedText[256];    
+    try {
+        size_t idx;
+        float val = std::stof(text, &idx);
+        std::string suffix = text.substr(idx);
+        std::snprintf(roundedText, sizeof(roundedText), "%.2f%s", val, suffix.c_str());
+        Graphics::Submit(data, Graphics::PrimitiveType::TEXT, roundedText);
+    }
+    catch (const std::exception&) {
+        Graphics::Submit(data, Graphics::PrimitiveType::TEXT, text.c_str());
+    }
 }
 
 void TextRenderer::Serialize(Json::Value& outComp) const
