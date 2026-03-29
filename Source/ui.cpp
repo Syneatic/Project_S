@@ -14,13 +14,14 @@
 // Helper anon namespace for game object holders.
 namespace
 {
+    // Anon struct for main menu ui objects.
     struct
     {
         GameObject* mainMenu = nullptr, * mainSettings = nullptr,
             * mainCredits = nullptr, * mainControls = nullptr,
             * mouseParticle = nullptr;
     }mainMenuHolders;
-
+    // Anon struct for pause menu ui objects.
     struct
     {
         GameObject* pauseOverlay = nullptr, * pauseMenu = nullptr,
@@ -35,9 +36,12 @@ namespace
         endScreenHeader->text = state ? "YOU WIN" : "YOU LOSE";
     }
 
+    // Toogle a single ui object.
     void ToggleUI(GameObject* go) { go->active(!go->active()); }
+    // Toogle a single ui object with explicit bool.
     void ToggleUI(bool state, GameObject* go) { go->active(state); }
 
+    // Toogle ui object pair.
     void ToggleUIPair(GameObject* one, GameObject* two)
     {
         if (one && two)
@@ -46,6 +50,7 @@ namespace
             two->active(!two->active());
         }
     }
+    // Toogle ui object pair with explicit bool.
     void ToggleUIPair(bool state, GameObject* one, GameObject* two)
     {
         if (one && two)
@@ -61,17 +66,19 @@ namespace
 {
     std::vector<EventHandler::SubscriptionHandle> handlers;
 
-    // Wrapper for function.
+    // Wrapper for subscribing button function.
     void SubscribeButton(FunctionKey matchValue, std::function<void(const UIButtonEvent&)> func)
     {
         handlers.push_back(EventHandler::SubscribeFilter(&UIButtonEvent::fKey, matchValue, func));
     }
 
+    // Wrapper for subscribing slider function.
     void SubscribeSlider(AudioSpecifier matchValue, std::function<void(const UISliderEvent&)> func)
     {
         handlers.push_back(EventHandler::SubscribeFilter(&UISliderEvent::aS, matchValue, func));
     }
 
+    // Return copy of mouse cursor pos in float2.
     float2 mouseWorld()
     {
         s32 mX{}, mY{}; AEInputGetCursorPosition(&mX, &mY);
@@ -87,6 +94,7 @@ namespace
         return checkX && checkY;
     }
 
+    // Restart game sets bool true & request transition to next scene.
     void RestartGame()
     {
         LevelTransition::restartCalled = true;
@@ -95,6 +103,7 @@ namespace
 
     void UIMainMenu()
     {
+        // Locate MainMenu UI Gameobject parents & set inactive.
         mainMenuHolders.mainMenu = SceneManager::ActiveScene()->FindGameObjectByName("MainMenuHolder");
         mainMenuHolders.mainSettings = SceneManager::ActiveScene()->FindGameObjectByName("SettingsHolder");
         mainMenuHolders.mainCredits = SceneManager::ActiveScene()->FindGameObjectByName("CreditsHolder");
@@ -103,6 +112,7 @@ namespace
         mainMenuHolders.mainSettings->active(false); mainMenuHolders.mainCredits->active(false);
         mainMenuHolders.mainControls->active(false);
 
+        // Subscribe mainmenu button function as an event to event handler.
         SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&)
             { LevelTransition::RequestTransition(); SaveGameManager::toLoad = false; });
         SubscribeButton(FunctionKey::LOAD_GAME, [](const UIButtonEvent&)
@@ -122,6 +132,7 @@ namespace
 
     void UIPlayLevel()
     {
+        // Locate Pause Menu UI Gameobject parents & set inactive.
         pauseMenuHolders.pauseOverlay = SceneManager::ActiveScene()->FindGameObjectByName("PauseOverlay");
         pauseMenuHolders.pauseMenu = SceneManager::ActiveScene()->FindGameObjectByName("PauseMenuHolder");
         pauseMenuHolders.pauseSettings = SceneManager::ActiveScene()->FindGameObjectByName("PauseSettingsHolder");
@@ -132,6 +143,7 @@ namespace
         ToggleUIPair(false, pauseMenuHolders.pauseOverlay, pauseMenuHolders.pauseMenu);
         ToggleUIPair(false, pauseMenuHolders.pauseSettings, pauseMenuHolders.endScreen);
 
+        // Subscribe pausemenu button function as an event to event handler.
         SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent&)
             { UISystem::TogglePauseMenuGame(); });
         SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent&)
@@ -153,11 +165,12 @@ namespace UISystem
         if (SceneManager::ActiveScene()->name() == "MainMenu")
             UIMainMenu();
 
-        if (SceneManager::ActiveScene()->name() == "Play_Level")//Change to PlayLevel before checkin.
+        if (SceneManager::ActiveScene()->name() == "Play_Level")
             UIPlayLevel();
 
         if (SceneManager::ActiveScene()->name() != "Intro")
         {
+            // Subscribe sound slider setting as an event to event handler.
             SubscribeSlider(AudioSpecifier::GLOBAL, [](UISliderEvent const& e)
                 { Audio::SetMasterVolume(e.value); });
             SubscribeSlider(AudioSpecifier::SFX, [](UISliderEvent const& e)
@@ -174,9 +187,10 @@ namespace UISystem
 
         if (SceneManager::ActiveScene()->name() == "Play_Level")
         {
+            // Update current game session timer.
             EngineCTX::gameTimer += EngineCTX::dt;
-            pauseMenuHolders.gameTimer->GetComponent<TextRenderer>()->text 
-                = std::to_string(static_cast<float>(EngineCTX::gameTimer)) + "Sec";
+            GetTimer().GetComponent<TextRenderer>()->text
+                = std::to_string(static_cast<float>(EngineCTX::gameTimer)) + " Sec";
         }                  
     }
 
@@ -282,6 +296,7 @@ namespace UISystem
         ToggleUIPair(pauseMenuHolders.endScreen, pauseMenuHolders.pauseOverlay);
     }
 
+    // Return reference to gameTimer.
     GameObject& GetTimer()
     {
         return *pauseMenuHolders.gameTimer;
