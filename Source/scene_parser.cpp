@@ -60,6 +60,11 @@ namespace SceneIO
             auto& c = go.AddComponent<EnemyController>();
             c.Deserialize(compObj);
         }
+        else if (type == "TextGameObject")
+        {
+            auto& c = go.AddComponent<TextGameObject>();
+            c.Deserialize(compObj);
+        }
         else if (type == "ParticleEmitter")
         { 
             auto& c = go.AddComponent<ParticleEmitter>();

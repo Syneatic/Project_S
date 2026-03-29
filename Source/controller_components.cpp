@@ -307,15 +307,15 @@ void PlayerController::HandleCollision(const OnCollisionEvent& e)
         UISystem::EndScreen(false);
     }
 
-    if (col->layer == 1 << 3)
-    {
-        Debug::Log("Rock picked up");
+    //if (col->layer == 1 << 3)
+    //{
+    //    Debug::Log("Rock picked up");
 
-        e.other->active(false);
+    //    e.other->active(false);
 
-        if (auto* rc = e.other->GetComponent<RockController>())
-            rc->ResetRock();
-    }
+    //    if (auto* rc = e.other->GetComponent<RockController>())
+    //        rc->ResetRock();
+    //}
 }
 
 void PlayerController::HandleTrigger(const OnTriggerEvent& e)
@@ -464,7 +464,7 @@ std::unique_ptr<Component> RockController::Clone(GameObject& go)
 //===================|Enemy Controller|===================
 void EnemyController::DrawInInspector()
 {
-    const char* types[] = { "Static", "Drop", "Patrol", "Flying" };
+    const char* types[] = { "Static", "Drop", "Patrol" };
 
     int current = static_cast<int>(type);
 
@@ -488,9 +488,6 @@ void EnemyController::DrawInInspector()
         ImGui::DragFloat("Patrol Range", &patrolRange, 10.f);
         ImGui::DragFloat("Time Interval", &groundEmitInterval, 1.5f);
         break;
-
-    case EnemyType::Flying:
-        break;
     }
 }
 
@@ -509,9 +506,6 @@ void EnemyController::Serialize(Json::Value& outComp) const
     case EnemyType::Patrol:
         outComp["moveSpeed"] = moveSpeed;
         outComp["groundEmitInterval"] = groundEmitInterval;
-        break;
-
-    case EnemyType::Flying:
         break;
     }
 }
@@ -535,9 +529,6 @@ void EnemyController::Deserialize(const Json::Value& compObj)
         if (compObj.isMember("moveSpeed")) moveSpeed = compObj["moveSpeed"].asFloat();
         if (compObj.isMember("patrolRange")) patrolRange = compObj["patrolRange"].asFloat();
         break;
-
-    case EnemyType::Flying:
-        break;
     }
 }
 
@@ -560,16 +551,12 @@ void EnemyController::OnStart()
     {
         rb->useGravity = true;
         rb->velocity = float2::zero();
-
-        //if (rb->isGrounded)
-            //rb->useGravity = false;
     }
 }
 
 void EnemyController::OnUpdate()
 {
     groundEmitTimer += EngineCTX::dt;
-    //Transform* trans = _owner.GetComponent<Transform>();
     if (!rb) return;
 
     switch (type)
@@ -767,6 +754,81 @@ void EnemyController::CopyFrom(Component* src)
 std::unique_ptr<Component> EnemyController::Clone(GameObject& go)
 {
     auto n = std::make_unique<EnemyController>(go);
+    n.get()->CopyFrom(this);
+    return n;
+}
+
+void TextGameObject::DrawInInspector()
+{
+    ImGui::TextUnformatted("Fade Speed");
+    ImGui::DragFloat("##fadeSpeed", &fadeSpeed, 2.f);
+}
+
+void TextGameObject::Serialize(Json::Value& outComp) const
+{
+    outComp["fadeSpeed"] = fadeSpeed;
+}
+
+void TextGameObject::Deserialize(const Json::Value& compObj)
+{
+        if (compObj.isMember("fadeSpeed")) fadeSpeed = compObj["fadeSpeed"].asFloat();
+}
+
+void TextGameObject::OnStart()
+{
+    player = SceneManager::ActiveScene()->FindGameObjectByName("Player");
+
+    //_owner.Subscribe<OnTriggerEvent>(
+    //    &OnTriggerEvent::self,
+    //    &_owner,
+    //    [this](const OnTriggerEvent& e)
+    //    {
+    //        this->HandleTrigger(e);
+    //    }
+    //);
+}
+
+void TextGameObject::OnUpdate()
+{
+    auto* textrenderer = _owner.GetComponent<TextRenderer>();
+    if (!textrenderer) return;
+
+    f32 xDist = absf(player->transform().position.x - _transform.position.x);
+    f32 yDist = _transform.position.y - player->transform().position.y;
+
+    if (xDist <= rangeDistance && yDist > 0 && yDist <= detectDistance) {
+        currentAlpha += fadeSpeed * EngineCTX::dt;
+    }
+    else
+    {
+        currentAlpha -= fadeSpeed * EngineCTX::dt;
+    }
+
+    currentAlpha = std::clamp(currentAlpha, 0.f, 1.f);
+    textrenderer->color.a = currentAlpha;
+}
+
+void TextGameObject::OnDestroy()
+{
+
+}
+
+void TextGameObject::CopyFrom(Component* src)
+{
+    auto s = dynamic_cast<TextGameObject*>(src);
+    if (!s) return;
+
+    //Global Variable
+    fadeSpeed = s->fadeSpeed;
+    player = s->player;
+    triggerDistance = s->triggerDistance;
+    currentAlpha = s->currentAlpha;
+    playerInside = s->playerInside;
+}
+
+std::unique_ptr<Component> TextGameObject::Clone(GameObject& go)
+{
+    auto n = std::make_unique<TextGameObject>(go);
     n.get()->CopyFrom(this);
     return n;
 }

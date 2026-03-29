@@ -119,7 +119,6 @@ enum class EnemyType
     Static,
     Drop,
     Patrol,
-    Flying
 };
 
 class EnemyController : public Controller
@@ -173,6 +172,34 @@ public:
 
     const std::string name() const override { return "EnemyController"; }
     EnemyController(GameObject& go) : Controller(go) {};
+    void CopyFrom(Component* src) override;
+    std::unique_ptr<Component> Clone(GameObject& go) override;
+};
+
+class TextGameObject : public Controller
+{
+public:
+    GameObject* player = nullptr;
+    f32 triggerDistance = 200.f;
+    f32 fadeSpeed = 2.f;
+    f32 currentAlpha = 0.f;
+    bool playerInside = false;
+    f32 fadeTimer = 1.f;
+    f32 detectDistance = 300.f;
+    f32 rangeDistance = 100.f;
+
+    void DrawInInspector() override;
+    void Serialize(Json::Value& outComp) const override;
+    void Deserialize(const Json::Value& compObj) override;
+
+    void OnStart() override;
+    void OnUpdate() override;
+    void OnDestroy() override;
+
+    //void HandleTrigger(const OnTriggerEvent& e);
+
+    const std::string name() const override { return "TextGameObject"; }
+    TextGameObject(GameObject& go) : Controller(go) {};
     void CopyFrom(Component* src) override;
     std::unique_ptr<Component> Clone(GameObject& go) override;
 };

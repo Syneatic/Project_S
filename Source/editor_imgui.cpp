@@ -659,12 +659,13 @@ namespace //wrappers for drawing ui elements
 			ImGui::TextUnformatted("Custom");
 			ImGui::Separator();
 			//we put our own components here
-			ComponentSubMenu("Controller", { "Player Controller","Rock Controller","Enemy Controller"},
+			ComponentSubMenu("Controller", { "Player Controller","Rock Controller","Enemy Controller","TextGameObject"},
 				[&](int i)
 				{
 					if (i == 0) selectedObj.AddComponent<PlayerController>();
 					if (i == 1) selectedObj.AddComponent<RockController>();
 					if (i == 2) selectedObj.AddComponent<EnemyController>();
+					if (i == 3) selectedObj.AddComponent<TextGameObject>();
 				});
 
 			if (ImGui::MenuItem("Noise Source"))
