@@ -176,7 +176,7 @@ namespace UISystem
         {
             EngineCTX::gameTimer += EngineCTX::dt;
             pauseMenuHolders.gameTimer->GetComponent<TextRenderer>()->text 
-                = std::to_string(static_cast<int>(EngineCTX::gameTimer)) + " Sec";
+                = std::to_string(static_cast<float>(EngineCTX::gameTimer)) + "Sec";
         }                  
     }
 
