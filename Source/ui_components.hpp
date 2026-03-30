@@ -21,6 +21,7 @@ enum class FunctionKey
 	QUIT_GAME,
 	EXIT_APP,
 	CONFIRMATION_MM,
+	CONFIRMATION_PM,
 	COUNT
 };
 

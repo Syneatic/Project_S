@@ -3,6 +3,7 @@
 #include "camera.hpp"
 #include "scene.hpp"
 #include "audio.hpp"
+#include "audio_components.hpp"
 #include "save_game.hpp"
 #include "scene_manager.hpp"
 #include "eventhandler.hpp"
@@ -26,7 +27,8 @@ namespace
     {
         GameObject* pauseOverlay = nullptr, * pauseMenu = nullptr,
             * pauseSettings = nullptr, * pauseControls = nullptr,
-            * gameTimer = nullptr, * endScreen = nullptr;
+            * pauseConfirmation = nullptr, * gameTimer = nullptr, 
+            * endScreen = nullptr;
     }pauseMenuHolders;
 
     TextRenderer* endScreenHeader = nullptr;
@@ -34,6 +36,25 @@ namespace
     void SetEndScreenText(bool state)
     {
         endScreenHeader->text = state ? "YOU WIN" : "YOU LOSE";
+    }
+
+    GameObject* PlayLevelConfirmationHolder()
+    {
+        return pauseMenuHolders.pauseMenu->active() ? pauseMenuHolders.pauseMenu :
+            (pauseMenuHolders.endScreen->active() ? pauseMenuHolders.endScreen : pauseMenuHolders.pauseMenu);
+    }
+
+    void ButtonCState(GameObject* menu)
+    {
+        if (!menu)
+            return;
+
+        for (std::unique_ptr<GameObject>& c : menu->children())
+        {
+            auto comp = c.get()->GetComponent<Button>();
+            if (comp)
+                comp->active(!comp->active());
+        }
     }
 
     // Toogle a single ui object.
@@ -130,7 +151,7 @@ namespace
         SubscribeButton(FunctionKey::EXIT_APP, [](const UIButtonEvent&)
             { EngineCTX::applicationRunning = false; });
         SubscribeButton(FunctionKey::CONFIRMATION_MM, [](const UIButtonEvent&)
-            { ToggleUI(mainMenuHolders.mainConfirmation); });
+            { ToggleUIPair(mainMenuHolders.mainConfirmation, mainMenuHolders.mainMenu); });
     }
 
     void UIPlayLevel()
@@ -142,9 +163,11 @@ namespace
         pauseMenuHolders.pauseControls = SceneManager::ActiveScene()->FindGameObjectByName("PauseControlsHolder");
         pauseMenuHolders.gameTimer = SceneManager::ActiveScene()->FindGameObjectByName("TimerValue");
         pauseMenuHolders.endScreen = SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHolder");
+        pauseMenuHolders.pauseConfirmation = SceneManager::ActiveScene()->FindGameObjectByName("PauseConfirmationHolder");
         endScreenHeader = SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHeader")->GetComponent<TextRenderer>();
         ToggleUIPair(false, pauseMenuHolders.pauseOverlay, pauseMenuHolders.pauseMenu);
         ToggleUIPair(false, pauseMenuHolders.pauseSettings, pauseMenuHolders.endScreen);
+        ToggleUI(false, pauseMenuHolders.pauseConfirmation);
 
         // Subscribe pausemenu button function as an event to event handler.
         SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent&)
@@ -157,6 +180,14 @@ namespace
             { if (EngineCTX::isPaused) ToggleUIPair(pauseMenuHolders.pauseMenu, pauseMenuHolders.pauseControls); });
         SubscribeButton(FunctionKey::QUIT_GAME, [](const UIButtonEvent&)
             { LevelTransition::RequestTransition(); });
+        SubscribeButton(FunctionKey::CONFIRMATION_PM, [](const UIButtonEvent&)
+            { 
+                if (EngineCTX::isPaused)
+                {
+                    ToggleUI(pauseMenuHolders.pauseConfirmation);
+                    ButtonCState(PlayLevelConfirmationHolder());
+                }
+            });
     }
 }
 
@@ -205,15 +236,14 @@ namespace UISystem
 
         Transform const& t = button.transform();
         SpriteRenderer* r = button.gameObject().GetComponent<SpriteRenderer>();
+        AudioEmitter* e = button.gameObject().GetComponent<AudioEmitter>();
         if (::checkBounds(t))
         {
             // set button hover rgba.
             r->color.r = r->color.g = r->color.b = r->color.a * .75f;
 
             if (AEInputCheckTriggered(AEVK_LBUTTON))
-            {
-                // play button press sfx
-            }
+                e->Play();
 
             // set button click rgba.
             if (AEInputCheckCurr(AEVK_LBUTTON))

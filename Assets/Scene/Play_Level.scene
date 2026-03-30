@@ -7780,6 +7780,15 @@
               "screenspace" : true,
               "sortOrder" : 1.0,
               "type" : "SpriteRenderer"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "PauseSettingsBackButton",
@@ -8193,6 +8202,267 @@
       ]
     },
     {
+      "active" : true,
+      "children" : 
+      [
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                0.45098036527633667,
+                0.45098036527633667,
+                0.45098036527633667,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 2.5,
+              "type" : "SpriteRenderer"
+            }
+          ],
+          "name" : "COverlay_clone",
+          "position" : 
+          [
+            0.0,
+            0.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            500.0,
+            300.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.81862747669219971,
+                0.080257594585418701,
+                0.080257594585418701,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 3.0,
+              "text" : "Are you sure?",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "ConfirmationHeader_clone",
+          "position" : 
+          [
+            0.0,
+            34.999992370605469
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 3.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 9,
+              "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : true,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
+            }
+          ],
+          "name" : "YesB_clone",
+          "position" : 
+          [
+            -125.0,
+            -50.000022888183594
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            200.0,
+            100.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "active" : true,
+              "alignment" : 4,
+              "blendmode" : 1,
+              "color" : 
+              [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "fileName" : "",
+              "meshdrawmode" : 3,
+              "renderlayer" : 2,
+              "rendermode" : 1,
+              "screenspace" : true,
+              "sortOrder" : 3.0,
+              "type" : "SpriteRenderer"
+            },
+            {
+              "buttonFunctionId" : 12,
+              "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : true,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
+            }
+          ],
+          "name" : "NoB_clone",
+          "position" : 
+          [
+            125.0,
+            -50.000022888183594
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            200.0,
+            100.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 3.0999999046325684,
+              "text" : "YES",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "YesT_clone",
+          "position" : 
+          [
+            -125.0,
+            -100.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "active" : true,
+          "children" : [],
+          "components" : 
+          [
+            {
+              "alignment" : 4,
+              "color" : 
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "renderlayer" : 2,
+              "screenspace" : true,
+              "sortOrder" : 3.0999999046325684,
+              "text" : "NO",
+              "type" : "TextRenderer"
+            }
+          ],
+          "name" : "NoT_clone",
+          "position" : 
+          [
+            129.99996948242188,
+            -100.0
+          ],
+          "rotation" : 0.0,
+          "scale" : 
+          [
+            1.0,
+            0.0
+          ]
+        }
+      ],
+      "components" : [],
+      "name" : "PauseConfirmationHolder",
+      "position" : 
+      [
+        0.0,
+        -51.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        1.0,
+        1.0
+      ]
+    },
+    {
       "active" : false,
       "children" : 
       [
@@ -8236,7 +8506,7 @@
           "components" : 
           [
             {
-              "buttonFunctionId" : 9,
+              "buttonFunctionId" : 12,
               "type" : "Button"
             },
             {
@@ -8257,6 +8527,15 @@
               "screenspace" : true,
               "sortOrder" : 1.0,
               "type" : "SpriteRenderer"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "QuitButton",
@@ -8333,6 +8612,15 @@
             {
               "buttonFunctionId" : 2,
               "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "ResumeButton",
@@ -8409,9 +8697,18 @@
             {
               "buttonFunctionId" : 3,
               "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
-          "name" : "RestartButton",
+          "name" : "RespawnButton",
           "position" : 
           [
             -199.99995422363281,
@@ -8441,11 +8738,11 @@
               "renderlayer" : 2,
               "screenspace" : true,
               "sortOrder" : 2.0,
-              "text" : "Restart",
+              "text" : "Respawn",
               "type" : "TextRenderer"
             }
           ],
-          "name" : "RestartText",
+          "name" : "RespawnText",
           "position" : 
           [
             -199.99995422363281,
@@ -8485,6 +8782,15 @@
               "screenspace" : true,
               "sortOrder" : 1.0,
               "type" : "SpriteRenderer"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "SettingsButton",
@@ -8561,6 +8867,15 @@
             {
               "buttonFunctionId" : 8,
               "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "ControlsButton",
@@ -8724,6 +9039,15 @@
             {
               "buttonFunctionId" : 8,
               "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "ControlsBackButton_clone",
@@ -8891,6 +9215,15 @@
             {
               "buttonFunctionId" : 3,
               "type" : "Button"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "EndRestartButton",
@@ -8946,7 +9279,7 @@
           "components" : 
           [
             {
-              "buttonFunctionId" : 9,
+              "buttonFunctionId" : 12,
               "type" : "Button"
             },
             {
@@ -8967,6 +9300,15 @@
               "screenspace" : true,
               "sortOrder" : 1.0,
               "type" : "SpriteRenderer"
+            },
+            {
+              "fileName" : "ButtonRockClick.wav",
+              "loop" : false,
+              "pitch" : 1.0,
+              "relative" : false,
+              "spatialize" : false,
+              "type" : "AudioEmitter",
+              "volume" : 1.0
             }
           ],
           "name" : "EndQuitButton",
