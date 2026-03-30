@@ -53,3 +53,27 @@ public:
 	void CopyFrom(Component* src) override;
 	std::unique_ptr<Component> Clone(GameObject& go) override;
 };
+
+class MusicPlayer : public Component
+{
+public:
+	std::string fileName{};
+	f32 volume{ 1 };		//  0    to 1
+	bool loop{ false };
+
+	void OnStart() override;
+	void SetVolume(f32 vol);
+	void SetLoop(bool loop);
+
+	void Play();
+	void Stop();
+
+	void DrawInInspector() override;
+	void Serialize(Json::Value& outComp) const override;
+	void Deserialize(const Json::Value& compObj) override;
+
+	const std::string name() const override { return "MusicPlayer"; }
+	MusicPlayer(GameObject& go) : Component(go) {};
+	void CopyFrom(Component* src) override;
+	std::unique_ptr<Component> Clone(GameObject& go) override;
+};
