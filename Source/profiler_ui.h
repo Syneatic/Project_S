@@ -135,7 +135,7 @@ private:
 
         for (int i = startIdx; i < count; ++i)
         {
-            float t   = std::min(frames[i].frameTimeMs / 33.333, 1.0);
+            float t   = (float)std::min(frames[i].frameTimeMs / 33.333, 1.0);
             float x0  = cursor.x + (i - startIdx) * barW;
             float y0  = cursor.y + graphH - t * graphH;
             float x1  = x0 + barW - 1.0f;
@@ -358,9 +358,9 @@ private:
 
     static uint32_t BrightenColor(uint32_t col)
     {
-        uint8_t r = std::min(255, (int)((col >>  0) & 0xFF) + 50);
-        uint8_t g = std::min(255, (int)((col >>  8) & 0xFF) + 50);
-        uint8_t b = std::min(255, (int)((col >> 16) & 0xFF) + 50);
+        uint8_t r = (uint8_t)std::min(255, (int)((col >>  0) & 0xFF) + 50);
+        uint8_t g = (uint8_t)std::min(255, (int)((col >>  8) & 0xFF) + 50);
+        uint8_t b = (uint8_t)std::min(255, (int)((col >> 16) & 0xFF) + 50);
         return (col & 0xFF000000) | ((uint32_t)b << 16) | ((uint32_t)g << 8) | r;
     }
 };

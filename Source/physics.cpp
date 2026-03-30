@@ -674,7 +674,7 @@ namespace Physics
 
 		f32       closestT = FLT_MAX;
 		Collider* closestCol = nullptr;
-		u32       closestIdx = 0;
+		//u32       closestIdx = 0;
 
 		// DDA setup — unchanged
 		CellCoord cell = WorldToCell(origin, _grid.cellSize);

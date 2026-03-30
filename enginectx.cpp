@@ -7,6 +7,6 @@ namespace EngineCTX
 	void PauseTime()
 	{
 		isPaused = !isPaused;
-		timeScale = isPaused ? 0.0 : 1.0;
+		timeScale = isPaused ? 0.0f : 1.0f;
 	}
 }

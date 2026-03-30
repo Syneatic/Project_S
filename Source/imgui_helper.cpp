@@ -7,7 +7,7 @@ namespace
 		std::string out = "";
 		for (unsigned char c : s)
 			if (!std::isspace(c))
-				out += std::tolower(c);
+				out += (char)std::tolower(c);
 
 		return out;
 	}

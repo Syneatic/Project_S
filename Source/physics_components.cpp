@@ -48,7 +48,7 @@ void Collider::DrawBaseInspector()
     }
 
     ImGui::TextUnformatted("Layer");
-    if (ImGui::Combo("##Layer", &currentLayer, layerNames->data(), layerNames->size()))
+    if (ImGui::Combo("##Layer", &currentLayer, layerNames->data(), (int)layerNames->size()))
     {
         layer = static_cast<u32>(currentLayer == 0 ? 0 : 1 << (currentLayer - 1));
     }

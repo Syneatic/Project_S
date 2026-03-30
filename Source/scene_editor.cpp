@@ -18,7 +18,7 @@
 
 namespace
 {
-	void ReadInput(EditorScene& escene, Scene& scene)
+	void ReadInput(EditorScene& /*escene*/, Scene& scene)
 	{
 		if (AEInputCheckCurr(AEVK_LCTRL) && AEInputCheckTriggered(AEVK_S))
 		{

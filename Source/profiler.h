@@ -3,8 +3,11 @@
 // ─────────────────────────────────────────────
 //  Macros
 // ─────────────────────────────────────────────
+#define PROFILE_CONCAT_INNER(a, b)  a##b
+#define PROFILE_CONCAT(a, b)        PROFILE_CONCAT_INNER(a, b)
+
 #ifdef _DEBUG
-#  define PROFILE_SCOPE(name)   ProfilerScope _prof_##__LINE__(name)
+#  define PROFILE_SCOPE(name)    ProfilerScope PROFILE_CONCAT(_prof_, __LINE__)(name)
 #  define PROFILE_FUNCTION()    PROFILE_SCOPE(__FUNCTION__)
 #  define PROFILE_FRAME_BEGIN() Profiler::Get().BeginFrame()
 #  define PROFILE_FRAME_END()   Profiler::Get().EndFrame()
@@ -140,7 +143,12 @@ private:
         return (0xFF << 24) | ((uint32_t)b << 16) | ((uint32_t)g << 8) | r;
     }
 
-    struct OpenSample { const char* name; TimePoint start; int depth; };
+    struct OpenSample 
+    { 
+        const char* name = nullptr;
+        TimePoint   start = {};
+        int         depth = 0;
+    };
 
     TimePoint              m_frameStart;
     int                    m_depth = 0;
