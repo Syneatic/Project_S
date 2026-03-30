@@ -19,7 +19,7 @@ class PlayerController : public Controller
 private:
     bool _isGrounded = false;
     float2 spawnPoint{ 0.f, 0.f };
-    float2 initialSpawnPoint{ -889.833 , -113.000 };
+    float2 initialSpawnPoint{ -889.833f , -113.000f };
 
 public:
     f32 maxSpeed = 150.f;

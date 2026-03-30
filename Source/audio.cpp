@@ -10,6 +10,7 @@ namespace
 
 	std::unordered_map<std::string, std::string> _musicMap{}; //<id,path>
 	std::unordered_map<std::string, std::unique_ptr<sf::SoundBuffer>> _soundBufferMap{}; //<filename,buffer>
+	MusicPlayer* _activeMusicPlayer{ nullptr };
 	sf::Music _activeMusic{};
 
 	float _masterVolume = 1.f;
@@ -40,7 +41,7 @@ namespace Audio
 		//unload from memory
 		_soundBufferMap.clear();
 
-		_activeMusic.stop();
+		UnregisterMusic();
 	}
 
 	bool HasBuffer(std::string fileName)
@@ -116,6 +117,9 @@ namespace Audio
 			sound.setPosition(pos);
 			auto dir = sound.getPosition() - sf::Listener::getPosition();	
 		}
+
+		_activeMusic.setVolume(100.f * _activeMusicPlayer->volume * _musicVolume * _masterVolume);
+		_activeMusic.setLooping(_activeMusicPlayer->loop);
 	}
 
 	void SetMasterVolume(f32 vol)
@@ -146,5 +150,35 @@ namespace Audio
 	f32 GetMusicVolume()
 	{
 		return _musicVolume;
+	}
+
+	void RegisterMusic(MusicPlayer* player)
+	{
+		if (!player) return;
+
+		_activeMusicPlayer = player;
+		_activeMusic = sf::Music(player->fileName);
+	}
+
+	void UnregisterMusic()
+	{
+		_activeMusic.stop();
+		_activeMusic = sf::Music();
+	}
+
+	void PlayMusic()
+	{
+		if (_activeMusic.getStatus() != sf::SoundSource::Status::Playing)
+		{
+			_activeMusic.play();
+		}
+	}
+
+	void StopMusic()
+	{
+		if (_activeMusic.getStatus() == sf::SoundSource::Status::Playing)
+		{
+			_activeMusic.stop();
+		}
 	}
 }

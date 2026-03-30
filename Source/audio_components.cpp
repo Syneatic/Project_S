@@ -252,3 +252,90 @@ std::unique_ptr<Component> AudioListener::Clone(GameObject& go)
 	n.get()->CopyFrom(this);
 	return n;
 }
+
+
+void MusicPlayer::OnStart() 
+{
+	Audio::RegisterMusic(this);
+	Audio::PlayMusic();
+}
+
+void MusicPlayer::SetVolume(f32 vol)
+{
+	volume = std::clamp(vol, 0.0f, 1.0f);
+}
+
+void MusicPlayer::SetLoop(bool l)
+{
+	loop = l;
+}
+
+void MusicPlayer::Play()
+{
+	Audio::PlayMusic();
+}
+
+void MusicPlayer::Stop()
+{
+	Audio::StopMusic();
+}
+
+void MusicPlayer::DrawInInspector() 
+{
+	ImGui::TextUnformatted("Music Clip");
+
+	ImGui::BeginDisabled();
+	ImGui::TextUnformatted(fileName.empty() ? "NO FILE SELECTED" : fileName.c_str());
+	ImGui::EndDisabled();
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Select"))
+	{
+		std::wstring path = OpenFileWav(); // file dialog
+		fileName = std::filesystem::path(path).filename().string();
+	}
+
+	ImGui::Separator();
+
+	ImGui::TextUnformatted("Volume");
+	ImGui::SliderFloat("##music_volume", &volume, 0.f, 1.f);;
+
+	ImGui::Checkbox("Loop", &loop);
+}
+
+void MusicPlayer::Serialize(Json::Value& outComp) const 
+{
+	outComp["fileName"] = fileName;
+	outComp["volume"] = volume;
+	outComp["loop"] = loop;
+}
+
+void MusicPlayer::Deserialize(const Json::Value& compObj) 
+{
+
+	volume = compObj["volume"].asFloat();
+
+	if (compObj.isMember("fileName") && compObj["fileName"].isString())
+		fileName = compObj["fileName"].asString();
+
+	if (compObj.isMember("loop") && compObj["loop"].isBool())
+		loop = compObj["loop"].asBool();
+}
+
+void MusicPlayer::CopyFrom(Component* src)
+{
+	auto s = dynamic_cast<MusicPlayer*>(src);
+	if (!s) return;
+
+	volume = s->volume;
+	loop = s->loop;
+	fileName = std::string(s->fileName);
+}
+
+std::unique_ptr<Component> MusicPlayer::Clone(GameObject& go)
+{
+	auto n = std::make_unique<MusicPlayer>(go);
+	n.get()->CopyFrom(this);
+	return n;
+}

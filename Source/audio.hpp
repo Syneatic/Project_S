@@ -19,4 +19,9 @@ namespace Audio
 	f32 GetMasterVolume();
 	f32 GetSFXVolume();
 	f32 GetMusicVolume();
+
+	void RegisterMusic(MusicPlayer* player);
+	void UnregisterMusic();
+	void PlayMusic();
+	void StopMusic();
 }

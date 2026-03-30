@@ -634,11 +634,12 @@ namespace //wrappers for drawing ui elements
 				ImGui::EndMenu();
 			}
 
-			ComponentSubMenu("Audio", { "Audio Emitter","Audio Listener" },
+			ComponentSubMenu("Audio", { "Audio Emitter","Audio Listener","Music Player"},
 				[&](int i)
 				{
 					if (i == 0) selectedObj.AddComponent<AudioEmitter>();
 					if (i == 1) selectedObj.AddComponent<AudioListener>();
+					if (i == 2) selectedObj.AddComponent<MusicPlayer>();
 				});
 
 			ComponentSubMenu("UI", { "Slider", "Button", "Text" },
