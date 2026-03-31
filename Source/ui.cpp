@@ -31,7 +31,33 @@ namespace
             * endScreen = nullptr;
     }pauseMenuHolders;
 
+    void GetMainUIHolders()
+    {
+        mainMenuHolders.mainMenu = SceneManager::ActiveScene()->FindGameObjectByName("MainMenuHolder");
+        mainMenuHolders.mainSettings = SceneManager::ActiveScene()->FindGameObjectByName("SettingsHolder");
+        mainMenuHolders.mainCredits = SceneManager::ActiveScene()->FindGameObjectByName("CreditsHolder");
+        mainMenuHolders.mainControls = SceneManager::ActiveScene()->FindGameObjectByName("ControlsHolder");
+        mainMenuHolders.mainConfirmation = SceneManager::ActiveScene()->FindGameObjectByName("ConfirmationHolder");
+        mainMenuHolders.mouseParticle = SceneManager::ActiveScene()->FindGameObjectByName("MouseParticle");
+    }
+    void GetPauseUIHolders()
+    {
+        pauseMenuHolders.pauseOverlay = SceneManager::ActiveScene()->FindGameObjectByName("PauseOverlay");
+        pauseMenuHolders.pauseMenu = SceneManager::ActiveScene()->FindGameObjectByName("PauseMenuHolder");
+        pauseMenuHolders.pauseSettings = SceneManager::ActiveScene()->FindGameObjectByName("PauseSettingsHolder");
+        pauseMenuHolders.pauseControls = SceneManager::ActiveScene()->FindGameObjectByName("PauseControlsHolder");
+        pauseMenuHolders.gameTimer = SceneManager::ActiveScene()->FindGameObjectByName("TimerValue");
+        pauseMenuHolders.endScreen = SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHolder");
+        pauseMenuHolders.pauseConfirmation = SceneManager::ActiveScene()->FindGameObjectByName("PauseConfirmationHolder");
+    }
+
     TextRenderer* endScreenHeader = nullptr;
+    Button* endScreenButton = nullptr;
+    void GetSpecificComponents()
+    {
+        endScreenHeader = SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHeader")->GetComponent<TextRenderer>();
+        endScreenButton = SceneManager::ActiveScene()->FindGameObjectByName("EndRestartButton")->GetComponent<Button>();
+    }
 
     void SetEndScreenText(bool state)
     {
@@ -125,12 +151,7 @@ namespace
     void UIMainMenu()
     {
         // Locate MainMenu UI Gameobject parents & set inactive.
-        mainMenuHolders.mainMenu = SceneManager::ActiveScene()->FindGameObjectByName("MainMenuHolder");
-        mainMenuHolders.mainSettings = SceneManager::ActiveScene()->FindGameObjectByName("SettingsHolder");
-        mainMenuHolders.mainCredits = SceneManager::ActiveScene()->FindGameObjectByName("CreditsHolder");
-        mainMenuHolders.mainControls = SceneManager::ActiveScene()->FindGameObjectByName("ControlsHolder");
-        mainMenuHolders.mainConfirmation = SceneManager::ActiveScene()->FindGameObjectByName("ConfirmationHolder");
-        mainMenuHolders.mouseParticle = SceneManager::ActiveScene()->FindGameObjectByName("MouseParticle");
+        GetMainUIHolders();
         mainMenuHolders.mainSettings->active(false); mainMenuHolders.mainCredits->active(false);
         mainMenuHolders.mainControls->active(false); mainMenuHolders.mainConfirmation->active(false);
 
@@ -157,19 +178,15 @@ namespace
     void UIPlayLevel()
     {
         // Locate Pause Menu UI Gameobject parents & set inactive.
-        pauseMenuHolders.pauseOverlay = SceneManager::ActiveScene()->FindGameObjectByName("PauseOverlay");
-        pauseMenuHolders.pauseMenu = SceneManager::ActiveScene()->FindGameObjectByName("PauseMenuHolder");
-        pauseMenuHolders.pauseSettings = SceneManager::ActiveScene()->FindGameObjectByName("PauseSettingsHolder");
-        pauseMenuHolders.pauseControls = SceneManager::ActiveScene()->FindGameObjectByName("PauseControlsHolder");
-        pauseMenuHolders.gameTimer = SceneManager::ActiveScene()->FindGameObjectByName("TimerValue");
-        pauseMenuHolders.endScreen = SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHolder");
-        pauseMenuHolders.pauseConfirmation = SceneManager::ActiveScene()->FindGameObjectByName("PauseConfirmationHolder");
-        endScreenHeader = SceneManager::ActiveScene()->FindGameObjectByName("EndScreenHeader")->GetComponent<TextRenderer>();
+        GetPauseUIHolders();
+        GetSpecificComponents();
         ToggleUIPair(false, pauseMenuHolders.pauseOverlay, pauseMenuHolders.pauseMenu);
         ToggleUIPair(false, pauseMenuHolders.pauseSettings, pauseMenuHolders.endScreen);
         ToggleUI(false, pauseMenuHolders.pauseConfirmation);
 
         // Subscribe pausemenu button function as an event to event handler.
+        SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&)
+            { LevelTransition::RequestTransition(); SaveGameManager::toLoad = false; });
         SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent&)
             { UISystem::TogglePauseMenuGame(); });
         SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent&)
@@ -325,6 +342,7 @@ namespace UISystem
     void EndScreen(bool state)
     {
         SetEndScreenText(state);
+        endScreenButton->fKey = state ? FunctionKey::PLAY_GAME : FunctionKey::RESTART_GAME;
         EngineCTX::PauseTime();
         ToggleUIPair(pauseMenuHolders.endScreen, pauseMenuHolders.pauseOverlay);
     }
