@@ -185,7 +185,7 @@ public:
     f32 currentAlpha = 0.f;
     bool playerInside = false;
     f32 fadeTimer = 1.f;
-    f32 detectDistance = 300.f;
+    f32 detectDistance = 100.f;
     f32 rangeDistance = 100.f;
 
     void DrawInInspector() override;

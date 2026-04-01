@@ -2813,55 +2813,6 @@
           "type" : "SpriteRenderer"
         },
         {
-          "collisionMask" : 4294967293,
-          "isTrigger" : false,
-          "layerMask" : 2,
-          "size" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "BoxCollider"
-        }
-      ],
-      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone",
-      "position" : 
-      [
-        3087.475830078125,
-        -623.2440185546875
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        147.592529296875,
-        15.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
-        {
-          "active" : false,
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
-          [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 0,
-          "rendermode" : 1,
-          "screenspace" : false,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
-        },
-        {
           "collisionMask" : 4294967295,
           "isTrigger" : false,
           "layerMask" : 2,
@@ -3930,6 +3881,55 @@
       [
         0.0,
         0.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3260.809326171875,
+        -623.2440185546875
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        500.592041015625,
+        15.0
       ]
     },
     {
@@ -5329,7 +5329,7 @@
           "type" : "SpriteRenderer"
         },
         {
-          "collisionMask" : 4294967293,
+          "collisionMask" : 4294967295,
           "isTrigger" : false,
           "layerMask" : 2,
           "size" : 
@@ -5340,17 +5340,17 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone_clone_clone_clone",
       "position" : 
       [
-        3335.475830078125,
-        -623.2440185546875
+        3768.3330078125,
+        -517.5924072265625
       ],
       "rotation" : 0.0,
       "scale" : 
       [
-        352.592529296875,
-        15.0
+        12.201999664306641,
+        52.9998779296875
       ]
     },
     {
@@ -5389,17 +5389,66 @@
           "type" : "BoxCollider"
         }
       ],
-      "name" : "Barrier_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "name" : "Barrier_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
       "position" : 
       [
-        3768.3330078125,
-        -517.5924072265625
+        3617.999755859375,
+        -895.25927734375
       ],
       "rotation" : 0.0,
       "scale" : 
       [
-        12.201999664306641,
-        52.9998779296875
+        12.0,
+        179.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967293,
+          "isTrigger" : false,
+          "layerMask" : 2,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Floor (Enemy At)_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        4356.99462890625,
+        -959.0032958984375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        80.481201171875,
+        87.59259033203125
       ]
     },
     {
@@ -5610,9 +5659,6 @@
       "components" : 
       [
         {
-          "type" : "Camera"
-        },
-        {
           "fileName" : "echolocate.mp3",
           "loop" : false,
           "pitch" : 1.0,
@@ -5622,10 +5668,7 @@
           "volume" : 0.29199999570846558
         },
         {
-          "Affected By Gravity" : true,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
+          "type" : "Camera"
         },
         {
           "color" : 
@@ -5645,6 +5688,12 @@
           "type" : "NoiseSource"
         },
         {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
           "collisionMask" : 4294967294,
           "isTrigger" : false,
           "layerMask" : 1,
@@ -5654,16 +5703,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "type" : "AudioListener"
-        },
-        {
-          "echoDistanceThreshold" : 300.0,
-          "jumpHeight" : 60.0,
-          "max_speed" : 200.0,
-          "time" : 0.60000002384185791,
-          "type" : "PlayerController"
         },
         {
           "active" : true,
@@ -5683,6 +5722,16 @@
           "screenspace" : false,
           "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
+        },
+        {
+          "echoDistanceThreshold" : 300.0,
+          "jumpHeight" : 60.0,
+          "max_speed" : 200.0,
+          "time" : 0.60000002384185791,
+          "type" : "PlayerController"
+        },
+        {
+          "type" : "AudioListener"
         }
       ],
       "name" : "Player",
@@ -5738,6 +5787,10 @@
       "components" : 
       [
         {
+          "enemyType" : 0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967271,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -5747,10 +5800,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "enemyType" : 0,
-          "type" : "EnemyController"
         },
         {
           "active" : false,
@@ -5817,6 +5866,12 @@
       "components" : 
       [
         {
+          "enemyType" : 2,
+          "groundEmitInterval" : 1.0,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967271,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -5826,12 +5881,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "enemyType" : 2,
-          "groundEmitInterval" : 1.0,
-          "moveSpeed" : 100.0,
-          "type" : "EnemyController"
         },
         {
           "active" : false,
@@ -5862,6 +5911,12 @@
           "volume" : 1.0
         },
         {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
           "color" : 
           [
             0.0,
@@ -5877,12 +5932,6 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
-        },
-        {
-          "Affected By Gravity" : true,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
         }
       ],
       "name" : "Enemy (Patrol)_clone",
@@ -5921,6 +5970,12 @@
       "components" : 
       [
         {
+          "enemyType" : 2,
+          "groundEmitInterval" : 1.0,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967271,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -5930,12 +5985,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "enemyType" : 2,
-          "groundEmitInterval" : 1.0,
-          "moveSpeed" : 100.0,
-          "type" : "EnemyController"
         },
         {
           "active" : false,
@@ -5966,6 +6015,12 @@
           "volume" : 1.0
         },
         {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
           "color" : 
           [
             1.0,
@@ -5981,12 +6036,6 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
-        },
-        {
-          "Affected By Gravity" : true,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
         }
       ],
       "name" : "Enemy (Patrol)",
@@ -6008,92 +6057,9 @@
       "components" : 
       [
         {
-          "collisionMask" : 4294967267,
-          "isTrigger" : false,
-          "layerMask" : 4,
-          "size" : 
-          [
-            1.0,
-            1.0
-          ],
-          "type" : "BoxCollider"
-        },
-        {
-          "enemyType" : 2,
-          "groundEmitInterval" : 1.0,
-          "moveSpeed" : 100.0,
+          "enemyType" : 0,
           "type" : "EnemyController"
         },
-        {
-          "active" : false,
-          "alignment" : 4,
-          "blendmode" : 1,
-          "color" : 
-          [
-            1.0,
-            0.0,
-            0.0,
-            1.0
-          ],
-          "fileName" : "",
-          "meshdrawmode" : 3,
-          "renderlayer" : 0,
-          "rendermode" : 1,
-          "screenspace" : false,
-          "sortOrder" : 0.0,
-          "type" : "SpriteRenderer"
-        },
-        {
-          "fileName" : "enemy_footstep.mp3",
-          "loop" : false,
-          "pitch" : 1.6169999837875366,
-          "relative" : false,
-          "spatialize" : true,
-          "type" : "AudioEmitter",
-          "volume" : 1.0
-        },
-        {
-          "color" : 
-          [
-            1.0,
-            0.0,
-            0.0,
-            1.0
-          ],
-          "isNoiseActive" : true,
-          "layerMask" : 2,
-          "lifetime" : 2.0,
-          "noiseLevel" : 20.0,
-          "numParticles" : 32,
-          "repeat" : false,
-          "repeatInterval" : 1.0,
-          "type" : "NoiseSource"
-        },
-        {
-          "Affected By Gravity" : true,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
-        }
-      ],
-      "name" : "Enemy (Patrol)_clone",
-      "position" : 
-      [
-        1714.5,
-        181.65005493164062
-      ],
-      "rotation" : 0.0,
-      "scale" : 
-      [
-        25.0,
-        25.0
-      ]
-    },
-    {
-      "active" : true,
-      "children" : [],
-      "components" : 
-      [
         {
           "collisionMask" : 4294967271,
           "isTrigger" : false,
@@ -6104,10 +6070,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "enemyType" : 0,
-          "type" : "EnemyController"
         },
         {
           "active" : false,
@@ -6174,6 +6136,13 @@
       "components" : 
       [
         {
+          "detectDistance" : 300.0,
+          "enemyType" : 1,
+          "groundEmitInterval" : 1.5,
+          "range_x" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967271,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -6185,21 +6154,14 @@
           "type" : "BoxCollider"
         },
         {
-          "detectDistance" : 300.0,
-          "enemyType" : 1,
-          "groundEmitInterval" : 1.5,
-          "range_x" : 100.0,
-          "type" : "EnemyController"
-        },
-        {
           "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
           [
+            0.67805671691894531,
+            0.0049019455909729004,
             1.0,
-            0.0,
-            0.0,
             1.0
           ],
           "fileName" : "",
@@ -6220,6 +6182,12 @@
           "volume" : 1.0
         },
         {
+          "Affected By Gravity" : false,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
           "color" : 
           [
             1.0,
@@ -6235,12 +6203,6 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
-        },
-        {
-          "Affected By Gravity" : false,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
         }
       ],
       "name" : "Enemy Drop",
@@ -6262,6 +6224,10 @@
       "components" : 
       [
         {
+          "enemyType" : 0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967271,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -6271,10 +6237,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "enemyType" : 0,
-          "type" : "EnemyController"
         },
         {
           "active" : false,
@@ -6341,6 +6303,10 @@
       "components" : 
       [
         {
+          "enemyType" : 0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967271,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -6350,10 +6316,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "enemyType" : 0,
-          "type" : "EnemyController"
         },
         {
           "active" : false,
@@ -6420,6 +6382,10 @@
       "components" : 
       [
         {
+          "enemyType" : 0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967271,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -6429,10 +6395,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "enemyType" : 0,
-          "type" : "EnemyController"
         },
         {
           "active" : false,
@@ -6499,6 +6461,12 @@
       "components" : 
       [
         {
+          "enemyType" : 2,
+          "groundEmitInterval" : 1.0,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967267,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -6508,12 +6476,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "enemyType" : 2,
-          "groundEmitInterval" : 1.0,
-          "moveSpeed" : 100.0,
-          "type" : "EnemyController"
         },
         {
           "active" : false,
@@ -6544,6 +6506,12 @@
           "volume" : 1.0
         },
         {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
           "color" : 
           [
             1.0,
@@ -6559,12 +6527,6 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
-        },
-        {
-          "Affected By Gravity" : true,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
         }
       ],
       "name" : "Enemy (Patrol)_clone_clone_clone_clone",
@@ -6603,6 +6565,13 @@
       "components" : 
       [
         {
+          "detectDistance" : 200.0,
+          "enemyType" : 1,
+          "groundEmitInterval" : 1.2000000476837158,
+          "range_x" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967271,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -6614,21 +6583,14 @@
           "type" : "BoxCollider"
         },
         {
-          "detectDistance" : 200.0,
-          "enemyType" : 1,
-          "groundEmitInterval" : 1.2000000476837158,
-          "range_x" : 100.0,
-          "type" : "EnemyController"
-        },
-        {
           "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
           [
-            0.61568629741668701,
-            0.0,
-            0.61960786581039429,
+            0.67843139171600342,
+            0.0039215688593685627,
+            1.0,
             1.0
           ],
           "fileName" : "",
@@ -6649,11 +6611,17 @@
           "volume" : 1.0
         },
         {
+          "Affected By Gravity" : false,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
           "color" : 
           [
-            0.97277909517288208,
-            0.39801999926567078,
-            0.99019604921340942,
+            0.67843139171600342,
+            0.0039215688593685627,
+            1.0,
             1.0
           ],
           "isNoiseActive" : false,
@@ -6664,12 +6632,6 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
-        },
-        {
-          "Affected By Gravity" : false,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
         }
       ],
       "name" : "Enemy Drop",
@@ -6691,6 +6653,12 @@
       "components" : 
       [
         {
+          "enemyType" : 2,
+          "groundEmitInterval" : 1.0,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967271,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -6700,12 +6668,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "enemyType" : 2,
-          "groundEmitInterval" : 1.0,
-          "moveSpeed" : 100.0,
-          "type" : "EnemyController"
         },
         {
           "active" : false,
@@ -6736,6 +6698,12 @@
           "volume" : 1.0
         },
         {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
           "color" : 
           [
             1.0,
@@ -6751,19 +6719,13 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
-        },
-        {
-          "Affected By Gravity" : true,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
         }
       ],
       "name" : "Enemy (Patrol)_clone_clone_clone_clone_clone",
       "position" : 
       [
-        3831.5,
-        -465.3499755859375
+        3334.833251953125,
+        -456.68328857421875
       ],
       "rotation" : 0.0,
       "scale" : 
@@ -6778,6 +6740,13 @@
       "components" : 
       [
         {
+          "detectDistance" : 600.0,
+          "enemyType" : 1,
+          "groundEmitInterval" : 1.2000000476837158,
+          "range_x" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
           "collisionMask" : 4294967271,
           "isTrigger" : false,
           "layerMask" : 4,
@@ -6789,21 +6758,14 @@
           "type" : "BoxCollider"
         },
         {
-          "detectDistance" : 600.0,
-          "enemyType" : 1,
-          "groundEmitInterval" : 1.2000000476837158,
-          "range_x" : 100.0,
-          "type" : "EnemyController"
-        },
-        {
           "active" : false,
           "alignment" : 4,
           "blendmode" : 1,
           "color" : 
           [
-            0.61764675378799438,
-            0.0,
-            0.61764705181121826,
+            0.67843139171600342,
+            0.0039215688593685627,
+            1.0,
             1.0
           ],
           "fileName" : "",
@@ -6824,11 +6786,17 @@
           "volume" : 1.0
         },
         {
+          "Affected By Gravity" : false,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
           "color" : 
           [
-            0.97277909517288208,
-            0.39801999926567078,
-            0.99019604921340942,
+            0.67843139171600342,
+            0.0039215688593685627,
+            1.0,
             1.0
           ],
           "isNoiseActive" : false,
@@ -6839,12 +6807,6 @@
           "repeat" : false,
           "repeatInterval" : 1.0,
           "type" : "NoiseSource"
-        },
-        {
-          "Affected By Gravity" : false,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
         }
       ],
       "name" : "Enemy Drop_clone_clone",
@@ -6858,6 +6820,93 @@
       [
         82.65771484375,
         78.246627807617188
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "enemyType" : 2,
+          "groundEmitInterval" : 1.0,
+          "moveSpeed" : 100.0,
+          "type" : "EnemyController"
+        },
+        {
+          "collisionMask" : 4294967271,
+          "isTrigger" : false,
+          "layerMask" : 4,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        },
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 0,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "fileName" : "enemy_footstep.mp3",
+          "loop" : false,
+          "pitch" : 1.6169999837875366,
+          "relative" : false,
+          "spatialize" : true,
+          "type" : "AudioEmitter",
+          "volume" : 1.0
+        },
+        {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.73725491762161255,
+            0.49019607901573181
+          ],
+          "isNoiseActive" : true,
+          "layerMask" : 2,
+          "lifetime" : 0.75,
+          "noiseLevel" : 7.5,
+          "numParticles" : 16,
+          "repeat" : false,
+          "repeatInterval" : 1.0,
+          "type" : "NoiseSource"
+        }
+      ],
+      "name" : "Enemy (Patrol)_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3734.61083984375,
+        -905.0166015625
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        25.0,
+        25.0
       ]
     },
     {
@@ -6992,6 +7041,55 @@
       "components" : 
       [
         {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 1,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967233,
+          "isTrigger" : true,
+          "layerMask" : 16,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Checkpoint Collider 1_clone",
+      "position" : 
+      [
+        -889.66656494140625,
+        -174.62510681152344
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        38.549999237060547,
+        299.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
           "collisionMask" : 4294967265,
           "isTrigger" : true,
           "layerMask" : 16,
@@ -7093,6 +7191,55 @@
       [
         10.0,
         10.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 1,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967233,
+          "isTrigger" : true,
+          "layerMask" : 16,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Checkpoint Collider 1",
+      "position" : 
+      [
+        775.66668701171875,
+        234.83323669433594
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        38.549999237060547,
+        299.0
       ]
     },
     {
@@ -7210,6 +7357,55 @@
       "components" : 
       [
         {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 1,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967233,
+          "isTrigger" : true,
+          "layerMask" : 16,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Checkpoint Collider 1_clone",
+      "position" : 
+      [
+        1659.3333740234375,
+        42.333232879638672
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        38.549999237060547,
+        299.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
           "collisionMask" : 4294967265,
           "isTrigger" : true,
           "layerMask" : 16,
@@ -7311,6 +7507,55 @@
       [
         10.0,
         10.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 1,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967233,
+          "isTrigger" : true,
+          "layerMask" : 16,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Checkpoint Collider 1_clone_clone",
+      "position" : 
+      [
+        3091.08349609375,
+        -608.0833740234375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        38.549999237060547,
+        299.0
       ]
     },
     {
@@ -7425,6 +7670,55 @@
     {
       "active" : true,
       "children" : [],
+      "components" : 
+      [
+        {
+          "active" : false,
+          "alignment" : 4,
+          "blendmode" : 1,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "fileName" : "",
+          "meshdrawmode" : 3,
+          "renderlayer" : 1,
+          "rendermode" : 1,
+          "screenspace" : false,
+          "sortOrder" : 0.0,
+          "type" : "SpriteRenderer"
+        },
+        {
+          "collisionMask" : 4294967233,
+          "isTrigger" : true,
+          "layerMask" : 32,
+          "size" : 
+          [
+            1.0,
+            1.0
+          ],
+          "type" : "BoxCollider"
+        }
+      ],
+      "name" : "Win Collider 1_clone_clone_clone",
+      "position" : 
+      [
+        4630.0830078125,
+        -918.30560302734375
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        38.549999237060547,
+        299.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
       "components" : [],
       "name" : "=======MISCELLANEOUS OBJECT========",
       "position" : 
@@ -7454,6 +7748,12 @@
           "volume" : 1.0
         },
         {
+          "Affected By Gravity" : true,
+          "Is Static" : false,
+          "isKinematic" : false,
+          "type" : "RigidBody"
+        },
+        {
           "color" : 
           [
             0.77450978755950928,
@@ -7471,12 +7771,6 @@
           "type" : "NoiseSource"
         },
         {
-          "Affected By Gravity" : true,
-          "Is Static" : false,
-          "isKinematic" : false,
-          "type" : "RigidBody"
-        },
-        {
           "collisionMask" : 3,
           "isTrigger" : false,
           "layerMask" : 8,
@@ -7486,11 +7780,6 @@
             1.0
           ],
           "type" : "BoxCollider"
-        },
-        {
-          "throwAngle" : 0.0,
-          "throwSpeed" : 800.0,
-          "type" : "RockController"
         },
         {
           "active" : false,
@@ -7510,6 +7799,11 @@
           "screenspace" : false,
           "sortOrder" : 0.0,
           "type" : "SpriteRenderer"
+        },
+        {
+          "throwAngle" : 0.0,
+          "throwSpeed" : 800.0,
+          "type" : "RockController"
         }
       ],
       "name" : "Rock",
@@ -7907,10 +8201,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 0,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -7928,6 +8218,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 0,
+                  "type" : "Slider"
                 },
                 {
                   "fileName" : "ButtonRockClick.wav",
@@ -8032,10 +8326,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 1,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -8053,6 +8343,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 1,
+                  "type" : "Slider"
                 },
                 {
                   "fileName" : "ButtonRockClick.wav",
@@ -8157,10 +8451,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 2,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -8178,6 +8468,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 2,
+                  "type" : "Slider"
                 },
                 {
                   "fileName" : "ButtonRockClick.wav",
@@ -8254,7 +8548,7 @@
       ]
     },
     {
-      "active" : true,
+      "active" : false,
       "children" : 
       [
         {
@@ -9131,7 +9425,7 @@
                 1.0,
                 0.78431373834609985
               ],
-              "fileName" : "",
+              "fileName" : "nulptrs controls.png",
               "meshdrawmode" : 3,
               "renderlayer" : 2,
               "rendermode" : 2,
@@ -9144,13 +9438,13 @@
           "position" : 
           [
             0.0,
-            0.0
+            -100.0
           ],
           "rotation" : 0.0,
           "scale" : 
           [
-            1.0,
-            1.0
+            1200.0,
+            700.0
           ]
         }
       ],
@@ -9909,7 +10203,7 @@
           "renderlayer" : 0,
           "screenspace" : false,
           "sortOrder" : 1.0,
-          "text" : "Do not touch the orange border",
+          "text" : "Do not touch any red outlines",
           "type" : "TextRenderer"
         },
         {
@@ -9971,6 +10265,234 @@
       [
         -824.9166259765625,
         -125.99998474121094
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.25,
+        1.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "renderlayer" : 0,
+          "screenspace" : false,
+          "sortOrder" : 1.0,
+          "text" : "Enemy in front. Watch his movment",
+          "type" : "TextRenderer"
+        },
+        {
+          "fadeSpeed" : 2.0,
+          "type" : "TextGameObject"
+        }
+      ],
+      "name" : "Tutorial_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        1796.7498779296875,
+        100.41682434082031
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.25,
+        1.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "renderlayer" : 0,
+          "screenspace" : false,
+          "sortOrder" : 1.0,
+          "text" : "Careful where you ping",
+          "type" : "TextRenderer"
+        },
+        {
+          "fadeSpeed" : 2.0,
+          "type" : "TextGameObject"
+        }
+      ],
+      "name" : "Tutorial_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3080.97216796875,
+        -246.47222900390625
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.25,
+        1.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            0.70588207244873047,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "renderlayer" : 0,
+          "screenspace" : false,
+          "sortOrder" : 1.0,
+          "text" : "Tip: Don't get crushed",
+          "type" : "TextRenderer"
+        },
+        {
+          "fadeSpeed" : 2.0,
+          "type" : "TextGameObject"
+        }
+      ],
+      "name" : "Tutorial_clone_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3280.97216796875,
+        -540.47222900390625
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.25,
+        1.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "renderlayer" : 0,
+          "screenspace" : false,
+          "sortOrder" : 1.0,
+          "text" : "Checkpoint Reached",
+          "type" : "TextRenderer"
+        },
+        {
+          "fadeSpeed" : 2.0,
+          "type" : "TextGameObject"
+        }
+      ],
+      "name" : "Tutorial_clone_clone_clone_clone",
+      "position" : 
+      [
+        778.083251953125,
+        283.0
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.25,
+        1.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "renderlayer" : 0,
+          "screenspace" : false,
+          "sortOrder" : 1.0,
+          "text" : "Checkpoint Reached",
+          "type" : "TextRenderer"
+        },
+        {
+          "fadeSpeed" : 2.0,
+          "type" : "TextGameObject"
+        }
+      ],
+      "name" : "Tutorial_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        1660.083251953125,
+        69.000015258789062
+      ],
+      "rotation" : 0.0,
+      "scale" : 
+      [
+        0.25,
+        1.0
+      ]
+    },
+    {
+      "active" : true,
+      "children" : [],
+      "components" : 
+      [
+        {
+          "alignment" : 4,
+          "color" : 
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "renderlayer" : 0,
+          "screenspace" : false,
+          "sortOrder" : 1.0,
+          "text" : "Checkpoint Reached",
+          "type" : "TextRenderer"
+        },
+        {
+          "fadeSpeed" : 2.0,
+          "type" : "TextGameObject"
+        }
+      ],
+      "name" : "Tutorial_clone_clone_clone_clone_clone_clone",
+      "position" : 
+      [
+        3095.25,
+        -559.0833740234375
       ],
       "rotation" : 0.0,
       "scale" : 
