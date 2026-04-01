@@ -106,6 +106,11 @@ namespace SceneIO
             auto& cm = go.AddComponent<MainCamera>();
             cm.Deserialize(compObj);
         }
+        else if (type == "MusicPlayer")
+        {
+            auto& cm = go.AddComponent<MusicPlayer>();
+            cm.Deserialize(compObj);
+        }
     }
 
     // ===== GameObject Serialization =====
