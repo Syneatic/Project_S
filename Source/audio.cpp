@@ -11,7 +11,7 @@ namespace
 	std::unordered_map<std::string, std::string> _musicMap{}; //<id,path>
 	std::unordered_map<std::string, std::unique_ptr<sf::SoundBuffer>> _soundBufferMap{}; //<filename,buffer>
 	MusicPlayer* _activeMusicPlayer{ nullptr };
-	sf::Music _activeMusic{};
+	std::unique_ptr<sf::Music> _activeMusic{};
 
 	float _masterVolume = 1.f;
 	float _sfxVolume = 1.f;
@@ -118,8 +118,11 @@ namespace Audio
 			auto dir = sound.getPosition() - sf::Listener::getPosition();	
 		}
 
-		_activeMusic.setVolume(100.f * _activeMusicPlayer->volume * _musicVolume * _masterVolume);
-		_activeMusic.setLooping(_activeMusicPlayer->loop);
+		if (_activeMusic)
+		{
+			_activeMusic->setVolume(100.f * _activeMusicPlayer->volume * _musicVolume * _masterVolume);
+			_activeMusic->setLooping(_activeMusicPlayer->loop);
+		}
 	}
 
 	void SetMasterVolume(f32 vol)
@@ -157,28 +160,28 @@ namespace Audio
 		if (!player) return;
 
 		_activeMusicPlayer = player;
-		_activeMusic = sf::Music(player->fileName);
+		_activeMusic = std::make_unique<sf::Music>(player->fileName);
 	}
 
 	void UnregisterMusic()
 	{
-		_activeMusic.stop();
-		_activeMusic = sf::Music();
+		_activeMusic->stop();
+		_activeMusic.release();
 	}
 
 	void PlayMusic()
 	{
-		if (_activeMusic.getStatus() != sf::SoundSource::Status::Playing)
+		if (_activeMusic->getStatus() != sf::SoundSource::Status::Playing)
 		{
-			_activeMusic.play();
+			_activeMusic->play();
 		}
 	}
 
 	void StopMusic()
 	{
-		if (_activeMusic.getStatus() == sf::SoundSource::Status::Playing)
+		if (_activeMusic->getStatus() == sf::SoundSource::Status::Playing)
 		{
-			_activeMusic.stop();
+			_activeMusic->stop();
 		}
 	}
 }
