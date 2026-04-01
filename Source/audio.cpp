@@ -160,7 +160,8 @@ namespace Audio
 		if (!player) return;
 
 		_activeMusicPlayer = player;
-		_activeMusic = std::make_unique<sf::Music>(player->fileName);
+		Debug::Log(player->fileName);
+		_activeMusic = std::move(std::make_unique<sf::Music>("Assets/"+player->fileName));
 	}
 
 	void UnregisterMusic()
