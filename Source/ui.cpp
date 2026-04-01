@@ -186,7 +186,7 @@ namespace
 
         // Subscribe pausemenu button function as an event to event handler.
         SubscribeButton(FunctionKey::PLAY_GAME, [](const UIButtonEvent&)
-            { LevelTransition::RequestTransition(); SaveGameManager::toLoad = false; });
+            { RestartGame(); SaveGameManager::toLoad = false; });
         SubscribeButton(FunctionKey::PAUSE_GAME, [](const UIButtonEvent&)
             { UISystem::TogglePauseMenuGame(); });
         SubscribeButton(FunctionKey::RESTART_GAME, [](const UIButtonEvent&)
