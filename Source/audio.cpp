@@ -160,8 +160,10 @@ namespace Audio
 		if (!player) return;
 
 		_activeMusicPlayer = player;
-		Debug::Log(player->fileName);
 		_activeMusic = std::make_unique<sf::Music>(assetPath + player->fileName);
+		_activeMusic.get()->setRelativeToListener(true);
+		_activeMusic.get()->setPosition({ 0.f, 0.f, 0.f });
+		_activeMusic.get()->setAttenuation(0.f);
 	}
 
 	void UnregisterMusic()

@@ -289,7 +289,7 @@ namespace UISystem
         Transform const& wtSlider = slider.worldTransform();
         Transform& tSlider = slider.transform();
         SpriteRenderer* r = slider.gameObject().GetComponent<SpriteRenderer>();
-
+        AudioEmitter* e = slider.gameObject().GetComponent<AudioEmitter>();
         if (::checkBounds(wtSlider))
         {
             r->color.r = r->color.g = r->color.b = r->color.a * .75f;
@@ -309,6 +309,7 @@ namespace UISystem
         {
             slider.isDragging = false;
             r->color.r = r->color.g = r->color.b = r->color.a;
+            e->Play();
         }
 
         if (slider.isDragging)

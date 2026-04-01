@@ -752,6 +752,15 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "fileName" : "ButtonRockClick.wav",
+                  "loop" : false,
+                  "pitch" : 1.0,
+                  "relative" : false,
+                  "spatialize" : false,
+                  "type" : "AudioEmitter",
+                  "volume" : 1.0
                 }
               ],
               "name" : "SettingsGlobalKnob",
@@ -868,6 +877,15 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "fileName" : "ButtonRockClick.wav",
+                  "loop" : false,
+                  "pitch" : 1.0,
+                  "relative" : false,
+                  "spatialize" : false,
+                  "type" : "AudioEmitter",
+                  "volume" : 1.0
                 }
               ],
               "name" : "SettingsSFXKnob",
@@ -984,6 +1002,15 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "fileName" : "ButtonRockClick.wav",
+                  "loop" : false,
+                  "pitch" : 1.0,
+                  "relative" : false,
+                  "spatialize" : false,
+                  "type" : "AudioEmitter",
+                  "volume" : 1.0
                 }
               ],
               "name" : "SettingsSFXKnob_clone",
