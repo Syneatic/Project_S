@@ -402,6 +402,10 @@ namespace Debugger
     {
         _hovered = nullptr;
         _locked = nullptr;
+        _active = false;
+        EngineCTX::debugMode = false;  // keep them in sync
+        _warmupFrames = 0;
+        _inspectorSettledFrames = 0;
     }
 
     void Tick(Scene& scene)
@@ -412,7 +416,11 @@ namespace Debugger
         if (!_active)
         {
             _hovered = nullptr;
+            _locked = nullptr;
             _warmupFrames = 3;   // reset so next toggle-on gets 3 skip frames
+            _inspectorSettledFrames = 0;
+            ImGui::GetIO().ClearInputKeys();        // flush keyboard state
+            ImGui::GetIO().ClearInputMouse();       // flush mouse state  ← main fix
             return;
         }
 

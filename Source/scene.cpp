@@ -176,8 +176,8 @@ void Scene::OnUpdate()
 		if (EngineCTX::debugMode)
 		{
 			profilerUI.Render();
-			Debugger::Tick(*this);
 		}
+		Debugger::Tick(*this);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
