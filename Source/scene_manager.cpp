@@ -1,4 +1,5 @@
 #include "scene_parser.hpp"
+#include "scene_debugger.hpp"
 #include "scene.hpp"
 #include "scene_editor.hpp"
 
