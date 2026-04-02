@@ -367,7 +367,8 @@
     </ClInclude>
     <ClInclude Include="Source\scene_debugger.hpp">
       <Filter>Header Files\scene</Filter>
-    <ClInclude Include="Source\profiler_ui.h">
+	</ClInclude>
+	<ClInclude Include="Source\profiler_ui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\profiler.h">
