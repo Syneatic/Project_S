@@ -62,6 +62,8 @@ public:
 	bool loop{ false };
 
 	void OnStart() override;
+	void OnDestroy() override;
+
 	void SetVolume(f32 vol);
 	void SetLoop(bool loop);
 

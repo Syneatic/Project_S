@@ -260,6 +260,11 @@ void MusicPlayer::OnStart()
 	Audio::PlayMusic();
 }
 
+void MusicPlayer::OnDestroy()
+{
+	Audio::StopMusic();
+}
+
 void MusicPlayer::SetVolume(f32 vol)
 {
 	volume = std::clamp(vol, 0.0f, 1.0f);

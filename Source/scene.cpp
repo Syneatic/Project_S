@@ -136,10 +136,10 @@ void Scene::OnUpdate()
 
 		UISystem::Update();
 		if (AEInputCheckTriggered(AEVK_ESCAPE) && SceneManager::ActiveScene()->cname() == "Play_Level")
-			UISystem::TogglePauseMenuGame();
-
-		/*if (AEInputCheckTriggered(AEVK_Z))
-			UISystem::EndScreen(true);*/
+		{
+			if (!EngineCTX::isPaused)
+				UISystem::TogglePauseMenuGame();	
+		}
 
 		accumulator += EngineCTX::dt;
 		while (accumulator >= EngineCTX::fixedDt)

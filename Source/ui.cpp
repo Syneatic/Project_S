@@ -70,6 +70,7 @@ namespace
             (pauseMenuHolders.endScreen->active() ? pauseMenuHolders.endScreen : pauseMenuHolders.pauseMenu);
     }
 
+    // Set Button Component inactive via gameObj pointer.
     void ButtonCState(GameObject* menu)
     {
         if (!menu)
