@@ -163,6 +163,9 @@ void Scene::OnUpdate()
 
 void Scene::OnExit()
 {
+	#ifdef _DEBUG
+		Debugger::Reset();   
+	#endif
 	for (auto& pgo : _gameObjectList)
 	{
 		auto go = pgo.get();

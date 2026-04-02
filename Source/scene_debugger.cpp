@@ -398,6 +398,12 @@ namespace Debugger
         Debug::Log("Debugger error: ", msg);
     }
 
+    void Reset()
+    {
+        _hovered = nullptr;
+        _locked = nullptr;
+    }
+
     void Tick(Scene& scene)
     {
         bool wasActive = _active;
