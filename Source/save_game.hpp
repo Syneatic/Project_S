@@ -10,6 +10,7 @@ namespace SaveGameManager {
 		std::string sceneName;
 		float2 initialSpawnPosition{};
 		float2 spawnPoint{};
+		f32 timer{};
 	};
 	inline bool toLoad{ false };
 

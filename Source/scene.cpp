@@ -87,6 +87,8 @@ void Scene::OnEnter()
 			if (auto* pc = player->GetComponent<PlayerController>())
 			{
 				pc->SetSpawnPoint(data.spawnPoint);
+				EngineCTX::gameTimer = data.timer;
+				Debug::Log("EngineCTX::gameTimer: ", EngineCTX::gameTimer, "\n");
 			}
 			player->UpdateWorldTransform();
 
@@ -191,6 +193,7 @@ void Scene::OnExit()
 		if (auto* pc = player->GetComponent<PlayerController>())
 		{
 			data.spawnPoint = pc->GetSpawnPoint();
+			data.timer = EngineCTX::gameTimer;
 		}
 		SaveGameManager::Save(data);
 	}
@@ -200,6 +203,8 @@ void Scene::OnExit()
 		auto go = pgo.get();
 		go->OnDestroy();
 	}
+
+	EngineCTX::gameTimer = 0.f;
 
 	//delete
 	EventHandler::Flush();

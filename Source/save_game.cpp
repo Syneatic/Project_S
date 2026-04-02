@@ -18,6 +18,7 @@ namespace SaveGameManager
 		root["scene"] = data.sceneName;
 		root["firstSpawn"] = WriteFloat2(data.initialSpawnPosition);
 		root["spawnPoint"] = WriteFloat2(data.spawnPoint);
+		root["timer"] = data.timer;
 
 		Json::StreamWriterBuilder builder; //Json writer to transfer from the program to the new file
 		builder["indentation"] = " ";
@@ -53,6 +54,9 @@ namespace SaveGameManager
 
 		if (root.isMember("spawnPoint"))
 			ReadFloat2(root["spawnPoint"], outData.spawnPoint);
+
+		if (root.isMember("timer"))
+			outData.timer = root["timer"].asFloat();
 
 		//File has been successfully run
 		//return true;
