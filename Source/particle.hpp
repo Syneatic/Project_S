@@ -14,19 +14,20 @@ namespace ParticleSystem
 
 	const int MAX_PARTICLES = 5096 * 4;
 
+	//struct of arrays approach, each array holds a specific property for all particles, indexed by particle ID
 	struct Pool
 	{
-		float2 pos[MAX_PARTICLES]{}; //might change to separated x,y
+		float2 pos[MAX_PARTICLES]{};
 		float size[MAX_PARTICLES]{};
 		float rotation[MAX_PARTICLES]{};
 
-		float2 vel[MAX_PARTICLES]{}; //same here
+		float2 vel[MAX_PARTICLES]{};
 
 		bool timeScale[MAX_PARTICLES]{};
 		float  time[MAX_PARTICLES]{};
 		float  lifetime[MAX_PARTICLES]{};
 
-		Color  color[MAX_PARTICLES]{}; //maybe this too
+		Color  color[MAX_PARTICLES]{};
 		bool   active[MAX_PARTICLES]{};
 
 		bool collide[MAX_PARTICLES]{};

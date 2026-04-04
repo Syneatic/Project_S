@@ -43,6 +43,7 @@ public:
 	void OnUpdate() override;
 	void OnDestroy() override;
 
+	//calls a single burst of particles
 	void Burst();
 
 	void Serialize(Json::Value& outComp) const override;

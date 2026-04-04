@@ -7,6 +7,7 @@ Co-Author: Nil
 //forward decl
 class GameObject;
 
+//represents a scene in the game, contains gameobjects and handles their lifecycle
 class Scene
 {
 protected:
@@ -16,10 +17,10 @@ protected:
 	void InitializeGameObjects();
 
 public:
+	//lifecycle functions
 	virtual void OnEnter();
 	virtual void OnUpdate();
 	virtual void OnExit();
-	virtual bool IsEditorScene() const { return false; }
 
 	//===== SERIALIZATION =====
 	std::string& name();

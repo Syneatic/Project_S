@@ -6,6 +6,7 @@ Co-Author: Nil
 
 namespace
 {
+	// converts a string to lowercase and removes whitespace, for use in ImGui IDs
 	std::string tolowerandnspc(const std::string s)
 	{
 		std::string out = "";
@@ -19,6 +20,7 @@ namespace
 
 using namespace ImGui;
 
+// formats a label and id into an ImGui ID, by lowercasing and removing whitespace, and adding "##" to ensure the label is not used as the ID
 std::string FormatID(const std::string& label, const std::string& id)
 {
 	std::string back = "##";

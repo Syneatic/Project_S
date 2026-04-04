@@ -5,6 +5,7 @@ Co-Author: Nil
 #pragma once
 #include "gameobject.hpp"
 
+// emits a sound at the position of the gameobject, can be spatialized and have volume/pitch/loop settings
 class AudioEmitter : public Component
 {
 public:
@@ -19,14 +20,20 @@ public:
 	bool spatialize{ true };
 	bool relativeToListener{ false};
 
+	//initializes sound
 	void OnStart() override;
+
+	//sets volume/pitch/loop values
 	void SetVolume(f32 vol);
 	void SetPitch(f32 pitch);
 	void SetLoop(bool loop);
 
+	//plays sound
 	void Play();
+	//plays a given sound clip
 	void Play(sf::Sound clip);
 
+	//displays sound properties in inspector and allows editing them
 	void DrawInInspector() override;
 	void Serialize(Json::Value& outComp) const override;
 	void Deserialize(const Json::Value& compObj) override;
@@ -39,6 +46,7 @@ public:
 	std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
+// represents the position of the listener in the scene, used for spatialization of audio emitters
 class AudioListener : public Component
 {
 public:
@@ -58,6 +66,7 @@ public:
 	std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
+// plays a music file
 class MusicPlayer : public Component
 {
 public:

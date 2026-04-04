@@ -22,11 +22,13 @@ namespace
 
 	EditorScene _editor{};
 
+	//check if a scene name exists in the registry
 	bool InSceneRegistry(std::string name)
 	{
 		return std::find(_sceneRegistry.begin(), _sceneRegistry.end(), name) != _sceneRegistry.end();
 	}
 
+	//check if a file has the specified extension (case-insensitive)
 	bool HasExtension(const fs::path& p, std::string ext)
 	{
 		std::string e = p.extension().string();
@@ -36,6 +38,7 @@ namespace
 		return e == ext;
 	}
 
+	//load a scene from disk given its name (without extension)
 	std::unique_ptr<Scene> LoadSceneFromDisk(const std::string& name)
 	{
 		auto scn = std::make_unique<Scene>(name);
@@ -45,12 +48,12 @@ namespace
 
 	void SwitchScene()
 	{
+		//requests a scene switch but only do it on the next available frame
 		_requestSwitch = false;
 		if (_nextSceneName.empty()) return;
 
 		if (_current) _current->OnExit();
 
-		//GameObject::nextId = 0;
 		_current = LoadSceneFromDisk(_nextSceneName);
 		if (_current) _current->OnEnter();
 
@@ -63,7 +66,7 @@ namespace
 		_requestReload = false;
 		if (!_current) return;
 
-		const std::string name = _current->name(); // you already have name()
+		const std::string name = _current->name();
 		_current->OnExit();
 
 		_current = LoadSceneFromDisk(name);
@@ -82,10 +85,8 @@ namespace SceneManager
 		std::error_code ec;
 
 		if (!fs::exists(sceneFolder, ec) || !fs::is_directory(sceneFolder, ec))
-		{
-			
-			return; //folder missing (or log an error)
-		}
+			return; 
+		
 
 		for (const auto& entry : fs::directory_iterator(sceneFolder, ec))
 		{

@@ -64,7 +64,6 @@ inline void DrawRotationGizmo(float2 pos, float scale = 0.5f) {
     ring.blendMode = AE_GFX_BM_NONE;
     ring.layer = editorTransformLayer;
     Graphics::Submit(ring, Graphics::PrimitiveType::CIRCLE);
-    //RenderSystem::DrawCircle(ring);
 }
 
 inline void DrawScaleGizmo(float2 pos, float scale = 0.65f) {

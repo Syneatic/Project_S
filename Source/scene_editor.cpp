@@ -39,6 +39,7 @@ namespace
 	{
 		if (!(go.active())) return;
 
+		//only update renderer and particle emitter in editor mode to prevent unintended behaviour changes
 		for (auto& [type, comp] : go.componentMap())
 		{
 			if (auto* c = dynamic_cast<Renderer*>(comp.get()))

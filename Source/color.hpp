@@ -10,7 +10,7 @@ struct Color
 	f32 g{};
 	f32 b{};
 	f32 a{};
-
+	
 	Color() : r(1.f), g(1.f), b(1.f), a(1.f) {};
 	Color(f32 red, f32 green, f32 blue) : r(red), g(green), b(blue) { a = 1.f; };
 	Color(f32 red, f32 green, f32 blue,f32 alpha) : r(red), g(green), b(blue),a(alpha) {};
@@ -24,6 +24,7 @@ struct Color
 
 	Color(float c[4]) : r(c[0]), g(c[1]), b(c[2]), a(c[3]) {};
 
+	//converts the color to a hex value
 	u32 hex()
 	{
 		u32 ua = static_cast<u32>(a * 255.0f) << 24;
@@ -35,6 +36,7 @@ struct Color
 	}
 };
 
+//operators
 Color operator+ (const Color& lhs, const Color& rhs);
 std::ostream& operator<< (std::ostream& o, const Color& c);
 

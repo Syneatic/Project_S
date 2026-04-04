@@ -1,3 +1,8 @@
+/*
+Author: Yan Chun
+Co-Author: NIL
+*/
+
 //systems
 #include "physics.hpp"
 #include "gameobject.hpp"
@@ -21,8 +26,6 @@ namespace //helpers
 	std::wstring OpenFile()
 	{
 		//get current directory
-		//wchar_t cwd[MAX_PATH]{};
-		//GetCurrentDirectoryW(MAX_PATH, cwd);
 		namespace fs = std::filesystem;
 		std::wstring targetDir = L"../../Assets/Scene/";
 
@@ -97,6 +100,7 @@ namespace //helpers
 
 	std::unique_ptr<GameObject> ExtractFromRoot(Scene& scene, GameObject* go)
 	{
+		//find gameobject in root list and extract it
 		auto& list = scene.gameObjectList();
 		auto it = std::find_if(list.begin(), list.end(),
 			[go](const std::unique_ptr<GameObject>& p) { return p.get() == go; });
@@ -108,6 +112,7 @@ namespace //helpers
 
 	std::unique_ptr<GameObject> DetachGO(Scene& scene, GameObject* go)
 	{
+		//if it has a parent, ask parent to remove it, otherwise extract from root
 		if (go->parent())
 			return go->parent()->RemoveChild(go);
 		return ExtractFromRoot(scene, go);
@@ -121,7 +126,7 @@ namespace //helpers
 
 	void SelectInteraction(GameObject* go,bool isSelected)
 	{
-		if (ImGui::GetDragDropPayload()) return;
+		if (ImGui::GetDragDropPayload()) return; //if dragging, don't change selection
 
 		if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 		{
@@ -388,6 +393,7 @@ namespace //wrappers for drawing ui elements
 		for(auto& go : scene.gameObjectList())
 			_visibleList.push_back(go.get());
 
+		//flatten hierarchy for display
 		for (auto go : _visibleList)
 		{
 			DrawGameObjectNode(scene,go);

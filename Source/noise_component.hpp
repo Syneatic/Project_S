@@ -34,8 +34,11 @@ public:
 	void OnUpdate() override;
 	void OnDestroy() override;
 
+	//emits noise particles in a circle around the source
 	void Emit();
+	//does emit but specific position
 	void Emit(const float2& emitPos);
+	//called when a collision event happens
 	void HandleHit(const OnCollisionEvent& e);
 
 	const std::string name() const override { return "NoiseSource"; }

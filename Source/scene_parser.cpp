@@ -31,6 +31,7 @@ namespace SceneIO
 
         const std::string type = compObj["type"].asString();
 
+		//instancing components based on type string, then deserializing fields
         if (type == "BoxCollider")
         {
             auto& c = go.AddComponent<BoxCollider>();

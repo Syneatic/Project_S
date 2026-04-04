@@ -6,6 +6,7 @@ Co-Author: Nil
 
 class Scene;
 
+//singleton manager for handling scene switching and lifecycle
 namespace SceneManager
 {
 	void Initialize();

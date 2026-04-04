@@ -1,3 +1,8 @@
+/*
+Author: Yan Chun
+Co-Author: NIL
+*/
+
 #pragma once
 
 #include "components.hpp"
@@ -84,7 +89,7 @@ public:
 	{
 		PROFILE_SCOPE(__func__);
 
-		if (_active)
+		if (_active) //only update components if active
 		{
 			PROFILE_SCOPE("Components");
 			for (auto& [type, comp] : _componentMap)
@@ -357,9 +362,3 @@ public:
 		return go;
 	}
 };
-
-//for now dont use
-//static GameObject* CreateGameObject(const char* name)
-//{
-//	return new GameObject(name);
-//}

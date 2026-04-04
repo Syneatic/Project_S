@@ -8,6 +8,7 @@ Co-Author: Harith, Zachary Yee
 
 namespace
 {
+	//checks the pool for the oldest particle and returns its index, used when we have no more free slots but need to emit a new particle
 	int FindDyingParticle(const ParticleSystem::Pool& pool)
 	{
 		int   idx = -1;
@@ -27,10 +28,7 @@ namespace
 				oldestRatio = ratio;
 			}
 		}
-		/*if (idx >= 0)
-		{
-			Debug::Log("FOUND DYING PARTICLE AT : ", idx);
-		}*/
+
 		return idx;
 	}
 }
@@ -55,7 +53,6 @@ namespace ParticleSystem
 	{
 		PROFILE_FUNCTION();
 
-		//Debug::ScopedTimer t("p_update");
 		int activeParticles{};
 		
 		for (int i = 0; i < MAX_PARTICLES; ++i) 
