@@ -102,11 +102,18 @@ namespace LevelTransition
 
 	void Update()
 	{
+
 		// Fade out check must always be before fade in.
 		if (tState == TransitionState::TRANSITION_FADEOUT)
 			FadeOutTimer();
 		
 		if (tState == TransitionState::TRANSITION_FADEIN)
 			FadeInTimer();
+
+		if (AEInputCheckTriggered(AEVK_M))
+		{
+			tState = TransitionState::TRANSITION_FADEOUT;
+			SceneManager::RequestSceneSwitch(SceneToSwitch());
+		}
 	}
 }
