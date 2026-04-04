@@ -45,7 +45,7 @@ namespace EventHandler
 		eQueue.push(std::make_unique<T>(std::forward<Args>(args)...));
 	}
 	
-	// Cleaned up SubscribeFilter for the new system
+	// Subscribe Filter is a extra wrapper for checking class member with matching value.
 	template <typename T, typename M>
 	SubscriptionHandle SubscribeFilter(M T::* member, M matchValue, std::function<void(const T&)> func)
 	{
