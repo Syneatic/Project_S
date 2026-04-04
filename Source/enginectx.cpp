@@ -1,3 +1,7 @@
+/*
+Author: Zachary Yee
+Co-Author: Nil
+*/
 #pragma once
 
 #include "enginectx.hpp"

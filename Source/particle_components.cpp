@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Wei Jun, Harith, Zachary Yee
+*/
 #include "gameobject.hpp"
 #include "physics.hpp"
 #include "particle_components.hpp"
@@ -44,10 +48,8 @@ void ParticleEmitter::OnStart()
 				});
 		}
 
-
 		simulatedTime -= interval;
 	}
-
 }
 
 void ParticleEmitter::OnUpdate() 
@@ -55,9 +57,8 @@ void ParticleEmitter::OnUpdate()
 	if (isBurst)
 	{
 		if (AEInputCheckTriggered(AEVK_G))
-		{
 			Burst();
-		}
+
 		return;
 	}
 
@@ -75,9 +76,7 @@ void ParticleEmitter::OnUpdate()
 			baseAngle = (_worldTransform.rotation + 90.f) * (PI / 180.0f);
 		}
 		else
-		{
 			baseAngle = _worldTransform.rotation * (PI / 180.0f);
-		}
 
 		float sprd = Random::RandFloat(spread.x, spread.y) * (PI / 180.0f);
 		float angle = baseAngle + sprd;

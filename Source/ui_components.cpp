@@ -1,30 +1,13 @@
+/*
+Author: Zachary Yee
+Co-Author: Nil
+*/
 #include "eventhandler.hpp"
 #include "audio.hpp"
 #include "ui_components.hpp"
 #include "gameobject.hpp"
 
-//void Display::DrawInInspector()
-//{
-//	ImGui::TextUnformatted("Texture");
-//}
-//
-//void Display::OnStart()  {}
-//void Display::OnUpdate() {}
-//void Display::OnDestroy(){}
-//
-//void Display::CopyFrom(Component* src)
-//{
-//	auto s = dynamic_cast<Display*>(src);
-//	if (!s) return;
-//}
-//
-//std::unique_ptr<Component> Display::Clone(GameObject& go)
-//{
-//	auto n = std::make_unique<Display>(go);
-//	n.get()->CopyFrom(this);
-//	return n;
-//}
-
+// Array of c-strings for imgui menu select for ui buttons.
 static char const* _buttonNames[]
 {
 	"GamePlay", "GameLoad", "GamePause", 
@@ -34,6 +17,7 @@ static char const* _buttonNames[]
 	"ConfirmationScreenPM"
 };
 
+// Show all button functions in imgui lvl editor.
 void Button::DrawInInspector()
 {
 	if (ImGui::BeginCombo("ButtonMode", "SelectButton"))
@@ -53,11 +37,13 @@ void Button::DrawInInspector()
 	}
 }
 
+// Save button enum to jsoncpp.
 void Button::Serialize(Json::Value& outComp) const
 {
 	outComp["buttonFunctionId"] = static_cast<int>(fKey);
 }
 
+// Load button enum from jsoncpp.
 void Button::Deserialize(const Json::Value& compObj)
 {
 	if (compObj.isMember("buttonFunctionId"))

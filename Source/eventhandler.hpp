@@ -1,3 +1,7 @@
+/*
+Author: Zachary Yee
+Co-Author: Yan Chun
+*/
 #pragma once
 
 #include "event.hpp"
@@ -10,10 +14,13 @@ namespace EventHandler
 	{ 
 		std::type_index type; 
 		CallbackId id;
-	};
+	};// Object used when unsubscribe is called from other code.
 
+	// Actual nested container for function pointers that becomes listeners.
 	inline std::unordered_map<std::type_index, std::unordered_map<CallbackId, EventCallback>> subscribers;
+	// Event queue that will be executed at end of frame.
 	inline std::queue<std::unique_ptr<IEvent>> eQueue;
+	// Unique id for each event listener.
 	inline CallbackId nextId{ 0 };
 
 
@@ -49,6 +56,7 @@ namespace EventHandler
 			});
 	}
 
+	// Function declarations.
 	void Unsubscribe(const SubscriptionHandle& handle);
 	void CallQ();
 	void Flush();

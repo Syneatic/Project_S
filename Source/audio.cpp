@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Zachary Yee
+*/
 #include "audio.hpp"
 
 namespace
@@ -73,9 +77,7 @@ namespace Audio
 
 			e->soundPtr = std::make_unique<sf::Sound>(*buffer);
 			if (!e->soundPtr)
-			{
 				Debug::Log("ERROR MAKING SOUND BUFFER");
-			}
 		}
 	}
 
@@ -155,6 +157,7 @@ namespace Audio
 		return _musicVolume;
 	}
 
+	// Set music to be relative to listener.
 	void RegisterMusic(MusicPlayer* player)
 	{
 		if (!player) return;
@@ -175,16 +178,12 @@ namespace Audio
 	void PlayMusic()
 	{
 		if (_activeMusic->getStatus() != sf::SoundSource::Status::Playing)
-		{
 			_activeMusic->play();
-		}
 	}
 
 	void StopMusic()
 	{
 		if (_activeMusic->getStatus() == sf::SoundSource::Status::Playing)
-		{
 			_activeMusic->stop();
-		}
 	}
 }

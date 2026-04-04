@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Nil
+*/
 #include "audio_components.hpp"
 #include "audio.hpp"
 
@@ -9,9 +13,8 @@ namespace
 		std::wstring targetDir = L"../../Assets/";
 
 		try {
-			if (fs::exists(targetDir)) {
+			if (fs::exists(targetDir))
 				targetDir = fs::absolute(targetDir).wstring();
-			}
 		}
 		catch (...) {}
 
@@ -97,8 +100,6 @@ void AudioEmitter::OnStart()
 	sound.setRelativeToListener(relativeToListener); //follows the listener
 	sound.setMinDistance(10.f);
 	sound.setAttenuation(0.2f);
-
-	
 }
 
 void AudioEmitter::Play()
@@ -166,7 +167,6 @@ void AudioEmitter::Serialize(Json::Value& outComp) const
 
 void AudioEmitter::Deserialize(const Json::Value& compObj)
 {
-
 	volume = compObj["volume"].asFloat();
 
 	if (compObj.isMember("fileName") && compObj["fileName"].isString())
@@ -208,12 +208,6 @@ std::unique_ptr<Component> AudioEmitter::Clone(GameObject& go)
 	return n;
 }
 
-
-
-
-
-
-
 void AudioListener::OnStart()
 {
 	sf::Listener::setUpVector(sf::Vector3f(0.f, 1.f, 0.f));
@@ -226,25 +220,13 @@ void AudioListener::OnUpdate()
 	sf::Listener::setPosition(pos);
 }
 
-void AudioListener::DrawInInspector()
-{
+void AudioListener::DrawInInspector() {}
 
-}
+void AudioListener::Serialize(Json::Value&) const {}
 
-void AudioListener::Serialize(Json::Value& /*outComp*/) const
-{
+void AudioListener::Deserialize(const Json::Value&) {}
 
-}
-
-void AudioListener::Deserialize(const Json::Value& /*compObj*/)
-{
-
-}
-
-void AudioListener::CopyFrom(Component* /*src*/)
-{
-	
-}
+void AudioListener::CopyFrom(Component*) {}
 
 std::unique_ptr<Component> AudioListener::Clone(GameObject& go)
 {
@@ -252,7 +234,6 @@ std::unique_ptr<Component> AudioListener::Clone(GameObject& go)
 	n.get()->CopyFrom(this);
 	return n;
 }
-
 
 void MusicPlayer::OnStart() 
 {
@@ -318,7 +299,6 @@ void MusicPlayer::Serialize(Json::Value& outComp) const
 
 void MusicPlayer::Deserialize(const Json::Value& compObj) 
 {
-
 	volume = compObj["volume"].asFloat();
 
 	if (compObj.isMember("fileName") && compObj["fileName"].isString())

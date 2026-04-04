@@ -1,10 +1,8 @@
+/*
+Author: Zachary Yee
+Co-Author: Nil
+*/
 #pragma once
-
-namespace UISystem
-{
-	// Preset value.
-	constexpr f32 defaultTextSize{ 40.f }, defaultStrokeWeight{ 2.f }, zeroVal{};
-}
 
 // Enum class ID for all possible button functions.
 enum class FunctionKey
@@ -25,28 +23,11 @@ enum class FunctionKey
 	COUNT
 };
 
+// Enum class ID for all possible slider functions.
 enum class AudioSpecifier : char
 {
 	GLOBAL, SFX, MUSIC, COUNT
 };
-
-// Display component to attach image or custom texture.
-//class Display : public Component
-//{
-//public:
-//	AEGfxTexture* texture{ nullptr };
-//
-//	void DrawInInspector() override;
-//	void OnStart() override;
-//	void OnUpdate() override;
-//	void OnDestroy() override;
-//
-//	const std::string name() const override { return "Display"; }
-//
-//	Display(GameObject& go) : Component(go) {};
-//	void CopyFrom(Component* src) override;
-//	std::unique_ptr<Component> Clone(GameObject& go) override;
-//};
 
 // Button Component to assign function callback.
 class Button : public Component
@@ -68,6 +49,7 @@ public:
 	std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
+// Slider Component to assign function callback.
 class Slider : public Component
 {
 public:
@@ -95,6 +77,7 @@ public:
 	Transform& TrackTransform() { return *_trackTransform; }
 };
 
+// Declarations for ui.cpp functions.
 namespace UISystem
 {
 	void init();

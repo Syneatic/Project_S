@@ -1,3 +1,7 @@
+/*
+Author: Zachary Yee
+Co-Author: Nil
+*/
 #include <vector>
 #include "enginectx.hpp"
 #include "scene.hpp"
@@ -102,14 +106,13 @@ namespace LevelTransition
 
 	void Update()
 	{
-
 		// Fade out check must always be before fade in.
 		if (tState == TransitionState::TRANSITION_FADEOUT)
 			FadeOutTimer();
-		
 		if (tState == TransitionState::TRANSITION_FADEIN)
 			FadeInTimer();
 
+		// Emergency button for quickly loading scene.
 		if (AEInputCheckTriggered(AEVK_M))
 		{
 			tState = TransitionState::TRANSITION_FADEOUT;

@@ -1,3 +1,7 @@
+/*
+Author: Zachary Yee
+Co-Author: Yan Chun, Wei Jun
+*/
 #pragma once
 
 #include "math.hpp"
@@ -27,7 +31,7 @@ struct UIButtonEvent : public Event<UIButtonEvent>
 	FunctionKey fKey;
 	UIButtonEvent(FunctionKey fKey) : fKey{ fKey } {}
 };
-
+// UISliderEvent struct
 struct UISliderEvent : public Event<UISliderEvent>
 {
 	AudioSpecifier aS;
@@ -35,6 +39,7 @@ struct UISliderEvent : public Event<UISliderEvent>
 	UISliderEvent(AudioSpecifier aS, float value) : aS{ aS }, value{ value } {}
 };
 
+// ping event
 struct PingEvent : public Event<PingEvent>
 {
 	size_t targetId;
@@ -53,6 +58,7 @@ struct OnCollisionEvent : public Event<OnCollisionEvent>
 		: self(s), other(o),contactPoint(c), normal(n) { }
 };
 
+//physics event
 struct OnTriggerEvent : public Event<OnTriggerEvent>
 {
 	GameObject* self;
@@ -62,11 +68,3 @@ struct OnTriggerEvent : public Event<OnTriggerEvent>
 		: self(s), other(o) {
 	}
 };
-
-//struct LevelTransitionEvent : public Event<LevelTransitionEvent>
-//{
-//	LevelTransition::TransitionState tState;
-//
-//	LevelTransitionEvent(LevelTransition::TransitionState tState)
-//		: tState(tState) {}
-//};

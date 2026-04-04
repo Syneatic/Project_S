@@ -1,3 +1,7 @@
+/*
+Author: Zachary Yee
+Co-Author: Nil
+*/
 #include "enginectx.hpp"
 #include "gameobject.hpp"
 #include "camera.hpp"

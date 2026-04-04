@@ -1,3 +1,7 @@
+/*
+Author: Zachary Yee
+Co-Author: Nil
+*/
 #include "eventhandler.hpp"
 
 namespace EventHandler

@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Nil
+*/
 #pragma once
 
 //use this more as a generic particle generator
@@ -35,7 +39,6 @@ public:
 	Color colorA{};
 	Color colorB{};
 
-
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnDestroy() override;
@@ -54,5 +57,4 @@ public:
 
 private:
 	float2 SampleSpawnPosition() const;
-
 };
