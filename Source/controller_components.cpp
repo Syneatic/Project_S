@@ -253,11 +253,12 @@ void PlayerController::OnUpdate()
     if (!sr) return;
     else sr->color.a = currentAlpha;
 
-    //Reset player to first savepoint
-    if (AEInputCheckTriggered(AEVK_T)) {
-        transform().position = initialSpawnPoint;
-        Debug::Log("Reset Player Location to the start");
-    }
+    //TESTING IF PLAYER GET STUCK CAN RESET THE SPAWNPOINT BACK TO START
+    ////Reset player to first savepoint
+    //if (AEInputCheckTriggered(AEVK_T)) {
+    //    transform().position = initialSpawnPoint;
+    //    Debug::Log("Reset Player Location to the start");
+    //}
 }
 
 void PlayerController::OnDestroy()
