@@ -26,6 +26,7 @@ namespace Audio
 {
 	sf::SoundBuffer* LoadAudio(std::string fileName)
 	{
+		//creates a sound buffer and stores it in the map, returns pointer to buffer
 		sf::SoundBuffer buffer;
 		if (buffer.loadFromFile(assetPath + fileName))
 		{

@@ -1,3 +1,7 @@
+/*
+Author: Tan Wei Jun
+Co-Author: Lim Yan Chun
+*/
 #include "camera.hpp"
 #include "gameobject.hpp"
 #include "math.hpp"
@@ -55,6 +59,8 @@ void PlayerController::OnStart()
     noiseSource = _owner.GetComponent<NoiseSource>();
     rockObject = SceneManager::ActiveScene()->FindGameObjectByName("Rock");
     pingActiveDuration = 2.f;
+
+    //subscribing the OnCollision and OnTrigger
     _owner.Subscribe<OnCollisionEvent>(
         &OnCollisionEvent::self,
         &_owner,
@@ -76,11 +82,12 @@ void PlayerController::OnStart()
 
 void PlayerController::OnUpdate()
 {
+    //PlayerController need rigidbody
     if (!rb) return;
 
-	//we use a ray cast downwards to check if the player is grounded
+	//Downward Raycast for ground check
     RaycastHit hit;
-    //or use whatever range u want
+
     bool rayGround = Physics::Raycast(_transform.position, float2(0.f, -1.f), _transform.scale.y / 2.f + 2.5f, hit, 1 << 1);
     if (rayGround)
     {
@@ -108,15 +115,8 @@ void PlayerController::OnUpdate()
 
     if (input != 0.f)
     {
-        if (!_isGrounded)
-        {
-            //lower acceleration in air
-			//acceleration *= 0.8f;
-        }
-        //rb->velocity.x += input * acceleration * EngineCTX::dt;
         rb->AddForce(float2(1,0) * (input * acceleration));
     }
-
     else 
     {
         float friction = acceleration;
@@ -143,6 +143,7 @@ void PlayerController::OnUpdate()
         coyoteTimer = 0.f;
     }
 
+    //IGNORE THIS WAS NOT IMPLEMENTED IN THE FINAL GAME
     //===================|Throw Mechanic|=====================
     if (AEInputCheckTriggered(AEVK_R))
     {
@@ -211,6 +212,7 @@ void PlayerController::OnUpdate()
         }
     }
 
+    //When ping there is a cooldown
     if (isPinging)
     {
         pingActiveTimer += EngineCTX::dt;
@@ -221,6 +223,7 @@ void PlayerController::OnUpdate()
         Debug::Log("Player Ping", isPinging, '\n');
     }
 
+    //Makes the player go invisible after isFadingOut is true
     if (isFadingOut)
     {
         currentAlpha -= pingFadeSpeed * EngineCTX::dt;
@@ -243,7 +246,7 @@ void PlayerController::OnUpdate()
             isFadeCoolingDown = false;
         }
     }
-    if (!isFadingOut && !isFadeCoolingDown && currentAlpha < 1.f)
+    if (!isFadingOut && !isFadeCoolingDown && currentAlpha < 1.f) //Enable the player's render alpha to max
     {
         currentAlpha += pingFadeSpeed * EngineCTX::dt;
         if (currentAlpha > 1.f) currentAlpha = 1.f;
@@ -271,7 +274,6 @@ void PlayerController::OnDestroy()
 void PlayerController::Respawn()
 {
     _transform.position = spawnPoint;
-    //rb->HitEnemy = false;
 }
 
 void PlayerController::SaveSpawn(const float2& pos)
@@ -279,6 +281,13 @@ void PlayerController::SaveSpawn(const float2& pos)
     spawnPoint = pos;
     Debug::Log("Spawn saved at: %f, %f", pos.x, pos.y);
 }
+
+void PlayerController::ResetSpawn()
+{
+    spawnPoint = initialSpawnPoint;
+    Respawn();
+}
+
 
 void PlayerController::TriggerPing(const float2& pos)
 {
@@ -291,23 +300,17 @@ void PlayerController::TriggerPing(const float2& pos)
         noiseSource->Emit(pos);
 }
 
-void PlayerController::ResetSpawn()
-{
-    spawnPoint = initialSpawnPoint;
-    Respawn();
-}
-
 void PlayerController::HandleCollision(const OnCollisionEvent& e)
 {
     auto* col = e.other->GetComponent<BoxCollider>();
 
+    //==================|Collision with Enemy|=======================
     if (col->layer == 1 << 2)
     {
-        //==================|Collision with Enemy|=======================
-        /*Respawn();*/
         UISystem::EndScreen(false);
     }
 
+    //Remove Collision with Rock since it wasn't used
     //if (col->layer == 1 << 3)
     //{
     //    Debug::Log("Rock picked up");
@@ -319,6 +322,7 @@ void PlayerController::HandleCollision(const OnCollisionEvent& e)
     //}
 }
 
+//All the trigger for the Checkpoints and EndGoal
 void PlayerController::HandleTrigger(const OnTriggerEvent& e)
 {
     auto* col = e.other->GetComponent<BoxCollider>();
@@ -358,7 +362,7 @@ std::unique_ptr<Component> PlayerController::Clone(GameObject& go)
 
 
 
-
+//INGORE:: ROCK CONTROLLER WAS NOT IMPLEMENTED IN THE FINAL GAME
 //===================|Rock Controller|===================
 void RockController::DrawInInspector()
 {
@@ -540,6 +544,7 @@ void EnemyController::OnStart()
 
     playerObject = SceneManager::ActiveScene()->FindGameObjectByName("Player");
 
+    //Check which type of Enemy it is onStart
     if (type == EnemyType::Drop)
     {
         if (rb)
@@ -560,6 +565,7 @@ void EnemyController::OnUpdate()
     groundEmitTimer += EngineCTX::dt;
     if (!rb) return;
 
+    //Choose specific action based on the type of Enemy
     switch (type)
     {
     case EnemyType::Drop:
@@ -590,15 +596,14 @@ void EnemyController::OnDestroy()
 
 }
 
-
+//Only used for Enemy tpe : Drop
 void EnemyController::UpdateDrop() {
     if (!rb) return;
 
-    RaycastHit hit;
-    bool hasLanded = false;
     f32 xDist = absf(playerObject->transform().position.x - _transform.position.x);
     f32 yDist = _transform.position.y - playerObject->transform().position.y;
 
+    ///Check the distance if the player is close the enemy & is below the enemy 
     if (xDist <= rangeDistance && yDist > 0 && yDist <= detectDistance) {
         if (hasDropped == false) 
             if (ns) ns->Emit(_transform.position);
@@ -608,10 +613,12 @@ void EnemyController::UpdateDrop() {
     float2 origin = _transform.position;
     float2 dir = float2(0, -1);
 
+    //Raycast to hit the ground
+    RaycastHit hit;
+    bool hasLanded = false;
     uint32_t groundLayer = static_cast<uint32_t>(Layer::Environment);
 
-    //if (hasDropped && rb->isGrounded) hasLanded = true;
-
+    //Raycast to emit particle slightly above the ground
     if (Physics::Raycast(origin, dir, 500.f, hit, groundLayer) && !hasLanded) {
         if (groundEmitTimer >= groundEmitInterval) {
             groundEmitTimer = 0.f;
@@ -679,6 +686,8 @@ void EnemyController::CheckPlayerSound()
 {
     if (auto* pc = playerObject->GetComponent<PlayerController>())
     {
+        //Check if player is nearby the enemy when ping which 
+        //will go player's last ping location before patrolling again
         if (pc->isPinging)
         {
             float2 pingPos = pc->lastPingPosition;
@@ -759,6 +768,7 @@ std::unique_ptr<Component> EnemyController::Clone(GameObject& go)
     return n;
 }
 
+//===================|Text Game Object|===================
 void TextGameObject::DrawInInspector()
 {
     ImGui::TextUnformatted("Fade Speed");
@@ -778,15 +788,6 @@ void TextGameObject::Deserialize(const Json::Value& compObj)
 void TextGameObject::OnStart()
 {
     player = SceneManager::ActiveScene()->FindGameObjectByName("Player");
-
-    //_owner.Subscribe<OnTriggerEvent>(
-    //    &OnTriggerEvent::self,
-    //    &_owner,
-    //    [this](const OnTriggerEvent& e)
-    //    {
-    //        this->HandleTrigger(e);
-    //    }
-    //);
 }
 
 void TextGameObject::OnUpdate()
@@ -794,13 +795,15 @@ void TextGameObject::OnUpdate()
     auto* textrenderer = _owner.GetComponent<TextRenderer>();
     if (!textrenderer) return;
 
+
     f32 xDist = absf(player->transform().position.x - _transform.position.x);
     f32 yDist = _transform.position.y - player->transform().position.y;
 
+    //Check if player is close to gameobject to increase alpha of text renderer ingame
     if (xDist <= rangeDistance && yDist > 0 && yDist <= detectDistance) {
         currentAlpha += fadeSpeed * EngineCTX::dt;
     }
-    else
+    else //reduce alpha if player walks further away
     {
         currentAlpha -= fadeSpeed * EngineCTX::dt;
     }

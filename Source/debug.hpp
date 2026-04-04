@@ -6,6 +6,7 @@ Co-Author: Nil
 
 namespace
 {
+	//checks if T has begin() and end() member functions
     template <typename T, typename = void>
     struct is_container : std::false_type {};
 
@@ -14,14 +15,19 @@ namespace
         decltype(std::declval<T>().end())>>
         : std::true_type {};
 
+    //prints out value passed in
     template <typename T>
-    void PrintElement(const T& val) {
-        if constexpr (is_container<T>::value && !std::is_same_v<T, std::string>) {
+    void PrintElement(const T& val) 
+    {
+        //checks if T is a container but not string
+        if constexpr (is_container<T>::value && !std::is_same_v<T, std::string>) 
+        {
             std::cout << "[ ";
             for (const auto& i : val) { std::cout << i << " "; }
             std::cout << "]";
         }
-        else {
+        else 
+        {
             std::cout << val;
         }
     }
@@ -39,10 +45,12 @@ namespace Debug //LOGGING
         Error
     };
 
+//only prints in debug mode
 #ifdef _DEBUG
-    template<typename... Args>
+	template<typename... Args> //variadic template to accept any number of arguments
     void Log(Args&&... args)
     {
+		//unfolds the parameter pack and prints each argument
         (..., (PrintElement(std::forward<Args>(args)), std::cout));
         std::cout << std::endl;
     }
@@ -59,6 +67,7 @@ namespace Debug //LOGGING
 
 namespace Debug// TIMER
 {
+	//only active in debug mode, otherwise empty macros that do nothing
 #ifdef _DEBUG
     #define DEBUG_TIMER(name) Debug::ScopedTimer timer##__LINE__(name)
     #define DEBUG_FUNC_TIMER() DEBUG_TIMER(__FUNCTION__)
@@ -76,7 +85,7 @@ namespace Debug// TIMER
 
     std::vector<TimerResult> GetResultsAndClear();
 
-    class ScopedTimer
+	class ScopedTimer //RAII timer that records time from construction to destruction
     {
     public:
         ScopedTimer(std::string_view name)
@@ -85,13 +94,14 @@ namespace Debug// TIMER
 
         ~ScopedTimer()
         {
+			//calculate elapsed time in milliseconds
             auto endTime = std::chrono::high_resolution_clock::now();
             auto start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTime).time_since_epoch().count();
             auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count();
 
             double ms = (end - start) * 0.001;
 
-            // Instead of just logging, we send it to the central registry
+            //record the result
             RecordTimerResult({ std::string(m_Name), ms });
         }
 
@@ -99,55 +109,4 @@ namespace Debug// TIMER
         std::string_view m_Name;
         std::chrono::time_point<std::chrono::high_resolution_clock> m_StartTime;
     };
-}
-
-namespace LogManager
-{
-    struct LogEntry //to be kept
-    {
-        Debug::LogLevel level;
-        std::string Timestamp;
-        std::string FunctionName;
-        std::string Message;
-    };
-
-    namespace //anon
-    {
-        constexpr size_t MAX_LOGS = 500;
-        std::deque<LogEntry> _logs;
-
-        template<typename T>
-        void BuildLogString(std::stringstream& ss, const T& val)
-        {
-
-        }
-    }
-
-    template<typename... Args>
-    void AddEntry(Debug::LogLevel level, std::string_view func, Args&&... args)
-    {
-        std::stringstream ss;
-        (..., (BuildLogString(ss, std::forward<Args>(args))));
-        /*
-        * Essentially unfolds to this
-        * AddEntry(...,"A","B","C")
-        * {
-        *   BuildLogString(ss,"A");
-        *   BuildLogString(ss,"B");
-        *   BuildLogString(ss,"C");
-        * }
-        */
-
-        //get current time
-        auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        char timeStr[9];
-        std::strftime(timeStr, sizeof(timeStr), "%H:%M:%S", std::localtime(&now));
-
-        _logs.push_back({ level,timeStr,std::string(func),ss.str() });
-
-        if (_logs.size() > MAX_LOGS)
-            _logs.pop_front();
-
-        std::cout << "[" << timeStr << "] " << ss.str() << std::endl;
-    }
 }

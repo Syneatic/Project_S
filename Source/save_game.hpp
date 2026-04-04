@@ -1,3 +1,7 @@
+/*
+Author: Tan Wei Jun
+Co-Author: Nil
+*/
 #pragma once
 #include "math.hpp"
 

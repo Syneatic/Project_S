@@ -7,6 +7,8 @@ Co-Author: Nil
 #include "math.hpp"
 #include "color.hpp"
 
+//helpers to convert common types to and from json values
+
 inline Json::Value WriteFloat2(const float2& v)
 {
     Json::Value arr(Json::arrayValue);

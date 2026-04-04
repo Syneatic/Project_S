@@ -16,7 +16,6 @@ public:
 	void OnEnter() override;
 	void OnUpdate() override;
 	void OnExit() override;
-	bool IsEditorScene() const override { return true; }
 	void RefreshScene();
 
 	EditorScene() { _name = "Editor"; }

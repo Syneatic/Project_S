@@ -20,6 +20,7 @@ Co-Author: Harith, Jia Xi, Zachary Yee, Wei Jun
 float accumulator{ 0 };
 ProfilerUI profilerUI;
 
+//for use in debug mode only
 void BuildDockSpace()
 {
 	const ImGuiViewport* vp = ImGui::GetMainViewport();
@@ -50,6 +51,7 @@ void Scene::InitializeGameObjects()
 {
 	Debug::Log("=== Initialize GameObjects ===");
 	Debug::Log("Total GameObjects : ", _gameObjectList.size());
+	//initialize all gameobjects
 	for (auto& pgo : _gameObjectList)
 	{
 		pgo->UpdateWorldTransform();
@@ -59,6 +61,7 @@ void Scene::InitializeGameObjects()
 
 GameObject* Scene::FindGameObjectByName(const std::string& name)
 {
+	//iterate through root gameobjects first, then their children (only 1 level of children for now)
     for (auto& go : _gameObjectList)
     {
         if (go->name() == name)
@@ -82,6 +85,7 @@ void Scene::OnEnter()
 
 	SaveGameManager::SaveData data;
 
+	//check if we need to load from file, if so load and set player position
 	if (SaveGameManager::toLoad)
 	{
 		SaveGameManager::Load(_name, data);
@@ -102,6 +106,7 @@ void Scene::OnEnter()
 		SaveGameManager::toLoad = false;
 	}
 
+	//initializes all systems
 	ParticleSystem::Initialize();
 	ParticleSystem::Flush();
 	InitializeGameObjects();
@@ -119,7 +124,6 @@ void Scene::OnUpdate()
 	{
 		PROFILE_SCOPE("GameLoop");
 
-		//test draw
 		AEGfxSetBackgroundColor(0.f,0.f,0.f);
 		LevelTransition::Update();
 
@@ -146,6 +150,7 @@ void Scene::OnUpdate()
 				UISystem::TogglePauseMenuGame();	
 		}
 
+		//fixed timestep for physics
 		accumulator += EngineCTX::dt;
 		while (accumulator >= EngineCTX::fixedDt)
 		{
@@ -153,6 +158,7 @@ void Scene::OnUpdate()
 			accumulator -= EngineCTX::fixedDt;
 		}
 
+		//sync physics results to gameobjects
 		Physics::SyncToLocal();
 
 		{
@@ -191,6 +197,7 @@ void Scene::OnUpdate()
 
 void Scene::OnExit()
 {
+	//save data to file
 	if (auto* player = FindGameObjectByName("Player"))
 	{
 		SaveGameManager::SaveData data;

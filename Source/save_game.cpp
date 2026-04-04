@@ -1,10 +1,15 @@
-
+/*
+Author: Tan Wei Jun
+Co-Author: Nil
+*/
 #include "save_game.hpp"
 
 namespace SaveGameManager
 {
+	//pathfile to save
 	static const std::string savePath = "Saves/";
 
+	//save specific variable based on the scene into a .save file type
 	void Save(const SaveData& data)
 	{
 
@@ -30,6 +35,7 @@ namespace SaveGameManager
 		writer->write(root, &out);
 	}
 
+	//load the variable based on the scene from the .save file type
 	void Load(const std::string& sceneName, SaveData& outData)
 	{
 		std::string fullPath = savePath + sceneName + ".save";
@@ -46,6 +52,7 @@ namespace SaveGameManager
 		if (!parseFromStream(builder, in, &root, &errs))
 			return;
 
+		//save data into the file
 		if (root.isMember("scene"))
 			outData.sceneName = root["scene"].asString();
 

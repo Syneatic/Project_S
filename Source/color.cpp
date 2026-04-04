@@ -1,3 +1,8 @@
+/*
+Author: Yan Chun
+Co-Author: NIL
+*/
+
 #include "color.hpp"
 
 

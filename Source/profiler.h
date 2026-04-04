@@ -4,9 +4,7 @@ Co-Author: Nil
 */
 #pragma once
 
-// ─────────────────────────────────────────────
-//  Macros
-// ─────────────────────────────────────────────
+// ===== MACROS =====
 #define PROFILE_CONCAT_INNER(a, b)  a##b
 #define PROFILE_CONCAT(a, b)        PROFILE_CONCAT_INNER(a, b)
 
@@ -22,10 +20,7 @@ Co-Author: Nil
 #  define PROFILE_FRAME_END()   ((void)0)
 #endif
 
-// ─────────────────────────────────────────────
-//  Data structures
-// ─────────────────────────────────────────────
-
+// ===== DATA STRUCTURES =====
 struct ProfileSample
 {
     const char*  name       = nullptr;
@@ -39,14 +34,9 @@ struct FrameData
 {
     std::vector<ProfileSample> samples;
     double                     frameTimeMs  = 0.0;
-    size_t                     memAllocated = 0;   // bytes alive at frame end
-    size_t                     memAllocCount = 0;  // live allocation count
 };
 
-// ─────────────────────────────────────────────
-//  Profiler singleton
-// ─────────────────────────────────────────────
-
+//singleton profiler class
 class Profiler
 {
 public:
@@ -98,6 +88,7 @@ public:
         if (m_paused) return;
         if (m_openSamples.empty()) return;
 
+		//calculate sample data
         auto& os  = m_openSamples.back();
         double dur = ToMs(Clock::now() - os.start);
 
@@ -108,6 +99,7 @@ public:
         s.depth      = os.depth;
         s.color      = ColorForName(os.name);
 
+		//store completed sample
         m_currentSamples.push_back(s);
         m_openSamples.pop_back();
         --m_depth;
@@ -163,7 +155,7 @@ private:
     bool   m_paused            = false;
 };
 
-//RAII
+//raii helper for profiling scopes
 struct ProfilerScope
 {
     explicit ProfilerScope(const char* name) { Profiler::Get().PushScope(name); }

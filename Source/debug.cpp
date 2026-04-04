@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: NIL
+*/
 #include "debug.hpp"
 
 namespace Debug

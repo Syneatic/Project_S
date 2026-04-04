@@ -6,12 +6,6 @@ Co-Author: Nil
 
 #include "profiler.h"
 
-// ─────────────────────────────────────────────
-//  ProfilerUI
-//  Call Render() once per frame inside an
-//  ImGui frame (after NewFrame, before Render).
-// ─────────────────────────────────────────────
-
 class ProfilerUI
 {
 public:

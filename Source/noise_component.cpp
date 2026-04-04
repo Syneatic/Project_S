@@ -10,6 +10,7 @@ Co-Author: Wei Jun
 #include "event.hpp"
 #include "physics_types.hpp"
 
+//behaviour function for particles emitted by the noise source, handles collision and reflection
 void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, u32 layerMask)
 {
 	if (!shouldCollide) return;
@@ -55,10 +56,6 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 
 		ParticleSystem::Emit(poolParticle);
 
-		/*if (burstLimit > 0)
-			ParticleSystem::Emit(hit.point + (hit.normal * 0.01f), burstVel, 0.f,
-				lifetime * 0.85f, col, true, burstLimit / 2, Collision);*/
-
 		//current particle becomes stationary
 		pos = hit.point;
 		vel = float2::zero();
@@ -88,6 +85,7 @@ void NoiseSource::OnStart()
 	//calculate lifetime
 	lifetime = GetLifetime(noiseLevel);
 
+	//subscribe to collision event if noise is active
 	if (isNoiseActive) {
 		_owner.Subscribe<OnCollisionEvent, GameObject*>(
 			&OnCollisionEvent::self,
@@ -119,6 +117,7 @@ void NoiseSource::OnDestroy()
 
 void NoiseSource::Emit()
 {
+	//emits particles in a circle around the source with some variation in angle, speed, and lifetime based on noise level
 	float angleStep = (2.0f * PI) / numParticles;
 
 	for (int i = 0; i < numParticles; i++)
@@ -151,6 +150,7 @@ void NoiseSource::Emit(const float2& emitPos)
 
 void NoiseSource::HandleHit(const OnCollisionEvent& e)
 {
+	//only emit if the collision is with an object in the layer mask
 	RigidBody* rb1 = e.self->GetComponent<RigidBody>();
 	RigidBody* rb2 = e.other->GetComponent<RigidBody>();
 	float2 vel1 = rb1 ? rb1->velocity : float2{};

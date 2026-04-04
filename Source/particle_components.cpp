@@ -9,9 +9,11 @@ Co-Author: Wei Jun, Harith, Zachary Yee
 
 void ParticleEmitter::OnStart() 
 {
+	//warms up the emitter
 	float interval = 1.0f / spawnRate;
 	float simulatedTime = time;
 
+	//simulate backwards in time to emit already aged particles at the start
 	while (simulatedTime >= interval)
 	{
 		float2 spawnPos = SampleSpawnPosition();
@@ -54,7 +56,7 @@ void ParticleEmitter::OnStart()
 
 void ParticleEmitter::OnUpdate() 
 {
-	if (isBurst)
+	if (isBurst) //only emit when triggered
 	{
 		if (AEInputCheckTriggered(AEVK_G))
 			Burst();
@@ -65,6 +67,7 @@ void ParticleEmitter::OnUpdate()
 	timer += static_cast<float>(timeScale ? EngineCTX::dt : EngineCTX::unscaledDt);
 	float interval = 1.0f / spawnRate;
 
+	//emit particles at fixed time intervals based on spawnRate, accounting for frame time
 	while (timer >= interval)
 	{
 		float2 spawnPos = SampleSpawnPosition();
@@ -99,10 +102,12 @@ void ParticleEmitter::OnUpdate()
 	}
 }
 
+//particle emitted are handled by the particle system, so no cleanup needed here
 void ParticleEmitter::OnDestroy() {};
 
 void ParticleEmitter::Burst()
 {
+	//emit a burst of particles all at once based on spawnRate, ignoring frame time and timer
 	float2 origin = _worldTransform.position;
 	int    count = static_cast<int>(spawnRate);
 	float  angleStep = (2.0f * PI) / count;
@@ -280,6 +285,7 @@ float2 ParticleEmitter::SampleSpawnPosition() const
 				 origin.y + sr * lx + cr * ly };
 		};
 
+	//get a random point within the defined spawn shape in local space, then convert to world space
 	switch (spawnShape)
 	{
 	case SpawnShape::RECT:

@@ -12,15 +12,18 @@ namespace
 		namespace fs = std::filesystem;
 		std::wstring targetDir = L"../../Assets/";
 
+		//checks if the target directory exists, and if it does, converts it to an absolute path for the file dialog
 		try {
 			if (fs::exists(targetDir))
 				targetDir = fs::absolute(targetDir).wstring();
 		}
 		catch (...) {}
 
+		//initialize for file dialog
 		HRESULT hrInit = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
 		bool didCoInit = SUCCEEDED(hrInit) || hrInit == RPC_E_CHANGED_MODE;
 
+		//create the file dialog
 		IFileOpenDialog* dialog = nullptr;
 		if (FAILED(CoCreateInstance(CLSID_FileOpenDialog, nullptr,
 			CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&dialog))))
@@ -41,6 +44,7 @@ namespace
 		dialog->SetFileTypes((UINT)std::size(filters), filters);
 		dialog->SetFileTypeIndex(1);
 
+		//set the initial directory of the file dialog to the target directory
 		IShellItem* startFolder = nullptr;
 		if (SUCCEEDED(SHCreateItemFromParsingName(targetDir.c_str(), nullptr, IID_PPV_ARGS(&startFolder))))
 		{
@@ -51,6 +55,7 @@ namespace
 
 		std::wstring result;
 
+		//show the dialog and get the selected file path
 		if (SUCCEEDED(dialog->Show(nullptr)))
 		{
 			IShellItem* item = nullptr;
@@ -220,6 +225,7 @@ void AudioListener::OnUpdate()
 	sf::Listener::setPosition(pos);
 }
 
+//not being used but defined for now
 void AudioListener::DrawInInspector() {}
 
 void AudioListener::Serialize(Json::Value&) const {}
