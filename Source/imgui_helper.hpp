@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Nil
+*/
 #pragma once
 
 std::string FormatID(const std::string& label, const std::string& id);

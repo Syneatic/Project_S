@@ -1,4 +1,7 @@
-
+/*
+Author: Yan Chun
+Co-Author: Nil
+*/
 //systems
 #include "renderer.hpp"
 #include "physics.hpp"
@@ -14,7 +17,6 @@
 
 //comps
 #include "components.hpp"
-
 
 namespace
 {
@@ -55,8 +57,7 @@ namespace
 		if (!go.children().empty())
 		{
 			for (auto& child : go.children())
-			 {
-
+			{
 				 UpdateGO(*child);
 			}
 		}
@@ -71,7 +72,6 @@ namespace Editor
 	}
 }
 
-
 void EditorScene::RefreshScene()
 {
 	Editor::selectedObjects.clear(); //reset index selection
@@ -82,7 +82,6 @@ void EditorScene::OnEnter()
 {
 	//start on prototype for testing
 	SceneIO::DeserializeScene(loadedScene, "Play_Level");
-
 	RefreshScene();
 	ParticleSystem::Initialize();
 	CameraSystem::OnStart();
@@ -104,12 +103,10 @@ void EditorScene::OnUpdate()
 	{
 		auto* go = pgo.get();
 		go->UpdateWorldTransform();
-
 		UpdateGO(*go);
 	}
 
 	ParticleSystem::Update();
-
 	Graphics::Execute();
 	//we shall simulate particles too
 	ParticleSystem::Render();
@@ -127,7 +124,6 @@ void EditorScene::OnUpdate()
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		ImGui::EndFrame();
 	}
-
 }
 
 void EditorScene::OnExit() 

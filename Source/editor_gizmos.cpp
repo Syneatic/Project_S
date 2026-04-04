@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Nil
+*/
 //systems
 #include "physics.hpp"
 #include "gameobject.hpp"
@@ -48,9 +52,7 @@ namespace //helpers
 			obj.transform().position = local;
 		}
 		else
-		{
 			obj.transform().position = newWorldPos;
-		}
 	}
 
 	void SetWorldRotation(GameObject& obj, float newWorldRot)
@@ -70,9 +72,7 @@ namespace //helpers
 			obj.transform().scale.y = pw.scale.y != 0.f ? newWorldScale.y / pw.scale.y : newWorldScale.y;
 		}
 		else
-		{
 			obj.transform().scale = newWorldScale;
-		}
 	}
 
 	Graphics::RenderData GetRenderData(const Transform& t)
@@ -221,8 +221,6 @@ namespace Editor
 			}
 		}
 		else if (!isMouseDown)
-		{
 			activeAxis = GizmoAxis::NONE;
-		}
 	}
 }

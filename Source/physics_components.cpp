@@ -60,7 +60,6 @@ void Collider::DrawBaseInspector()
     }
     ImGui::Separator();
 
-
     ImGui::TextUnformatted("Collision Mask");
     if (ImGui::BeginCombo("##collisionmask", "Collision Mask"))
     {
@@ -87,10 +86,6 @@ void Collider::DrawBaseInspector()
 }
 
 // ===== COLLIDER DEFINITIONS =====
-
-
-
-
 
 // ===== BOX COLLIDER DEFINITIONS =====
 // Draws the base collider inspector followed by a size drag control.
@@ -135,9 +130,6 @@ std::unique_ptr<Component> BoxCollider::Clone(GameObject& go)
 }
 
 // ===== BOX COLLIDER DEFINITIONS =====
-
-
-
 
 // ===== RIGIDBODY DEFINITIONS =====
 void RigidBody::DrawInInspector()

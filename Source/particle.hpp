@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Harith, Zachary Yee
+*/
 #pragma once
 
 #include "math.hpp"

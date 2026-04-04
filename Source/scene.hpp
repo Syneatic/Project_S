@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Nil
+*/
 #pragma once
 
 //forward decl
@@ -17,7 +21,6 @@ public:
 	virtual void OnExit();
 	virtual bool IsEditorScene() const { return false; }
 
-
 	//===== SERIALIZATION =====
 	std::string& name();
 	const std::string& cname() const;
@@ -25,7 +28,6 @@ public:
 	std::vector<std::unique_ptr<GameObject>>& gameObjectList();
 	const std::vector<std::unique_ptr<GameObject>>& gameObjectList() const;
 	GameObject* FindGameObjectByName(const std::string& name);
-
 
 	Scene();
 	Scene(std::string name);

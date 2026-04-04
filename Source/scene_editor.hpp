@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Nil
+*/
 #pragma once
 
 #include "scene.hpp"
@@ -9,7 +13,6 @@ private:
 	Scene loadedScene{}; //current loaded scene data
 
 public:
-
 	void OnEnter() override;
 	void OnUpdate() override;
 	void OnExit() override;

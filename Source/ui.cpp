@@ -36,6 +36,7 @@ namespace
             * endScreen = nullptr;
     }pauseMenuHolders;
 
+    // Helper function for getting all main menu ui game object parents in scene.
     void GetMainUIHolders()
     {
         mainMenuHolders.mainMenu = SceneManager::ActiveScene()->FindGameObjectByName("MainMenuHolder");
@@ -45,6 +46,7 @@ namespace
         mainMenuHolders.mainConfirmation = SceneManager::ActiveScene()->FindGameObjectByName("ConfirmationHolder");
         mainMenuHolders.mouseParticle = SceneManager::ActiveScene()->FindGameObjectByName("MouseParticle");
     }
+    // Helper function for getting all pause menu ui game object parents in scene.
     void GetPauseUIHolders()
     {
         pauseMenuHolders.pauseOverlay = SceneManager::ActiveScene()->FindGameObjectByName("PauseOverlay");
@@ -56,6 +58,7 @@ namespace
         pauseMenuHolders.pauseConfirmation = SceneManager::ActiveScene()->FindGameObjectByName("PauseConfirmationHolder");
     }
 
+    // Specific components needed for special purposes.
     TextRenderer* endScreenHeader = nullptr;
     Button* endScreenButton = nullptr;
     void GetSpecificComponents()
@@ -69,6 +72,7 @@ namespace
         endScreenHeader->text = state ? "YOU WIN" : "YOU LOSE";
     }
 
+    // Set the ui to reactivate when user presses no on confirmation screen.
     GameObject* PlayLevelConfirmationHolder()
     {
         return pauseMenuHolders.pauseMenu->active() ? pauseMenuHolders.pauseMenu :
@@ -138,6 +142,7 @@ namespace
         return { mX - AEGfxGetWindowWidth() / 2.f, -(mY - AEGfxGetWindowHeight() / 2.f) };
     }
 
+    // Check mouse world pos to button transform.
     bool checkBounds(Transform const& t)
     {
         float2 const& mouseWorld = ::mouseWorld();

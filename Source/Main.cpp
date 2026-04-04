@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Harith, Jia Xi, Zachary Yee, Wei Jun
+*/
 #include "gameobject.hpp"
 #include "renderer.hpp"
 #include "scene.hpp"
@@ -143,7 +147,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #endif
 	
 		SceneManager::OnUpdate();
-		//std::cout << AEFrameRateControllerGetFrameRate() << "\n";
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 

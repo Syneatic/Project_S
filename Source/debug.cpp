@@ -12,7 +12,6 @@ namespace Debug
         std::lock_guard<std::mutex> lock(s_TimerMutex);
         //push the results
         s_Results.push_back(result);
-
         //log it
         Debug::Log("[TIMER]", result.Name, ":", result.Milliseconds, "ms");
     }
@@ -22,7 +21,6 @@ namespace Debug
         std::lock_guard<std::mutex> lock(s_TimerMutex);
         std::vector<TimerResult> frameData = std::move(s_Results);
         s_Results.reserve(frameData.size());
-
         return frameData;
     }
 }

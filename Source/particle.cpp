@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Harith, Zachary Yee
+*/
 #include "particle.hpp"
 #include "physics.hpp"
 #include "camera.hpp"
@@ -23,10 +27,10 @@ namespace
 				oldestRatio = ratio;
 			}
 		}
-		if (idx >= 0)
+		/*if (idx >= 0)
 		{
-			//Debug::Log("FOUND DYING PARTICLE AT : ", idx);
-		}
+			Debug::Log("FOUND DYING PARTICLE AT : ", idx);
+		}*/
 		return idx;
 	}
 }
@@ -87,7 +91,6 @@ namespace ParticleSystem
 			g_pool.pos[i].y += g_pool.vel[i].y * (g_pool.timeScale[i] ? EngineCTX::dt : EngineCTX::unscaledDt);
 		}
 		//Debug::Log("Active Particles : ", activeParticles," FPS : ", EngineCTX::frameRate);
-
 	}
 
 	void Render() //by pass our wrapper for performance's sake
@@ -130,9 +133,7 @@ namespace ParticleSystem
 		int index = 0;
 
 		if (g_pool.freeStackTop < 0)
-		{
 			index = FindDyingParticle(g_pool);
-		}
 		else
 		{
 			index = g_pool.freeStack[g_pool.freeStackTop--];

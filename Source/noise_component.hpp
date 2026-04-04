@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Wei Jun
+*/
 #pragma once
 
 #include "eventhandler.hpp"

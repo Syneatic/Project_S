@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Nil
+*/
 #include "scene_parser.hpp"
 #include "scene_debugger.hpp"
 #include "scene.hpp"
@@ -10,7 +14,6 @@ namespace
 	namespace fs = std::filesystem;
 
 	std::vector<std::string> _sceneRegistry{}; //hold all scene in 'Scene' folder
-
 	std::unique_ptr<Scene> _current;
 
 	std::string _nextSceneName;

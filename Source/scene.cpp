@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Harith, Jia Xi, Zachary Yee, Wei Jun
+*/
 #include "scene.hpp"
 #include "renderer.hpp"
 #include "physics.hpp"
@@ -93,7 +97,6 @@ void Scene::OnEnter()
 				Debug::Log("EngineCTX::gameTimer: ", EngineCTX::gameTimer, "\n");
 			}
 			player->UpdateWorldTransform();
-
 			Debug::Log("Player Current Position Loaded");
 		}
 		SaveGameManager::toLoad = false;
@@ -104,8 +107,6 @@ void Scene::OnEnter()
 	InitializeGameObjects();
 
 	Physics::Initialize();
-
-	
 
 	UISystem::init();
 	LevelTransition::Init();

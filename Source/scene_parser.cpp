@@ -1,8 +1,10 @@
+/*
+Author: Yan Chun
+Co-Author: Harith, Jia Xi, Zachary Yee, Wei Jun
+*/
 #include "math.hpp"
-
 #include "scene.hpp"
 #include "gameobject.hpp"
-
 #include "components.hpp"
 
 namespace SceneIO
@@ -28,7 +30,6 @@ namespace SceneIO
         if (!compObj.isMember("type") || !compObj["type"].isString()) return;
 
         const std::string type = compObj["type"].asString();
-
 
         if (type == "BoxCollider")
         {

@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Nil
+*/
 #include "imgui_helper.hpp"
 
 namespace
@@ -13,7 +17,6 @@ namespace
 	}
 }
 
-
 using namespace ImGui;
 
 std::string FormatID(const std::string& label, const std::string& id)
@@ -24,7 +27,6 @@ std::string FormatID(const std::string& label, const std::string& id)
 	back += tolowerandnspc(id);
 	return back;
 }
-
 
 void FloatDrag(std::string label,std::string id, float* var, float2 minmax, float spd)
 {
@@ -77,7 +79,6 @@ bool NameInputText(std::string& nameOut)
 	return false;
 }
 
-
 // calls onSelect(index) when a menu item is clicked
 void ComponentSubMenu(const std::string& menuLabel, const std::vector<std::string>& items, std::function<void(int)> onSelect)
 {
@@ -101,7 +102,6 @@ void SelectableList(const std::vector<std::string>& names, int& selectedIndex)
 
 void RenderSort(std::string id,Graphics::RenderLayer& layer,float& sortOrder)
 {
-
 	const char* renderLayerNames[] = { "BACKGROUND", "DEFAULT", "UI", "GIZMOS" };
 	int rlIdx = static_cast<int>(layer);
 	std::string comboid = "##renderlayer_";

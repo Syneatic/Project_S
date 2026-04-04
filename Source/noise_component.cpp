@@ -1,3 +1,7 @@
+/*
+Author: Yan Chun
+Co-Author: Wei Jun
+*/
 #include "gameobject.hpp"
 #include "particle.hpp"
 #include "physics.hpp"
@@ -5,7 +9,6 @@
 #include "noise_component.hpp"
 #include "event.hpp"
 #include "physics_types.hpp"
-
 
 void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col, bool& shouldCollide, u32 layerMask)
 {
@@ -69,7 +72,6 @@ void Collision(float2& pos, float2& vel,float& time, float& lifetime, Color& col
 		//if (hit.layerHit == (1 << 1)) col = Color(1.f, 1.f, 1.f); // environment
 		if (hit.layerHit == (1 << 2)) col = Color(1.f, 0.f, 0.f); // enemy
 	}
-
 }
 
 float GetLifetime(float noise)
@@ -158,11 +160,8 @@ void NoiseSource::HandleHit(const OnCollisionEvent& e)
 	//need to change
 	//only emit if the collision is strong enough, prevents noise from small collisions
 	if (relativeSpeed > 300.0f)
-	{
 		this->Emit();
-	}
 }
-
 
 void NoiseSource::DrawInInspector() 
 {
@@ -209,7 +208,6 @@ void NoiseSource::DrawInInspector()
 		ImGui::EndCombo();
 	}
 
-
 	ImGui::SeparatorText("Noise Properties");
 
 	ImGui::TextUnformatted("Is Noise Active");
@@ -251,7 +249,6 @@ void NoiseSource::Deserialize(const Json::Value& compObj)
 
 	if (compObj.isMember("color"))
 		ReadColor(compObj["color"], color);
-
 
 	if (compObj.isMember("isNoiseActive") && compObj["isNoiseActive"].isBool())
 		isNoiseActive = compObj["isNoiseActive"].asBool();
