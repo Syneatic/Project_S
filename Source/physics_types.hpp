@@ -1,8 +1,13 @@
+/*
+Author: Muhammad Harith Bin Khairudyn
+Co-Author: Lim Yan Chun
+*/
 #pragma once
 
 //fwd decl
 class Collider;
 
+// Result of a successful raycast hit against a collider.
 struct RaycastHit
 {
 	Collider* collider{};
@@ -11,13 +16,13 @@ struct RaycastHit
 	float distance{};
 	uint32_t layerHit{};
 };
-
+// Axis-aligned bounding box defined by min and max world-space corners.
 struct AABB
 {
 	float2 min{};
 	float2 max{};
 };
-
+// Oriented bounding box defined by a center, half-extents, and local axes.
 struct OBB
 {
 	float2 center{};
@@ -25,7 +30,7 @@ struct OBB
 	float2 axisX{};        // local right
 	float2 axisY{};
 };
-
+// Collision contact data produced by narrow-phase detection between two colliders.
 struct ContactManifold
 {
 	Collider* c1 = nullptr;

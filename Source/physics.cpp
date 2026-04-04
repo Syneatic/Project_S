@@ -1,3 +1,7 @@
+/*
+Author: Muhammad Harith Bin Khairudyn
+Co-Author: Lim Yan Chun
+*/
 #include "gameobject.hpp"
 #include "physics_components.hpp"
 #include "physics_types.hpp"
@@ -58,6 +62,7 @@ namespace
 
 	std::unordered_set<u64, PairHash> _activeTriggerPairs;
 
+	// Converts a world-space position to integer cell coordinates in the spatial grid.
 	inline CellCoord WorldToCell(float2 p, float cellSize)
 	{
 		return {
@@ -65,24 +70,24 @@ namespace
 			static_cast<s32>(floor(p.y / cellSize))
 		};
 	}
-
+	// Hashes a cell coordinate pair into a single u32 for bucket indexing.
 	inline u32 Hash(u32 x, u32 y)
 	{
 		u32 h = x * 73856093u ^ y * 19349663u;
 		return h;
 	}
-
+	// Returns the bucket index for a world-space position in the given grid.
 	inline u32 GetIndex(float2 p, const SpatialGrid& grid)
 	{
 		CellCoord coord = WorldToCell(p, grid.cellSize);
 		return Hash(coord.x, coord.y) & grid.bucketCount - 1;
 	}
-
+	// Returns the bucket index for a cell coordinate in the given grid.
 	inline u32 GetIndex(CellCoord p, const SpatialGrid& grid)
 	{
 		return Hash(p.x, p.y) & grid.bucketCount - 1;
 	}
-
+	// Clears all items from every bucket in the spatial grid.
 	inline void ClearGrid(SpatialGrid& grid)
 	{
 		for (auto& cell : grid.bucket)
@@ -92,6 +97,7 @@ namespace
 
 namespace //OBB
 {
+	// Rebuilds each BoxCollider's OBB from its current world transform (position, scale, rotation).
 	void UpdateOBBs()
 	{
 		for (auto col : _colliders)
@@ -112,6 +118,7 @@ namespace //OBB
 		}
 	}
 
+	// Projects an OBB onto an axis and outputs the min/max scalar extents.
 	void ProjectOBB(const OBB& obb, float2 axis, f32& outMin, f32& outMax)
 	{
 		f32 c = dot(obb.center, axis);
@@ -124,6 +131,7 @@ namespace //OBB
 		outMax = c + r;
 	}
 
+	// Returns the signed overlap between two OBBs projected onto a given axis (negative = separated).
 	f32 GetOverlap(const OBB& a, const OBB& b, float2 axis)
 	{
 		f32 aMin, aMax, bMin, bMax;
@@ -134,6 +142,7 @@ namespace //OBB
 		return std::min(aMax, bMax) - std::max(aMin, bMin);
 	}
 
+	// Computes the four world-space corner positions of an OBB.
 	void GetOBBCorners(const OBB& obb, float2 out[4])
 	{
 		float2 ex = obb.axisX * obb.halfExtents.x;
@@ -144,7 +153,7 @@ namespace //OBB
 		out[2] = obb.center - ex - ey;
 		out[3] = obb.center + ex - ey;
 	}
-
+	// Returns true if a world-space point lies inside the OBB (with a small epsilon tolerance).
 	bool IsPointInsideOBB(float2 point, const OBB& obb)
 	{
 		float2 d = point - obb.center;
@@ -153,7 +162,7 @@ namespace //OBB
 		return px <= obb.halfExtents.x + 1e-4f
 			&& py <= obb.halfExtents.y + 1e-4f;
 	}
-
+	// Finds up to four contact points between two OBBs by testing each corner against the other box.
 	u32 FindContactPoints(const OBB& a, const OBB& b, float2 outPoints[4])
 	{
 		u32 count = 0;
@@ -172,7 +181,7 @@ namespace //OBB
 
 		return count;
 	}
-
+	// SAT OBB vs OBB test; fills the contact manifold and returns false if no collision.
 	bool OBBvsOBB(BoxCollider& boxA, BoxCollider& boxB, ContactManifold& manifold)
 	{
 		OBB a = boxA.obb;
@@ -222,7 +231,7 @@ namespace //OBB
 
 		return true;
 	}
-
+	// Slab-method ray vs OBB intersection test; returns true and sets outT to the hit distance.
 	bool RayVsOBB(float2 rayOrigin, float2 rayDir, const OBB& obb, f32& outT)
 	{
 		// Transform ray into OBB local space by projecting onto its axes
@@ -274,12 +283,14 @@ namespace //OBB
 namespace
 {
 	//helpers
+	// Returns true if the given layer bit is set in the collision mask.
 	bool CheckMask(u32 mask, u32 layer)
 	{
 		return mask & layer;
 	}
 
 	//wrapped function steps 
+	// Integrates forces and velocities for all non-static RigidBodies over dt.
 	void IntegrateMotion(f32 dt)
 	{
 		PROFILE_SCOPE(__func__);
@@ -306,6 +317,7 @@ namespace
 		}
 	}
 
+	// Derives a tight world-space AABB for each collider from its current OBB.
 	void UpdateAABBs()
 	{
 		PROFILE_SCOPE(__func__);
@@ -331,7 +343,7 @@ namespace
 			aabb.max = obb.center + r;
 		}
 	}
-
+	// Inserts all colliders into the spatial hash grid using their AABB cell footprint.
 	void BuildSpatialGrid()
 	{
 		PROFILE_SCOPE(__func__);
@@ -363,7 +375,7 @@ namespace
 			}
 		}
 	}
-
+	// Generates unique collider pairs from shared grid cells, filtered by layer mask.
 	void GenerateBroadPhasePairs()
 	{
 		PROFILE_SCOPE(__func__);
@@ -402,6 +414,7 @@ namespace
 		}
 	}
 
+	// Runs OBB vs OBB for each broad-phase pair; raises trigger/collision events and fills manifolds.
 	void NarrowPhaseCollision()
 	{
 		PROFILE_SCOPE(__func__);
@@ -466,7 +479,7 @@ namespace
 		}
 	
 	}
-
+	// Applies impulse-based collision response with friction and positional correction for each manifold.
 	void ResolveCollision()
 	{
 		PROFILE_SCOPE(__func__);
@@ -575,13 +588,14 @@ namespace
 
 namespace Physics
 {
+	// Adds a RigidBody to the simulation if it isn't already registered.
 	void RegisterRigidBody(RigidBody* rb)
 	{
 		if (!rb) return;
 		if (std::find(_rigidbodies.begin(), _rigidbodies.end(), rb) == _rigidbodies.end())
 			_rigidbodies.push_back(rb);
 	}
-
+	// Adds a Collider to the simulation if it isn't already registered.
 	void RegisterCollider(Collider* c)
 	{
 		if (!c) return;
@@ -591,7 +605,7 @@ namespace Physics
 			_raycastStamp.push_back(0);
 		}
 	}
-
+	// Clears all registered colliders, rigidbodies, pairs, manifolds, and trigger state.
 	void Flush()
 	{
 		_colliders.clear();
@@ -602,6 +616,7 @@ namespace Physics
 	}
 
 	//CALL THIS AFTER REGISTERING ALL COLLIDERS!
+	// Initialises OBBs/AABBs and calibrates the spatial grid cell size from average collider extents.
 	void Initialize()
 	{
 		//all colliders should be registered at this point, so we can calculate the average size for spatial grid
@@ -626,7 +641,7 @@ namespace Physics
 
 		_broadphasePairs.reserve(1024);
 	}
-
+	// Runs one full physics tick: integrate, update bounds, broad/narrow phase, and resolve.
 	void Step()
 	{
 		PROFILE_SCOPE("Physics");
@@ -662,7 +677,7 @@ namespace Physics
 		ResolveCollision();
 		//sleep objects that are at rest
 	}
-
+	// DDA grid-traversal raycast; returns true and fills outHit with the closest non-trigger hit.
 	bool Raycast(float2 origin, float2 direction, f32 maxDistance, RaycastHit& outHit, u32 layerMask)
 	{
 		f32 dirLen = length(direction);
@@ -757,7 +772,7 @@ namespace Physics
 
 		return true;
 	}
-
+	// Writes each RigidBody's world transform back to its local transform, accounting for parent hierarchy.
 	void SyncToLocal()
 	{
 		for (auto rb : _rigidbodies)

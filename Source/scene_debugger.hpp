@@ -1,3 +1,7 @@
+/*
+Author: Muhammad Harith Bin Khairudyn
+Co-Author: NIL
+*/
 #pragma once
 #include "scene.hpp"
 

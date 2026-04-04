@@ -1,3 +1,7 @@
+/*
+Author: Muhammad Harith Bin Khairudyn
+Co-Author: NIL
+*/
 #ifdef _DEBUG
 
 #include "renderer.hpp"
@@ -21,6 +25,7 @@ namespace
 
     // ── Hit testing ─────────────────────────────────────────────
 
+    // Returns true if the world-space mouse position is inside the GameObject's AABB.
     bool HitTest(const GameObject& go, float2 worldMouse)
     {
         const Transform& wt = go.worldTransform();
@@ -32,6 +37,7 @@ namespace
             worldMouse.y <= wt.position.y + halfH;
     }
 
+    // Depth-first search through a GameObject's children; returns the deepest hit, or nullptr.
     GameObject* PickRecursive(GameObject& go, float2 worldMouse)
     {
         for (auto& child : go.children())
@@ -39,7 +45,7 @@ namespace
                 return hit;
         return HitTest(go, worldMouse) ? &go : nullptr;
     }
-
+    // Iterates all root GameObjects in the scene and returns the first one hit by the mouse.
     GameObject* PickFromScene(Scene& scene, float2 worldMouse)
     {
         for (auto& pgo : scene.gameObjectList())
@@ -48,9 +54,7 @@ namespace
         return nullptr;
     }
 
-    // ── Outline drawing ─────────────────────────────────────────
-    // Called BEFORE Graphics::Execute() so outlines appear same frame.
-
+    // Submits a wire-frame box gizmo around a GameObject at the GIZMOS render layer.
     void DrawOutline(const GameObject& go, Color col)
     {
         Graphics::RenderData rd{};
@@ -67,6 +71,7 @@ namespace
 
     // ── ImGui helpers ────────────────────────────────────────────
 
+    // Emits a two-column table row showing a labeled float2 value (read-only).
     void ROFloat2(const char* label, const float2& v)
     {
         ImGui::TableNextRow();
@@ -74,6 +79,7 @@ namespace
         ImGui::TableSetColumnIndex(1); ImGui::Text("X: %.3f   Y: %.3f", v.x, v.y);
     }
 
+    // Emits a two-column table row showing a labeled float value (read-only).
     void ROFloat(const char* label, float v)
     {
         ImGui::TableNextRow();
@@ -81,6 +87,7 @@ namespace
         ImGui::TableSetColumnIndex(1); ImGui::Text("%.3f", v);
     }
 
+    // Begins a two-column stretch table; returns false and skips if the window has no width yet.
     bool BeginPropTable(const char* id)
     {
         if (ImGui::GetContentRegionAvail().x <= 0.f) return false;
@@ -88,10 +95,7 @@ namespace
             ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchSame);
     }
 
-
-    // ── UI panels ────────────────────────────────────────────────
-    // These are called INSIDE an already-open ImGui frame.
-
+    // Draws the top menu bar with scene label, debugger options, and F5 hint.
     void BuildMenuBar(Scene& scene)
     {
         const ImGuiViewport* vp = ImGui::GetMainViewport();
@@ -125,6 +129,7 @@ namespace
         ImGui::EndMainMenuBar();
     }
 
+    // Recursively draws a tree node for a GameObject; clicking toggles the inspector lock.
     void DrawNode(GameObject* go)
     {
         if (go->cname().empty()) return;
@@ -176,6 +181,7 @@ namespace
         }
     }
 
+    // Draws the scene hierarchy panel listing all root GameObjects as collapsible tree nodes.
     void BuildHierarchyWindow(Scene& scene)
     {
         const ImGuiViewport* vp = ImGui::GetMainViewport();
@@ -189,6 +195,7 @@ namespace
         ImGui::End();
     }
 
+    // Draws the inspector panel showing transform and component data for the hovered/locked object.
     void BuildInspectorWindow()
     {
         const ImGuiViewport* vp = ImGui::GetMainViewport();
@@ -311,7 +318,7 @@ namespace
 
         ImGui::End();
     }
-
+    // Draws a fixed bottom status bar showing the currently hovered or locked GameObject's info.
     void BuildStatusBar()
     {
         const ImGuiViewport* vp = ImGui::GetMainViewport();
@@ -353,6 +360,7 @@ namespace
         ImGui::End();
     }
 
+    // Draws a centred modal-style error popup when ReportError() has been called.
     void BuildErrorPopup()
     {
         if (!_showError) return;
@@ -389,15 +397,16 @@ namespace
 }
 namespace Debugger
 {
+    // Returns whether the debugger overlay is currently active.
     bool IsActive() { return _active; }
-
+    // Stores an error message and flags the error popup to display next tick.
     void ReportError(const std::string& msg)
     {
         _errorMsg = msg;
         _showError = true;
         Debug::Log("Debugger error: ", msg);
     }
-
+    // Clears all debugger state; call from Scene::OnExit to prevent stale pointers across scenes.
     void Reset()
     {
         _hovered = nullptr;
@@ -407,7 +416,7 @@ namespace Debugger
         _warmupFrames = 0;
         _inspectorSettledFrames = 0;
     }
-
+    // Per-frame update: syncs active state, runs mouse picking, draws outlines, and renders all panels.
     void Tick(Scene& scene)
     {
         bool wasActive = _active;

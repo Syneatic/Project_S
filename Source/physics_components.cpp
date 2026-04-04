@@ -1,7 +1,12 @@
+/*
+Author: Muhammad Harith Bin Khairudyn
+Co-Author: Lim Yan Chun
+*/
 #include "physics.hpp"
 #include "physics_components.hpp"
 #include "base_components.hpp"
 
+// Converts a Layer enum value to its human-readable string name.
 const char* LayerToString(Layer layer)
 {
     switch (layer)
@@ -18,11 +23,12 @@ const char* LayerToString(Layer layer)
 }
 
 // ===== COLLIDER DEFINITIONS =====
+// Registers this collider with the physics system on scene start.
 void Collider::OnStart()
 {
     Physics::RegisterCollider(this);
 }
-
+// Draws the shared layer, collision mask, and trigger toggle controls in the inspector.
 void Collider::DrawBaseInspector()
 {
     ImGui::SeparatorText("Collision Layer");
@@ -87,13 +93,14 @@ void Collider::DrawBaseInspector()
 
 
 // ===== BOX COLLIDER DEFINITIONS =====
+// Draws the base collider inspector followed by a size drag control.
 void BoxCollider::DrawInInspector()
 {
     DrawBaseInspector();
     ImGui::TextUnformatted("Size");
     ImGui::DragFloat2("##boxcollider_size", &size.x, 0.1f);
 }
-
+// Writes trigger flag, size, layer, and collision mask to JSON.
 void BoxCollider::Serialize(Json::Value& outComp) const
 {
     outComp["isTrigger"] = isTrigger;
@@ -101,7 +108,7 @@ void BoxCollider::Serialize(Json::Value& outComp) const
     outComp["layerMask"] = layer;
     outComp["collisionMask"] = collisionMask;
 }
-
+// Reads trigger flag, size, layer, and collision mask from JSON.
 void BoxCollider::Deserialize(const Json::Value& compObj)
 {
     isTrigger = compObj["isTrigger"].asBool();
@@ -109,7 +116,7 @@ void BoxCollider::Deserialize(const Json::Value& compObj)
     if (compObj.isMember("layerMask")) layer = compObj["layerMask"].asUInt();
     if (compObj.isMember("collisionMask")) collisionMask = compObj["collisionMask"].asUInt();
 }
-
+// Copies trigger, layer, collision mask, and size from another BoxCollider.
 void BoxCollider::CopyFrom(Component* src)
 {
     auto s = dynamic_cast<BoxCollider*>(src);
@@ -119,7 +126,7 @@ void BoxCollider::CopyFrom(Component* src)
     collisionMask = s->collisionMask;
     size = s->size;
 }
-
+// Returns a deep copy of this BoxCollider attached to the given GameObject.
 std::unique_ptr<Component> BoxCollider::Clone(GameObject& go)
 {
     auto n = std::make_unique<BoxCollider>(go);
