@@ -731,6 +731,10 @@
               "components" : 
               [
                 {
+                  "audioS" : 0,
+                  "type" : "Slider"
+                },
+                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -748,10 +752,6 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
-                },
-                {
-                  "audioS" : 0,
-                  "type" : "Slider"
                 },
                 {
                   "fileName" : "ButtonRockClick.wav",
@@ -856,6 +856,10 @@
               "components" : 
               [
                 {
+                  "audioS" : 1,
+                  "type" : "Slider"
+                },
+                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -873,10 +877,6 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
-                },
-                {
-                  "audioS" : 1,
-                  "type" : "Slider"
                 },
                 {
                   "fileName" : "ButtonRockClick.wav",
@@ -981,6 +981,10 @@
               "components" : 
               [
                 {
+                  "audioS" : 2,
+                  "type" : "Slider"
+                },
+                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -998,10 +1002,6 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
-                },
-                {
-                  "audioS" : 2,
-                  "type" : "Slider"
                 },
                 {
                   "fileName" : "ButtonRockClick.wav",
@@ -1857,7 +1857,7 @@
           "position" : 
           [
             0.0,
-            0.0
+            -50.000022888183594
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -1891,7 +1891,7 @@
           "position" : 
           [
             0.0,
-            34.999992370605469
+            40.000007629394531
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -1942,7 +1942,7 @@
           "position" : 
           [
             -125.0,
-            -50.000022888183594
+            -100.00004577636719
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -1993,7 +1993,7 @@
           "position" : 
           [
             125.0,
-            -50.000022888183594
+            -100.00004577636719
           ],
           "rotation" : 0.0,
           "scale" : 
@@ -2076,7 +2076,7 @@
       "position" : 
       [
         0.0,
-        -51.0
+        0.0
       ],
       "rotation" : 0.0,
       "scale" : 
