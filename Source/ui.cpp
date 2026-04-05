@@ -339,6 +339,7 @@ namespace UISystem
         }
     }
 
+    // Set pause menu ui
     void TogglePauseMenuGame()
     {
         if (LevelTransition::inTransition)
@@ -354,6 +355,7 @@ namespace UISystem
             ToggleUIPair(false, pauseMenuHolders.pauseMenu, pauseMenuHolders.pauseControls);
     }
 
+    // toggle end state ui.
     void EndScreen(bool state)
     {
         SetEndScreenText(state);

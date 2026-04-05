@@ -113,10 +113,10 @@ namespace LevelTransition
 			FadeInTimer();
 
 		// Emergency button for quickly loading scene.
-		if (AEInputCheckTriggered(AEVK_M))
+		/*if (AEInputCheckTriggered(AEVK_M))
 		{
 			tState = TransitionState::TRANSITION_FADEOUT;
 			SceneManager::RequestSceneSwitch(SceneToSwitch());
-		}
+		}*/
 	}
 }
