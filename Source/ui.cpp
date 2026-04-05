@@ -171,8 +171,7 @@ namespace
             { LevelTransition::RequestTransition(); SaveGameManager::toLoad = false; });
         SubscribeButton(FunctionKey::LOAD_GAME, [](const UIButtonEvent&)
             { 
-                if (std::ifstream{ "Saves/Play_Level.save", std::ios::binary })
-                { LevelTransition::RequestTransition(); SaveGameManager::toLoad = true; }               
+                LevelTransition::RequestTransition(); SaveGameManager::toLoad = true;            
             });
         SubscribeButton(FunctionKey::SETTINGS_MM, [](const UIButtonEvent&)
             { ToggleUIPair(mainMenuHolders.mainMenu, mainMenuHolders.mainSettings); });
