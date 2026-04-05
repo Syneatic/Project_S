@@ -39,7 +39,7 @@ namespace LevelTransition
 
 		// Immediately request transition for intro scene.
 		if (SceneManager::ActiveScene()->cname() == "Intro")
-			RequestTransition();
+			RequestTransition(4.f);
 	}
 
 	// Call this function if you want to change scene with effect.
