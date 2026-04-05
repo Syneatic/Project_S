@@ -91,7 +91,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	
 	//initialize the engine
-	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, true, nullptr);
+	AESysInit(hInstance, nCmdShow, 1600, 900, 0, 60, true, nullptr);
 	AESysSetWindowTitle("Project S");
 	AEInputShowCursor(1);
 
