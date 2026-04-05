@@ -1,6 +1,9 @@
+/*
+Author: Jia Xi
+Co-Author: Nil
+*/
 #include "camera.hpp"
 #include "camera_components.hpp"
-
 
 
 int fX, fY, zoom;
@@ -8,6 +11,7 @@ bool scrollHeld{};
 
 namespace CameraSystem 
 {
+	// Set camera info in the cam matrix
 	void SetCamM()
 	{
 		AEMtx33Identity(&CameraData::camM);
@@ -29,6 +33,7 @@ namespace CameraSystem
 		CameraData::zoomMult = 1;
 	}
 
+	// Set camera position in editor
 	void OnUpdate() 
 	{
 		// check middle mouse held down, get first cursor pos
@@ -64,12 +69,14 @@ namespace CameraSystem
 		SetCamM();
 	}
 
+	// Reset camera position
 	void OnExit() 
 	{
 		AEMtx33Identity(&CameraData::camM);
 		CameraData::zoomMult = 1;
 	}
 
+	// Set cam position to player position during playtime
 	void MoveCamera(Transform playerTrans) 
 	{
 		// fix dis
@@ -77,6 +84,7 @@ namespace CameraSystem
 		SetCamM();
 	}
 
+	// zoom in/out using scrollwheel
 	void ZoomInput()
 	{
 		AEInputMouseWheelDelta(&zoom); // check scroll
@@ -89,7 +97,7 @@ namespace CameraSystem
 		}
 	}
 
-
+	// helper function to translate screen position to world position
 	float2 ScreenToWorld(float2 pos)
 	{
 		float2 worldPos;

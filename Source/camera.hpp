@@ -1,3 +1,7 @@
+/*
+Author: Jia Xi
+Co-Author: Nil
+*/
 #pragma once
 
 struct Camera;
@@ -16,10 +20,15 @@ struct CameraData // Pass to renderer
 
 namespace CameraSystem {
 	void OnStart();
+	// Set camera position / zoom in editor
 	void OnUpdate();
+	// Reset camera position
 	void OnExit();
-	void MoveCamera(Transform);
-	void ZoomInput();
 
+	// Set cam position to player position during playtime
+	void MoveCamera(Transform);
+	// zoom in/out using scrollwheel
+	void ZoomInput();
+	// helper function to translate screen position to world position
 	float2 ScreenToWorld(float2 screen);
 }

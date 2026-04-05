@@ -1,3 +1,7 @@
+/*
+Author: Jia Xi
+Co-Author: Nil
+*/
 #include "render_components.hpp"
 #include "gameobject.hpp"
 #include <iostream>
@@ -166,8 +170,6 @@ void Renderer::Serialize(Json::Value& outComp) const
     outComp["color"] = WriteColor(color);
     outComp["screenspace"] = isScreenSpace;
     outComp["active"] = _active;
-    //texture is abit tricky for now
-    //i think save it as a filename for now
 }
 
 void Renderer::Deserialize(const Json::Value& compObj)
@@ -273,6 +275,7 @@ void SpriteRenderer::OnDestroy()
     Graphics::RenderData data{};
 }
 
+// copy paste functionality in editor
 void SpriteRenderer::CopyFrom(Component* src)
 {
     auto s = dynamic_cast<SpriteRenderer*>(src);
@@ -288,7 +291,7 @@ void SpriteRenderer::CopyFrom(Component* src)
     sortOrder = s->sortOrder;
     isScreenSpace = s->isScreenSpace;
 }
-
+// copy paste functionality in editor
 std::unique_ptr<Component> SpriteRenderer::Clone(GameObject& go)
 {
     auto n = std::make_unique<SpriteRenderer>(go);
@@ -369,6 +372,7 @@ void TextRenderer::Draw()
     }
 }
 
+// Load data to file
 void TextRenderer::Serialize(Json::Value& outComp) const
 {
     outComp["renderlayer"] = renderLayer;
@@ -380,7 +384,7 @@ void TextRenderer::Serialize(Json::Value& outComp) const
     //texture is abit tricky for now
     //i think save it as a filename for now
 }
-
+// Load data from file
 void TextRenderer::Deserialize(const Json::Value& compObj)
 {
     if (compObj.isMember("renderlayer") && compObj["renderlayer"].isInt())
@@ -404,6 +408,7 @@ void TextRenderer::Deserialize(const Json::Value& compObj)
     //read texture from file here
 }
 
+// copy paste functionality in editor
 void TextRenderer::CopyFrom(Component* src)
 {
     auto s = dynamic_cast<TextRenderer*>(src);
@@ -420,7 +425,7 @@ void TextRenderer::CopyFrom(Component* src)
     isScreenSpace = s->isScreenSpace;
     text = s->text;
 }
-
+// copy paste functionality in editor
 std::unique_ptr<Component> TextRenderer::Clone(GameObject& go)
 {
     auto n = std::make_unique<TextRenderer>(go);

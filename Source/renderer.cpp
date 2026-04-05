@@ -1,3 +1,7 @@
+/*
+Author: Jia Xi
+Co-Author: Yan Chun
+*/
 #include "camera.hpp"
 #include "renderer.hpp"
 
@@ -63,6 +67,7 @@ namespace Graphics //init mesh functions and texture handlers
 
     VertexBuffer* MeshEnd() { return AEGfxMeshEnd(); }
 
+    // Defaut values for meshes
     void InitQuad() 
     {
         MeshStart();
@@ -106,6 +111,7 @@ namespace Graphics //init mesh functions and texture handlers
         _triangleMesh = MeshEnd();
     }
 
+    // Defaut values for meshes
     void InitCircle() {
         MeshStart();
 
@@ -133,6 +139,7 @@ namespace Graphics //init mesh functions and texture handlers
         _circleMesh = MeshEnd();
     }
 
+    // Defaut values for meshes
     void InitBoxMesh()
     {
         MeshStart();
@@ -156,6 +163,7 @@ namespace Graphics //init mesh functions and texture handlers
         _boxMesh = MeshEnd();
     }
 
+    // Defaut values for meshes
     void InitLineMesh()
     {
         MeshStart();
@@ -179,7 +187,7 @@ namespace Graphics //init mesh functions and texture handlers
         _textureBuffer.insert({ filePath, AEGfxTextureLoad(filePath.c_str()) });
         return _textureBuffer.find(filePath)->second;
     }
-
+    // Unload all textures
     void UnloadTextures()
     {
         for (const auto& t : _textureBuffer) {
@@ -275,6 +283,7 @@ namespace Graphics
             }
         }
 
+        // Get matrix to render by applying camera matrix to transform
         void GetTransformMTX(float2 t, float2 s, f32 r, Alignment mode, MTX& mtx, bool notScrnSpace)
         {
             struct CamCache
@@ -330,6 +339,7 @@ namespace Graphics
             mtx.m[2][2] = 1.f;
         }
 
+        // Helper function to check if object is within margin of viewport, for render culling
         bool InViewport(const RenderData& d)
         {
             if (d.isScreenSpace) return true; // always render screenspace objects
@@ -359,6 +369,7 @@ namespace Graphics
             AEGfxMeshDraw(mesh, mode);
         }
         
+        // Draw text objects with offset
         void DrawTextMesh(const char* text,const RenderData& data)
         {
             f32 winW = (f32)AEGfxGetWindowWidth();
@@ -442,7 +453,7 @@ namespace Graphics
     }
 
    
-
+    // Initialise all meshes
     void Initialize()
     {
         InitQuad();
@@ -477,6 +488,7 @@ namespace Graphics
         AEGfxDestroyFont(_currentFont);
     }
 
+    // Submit shape into render buffer
     void Submit(const RenderData& data, PrimitiveType type, const char* text)
     {
         if (!InViewport(data)) return;

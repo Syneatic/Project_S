@@ -1,10 +1,14 @@
 #pragma once
 #include "renderer.hpp"
-
-//abstract
+/*
+Author: Jia Xi
+Co-Author: Yan Chun
+*/
+//abstract Renderer class
 class Renderer : public Component
 {
 public:
+    // default values
     std::string fileName{};
     Graphics::BlendMode blendMode{ AE_GFX_BM_BLEND };
     Graphics::RenderMode renderMode{ AE_GFX_RM_COLOR};
@@ -16,23 +20,24 @@ public:
     f32 sortOrder{ 0.f };
     bool isScreenSpace{ false };
 
+    // Editor behavior
     void DrawInInspector() override;
     void Serialize(Json::Value& outComp) const override;
     void Deserialize(const Json::Value& compObj) override;
     virtual void Draw();
 
+    // Runtime behaviors
     void OnStart() override {};
-
     void OnUpdate() override
     {
         Draw();
     }
-
     void OnDestroy() override {};
 
     Renderer(GameObject& go) : Component(go) {};
 };
 
+// Sprite renderer component's required functions to display in editor and save and load
 class SpriteRenderer : public Renderer
 {
 public:
@@ -49,6 +54,8 @@ public:
     std::unique_ptr<Component> Clone(GameObject& go) override;
 };
 
+// Text renderer component's required functions to display in editor and save and load
+// and to save and load from file
 class TextRenderer : public Renderer
 {
 public:

@@ -1,5 +1,8 @@
 #pragma once
-
+/*
+Author: Jia Xi
+Co-Author: Yan Chun
+*/
 namespace Graphics
 {
 	using RenderMode = AEGfxRenderMode;
@@ -69,7 +72,7 @@ namespace Graphics
     void Flush();//flushes all commands
 	void Exit();
 
-	void Submit(const RenderData& data, PrimitiveType type, const char* text = nullptr);
+	void Submit(const RenderData& data, PrimitiveType type, const char* text = nullptr); //submit to queue
     void SubmitArrow(const RenderData& data); //workaround
 
 	void Execute();
