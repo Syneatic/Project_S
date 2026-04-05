@@ -171,7 +171,8 @@ namespace
             { LevelTransition::RequestTransition(); SaveGameManager::toLoad = false; });
         SubscribeButton(FunctionKey::LOAD_GAME, [](const UIButtonEvent&)
             { 
-                if (std::ifstream{ "Assets/Saves/Play_Level.save", std::ios::binary })
+                Debug::Log(EngineCTX::GetAbsPath("Assets\\Saves\\Play_Level.save"));
+                if (std::ifstream{ EngineCTX::GetAbsPath("Assets\\Saves\\Play_Level.save")/*"Assets/Saves/Play_Level.save"*/, std::ios::binary})
                 { LevelTransition::RequestTransition(); SaveGameManager::toLoad = true; }               
             });
         SubscribeButton(FunctionKey::SETTINGS_MM, [](const UIButtonEvent&)
