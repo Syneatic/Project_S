@@ -10,15 +10,9 @@ namespace
 {
     std::wstring OpenFilePng()
     {
-        namespace fs = std::filesystem;
-        std::wstring targetDir = L"../../Assets/";
-
-        try {
-            if (fs::exists(targetDir)) {
-                targetDir = fs::absolute(targetDir).wstring();
-            }
-        }
-        catch (...) {}
+        std::wstring targetDir = std::filesystem::path(
+            EngineCTX::GetAbsPath("Assets\\")).wstring();
+        Debug::Log("Opening image from " , EngineCTX::GetAbsPath("Assets\\"));
 
         HRESULT hrInit = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
         bool didCoInit = SUCCEEDED(hrInit) || hrInit == RPC_E_CHANGED_MODE;
@@ -36,8 +30,7 @@ namespace
 
         COMDLG_FILTERSPEC filters[] = {
             { L"PNG files (*.png)", L"*.png" },
-            { L"All files (*.*)",       L"*.*" }
-
+            { L"All files (*.*)",   L"*.*"   }
         };
         dialog->SetFileTypes((UINT)std::size(filters), filters);
         dialog->SetFileTypeIndex(1);

@@ -6,8 +6,10 @@ Co-Author: Zachary Yee
 
 namespace
 {
-	std::string assetPath{ "Assets/" };
-
+	std::string GetFullAssetPath(const std::string& fileName) 
+	{
+		return EngineCTX::GetAbsPath("Assets/" + fileName);
+	}
 	//ref to all audio emitters
 	std::vector<AudioEmitter*> _audioEmitters{};
 	std::unordered_set<AudioEmitter*> _audioEmitterSet;
@@ -26,9 +28,11 @@ namespace Audio
 {
 	sf::SoundBuffer* LoadAudio(std::string fileName)
 	{
+		std::string path = GetFullAssetPath(fileName);
+		Debug::Log("Loading audio from ", path);
 		//creates a sound buffer and stores it in the map, returns pointer to buffer
 		sf::SoundBuffer buffer;
-		if (buffer.loadFromFile(assetPath + fileName))
+		if (buffer.loadFromFile(path))
 		{
 			_soundBufferMap[fileName] = std::make_unique<sf::SoundBuffer>(buffer);
 			return _soundBufferMap[fileName].get();
@@ -162,9 +166,10 @@ namespace Audio
 	void RegisterMusic(MusicPlayer* player)
 	{
 		if (!player) return;
-
+		std::string path = GetFullAssetPath(player->fileName);
+		Debug::Log("Loading music from ", path);
 		_activeMusicPlayer = player;
-		_activeMusic = std::make_unique<sf::Music>(assetPath + player->fileName);
+		_activeMusic = std::make_unique<sf::Music>(path);
 		_activeMusic.get()->setRelativeToListener(true);
 		_activeMusic.get()->setPosition({ 0.f, 0.f, 0.f });
 		_activeMusic.get()->setAttenuation(0.f);

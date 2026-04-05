@@ -180,7 +180,7 @@ namespace Graphics //init mesh functions and texture handlers
         if (fileName.empty()) {
             return nullptr;
         }
-        std::string filePath = "Assets/" + fileName;
+        std::string filePath = EngineCTX::GetAbsPath("Assets/" + fileName);
         if (auto search = _textureBuffer.find(filePath); search != _textureBuffer.end()){
             return search->second;
         }
@@ -462,7 +462,8 @@ namespace Graphics
         InitBoxMesh();
         InitLineMesh();
 
-        _currentFont = AEGfxCreateFont("./Assets/Ubuntu-Light.ttf", 72);
+        std::string fontPath = EngineCTX::GetAbsPath("Assets/Ubuntu-Light.ttf");
+        _currentFont = AEGfxCreateFont(fontPath.c_str(), 72);
     }
 
     void Flush()

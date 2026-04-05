@@ -25,22 +25,12 @@ namespace //helpers
 
 	std::wstring OpenFile()
 	{
-		//get current directory
-		namespace fs = std::filesystem;
-		std::wstring targetDir = L"../../Assets/Scene/";
+		std::wstring targetDir = std::filesystem::path(
+			EngineCTX::GetAbsPath("Assets\\Scene\\")).wstring();
 
-		try {
-			if (fs::exists(targetDir)) {
-				targetDir = fs::absolute(targetDir).wstring();
-			}
-		}
-		catch (...) {}
-
-		//create dialog
 		HRESULT hrInit = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
 		bool didCoInit = SUCCEEDED(hrInit) || hrInit == RPC_E_CHANGED_MODE;
 
-		//check if successful
 		IFileOpenDialog* pfd = nullptr;
 		HRESULT hrCreate = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd));
 		if (FAILED(hrCreate) || !pfd)
@@ -49,10 +39,8 @@ namespace //helpers
 			return L"";
 		}
 
-		//configure dialog
 		pfd->SetTitle(L"Open Scene");
 
-		// Optional: filter
 		COMDLG_FILTERSPEC filters[] =
 		{
 			{ L"Scene files (*.scene)", L"*.scene" },
@@ -61,7 +49,6 @@ namespace //helpers
 		pfd->SetFileTypes((UINT)std::size(filters), filters);
 		pfd->SetFileTypeIndex(1);
 
-		//starting folder
 		IShellItem* startFolder = nullptr;
 		if (SUCCEEDED(SHCreateItemFromParsingName(targetDir.c_str(), nullptr, IID_PPV_ARGS(&startFolder))))
 		{
@@ -70,7 +57,6 @@ namespace //helpers
 			startFolder->Release();
 		}
 
-		//display dialog
 		HRESULT hrShow = pfd->Show(nullptr);
 
 		std::wstring out;

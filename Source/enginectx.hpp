@@ -25,4 +25,7 @@ namespace EngineCTX
 	inline bool debugMode{ false };
 
 	void PauseTime();
+
+	std::filesystem::path GetRootPath();
+	std::string GetAbsPath(const std::string& relativePath);
 }

@@ -11,6 +11,10 @@ namespace SceneIO
 {
     static std::string defaultPath = "Assets/Scene/";
 
+    static std::string GetSceneFolder() 
+    {
+        return EngineCTX::GetAbsPath("Assets/Scene/");
+    }
     // ===== Component Serialization =====
     bool SerializeComponent(const Component& c, Json::Value& outComp)
     {
@@ -192,7 +196,9 @@ namespace SceneIO
     bool SerializeScene(const Scene& scene)
     {
         namespace fs = std::filesystem;
-        try { fs::create_directories(defaultPath); }
+        std::string sceneFolder = GetSceneFolder();
+
+        try { fs::create_directories(sceneFolder); }
         catch (...) {}
 
         Json::Value root(Json::objectValue);
@@ -211,24 +217,10 @@ namespace SceneIO
         builder["indentation"] = "  ";
         std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
 
-#ifdef _DEBUG
-        //for debug
-        const std::string dpath = "../../Assets/Scene/" + scene.cname() + ".scene";
-        std::ofstream dout(dpath, std::ios::binary);
-        if (!dout)
-        {
-            Debug::Log("Unable to create file!"); 
-            return false;
-        }
+        std::string fullPath = sceneFolder + scene.cname() + ".scene";
+        Debug::Log("Serialized to ", fullPath);
+        std::ofstream out(fullPath, std::ios::binary);
 
-        if (writer->write(root, &dout) != 0)
-        {
-            Debug::Log("Failed to serialize scene!");
-        }
-#endif
-
-        const std::string path = "Assets/Scene/" + scene.cname() + ".scene";
-        std::ofstream out(path, std::ios::binary);
         if (!out)
         {
             Debug::Log(__FUNCTION__, "Unable to create file!");
@@ -240,13 +232,15 @@ namespace SceneIO
 
     bool DeserializeScene(Scene& outScene, const std::string& fileNameNoExt)
     {
-#ifdef _DEBUG
-        const std::string path = "../../Assets/Scene/" + fileNameNoExt + ".scene";
-#else
-        const std::string path = "Assets/Scene/" + fileNameNoExt + ".scene";
-#endif
+        std::string path = GetSceneFolder() + fileNameNoExt + ".scene";
+//#ifdef _DEBUG
+//        const std::string path = "../../Assets/Scene/" + fileNameNoExt + ".scene";
+//#else
+//        const std::string path = "Assets/Scene/" + fileNameNoExt + ".scene";
+//#endif
         std::ifstream in(path, std::ios::binary);
         if (!in) return false;
+        Debug::Log("Deserialized from ", path);
 
         Json::CharReaderBuilder rbuilder;
         std::string errs;

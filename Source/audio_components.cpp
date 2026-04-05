@@ -10,7 +10,7 @@ namespace
 	std::wstring OpenFileWav()
 	{
 		namespace fs = std::filesystem;
-		std::wstring targetDir = L"../../Assets/";
+		std::wstring targetDir = fs::path(EngineCTX::GetAbsPath("Assets\\")).wstring();
 
 		//checks if the target directory exists, and if it does, converts it to an absolute path for the file dialog
 		try {

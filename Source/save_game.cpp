@@ -6,17 +6,14 @@ Co-Author: Nil
 
 namespace SaveGameManager
 {
-	//pathfile to save
-	static const std::string savePath = "Assets/Saves/";
-
 	//save specific variable based on the scene into a .save file type
 	void Save(const SaveData& data)
 	{
-
+		std::string savePath = EngineCTX::GetAbsPath("Assets/Saves/");
 		std::filesystem::create_directories(savePath);
 
 		std::string fullPath = savePath + data.sceneName + ".save";
-
+		Debug::Log("Saving player's progress to ", fullPath);
 		Json::Value root;
 
 		//save the specific data value
@@ -38,9 +35,8 @@ namespace SaveGameManager
 	//load the variable based on the scene from the .save file type
 	void Load(const std::string& sceneName, SaveData& outData)
 	{
-		std::string fullPath = savePath + sceneName + ".save";
-		
-		//Debug::Log("Level Save Name", fullPath), "\n";
+		std::string fullPath = EngineCTX::GetAbsPath("Assets/Saves/") + sceneName + ".save";
+		Debug::Log("Loading player's progress from ", fullPath);
 
 		std::ifstream in(fullPath, std::ios::binary);
 		if (!in) return; //check if input file stream cannot be read
