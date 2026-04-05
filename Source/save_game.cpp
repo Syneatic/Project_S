@@ -7,7 +7,7 @@ Co-Author: Nil
 namespace SaveGameManager
 {
 	//pathfile to save
-	static const std::string savePath = "Saves/";
+	static const std::string savePath = "Assets/Saves/";
 
 	//save specific variable based on the scene into a .save file type
 	void Save(const SaveData& data)

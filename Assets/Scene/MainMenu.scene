@@ -731,10 +731,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 0,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -752,6 +748,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 0,
+                  "type" : "Slider"
                 },
                 {
                   "fileName" : "ButtonRockClick.wav",
@@ -856,10 +856,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 1,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -877,6 +873,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 1,
+                  "type" : "Slider"
                 },
                 {
                   "fileName" : "ButtonRockClick.wav",
@@ -981,10 +981,6 @@
               "components" : 
               [
                 {
-                  "audioS" : 2,
-                  "type" : "Slider"
-                },
-                {
                   "active" : true,
                   "alignment" : 4,
                   "blendmode" : 1,
@@ -1002,6 +998,10 @@
                   "screenspace" : true,
                   "sortOrder" : 3.0,
                   "type" : "SpriteRenderer"
+                },
+                {
+                  "audioS" : 2,
+                  "type" : "Slider"
                 },
                 {
                   "fileName" : "ButtonRockClick.wav",
@@ -2113,7 +2113,7 @@
       "components" : 
       [
         {
-          "fileName" : "MainMenuMusic.wav",
+          "fileName" : "MainMenuMusic.mp3",
           "loop" : true,
           "type" : "MusicPlayer",
           "volume" : 1.0
